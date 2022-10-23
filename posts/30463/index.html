@@ -1,0 +1,992 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="操作系统--进程与线程 进程概念 从并发开始 串行排队   image-20220926142304076  分时调用   image-20220926142216136  “但是并发除了会让脑子更乱以外并不会让事情变得更好”   image-20220926151301063  尽管如此，并发确实可以提高CPU的利用率。当然可能会带来设备（慢操作）延迟。   image-202210181920">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统_进程与线程模型">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/30463/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="操作系统--进程与线程 进程概念 从并发开始 串行排队   image-20220926142304076  分时调用   image-20220926142216136  “但是并发除了会让脑子更乱以外并不会让事情变得更好”   image-20220926151301063  尽管如此，并发确实可以提高CPU的利用率。当然可能会带来设备（慢操作）延迟。   image-202210181920">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110755222583_746_image-20220926142304076.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110756926120_483_image-20220926142216136.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110758632298_262_image-20220926151301063.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110801392732_151_image-20221018192004694.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110803473763_292_image-20221016200649356.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110805822552_826_image-20220926152249647.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110807671323_383_image-20221018191442452.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110809885582_767_image-20221018191551669.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110811863911_528_image-20220926161106287.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110813764309_930_image-20221014152546893.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110816170775_715_image-20221018205252597.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110817967015_206_image-20221016192515282.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110819440912_574_image-20221018192631681.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110821096921_713_image-20221018214846546.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110822817914_214_image-20221018214339806.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110824611329_729_image-20220926162706586.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110826436181_342_image-20221014151453508.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110828695748_821_image-20221018192900616.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110830191623_314_image-20220926162928685.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110832168851_702_image-20220926163633315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110834324423_859_image-20221018205406513.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110836886804_366_image-20221018211857840.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110839761934_452_image-20221018211911941.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110841591537_254_image-20221018194121923.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110843340452_876_image-20221018193551401.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110845328702_264_image-20221018192401379.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110847145883_201_image-20221018205754448.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110848853722_394_image-20221018214600427.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110850808418_676_image-20221018234308117.png">
+<meta property="article:published_time" content="2022-10-23T07:30:46.034Z">
+<meta property="article:modified_time" content="2022-10-23T07:30:46.034Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110755222583_746_image-20220926142304076.png">
+    
+    
+    
+    <title>操作系统_进程与线程模型 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="操作系统_进程与线程模型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-10-23 15:30" pubdate>
+              2022年10月23日 下午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              1.9k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/操作系统_进程与线程模型/操作系统_进程与线程模型.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">操作系统_进程与线程模型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="操作系统--进程与线程">操作系统--进程与线程</h2>
+<h3 id="进程概念">进程概念</h3>
+<h4 id="从并发开始">从并发开始</h4>
+<p>串行排队</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110755222583_746_image-20220926142304076.png" srcset="/img/loading.gif" lazyload alt="image-20220926142304076">
+<figcaption aria-hidden="true">image-20220926142304076</figcaption>
+</figure>
+<p>分时调用</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110756926120_483_image-20220926142216136.png" srcset="/img/loading.gif" lazyload alt="image-20220926142216136">
+<figcaption aria-hidden="true">image-20220926142216136</figcaption>
+</figure>
+<p>“但是并发除了会让脑子更乱以外并不会让事情变得更好”</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110758632298_262_image-20220926151301063.png" srcset="/img/loading.gif" lazyload alt="image-20220926151301063">
+<figcaption aria-hidden="true">image-20220926151301063</figcaption>
+</figure>
+<p>尽管如此，并发确实可以提高CPU的利用率。当然可能会带来设备（慢操作）延迟。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110801392732_151_image-20221018192004694.png" srcset="/img/loading.gif" lazyload alt="image-20221018192004694">
+<figcaption aria-hidden="true">image-20221018192004694</figcaption>
+</figure>
+<p>C</p>
+<p><strong>进程就是为了“保存”和“恢复”一个程序的执行过程，以实现并发的目标</strong></p>
+<h4 id="进程和程序的区别">进程和程序的区别</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110803473763_292_image-20221016200649356.png" srcset="/img/loading.gif" lazyload alt="image-20221016200649356">
+<figcaption aria-hidden="true">image-20221016200649356</figcaption>
+</figure>
+<h3 id="进程和线程的区别">进程和线程的区别</h3>
+<ul>
+<li><p>进程作为分配资源的基本单位，线程作为独立运行和独立调度的基本单位(注意：在多线程
+OS 中，进程不是一个可执行的实体)</p></li>
+<li><p>进程拥有一个完整的虚拟地址空间，不依赖于线程而独立存在；反之，线程是进程的一部分，没有自己的地址空间，与进程内的其他线程一起共享分配给该进程的所有资源。</p></li>
+</ul>
+<h3 id="进程的数据结构--pcb">进程的数据结构--PCB</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110805822552_826_image-20220926152249647.png" srcset="/img/loading.gif" lazyload alt="image-20220926152249647">
+<figcaption aria-hidden="true">image-20220926152249647</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110807671323_383_image-20221018191442452.png" srcset="/img/loading.gif" lazyload alt="image-20221018191442452">
+<figcaption aria-hidden="true">image-20221018191442452</figcaption>
+</figure>
+<h3 id="进程的组织">进程的组织</h3>
+<h4 id="进程状态和切换">进程状态和切换</h4>
+<p class="note note-primary">
+对于某一个进程： 为什么被暂停了？ 为什么选它来运行？
+为什么选择这个时机进行切换？
+</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110809885582_767_image-20221018191551669.png" srcset="/img/loading.gif" lazyload alt="image-20221018191551669">
+<figcaption aria-hidden="true">image-20221018191551669</figcaption>
+</figure>
+<p>操作系统可以将会触发慢操作的状态记录下来。</p>
+<p class="note note-primary">
+“把printf的汇编代码放到自己的程序中，并且把控制休眠的指令注释掉，会不会能正常运行？”
+</p>
+<p>不能。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110811863911_528_image-20220926161106287.png" srcset="/img/loading.gif" lazyload alt="image-20220926161106287" width="50%" height="50%"></p>
+<h5 id="五状态进程模型">五状态进程模型</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110813764309_930_image-20221014152546893.png" srcset="/img/loading.gif" lazyload alt="image-20221014152546893">
+<figcaption aria-hidden="true">image-20221014152546893</figcaption>
+</figure>
+<p>关于进程的创建：</p>
+<p>在一个进程被新建时它并非绝对会被调入内存，通常是分两步，首先创建该进程的PCB，并与之关联，但是此时可能面临内存不足或者操作系统限制了最大进程数导致这个进程还无法被调入进程，因此该进程被暂时留在新建态，在这个状态的进程PCB已经创建并且加载进内存，但是进程的代码和数据往往还留在外存中等待加载。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110816170775_715_image-20221018205252597.png" srcset="/img/loading.gif" lazyload alt="image-20221018205252597">
+<figcaption aria-hidden="true">image-20221018205252597</figcaption>
+</figure>
+<p>关于进程的撤销(结束)</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110817967015_206_image-20221016192515282.png" srcset="/img/loading.gif" lazyload alt="image-20221016192515282">
+<figcaption aria-hidden="true">image-20221016192515282</figcaption>
+</figure>
+<blockquote>
+<p>B。进程有它的生命周期，不会一直存在于系统中，也不一定需要用户显式地撒销。进程在时间片结束时只是就绪，而不是撤销。阻塞和唤醒是进程生存期的中间状态。进程可在完成时撤销，
+或在出现内存错误等时撤销。</p>
+</blockquote>
+<p>关于进程的阻塞</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110819440912_574_image-20221018192631681.png" srcset="/img/loading.gif" lazyload alt="image-20221018192631681">
+<figcaption aria-hidden="true">image-20221018192631681</figcaption>
+</figure>
+<p>阻塞态完了会进就绪队列</p>
+<p><a target="_blank" href="https://houbb.github.io/2020/10/04/os-04-sync" style="position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; box-sizing: border-box; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; width: 390px; min-height: 84px; border-radius: 8px; max-width: 100%; overflow: hidden; margin: 16px auto; padding: 12px 12px 9px 12px; background-color: #F6F6F6;"><span class="LinkCard-contents"><span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 40px; line-height: 1.25; color: #121212;">关于临界资源及其同步和互斥</span><span style="display: -webkit-box; font-size: 13px; height: 18px; line-height: 18px; color: #999; word-break: break-all; text-overflow: ellipsis; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical;"><span style="display: inline-flex; align-items: center;"><svg class="Zi Zi--InsertLink" fill="currentColor" viewBox="0 0 24 24" width="14" height="14"><path d="M13.414 4.222a4.5 4.5 0 1 1 6.364 6.364l-3.005 3.005a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l3.005-3.005a2.5 2.5 0 1 0-3.536-3.536l-3.005 3.005a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l3.005-3.005zm-6.187 6.187a.5.5 0 0 1 .638-.058l.07.058.706.707a.5.5 0 0 1 .058.638l-.058.07-3.005 3.004a2.5 2.5 0 0 0 3.405 3.658l.13-.122 3.006-3.005a.5.5 0 0 1 .638-.058l.069.058.707.707a.5.5 0 0 1 .058.638l-.058.069-3.005 3.005a4.5 4.5 0 0 1-6.524-6.196l.16-.168 3.005-3.005zm8.132-3.182a.25.25 0 0 1 .353 0l1.061 1.06a.25.25 0 0 1 0 .354l-8.132 8.132a.25.25 0 0 1-.353 0l-1.061-1.06a.25.25 0 0 1 0-.354l8.132-8.132z"></path></svg></span><span>https://houbb.github.io/2020/10/04/os-04-sync</span></span></span></a></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110821096921_713_image-20221018214846546.png" srcset="/img/loading.gif" lazyload alt="image-20221018214846546">
+<figcaption aria-hidden="true">image-20221018214846546</figcaption>
+</figure>
+<blockquote>
+<p>B 可以共享一部分资源，但不共享虚拟地址空间</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110822817914_214_image-20221018214339806.png" srcset="/img/loading.gif" lazyload alt="image-20221018214339806">
+<figcaption aria-hidden="true">image-20221018214339806</figcaption>
+</figure>
+<blockquote>
+<p>C</p>
+</blockquote>
+<h5 id="添加了挂起状态的进程模型">添加了挂起状态的进程模型</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110824611329_729_image-20220926162706586.png" srcset="/img/loading.gif" lazyload alt="image-20220926162706586">
+<figcaption aria-hidden="true">image-20220926162706586</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110826436181_342_image-20221014151453508.png" srcset="/img/loading.gif" lazyload alt="image-20221014151453508">
+<figcaption aria-hidden="true">image-20221014151453508</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110828695748_821_image-20221018192900616.png" srcset="/img/loading.gif" lazyload alt="image-20221018192900616">
+<figcaption aria-hidden="true">image-20221018192900616</figcaption>
+</figure>
+<p>A</p>
+<p class="note note-info">
+不同操作系统中进程状态设置区别很大。
+</p>
+<h5 id="进程调度方式">进程调度方式</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110830191623_314_image-20220926162928685.png" srcset="/img/loading.gif" lazyload alt="image-20220926162928685">
+<figcaption aria-hidden="true">image-20220926162928685</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110832168851_702_image-20220926163633315.png" srcset="/img/loading.gif" lazyload alt="image-20220926163633315">
+<figcaption aria-hidden="true">image-20220926163633315</figcaption>
+</figure>
+<p>现在的操作系统都是可抢占系统。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110834324423_859_image-20221018205406513.png" srcset="/img/loading.gif" lazyload alt="image-20221018205406513">
+<figcaption aria-hidden="true">image-20221018205406513</figcaption>
+</figure>
+<blockquote>
+<p>A。BC应该将优先级，D时机不合适。</p>
+<p>此部分将在进程调度中详细介绍。</p>
+</blockquote>
+<h4 id="进程通信">进程通信</h4>
+<p>共享存储，消息传递，管道通信</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110836886804_366_image-20221018211857840.png" srcset="/img/loading.gif" lazyload alt="image-20221018211857840">
+<figcaption aria-hidden="true">image-20221018211857840</figcaption>
+</figure>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58489873">linux中的管道通信</a></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110839761934_452_image-20221018211911941.png" srcset="/img/loading.gif" lazyload alt="image-20221018211911941">
+<figcaption aria-hidden="true">image-20221018211911941</figcaption>
+</figure>
+<blockquote>
+<p>A得俩。B容量是一个页的大小(4KB)。管道是一个文件，任何两个不相关的进程当然都可以通过这个管道文件进行通信</p>
+</blockquote>
+<h4 id="进程和线程的设计模型">进程和线程的设计模型</h4>
+<h5 id="线程实现方式">线程实现方式</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110841591537_254_image-20221018194121923.png" srcset="/img/loading.gif" lazyload alt="image-20221018194121923">
+<figcaption aria-hidden="true">image-20221018194121923</figcaption>
+</figure>
+<h6 id="ult">ULT</h6>
+<p>需要注意的是在这种模式下调度仍是以进程为单位进行的</p>
+<p>优势:</p>
+<p>1.线程切换不需要内核模式特权.</p>
+<p>2.线程调用可以是应用程序级的,根据需要可改变调度算法,但不会影响底层的操作系统调度程序.</p>
+<p>3.ULT管理模式可以在任何操作系统中运行,不需要修改系统内核,线程库是提供应用的实用程序。</p>
+<p>劣势:</p>
+<p>系统调用会引起进程阻塞</p>
+<p>这种线程不利于使用多处理器并行</p>
+<p>程被阻塞，而且进程内的所有线程都被阻塞。(内核每次分配给一个进程的仅有一个CPU，因此进程中仅有一个线程能执行)</p>
+<h6 id="klt">KLT</h6>
+<p>优势：灵活，线程切换快</p>
+<p>劣势：需要用户态到内核态的切换，代价高</p>
+<p>线程库：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110843340452_876_image-20221018193551401.png" srcset="/img/loading.gif" lazyload alt="image-20221018193551401">
+<figcaption aria-hidden="true">image-20221018193551401</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110845328702_264_image-20221018192401379.png" srcset="/img/loading.gif" lazyload alt="image-20221018192401379">
+<figcaption aria-hidden="true">image-20221018192401379</figcaption>
+</figure>
+<blockquote>
+<p>C。这个显然只需要一个线程就够了</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110847145883_201_image-20221018205754448.png" srcset="/img/loading.gif" lazyload alt="image-20221018205754448">
+<figcaption aria-hidden="true">image-20221018205754448</figcaption>
+</figure>
+<blockquote>
+<p>D.其他线程对此不可见</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110848853722_394_image-20221018214600427.png" srcset="/img/loading.gif" lazyload alt="image-20221018214600427">
+<figcaption aria-hidden="true">image-20221018214600427</figcaption>
+</figure>
+<blockquote>
+<p>B只有在KLT中才会这么做</p>
+</blockquote>
+<h5 id="轻权进程"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Light-weight_process#cite_note-Vah96-1">轻权进程</a></h5>
+<p>类似于一种折衷的方案</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/20221019110850808418_676_image-20221018234308117.png" srcset="/img/loading.gif" lazyload alt="image-20221018234308117">
+<figcaption aria-hidden="true">image-20221018234308117</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>操作系统_进程与线程模型</div>
+      <div>http://lunaticsky-tql.github.io/posts/30463/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/51388/" title="如何在mac上编写运行c++程序">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何在mac上编写运行c++程序</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/47623/" title="寄网第一二章">
+                        <span class="hidden-mobile">寄网第一二章</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
