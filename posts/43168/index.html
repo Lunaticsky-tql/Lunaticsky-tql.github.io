@@ -341,7 +341,7 @@
 因此 enum a=[one,two,three);是不对的
 </p>
 <p>还可以这样写</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vkxjw5l9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-vkxjw5l9mun0xf"><pre><code class="hljs c++"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">team</span>{my, your=<span class="hljs-number">4</span>, his, her=his+<span class="hljs-number">10</span>};
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-puwd7dl9murz01"></i><span>c++</span><div class="collapse show" id="collapse-puwd7dl9murz01"><pre><code class="hljs c++"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">team</span>{my, your=<span class="hljs-number">4</span>, his, her=his+<span class="hljs-number">10</span>};
 cout&lt;&lt;my&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;your&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;his&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;her&lt;&lt;endl;</code></pre></div></div>
 <p>结果<code>0 4 5 15</code></p>
 <h4 id="string">string</h4>
@@ -360,7 +360,7 @@ cout&lt;&lt;my&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;your&lt;&lt;<s
 </figure>
 <p>注意，“表达式”不带分号，带了分号就是语句。</p>
 <h4 id="优先级和结合性">优先级和结合性</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-etqda7l9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-etqda7l9mun0xf"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wy2mzkl9murz01"></i><span>c++</span><div class="collapse show" id="collapse-wy2mzkl9murz01"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
     <span class="hljs-comment">//test 1</span>
@@ -384,14 +384,14 @@ cout&lt;&lt;my&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;your&lt;&lt;<s
 }</code></pre></div></div>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zb_915574747/article/details/99704639">优先级和结合性一览</a></p>
 <h4 id="赋值运算">赋值运算</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9pf6x4l9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-9pf6x4l9mun0xf"><pre><code class="hljs c++">设有intx=<span class="hljs-number">11</span>：，则表达式(x++*<span class="hljs-number">1</span>/<span class="hljs-number">3</span>)的值是</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e41yvsl9murz01"></i><span>c++</span><div class="collapse show" id="collapse-e41yvsl9murz01"><pre><code class="hljs c++">设有intx=<span class="hljs-number">11</span>：，则表达式(x++*<span class="hljs-number">1</span>/<span class="hljs-number">3</span>)的值是</code></pre></div></div>
 <p><span class="math inline">\(\lfloor 11*1/3 \rfloor=3\)</span></p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/c%2B%2B%E6%8B%BE%E9%81%97-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%92%8C%E8%BF%90%E7%AE%97/20221020201309887843_159_image-20221013142054782.png" srcset="/img/loading.gif" lazyload alt="image-20221013142054782">
 <figcaption aria-hidden="true">image-20221013142054782</figcaption>
 </figure>
 <p>做题时容易犯的错误：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eze8azl9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-eze8azl9mun0xf"><pre><code class="hljs c++">若d为<span class="hljs-type">double</span>型变量，则表达式d=<span class="hljs-number">1</span>，d+<span class="hljs-number">5</span>，d++的值是
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-znq6y8l9murz01"></i><span>c++</span><div class="collapse show" id="collapse-znq6y8l9murz01"><pre><code class="hljs c++">若d为<span class="hljs-type">double</span>型变量，则表达式d=<span class="hljs-number">1</span>，d+<span class="hljs-number">5</span>，d++的值是
 <span class="hljs-number">1</span>。d+<span class="hljs-number">5</span>不是d=d+<span class="hljs-number">5</span>。虽然很明显，做题的时候也需要有注意的意识</code></pre></div></div>
 <h4 id="逻辑运算">逻辑运算</h4>
 <figure>
@@ -400,12 +400,12 @@ cout&lt;&lt;my&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;your&lt;&lt;<s
 </figure>
 <p>注意算术运算符优先于关系和除非以外的逻辑运算符！</p>
 <p>短路运算举例：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9xibgnl9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-9xibgnl9mun0xf"><pre><code class="hljs c++">×=y=<span class="hljs-number">3</span>;t=++x||++y后，y的值是</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4j4rstl9murz01"></i><span>c++</span><div class="collapse show" id="collapse-4j4rstl9murz01"><pre><code class="hljs c++">×=y=<span class="hljs-number">3</span>;t=++x||++y后，y的值是</code></pre></div></div>
 <blockquote>
 <p>3，因为后面不会被运算</p>
 </blockquote>
 <p>优先级只是起“加括号”的作用。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gql0hgl9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-gql0hgl9mun0xf"><pre><code class="hljs c++"><span class="hljs-type">int</span> c,h;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2ge3yql9murz01"></i><span>c++</span><div class="collapse show" id="collapse-2ge3yql9murz01"><pre><code class="hljs c++"><span class="hljs-type">int</span> c,h;
 std::cout&lt;&lt;((c=<span class="hljs-number">2</span>)&amp;&amp;(h=<span class="hljs-number">-2</span>));
 <span class="hljs-comment">//always true</span></code></pre></div></div>
 <h4 id="位运算">位运算</h4>
@@ -423,7 +423,7 @@ std::cout&lt;&lt;((c=<span class="hljs-number">2</span>)&amp;&amp;(h=<span class
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/c%2B%2B%E6%8B%BE%E9%81%97-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%92%8C%E8%BF%90%E7%AE%97/20221020201317368932_518_image-20221020111433316.png" srcset="/img/loading.gif" lazyload alt="image-20221020111433316">
 <figcaption aria-hidden="true">image-20221020111433316</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zfubhul9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-zfubhul9mun0xf"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bqrpuol9murz01"></i><span>c++</span><div class="collapse show" id="collapse-bqrpuol9murz01"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iomanip&gt;</span></span>
 
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
@@ -443,7 +443,7 @@ std::cout&lt;&lt;((c=<span class="hljs-number">2</span>)&amp;&amp;(h=<span class
 11111111 11111100 11000111，为负数，求补得到绝对值。
 特别需要注意的是取反的时候是对整个int取反，16变-17</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t0g4cpl9mun0xf"></i><span>c++</span><div class="collapse show" id="collapse-t0g4cpl9mun0xf"><pre><code class="hljs c++">设intm=<span class="hljs-number">5</span>；<span class="hljs-type">float</span> x=<span class="hljs-number">3.5</span>；则表达式m+x+<span class="hljs-number">4.5</span>的结果应占据[填空]个字节。
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gnpsv3l9murz01"></i><span>c++</span><div class="collapse show" id="collapse-gnpsv3l9murz01"><pre><code class="hljs c++">设intm=<span class="hljs-number">5</span>；<span class="hljs-type">float</span> x=<span class="hljs-number">3.5</span>；则表达式m+x+<span class="hljs-number">4.5</span>的结果应占据[填空]个字节。
 <span class="hljs-comment">//8.在隐式类型转换中转向了double</span></code></pre></div></div>
 
                 
