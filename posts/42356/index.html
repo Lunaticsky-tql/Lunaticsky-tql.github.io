@@ -16,15 +16,15 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="macOS配置命令别名 临时别名 和在linux系统一样，直接输入alias命令即可。在当前的终端下生效。 比如： alias v&#x3D;&quot;vim&quot; 永久别名 由于现在的macOS默认是采用的zsh而不是bash，因此配置文件路径为 sudo vim &#x2F;etc&#x2F;zshrc 当然也可以 chsh -s &#x2F;bin&#x2F;bash 进入bash，不过目前没什么理由这么干( 然后会发现这个文件是只读的。 有两个解决方">
+        <meta name="description" content="macOS配置命令别名 临时别名 和在linux系统一样，直接输入alias命令即可。在当前的终端下生效。 比如： shellalias v&#x3D;&quot;vim&quot; 永久别名 由于现在的macOS默认是采用的zsh而不是bash，因此配置文件路径为 shellsudo vim &#x2F;etc&#x2F;zshrc 当然也可以 shellchsh -s &#x2F;bin&#x2F;bash 进入bash，不过目前没什么理由这么干( 然后会发现这">
 <meta property="og:type" content="article">
 <meta property="og:title" content="macOS配置命令别名">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/42356/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="macOS配置命令别名 临时别名 和在linux系统一样，直接输入alias命令即可。在当前的终端下生效。 比如： alias v&#x3D;&quot;vim&quot; 永久别名 由于现在的macOS默认是采用的zsh而不是bash，因此配置文件路径为 sudo vim &#x2F;etc&#x2F;zshrc 当然也可以 chsh -s &#x2F;bin&#x2F;bash 进入bash，不过目前没什么理由这么干( 然后会发现这个文件是只读的。 有两个解决方">
+<meta property="og:description" content="macOS配置命令别名 临时别名 和在linux系统一样，直接输入alias命令即可。在当前的终端下生效。 比如： shellalias v&#x3D;&quot;vim&quot; 永久别名 由于现在的macOS默认是采用的zsh而不是bash，因此配置文件路径为 shellsudo vim &#x2F;etc&#x2F;zshrc 当然也可以 shellchsh -s &#x2F;bin&#x2F;bash 进入bash，不过目前没什么理由这么干( 然后会发现这">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-23T07:30:46.033Z">
-<meta property="article:modified_time" content="2022-10-23T13:28:31.390Z">
+<meta property="article:modified_time" content="2022-10-24T02:44:22.197Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -67,12 +67,13 @@
 <link rel="stylesheet" href="/css/indeximg-hover.css">
 <link rel="stylesheet" href="/css/remove-shadow.css">
 <link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
 
                                 
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -244,7 +245,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              464 字
+              499 字
                 
       </span>
       
@@ -307,7 +308,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年10月23日 晚上
+                    本文最后更新于：2022年10月24日 上午
                   
                 
               </p>
@@ -319,30 +320,28 @@
 <h3 id="临时别名">临时别名</h3>
 <p>和在linux系统一样，直接输入<code>alias</code>命令即可。在当前的终端下生效。</p>
 <p>比如：</p>
-<div class="code-wrapper"><pre><code class="hljs shell">alias v="vim"</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dlimcsl9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-dlimcsl9mun0xf"><pre><code class="hljs shell">alias v="vim"</code></pre></div></div>
 <h3 id="永久别名">永久别名</h3>
 <p>由于现在的macOS默认是采用的<code>zsh</code>而不是<code>bash</code>，因此配置文件路径为</p>
-<div class="code-wrapper"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eob690l9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-eob690l9mun0xf"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div></div>
 <p>当然也可以</p>
-<div class="code-wrapper"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lmirp7l9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-lmirp7l9mun0xf"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div></div>
 <p>进入<code>bash</code>，不过目前没什么理由这么干(</p>
 <p>然后会发现这个文件是只读的。</p>
 <p>有两个解决方案。</p>
 <h4 id="简单粗暴的">简单粗暴的</h4>
 <p>去除写权限</p>
-<div class="code-wrapper"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bab9ugl9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-bab9ugl9mun0xf"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div></div>
 <p>然后写入别名，保存</p>
-<div class="code-wrapper"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1ml3sel9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-1ml3sel9mun0xf"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div></div>
 <p>最后将写权限去除</p>
-<div class="code-wrapper"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xljvktl9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-xljvktl9mun0xf"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div></div>
 <h4 id="安装插件">安装插件</h4>
 <p><a target="_blank" rel="noopener" href="https://github.com/ohmyzsh/ohmyzsh"><strong>Oh My
 Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，插件等。</p>
 <p>用curl方式安装</p>
-<div class="code-wrapper"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-11v0pxl9mun0xf"></i><span>shell</span><div class="collapse show" id="collapse-11v0pxl9mun0xf"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div></div>
 <p>在<code>.zshrc</code>中配置<code>alias</code>，<code>source</code>保存即可，里面还可以配置其他实用的配置。<a target="_blank" rel="noopener" href="https://mrseawave.github.io/blogs/articles/2021/08/29/oh-my-zsh/">这个博客</a>有较详细叙述。</p>
-<iframe src="https://hexo.fluid-dev.com/" width="100%" height="200" name="topFrame" scrolling="yes" noresize="noresize" frameborder="0" id="topFrame">
-</iframe>
 
                 
               </div>
@@ -407,7 +406,7 @@ Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，�
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2022年10月23日</div>
+          <div>2022年10月24日</div>
         </div>
       
       

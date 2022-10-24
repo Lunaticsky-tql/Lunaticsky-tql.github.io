@@ -71,12 +71,13 @@
 <link rel="stylesheet" href="/css/indeximg-hover.css">
 <link rel="stylesheet" href="/css/remove-shadow.css">
 <link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
 
                                 
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -343,7 +344,7 @@ buy_costs)</p>
 <p>shelf(<u>shelf_id</u>, goods_num_on_shelf)</p>
 <p>sell (<u><em>emp_no</em></u>, <em><u>goods_id</u></em>)</p>
 <h4 id="sql创建关系模式">2.3 SQL创建关系模式</h4>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> goods 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1663del9mun0xf"></i><span>sql</span><div class="collapse show" id="collapse-1663del9mun0xf"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> goods 
 (
    goods_id             <span class="hljs-type">integer</span>                        <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span>,
    shelf_id             <span class="hljs-type">integer</span>                        <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span>,
@@ -434,37 +435,37 @@ buy_costs)</p>
    <span class="hljs-keyword">add</span> <span class="hljs-keyword">constraint</span> FK_SELL_SELL2_GOODS <span class="hljs-keyword">foreign</span> key (goods_id)
       <span class="hljs-keyword">references</span> goods (goods_id)
       <span class="hljs-keyword">on</span> <span class="hljs-keyword">update</span> restrict
-      <span class="hljs-keyword">on</span> <span class="hljs-keyword">delete</span> restrict;</code></pre></div>
+      <span class="hljs-keyword">on</span> <span class="hljs-keyword">delete</span> restrict;</code></pre></div></div>
 <h4 id="查询语句样例">2.4 查询语句样例</h4>
 <p>1.单表查询</p>
 <p>查询单价为10元的商品名称</p>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7t3a1ll9mun0xf"></i><span>sql</span><div class="collapse show" id="collapse-7t3a1ll9mun0xf"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name 
 <span class="hljs-keyword">from</span> goods
-<span class="hljs-keyword">where</span> price<span class="hljs-operator">=</span><span class="hljs-number">10</span></code></pre></div>
+<span class="hljs-keyword">where</span> price<span class="hljs-operator">=</span><span class="hljs-number">10</span></code></pre></div></div>
 <p>2.多表连接查询</p>
 <p>查询每个厂商生产商品的平均价格</p>
-<div class="code-wrapper"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sp_id,<span class="hljs-built_in">avg</span>(price)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ydj5p0l9mun0xf"></i><span>SQL</span><div class="collapse show" id="collapse-ydj5p0l9mun0xf"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sp_id,<span class="hljs-built_in">avg</span>(price)
 <span class="hljs-keyword">from</span> supply <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> goods
-<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> sp_id</code></pre></div>
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> sp_id</code></pre></div></div>
 <p>3.4多表嵌套查询和exist查询</p>
 <p>查询只有一种商品的货架，返回这种商品的名称和货架id</p>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name,shelf_id
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7cmx0ql9mun0xf"></i><span>sql</span><div class="collapse show" id="collapse-7cmx0ql9mun0xf"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name,shelf_id
 <span class="hljs-keyword">from</span> goods,shelf
-<span class="hljs-keyword">where</span> goods.shelf_id<span class="hljs-operator">=</span>shelf.shelf_id <span class="hljs-keyword">and</span> goods.goods_num<span class="hljs-operator">=</span>shelf.goods_num_on_shelf</code></pre></div>
+<span class="hljs-keyword">where</span> goods.shelf_id<span class="hljs-operator">=</span>shelf.shelf_id <span class="hljs-keyword">and</span> goods.goods_num<span class="hljs-operator">=</span>shelf.goods_num_on_shelf</code></pre></div></div>
 <p>也可以只在goods表中查</p>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kgrt0wl9mun0xf"></i><span>sql</span><div class="collapse show" id="collapse-kgrt0wl9mun0xf"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name
 <span class="hljs-keyword">from</span> goods g1
 <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span>
 <span class="hljs-operator">*</span>
 <span class="hljs-keyword">from</span> goods
 <span class="hljs-keyword">where</span> shelf.id<span class="hljs-operator">=</span>e1.shelf.id <span class="hljs-keyword">and</span>
-goods_name<span class="hljs-operator">&amp;</span>lt;<span class="hljs-operator">&amp;</span>gt;e1.goods_name);</code></pre></div>
+goods_name<span class="hljs-operator">&amp;</span>lt;<span class="hljs-operator">&amp;</span>gt;e1.goods_name);</code></pre></div></div>
 <p>5.聚合查询</p>
 <p>有10种以上商品的货架，以及拥有的商品种类数</p>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> shelf_id,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h1l0grl9mun0xf"></i><span>sql</span><div class="collapse show" id="collapse-h1l0grl9mun0xf"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> shelf_id,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
 <span class="hljs-keyword">from</span> goods
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> shef_id
-<span class="hljs-keyword">having</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&amp;</span>gt; <span class="hljs-number">10</span>;</code></pre></div>
+<span class="hljs-keyword">having</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&amp;</span>gt; <span class="hljs-number">10</span>;</code></pre></div></div>
 <h4 id="powerdesigner-绘制er图">3.1 PowerDesigner 绘制ER图</h4>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%9F%E6%9C%AB%E5%B7%A5%E7%A8%8B%E4%BD%9C%E4%B8%9A/20220919004326633367_468_image-20220415222750452.png" srcset="/img/loading.gif" lazyload alt="image-20220415222750452">
@@ -476,7 +477,7 @@ goods_name<span class="hljs-operator">&amp;</span>lt;<span class="hljs-operator"
 <figcaption aria-hidden="true">image-20220415222820109</figcaption>
 </figure>
 <h4 id="生成sql语句">3.3 生成SQL语句</h4>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-comment">/*==============================================================*/</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7pj7nhl9mun0xf"></i><span>sql</span><div class="collapse show" id="collapse-7pj7nhl9mun0xf"><pre><code class="hljs sql"><span class="hljs-comment">/*==============================================================*/</span>
 <span class="hljs-comment">/* DBMS name:      Sybase SQL Anywhere 12                       */</span>
 <span class="hljs-comment">/* Created on:     2022/4/15 22:28:49                           */</span>
 <span class="hljs-comment">/*==============================================================*/</span>
@@ -804,7 +805,7 @@ sp_id <span class="hljs-keyword">ASC</span>
       <span class="hljs-keyword">on</span> <span class="hljs-keyword">update</span> restrict
       <span class="hljs-keyword">on</span> <span class="hljs-keyword">delete</span> restrict;
 
-</code></pre></div>
+</code></pre></div></div>
 <h4 id="分析差异">4.1 分析差异</h4>
 <p>有差异。PowerDesigner会事先判断外键约束、索引以及表本身是否存在，若存在会删除。同时也会对表建立索引。但是基本逻辑是一致的，在总体的设计上不会造成影响。</p>
 <h4 id="语句特点">4.2 语句特点</h4>

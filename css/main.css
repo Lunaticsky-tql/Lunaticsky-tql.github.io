@@ -77,7 +77,7 @@ h6:hover > .anchorjs-link {
   outline: none;
 }
 .copy-btn > i {
-  font-size: 0.75rem !important;
+  font-size: 1rem !important;
   font-weight: 400;
   margin-right: 0.15rem;
   opacity: 0;
@@ -1582,6 +1582,9 @@ hr,
 }
 .markdown-body figcaption:not(.image-caption) {
   display: none;
+}
+.markdown-body pre code {
+  margin-top: -15px;
 }
 .post-content,
 post-custom {

@@ -95,12 +95,13 @@
 <link rel="stylesheet" href="/css/indeximg-hover.css">
 <link rel="stylesheet" href="/css/remove-shadow.css">
 <link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
 
                                 
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -486,17 +487,17 @@ Target之间互相没有关系，Target于Project的关系是：Target的Setting
 <h3 id="方案三命令行方式">方案三：命令行方式</h3>
 <p>安装homebrew（如果已经下载过xcode可以跳过，不过既然如此为什么不用xcode呢？）</p>
 <p>在你的终端输入这行指令：</p>
-<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">/bin/</span>bash -c <span class="hljs-string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span></code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9eq2dhl9mun0xf"></i><span>awk</span><div class="collapse show" id="collapse-9eq2dhl9mun0xf"><pre><code class="hljs awk"><span class="hljs-regexp">/bin/</span>bash -c <span class="hljs-string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span></code></pre></div></div>
 <p>如果下载很慢一般是网络问题，请自行解决。</p>
 <p>安装完成后</p>
-<div class="code-wrapper"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>g++</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2tbpt1l9mun0xf"></i><span>mipsasm</span><div class="collapse show" id="collapse-2tbpt1l9mun0xf"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>g++</code></pre></div></div>
 <p>任意位置新建cpp文件。</p>
 <p>cpp文件可以用你喜欢的方式打开编辑。</p>
 <p>按⌘（command）+ ⌥（option）+c复制当前文件夹路径</p>
 <p>终端输入</p>
-<div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> 刚才的路径</code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-awbmhol9mun0xf"></i><span>bash</span><div class="collapse show" id="collapse-awbmhol9mun0xf"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> 刚才的路径</code></pre></div></div>
 <p>然后</p>
-<div class="code-wrapper"><pre><code class="hljs aspectj">g++ yourprogram.cpp -o <span class="hljs-keyword">target</span></code></pre></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xafdbel9mun0xf"></i><span>aspectj</span><div class="collapse show" id="collapse-xafdbel9mun0xf"><pre><code class="hljs aspectj">g++ yourprogram.cpp -o <span class="hljs-keyword">target</span></code></pre></div></div>
 <p>target 是生成的可执行文件的名字。</p>
 <p>然后会发现生成了可执行文件，点击即可运行。</p>
 <figure>
