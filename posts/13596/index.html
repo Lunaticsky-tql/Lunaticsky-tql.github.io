@@ -356,9 +356,9 @@
 <h2 id="服务器搭建">服务器搭建</h2>
 <p>在本次实验中我使用了本地服务器。我们可以使用Springboot，flask等在localhost上搭建Web服务器。不过最近恰好在研究博客搭建相关内容，这里通过使用Hexo搭建静态博客的比较“自动化”的方式在本机搭建Web服务器。</p>
 <p>通过下面命令安装<code>hexo</code>环境。(其实还需要安装<code>npm</code>环境，不过在此就略去了)。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-icvh70l9z1edjx"></i><span>shell</span><div class="collapse show" id="collapse-icvh70l9z1edjx"><pre><code class="hljs shell">sudo npm install -g hexo-cli</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8dybatl9z1iy72"></i><span>shell</span><div class="collapse show" id="collapse-8dybatl9z1iy72"><pre><code class="hljs shell">sudo npm install -g hexo-cli</code></pre></div></div>
 <p>新建博客目录结构如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6te1ivl9z1edjx"></i><span>shell</span><div class="collapse show" id="collapse-6te1ivl9z1edjx"><pre><code class="hljs shell">my_hexo_test_server
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jqbc4rl9z1iy72"></i><span>shell</span><div class="collapse show" id="collapse-jqbc4rl9z1iy72"><pre><code class="hljs shell">my_hexo_test_server
 .
 ├── _config.yml
 ├── db.json
@@ -382,7 +382,7 @@
             ├── img
             └── js</code></pre></div></div>
 <p><code>_config.yml</code>中<code>theme</code>改为自定义的<code>wireshark</code>，在<code>index.ejs</code>中写入网页内容：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ekdd96l9z1edjx"></i><span>html</span><div class="collapse show" id="collapse-ekdd96l9z1edjx"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mlc5hvl9z1iy72"></i><span>html</span><div class="collapse show" id="collapse-mlc5hvl9z1iy72"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
@@ -401,7 +401,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div></div>
-<p>在终端执行 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qwxm3ll9z1edjx"></i><span>shell</span><div class="collapse show" id="collapse-qwxm3ll9z1edjx"><pre><code class="hljs shell">(base) ➜  my_hexo_test_server hexo g
+<p>在终端执行 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fwnkxtl9z1iy72"></i><span>shell</span><div class="collapse show" id="collapse-fwnkxtl9z1iy72"><pre><code class="hljs shell">(base) ➜  my_hexo_test_server hexo g
 (base) ➜  my_hexo_test_server hexo s</code></pre></div></div><p></p>
 <p>可以看到生成网页如下所示：</p>
 <figure>
@@ -468,7 +468,7 @@ Wiki</a>我们可以了解到，考虑到可读性其在列表中采用了相对
 <li><p>第二次握手成功：说明服务端的数据可以被客户端收到，说明服务端的发功能可用，说明客户端的收功能可用。同时客户端知道自己的数据已经正确到达服务端，自己的发功能正常。但是服务端自己不知道数据是否被接收。</p></li>
 <li><p>第三次握手成功：说明服务端知道自己的数据已经正确到达客户端端，自己的发功能正常。至此服务成功建立。</p></li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3omc7gl9z1edjx"></i><span>primary</span><div class="collapse show" id="collapse-3omc7gl9z1edjx"><pre><code class="hljs primary">为什么每次连接的序列号都不同？</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ujiw7ol9z1iy72"></i><span>primary</span><div class="collapse show" id="collapse-ujiw7ol9z1iy72"><pre><code class="hljs primary">为什么每次连接的序列号都不同？</code></pre></div></div>
 <p>避免新老连接混淆</p>
 <h4 id="syn洪泛攻击">Syn洪泛攻击</h4>
 <p>在 TCP 连接的三次握手过程中，我们假设发生以下情况：</p>
@@ -509,7 +509,7 @@ A并不知道B有没有正确的收到了A的ACK。正常情况下什么也不�
 </p>
 <p>无论是否正常，A都需要等待，要取这两种情况等待时间的最大值，以应对最坏的情况发生，这个最坏情况是：
 去向ACK消息最大存活时间（MSL) + 来向FIN消息的最大存活时间(MSL)。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pbx8lil9z1edjx"></i><span>primary</span><div class="collapse show" id="collapse-pbx8lil9z1edjx"><pre><code class="hljs primary">一定要四次挥手吗？</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ggu551l9z1iy72"></i><span>primary</span><div class="collapse show" id="collapse-ggu551l9z1iy72"><pre><code class="hljs primary">一定要四次挥手吗？</code></pre></div></div>
 <figure>
 <img src="/Users/tianjiaye/Library/Application%20Support/typora-user-images/image-20221102103437478.png" srcset="/img/loading.gif" lazyload alt="image-20221102103437478">
 <figcaption aria-hidden="true">image-20221102103437478</figcaption>
@@ -566,7 +566,7 @@ TCP头中定义的接收窗口，就得到真正的 TCP接收窗口了。</p>
 <figcaption aria-hidden="true">image-20221028191208877</figcaption>
 </figure>
 <p>分析文本的十六进制编码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ufvz6ll9z1edjx"></i><span>apache</span><div class="collapse show" id="collapse-ufvz6ll9z1edjx"><pre><code class="hljs apache"><span class="hljs-attribute">0000</span>   <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">3</span>c <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">20</span> <span class="hljs-number">32</span> <span class="hljs-number">30</span> <span class="hljs-number">31</span> <span class="hljs-number">33</span> <span class="hljs-number">35</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8i3pr3l9z1iy72"></i><span>apache</span><div class="collapse show" id="collapse-8i3pr3l9z1iy72"><pre><code class="hljs apache"><span class="hljs-attribute">0000</span>   <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">3</span>c <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">20</span> <span class="hljs-number">32</span> <span class="hljs-number">30</span> <span class="hljs-number">31</span> <span class="hljs-number">33</span> <span class="hljs-number">35</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>
 <span class="hljs-attribute">0010</span>   <span class="hljs-number">20</span> e7 <span class="hljs-number">94</span> b0 e4 bd b3 e4 b8 <span class="hljs-number">9</span>a <span class="hljs-number">3</span>c <span class="hljs-number">2</span>f <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">0</span>a</code></pre></div></div>
 <p>第一行末尾可以看到是我的学号<code>2013599</code>的ASCII码。</p>
 <p>中文采用的是Unicode编码。具体方式为：</p>
