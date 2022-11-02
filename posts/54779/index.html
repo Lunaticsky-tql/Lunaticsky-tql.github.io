@@ -1,0 +1,1387 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="计算机网络实验一_Socket聊天程序 2013599 田佳业 实验要求 使用流式Socket，设计一个两人聊天协议，要求聊天信息带有时间标签。请完整地说明交互消息的类型、语法、语义、时序等具体的消息处理方式。拓展实现功能（如群聊、多线程等） 程序流程展示 模块说明 此实验使用了Windows多线程的方式实现了多人聊天功能，流程和协议设计如下图所示：   connect  对于每一个用户的聊天过程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络实验一_socket聊天程序">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/54779/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="计算机网络实验一_Socket聊天程序 2013599 田佳业 实验要求 使用流式Socket，设计一个两人聊天协议，要求聊天信息带有时间标签。请完整地说明交互消息的类型、语法、语义、时序等具体的消息处理方式。拓展实现功能（如群聊、多线程等） 程序流程展示 模块说明 此实验使用了Windows多线程的方式实现了多人聊天功能，流程和协议设计如下图所示：   connect  对于每一个用户的聊天过程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193748648308_976_connect.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193750618844_199_image-20221022211508575.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193752409499_274_image-20221022211345244.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193754614735_579_image-20221022211828762.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193756459285_459_image-20221022214111930.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193758300289_769_image-20221022213615110.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193759994557_881_image-20221022224632714.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193801774887_602_image-20221022224533046.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193803523871_125_image-20221022225008715.png">
+<meta property="article:published_time" content="2022-10-26T11:38:04.755Z">
+<meta property="article:modified_time" content="2022-10-26T11:38:13.083Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="寄网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193748648308_976_connect.png">
+    
+    
+    
+    <title>计算机网络实验一_socket聊天程序 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络实验一_socket聊天程序"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-10-26 19:38" pubdate>
+              2022年10月26日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              14k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/计算机网络实验一_socket聊天程序/计算机网络实验一_socket聊天程序.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">计算机网络实验一_socket聊天程序</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年10月26日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="计算机网络实验一_socket聊天程序">计算机网络实验一_Socket聊天程序</h1>
+<p>2013599 田佳业</p>
+<h2 id="实验要求">实验要求</h2>
+<p>使用流式Socket，设计一个两人聊天协议，要求聊天信息带有时间标签。请完整地说明交互消息的类型、语法、语义、时序等具体的消息处理方式。拓展实现功能（如群聊、多线程等）</p>
+<h2 id="程序流程展示">程序流程展示</h2>
+<h3 id="模块说明">模块说明</h3>
+<p>此实验使用了Windows多线程的方式实现了多人聊天功能，流程和协议设计如下图所示：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193748648308_976_connect.png" srcset="/img/loading.gif" lazyload alt="connect">
+<figcaption aria-hidden="true">connect</figcaption>
+</figure>
+<p>对于每一个用户的聊天过程，分为建连阶段和聊天阶段。</p>
+<h3 id="建连阶段">建连阶段</h3>
+<h4 id="流程设计">流程设计</h4>
+<h5 id="服务器">服务器</h5>
+<p>服务器主要做了以下工作：</p>
+<ul>
+<li><p>设置最大聊天人数并在接收连接前验证</p></li>
+<li><p>建立socket，绑定ip和端口号，进入监听模式进行等待</p></li>
+<li><p>客户端连接后，得到客户端输入的用户名，验证是否在已有用户列表，若否，为其单独创建线程并在<code>socket</code>池中为其分配<code>socket</code></p></li>
+<li><p>连接成功，向其发送欢迎信息并通知在线的用户</p></li>
+<li><p>每当用户连接成功后，服务器显示用户信息及连接时间。</p></li>
+</ul>
+<p>注：下图包含了一次客户端断开重连的过程，可以看到服务器能够正确的识别这一过程，且对在线人数进行更新。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193750618844_199_image-20221022211508575.png" srcset="/img/loading.gif" lazyload alt="image-20221022211508575">
+<figcaption aria-hidden="true">image-20221022211508575</figcaption>
+</figure>
+<h5 id="客户端">客户端</h5>
+<ul>
+<li><p>由于程序默认在<code>localhost</code>上运行，因此客户端只需要手动选择正确的端口号与服务器进行连接，若连接失败，退出程序。</p></li>
+<li><p>之后输入用户名，这里需要注意用户名不能与关键字(在该程序中为<code>quit</code>和<code>all</code>)。当然在本地验证即可。等待服务器确认信息后，建立两个线程：发送和接收线程，以防止阻塞。</p></li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193752409499_274_image-20221022211345244.png" srcset="/img/loading.gif" lazyload alt="客户端">
+<figcaption aria-hidden="true">客户端</figcaption>
+</figure>
+<p>下面是上线通知的实现效果：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193754614735_579_image-20221022211828762.png" srcset="/img/loading.gif" lazyload alt="上线通知">
+<figcaption aria-hidden="true">上线通知</figcaption>
+</figure>
+<h4 id="协议设计">协议设计</h4>
+<p>由于此部分界限明确，且不涉及与其他服务器的交互，为保证速度和效率，从简设计即可。只传输最需要的东西。并且由于这个过程顺序是且必须是确定的，串行执行共用端口不至混淆。</p>
+<h3 id="聊天阶段">聊天阶段</h3>
+<h4 id="流程设计-1">流程设计</h4>
+<h5 id="服务器事件">服务器事件</h5>
+<p>程序在调度设计中着重注意了一点：在整个聊天室中，服务器可以作为“管理员”向用户发送消息，而不仅仅实现转发功能。为了实现这一点，程序采用了子线程的方式。主线程除了创建socket便将与客户端建立连接的过程交给子线程去干，服务端负责转发的线程由子线程创建。主线程自己则进入等待输入的过程。</p>
+<p>主线程有输入分一下两种情况：正常字符串和<code>exit</code>。正常字符串会即时群发给所有在线用户并标记为<code>SERVER</code>
+信息。若输入<code>exit</code>则退出服务器，并在退出之前向客户端群发通告，并同时退出客户端的程序。</p>
+<p>以下两幅图片展示了客户端收到的对应的情况。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193756459285_459_image-20221022214111930.png" srcset="/img/loading.gif" lazyload alt="image-20221022214111930">
+<figcaption aria-hidden="true">image-20221022214111930</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193758300289_769_image-20221022213615110.png" srcset="/img/loading.gif" lazyload alt="image-20221022213615110">
+<figcaption aria-hidden="true">image-20221022213615110</figcaption>
+</figure>
+<h5 id="客户端事件">客户端事件</h5>
+<p>按照同样的方式可以实现客户端离线群发功能。不再赘述。当然，断开后删除个人信息并更新计数也是必要的。</p>
+<h5 id="私聊和群聊">私聊和群聊</h5>
+<p>可以从上述图片中看出客户端命令行有两个参数：发送对象和消息。</p>
+<p>从实现上，这两种方式没有本质的区别。稍微需要注意的一些细节主要是群发不需要发给请求方，但私发时如果选择发送给自己，自己仍然可以收到消息。</p>
+<p>下图展示了私聊和群聊的结果。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193759994557_881_image-20221022224632714.png" srcset="/img/loading.gif" lazyload alt="image-20221022224632714">
+<figcaption aria-hidden="true">image-20221022224632714</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193801774887_602_image-20221022224533046.png" srcset="/img/loading.gif" lazyload alt="image-20221022224533046">
+<figcaption aria-hidden="true">image-20221022224533046</figcaption>
+</figure>
+<h4 id="协议设计-1">协议设计</h4>
+<p>协议设计中关注了一下几点：</p>
+<ol type="1">
+<li><p>在线状况下，根据<code>socket ID</code>和用户信息表，可以知道是谁发的，因此传递报文时发送者只需要向服务器传递接受者是谁，服务器转发时将对应字段改为发送者姓名即可。这样虽然增加了服务器压力，但能够有效减少报文长度。</p></li>
+<li><p>控制位仅需一个字节。当然这就像<code>HTTP</code>状态码一样，是建立在共识之上的。</p></li>
+<li><p>消息中需要包含时间戳。因为聊天程序中的时间是需要以发送时间为准的。当然接收时间可以从系统获得，基于此也可以进行时延计算。</p></li>
+</ol>
+<p>以下是程序中关于协议中控制部分的宏定义：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xqx7ybl9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-xqx7ybl9y45vpd"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NEW_C <span class="hljs-string">'N'</span> <span class="hljs-comment">// new client</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> PUB_C <span class="hljs-string">'P'</span> <span class="hljs-comment">// public message</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> PRI_C <span class="hljs-string">'R'</span>  <span class="hljs-comment">// private message</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> QUIT_C <span class="hljs-string">'Q'</span> <span class="hljs-comment">// quit</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> HELLO_C <span class="hljs-string">'H'</span> <span class="hljs-comment">// hello message from server</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> EXIT_C <span class="hljs-string">'T'</span> <span class="hljs-comment">// exit message from server (server is closed)</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ERR_C <span class="hljs-string">'E'</span> <span class="hljs-comment">// error message from server</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SERVER_C <span class="hljs-string">'V'</span> <span class="hljs-comment">// normal server message</span></span></code></pre></div></div>
+<h2 id="程序代码解释">程序代码解释</h2>
+<p>具体代码的含义大多在程序中有注释。下面的文字叙述部分主要着眼函数和线程模块划分和功能实现上。</p>
+<p>C++中对字符串的处理<code>char*</code>和<code>string</code>各有各的优势，有时也会出现各种奇怪的坑，在写代码时一度让人很头疼，因此也在某些地方会有一些不太优雅的写法。</p>
+<h3 id="环境配置">环境配置</h3>
+<p>在<code>cmake</code>项目中进行<code>socket</code>编程需要在CMakeLists中添加以下内容，否则不能正常编译：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ytimrvl9y45vpd"></i><span>cmake</span><div class="collapse show" id="collapse-ytimrvl9y45vpd"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.21</span>)
+<span class="hljs-keyword">project</span>(chatting)
+<span class="hljs-keyword">set</span>(CMAKE_EXE_LINKER_FLAGS <span class="hljs-string">"-static"</span>)
+<span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">14</span>)
+<span class="hljs-keyword">link_libraries</span>(ws2_32 wsock32)
+<span class="hljs-keyword">add_executable</span>(server server.cpp)
+<span class="hljs-keyword">add_executable</span>(client client.cpp)</code></pre></div></div>
+<p>需额外包含的头文件：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tpzfzhl9y45vpd"></i><span>cmake</span><div class="collapse show" id="collapse-tpzfzhl9y45vpd"><pre><code class="hljs cmake"><span class="hljs-comment">#include &lt;windows.h&gt;</span>
+<span class="hljs-comment">#include &lt;WinSock2.h&gt;</span>
+<span class="hljs-comment">#pragma comment(lib, "ws2_32.lib")</span></code></pre></div></div>
+<h3 id="工具类">工具类</h3>
+<p><code>color.h</code>以及部分<code>helper.h</code>的代码主要定义了一些与控制台颜色以及格式化输出显示相关的宏及函数。</p>
+<p><code>print_toggle</code>主要用来格式化打印控制台输出。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jtvyn5l9y45vpd"></i><span>reasonml</span><div class="collapse show" id="collapse-jtvyn5l9y45vpd"><pre><code class="hljs reasonml">print<span class="hljs-constructor">_toggle(<span class="hljs-params">const</span> <span class="hljs-params">string</span>&amp; <span class="hljs-params">type</span>,<span class="hljs-params">const</span> <span class="hljs-params">string</span> &amp;<span class="hljs-params">txt</span>,<span class="hljs-params">const</span> <span class="hljs-params">string</span>&amp; <span class="hljs-params">time_str</span>=<span class="hljs-string">""</span>)</span></code></pre></div></div>
+<p>第一个参数是打印格式，取值是下面的宏定义，决定了输出以怎样的颜色和格式进行。第二个参数是内容。并附带可选参数时间。</p>
+<p>宏的定义如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-upbw72l9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-upbw72l9y45vpd"><pre><code class="hljs c++"><span class="hljs-comment">//message datagram parameters</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> NAME_SIZE 12</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> TXT_SIZE 125</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MSG_SIZE 144</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> TIME_SIZE 6</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> TXT_PTR 1</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> TIME_PTR 126</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> NAME_PTR 132</span>
+<span class="hljs-comment">//console line type parameters</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ERR <span class="hljs-string">"E"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> INFO <span class="hljs-string">"I"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> NEW <span class="hljs-string">"N"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> LOG <span class="hljs-string">"L"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> TIP <span class="hljs-string">"T"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SUC <span class="hljs-string">"S"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> WARN <span class="hljs-string">"W"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SERVER <span class="hljs-string">"V"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> GONE <span class="hljs-string">"G"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> DUL <span class="hljs-string">"D"</span> <span class="hljs-comment">// dulplicate name</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> HELLO <span class="hljs-string">"H"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> PUB <span class="hljs-string">"P"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> PRI <span class="hljs-string">"R"</span></span></code></pre></div></div>
+<p>第一部分主要是方便对数据保处理时使用，第二部分则是在控制台上显示相关命令是需要的宏。</p>
+<h3 id="初始化工作">初始化工作</h3>
+<h4 id="服务器端">服务器端</h4>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xc2zqol9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-xc2zqol9y45vpd"><pre><code class="hljs c++"><span class="hljs-comment">//initialize websocket</span>
+WSADATA wsaData;
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">WSAStartup</span>(<span class="hljs-built_in">MAKEWORD</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), &amp;wsaData) != <span class="hljs-number">0</span>) {
+    <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"WSAStartup failed"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+<span class="hljs-built_in">print_toggle</span>(LOG, <span class="hljs-string">"WSAStartup success"</span>);
+SOCKET sock_server = <span class="hljs-built_in">socket</span>(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+SOCKADDR_IN server_addr;
+server_addr.sin_family = AF_INET;
+server_addr.sin_port = <span class="hljs-built_in">htons</span>(PORT);
+server_addr.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCALHOST);
+<span class="hljs-built_in">bind</span>(sock_server, (SOCKADDR *) &amp;server_addr, <span class="hljs-built_in">sizeof</span>(SOCKADDR));
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">listen</span>(sock_server, <span class="hljs-number">5</span>) == SOCKET_ERROR) {
+    <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"listen failed"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-built_in">print_toggle</span>(LOG, <span class="hljs-string">"listen success"</span>);</code></pre></div></div>
+<h4 id="客户端-1">客户端：</h4>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a7lk12l9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-a7lk12l9y45vpd"><pre><code class="hljs c++">WSADATA wsaData;
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">WSAStartup</span>(<span class="hljs-built_in">MAKEWORD</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), &amp;wsaData) != <span class="hljs-number">0</span>) {
+    <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"WSAStartup failed"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+<span class="hljs-built_in">print_toggle</span>(LOG, <span class="hljs-string">"WSAStartup success"</span>);
+SOCKET sockClient = <span class="hljs-built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);
+<span class="hljs-built_in">print_toggle</span>(TIP, <span class="hljs-string">"the chat room is on the localhost"</span>);
+<span class="hljs-built_in">print_toggle</span>(TIP, <span class="hljs-string">"please input port:"</span>);
+cin &gt;&gt; port;
+SOCKADDR_IN addrSrv;
+addrSrv.sin_family = AF_INET;
+addrSrv.sin_port = <span class="hljs-built_in">htons</span>(port);
+addrSrv.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCALHOST);
+
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">connect</span>(sockClient, (SOCKADDR *) &amp;addrSrv, <span class="hljs-built_in">sizeof</span>(SOCKADDR)) != <span class="hljs-number">0</span>) {
+    <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"connect failed"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+<span class="hljs-built_in">print_toggle</span>(SUC, <span class="hljs-string">"connect success"</span>, <span class="hljs-built_in">get_time_str</span>());</code></pre></div></div>
+<p>这一部分是服务器端创建<code>socket</code>和客户端连接<code>socket</code>必需的代码，课上也有讲述，此处不一一详细说明。</p>
+<h3 id="服务器进程">服务器进程</h3>
+<h4 id="主线程">主线程</h4>
+<p>这一部分主要做的工作是初始化套接字池，并使用<code>client_manager</code>函数创建线程，以监听客户端连接。之后便监听输入以控制服务器群发消息或退出。另外，如果没有客户端连接，显然套接字池中所有套接字都不可用，什么也不用做。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ruopqel9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-ruopqel9y45vpd"><pre><code class="hljs c++">    <span class="hljs-comment">//initialize socket array</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> &amp;sock_connect: sock_connects) {
+        sock_connect = INVALID_SOCKET;
+    }
+    <span class="hljs-comment">//create a thread to handle new clients</span>
+    HANDLE hThread = <span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>, client_manager, (LPVOID) &amp;sock_server, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);
+    <span class="hljs-keyword">if</span> (hThread == <span class="hljs-literal">nullptr</span>) {
+        <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"create thread failed"</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-comment">//input "exit" to exit</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-type">char</span> input[<span class="hljs-number">100</span>];
+        cin.<span class="hljs-built_in">getline</span>(input, <span class="hljs-number">100</span>);
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(input, <span class="hljs-string">"exit"</span>) == <span class="hljs-number">0</span>) {
+            <span class="hljs-comment">// tell all clients that the server is going to shut down</span>
+            <span class="hljs-type">char</span> msg[MSG_SIZE];
+            <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
+            msg[<span class="hljs-number">0</span>] = EXIT_C;
+            string content = <span class="hljs-string">"server has shut down"</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TXT_SIZE; i++) {
+                msg[TXT_PTR + i] = content[i];
+            }
+            <span class="hljs-built_in">broadcast</span>(msg, <span class="hljs-number">-1</span>);
+            <span class="hljs-comment">//stop the client_manager thread</span>
+            <span class="hljs-built_in">TerminateThread</span>(hThread, <span class="hljs-number">0</span>);
+            <span class="hljs-comment">//close server socket</span>
+            <span class="hljs-built_in">closesocket</span>(sock_server);
+            <span class="hljs-keyword">break</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//send msg to all clients</span>
+            <span class="hljs-type">char</span> msg[MSG_SIZE];
+            <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
+            msg[<span class="hljs-number">0</span>] = SERVER_C;
+            <span class="hljs-type">char</span> txt[TXT_SIZE];
+            <span class="hljs-built_in">strcpy</span>(txt, input);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; TXT_SIZE; j++) {
+                msg[j + TXT_PTR] = txt[j];
+            }
+            <span class="hljs-comment">//add time</span>
+            <span class="hljs-type">char</span> time[TIME_SIZE];
+            <span class="hljs-built_in">strcpy</span>(time, <span class="hljs-built_in">get_time_str</span>().<span class="hljs-built_in">c_str</span>());
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; TIME_SIZE; j++)
+                msg[j + TIME_PTR] = time[j];
+            <span class="hljs-built_in">broadcast</span>(msg);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p>其中的<code>broadcast</code>函数便是群发消息所使用的是。下面看其实现：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gnahsnl9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-gnahsnl9y45vpd"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">broadcast</span><span class="hljs-params">(<span class="hljs-type">char</span> msg[MSG_SIZE], <span class="hljs-type">int</span> id = <span class="hljs-number">-1</span>)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAX_CLIENT; i++) {
+        <span class="hljs-keyword">if</span> (sock_connects[i] != INVALID_SOCKET &amp;&amp; i != id) {
+            <span class="hljs-comment">//we don't send the message to the sender</span>
+            <span class="hljs-built_in">send</span>(sock_connects[i], msg, MSG_SIZE, <span class="hljs-number">0</span>);
+        }
+    }
+}</code></pre></div></div>
+<p>依次检查<code>socket</code>池，然后给有效且不是<code>id</code>对应的socket发送消息。</p>
+<h4 id="客户端连接线程">客户端连接线程</h4>
+<p><code>[[noreturn]]</code>表明这个函数自始至终监听新加入的<code>socket</code>。连接时服务器不提示，发送用户名时服务器进行第一次消息接收并根据情况发送欢迎信息或要求客户端重新输入用户名。每次接收消息循环结束，表示有客户端进入或离开，更新一次在线信息，并启动<code>handle_msg</code>线程进行消息转发。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-of5pwxl9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-of5pwxl9y45vpd"><pre><code class="hljs c++">[[noreturn]] <span class="hljs-function">DWORD WINAPI <span class="hljs-title">client_manager</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+    <span class="hljs-comment">//accept new clients</span>
+    <span class="hljs-keyword">auto</span> *sock_server = (SOCKET *) lparam;
+
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (; index &lt; MAX_CLIENT; index++) {
+            <span class="hljs-keyword">if</span> (sock_connects[index] == INVALID_SOCKET)
+                <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">if</span> (index == MAX_CLIENT) {
+            <span class="hljs-built_in">print_toggle</span>(WARN, <span class="hljs-string">"the server is full"</span>);
+            <span class="hljs-keyword">continue</span>;
+        }
+        SOCKADDR_IN addrClient;
+        <span class="hljs-type">int</span> lenAddr = <span class="hljs-built_in">sizeof</span>(SOCKADDR);
+        sock_connects[index] = <span class="hljs-built_in">accept</span>(*sock_server, (SOCKADDR *) &amp;addrClient, &amp;(lenAddr));
+        <span class="hljs-keyword">if</span> (sock_connects[index] == SOCKET_ERROR) {
+            <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"could not accept client!"</span>);
+            sock_connects[index] = INVALID_SOCKET;
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-type">char</span> name[NAME_SIZE];
+            <span class="hljs-built_in">recv</span>(sock_connects[index], name, NAME_SIZE, <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">if</span> (username_map.<span class="hljs-built_in">find</span>(<span class="hljs-built_in">string</span>(name)) == username_map.<span class="hljs-built_in">end</span>()) {
+                username_map.<span class="hljs-built_in">insert</span>(<span class="hljs-built_in">pair</span>&lt;string, <span class="hljs-type">int</span>&gt;(<span class="hljs-built_in">string</span>(name), index));
+                <span class="hljs-built_in">send</span>(sock_connects[index], HELLO, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+                string new_client = <span class="hljs-string">"new client: "</span> + <span class="hljs-built_in">string</span>(name) + <span class="hljs-string">" entered the chat room"</span>;
+                string online = <span class="hljs-string">"online:"</span> + <span class="hljs-built_in">to_string</span>(username_map.<span class="hljs-built_in">size</span>());
+                <span class="hljs-comment">//get the id of the new client</span>
+                <span class="hljs-type">int</span> id = username_map[<span class="hljs-built_in">string</span>(name)];
+                <span class="hljs-built_in">print_toggle</span>(INFO, new_client,<span class="hljs-built_in">get_time_str</span>());
+                <span class="hljs-comment">// broadcast</span>
+                <span class="hljs-type">char</span> msg[MSG_SIZE];
+                <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; TXT_SIZE; j++)
+                    msg[j + TXT_PTR] = new_client.<span class="hljs-built_in">c_str</span>()[j];
+                msg[<span class="hljs-number">0</span>] = NEW_C;
+                <span class="hljs-comment">//add time</span>
+                <span class="hljs-type">char</span> time[TIME_SIZE];
+                <span class="hljs-built_in">strcpy</span>(time, <span class="hljs-built_in">get_time_str</span>().<span class="hljs-built_in">c_str</span>());
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; TIME_SIZE; j++)
+                    msg[j + TIME_PTR] = time[j];
+                <span class="hljs-built_in">broadcast</span>(msg, id);
+                <span class="hljs-keyword">break</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">send</span>(sock_connects[index], DUL, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>);
+            }
+        }
+        HANDLE h_thread_c=<span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>, handle_msg, (LPVOID) &amp;sock_connects[index], <span class="hljs-number">0</span>, <span class="hljs-literal">nullptr</span>);
+        <span class="hljs-built_in">CloseHandle</span>(h_thread_c);
+        string online = <span class="hljs-string">"online: "</span> + <span class="hljs-built_in">to_string</span>(username_map.<span class="hljs-built_in">size</span>());
+        <span class="hljs-built_in">print_toggle</span>(INFO, online,<span class="hljs-built_in">get_time_str</span>());
+    }
+}</code></pre></div></div>
+<h4 id="消息转发线程">消息转发线程</h4>
+<p>消息转发线程主要根据收到的报文控制段对消息进行不同的处理并转发。同时在服务器端输出日志，如下图所示。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193803523871_125_image-20221022225008715.png" srcset="/img/loading.gif" lazyload alt="image-20221022225008715">
+<figcaption aria-hidden="true">image-20221022225008715</figcaption>
+</figure>
+<p>在程序中除了根据姓名找<code>socket id</code>,也常常出现反着找的情况。</p>
+<p>这一部分需要注意的点是在<code>PRI_C</code>即私密聊天情况下，如果客户端给出的姓名不在当前上线用户的范围之内，会单独给发送者提示。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5ytx7ol9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-5ytx7ol9y45vpd"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_msg</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+    <span class="hljs-keyword">auto</span> *socket = (SOCKET *) lparam;
+    <span class="hljs-type">int</span> id = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAX_CLIENT; i++) {
+        <span class="hljs-keyword">if</span> (sock_connects[i] == *socket) {
+            id = i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-comment">// listen to the message from the client</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-type">char</span> from_user[NAME_SIZE];
+        <span class="hljs-type">char</span> msg[MSG_SIZE];
+        <span class="hljs-type">char</span> content[TXT_SIZE];
+        <span class="hljs-built_in">memset</span>(from_user, <span class="hljs-number">0</span>, NAME_SIZE);
+        <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
+        <span class="hljs-built_in">memset</span>(content, <span class="hljs-number">0</span>, TXT_SIZE);
+        <span class="hljs-type">int</span> ret = <span class="hljs-built_in">recv</span>(*socket, msg, MSG_SIZE, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">if</span> (ret == SOCKET_ERROR) {
+            <span class="hljs-built_in">print_toggle</span>(WARN, <span class="hljs-string">"client closed unexpectedly"</span>);
+            <span class="hljs-built_in">closesocket</span>(*socket);
+            <span class="hljs-comment">//remove the socket from the list</span>
+            sock_connects[id] = INVALID_SOCKET;
+            <span class="hljs-comment">//remove the username from the ma according to the id</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> it = username_map.<span class="hljs-built_in">begin</span>(); it != username_map.<span class="hljs-built_in">end</span>(); it++) {
+                <span class="hljs-keyword">if</span> (it-&gt;second == id) {
+                    username_map.<span class="hljs-built_in">erase</span>(it);
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-type">char</span> type = msg[<span class="hljs-number">0</span>];
+        <span class="hljs-comment">//get the username from the map</span>
+        string username;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;item: username_map) {
+            <span class="hljs-keyword">if</span> (item.second == id) {
+                username = item.first;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">switch</span> (type) {
+            <span class="hljs-keyword">case</span> QUIT_C: {
+                <span class="hljs-comment">// close client through the client's receive thread</span>
+                <span class="hljs-type">char</span> msg_exit[MSG_SIZE];
+                <span class="hljs-built_in">memset</span>(msg_exit, <span class="hljs-number">0</span>, MSG_SIZE);
+                msg_exit[<span class="hljs-number">0</span>] = EXIT_C;
+                string exit_msg =<span class="hljs-string">"you have been moved out of the chat room"</span>;
+                <span class="hljs-built_in">send</span>(*socket, msg_exit, MSG_SIZE, <span class="hljs-number">0</span>);
+                <span class="hljs-built_in">closesocket</span>(*socket);
+                sock_connects[id] = <span class="hljs-number">0</span>;
+                username_map.<span class="hljs-built_in">erase</span>(username);
+                string gone_saying = username + <span class="hljs-string">" has quit the chat room at "</span>;
+                <span class="hljs-built_in">print_message</span>(GONE, gone_saying,<span class="hljs-built_in">get_time_str</span>());
+                <span class="hljs-comment">//broadcast the quit message</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> sock_connect: sock_connects) {
+                    <span class="hljs-keyword">if</span> (sock_connect != <span class="hljs-number">0</span>) {
+                        <span class="hljs-comment">// attach the content to the message</span>
+                        <span class="hljs-type">char</span> msg_forwards[MSG_SIZE];
+                        <span class="hljs-built_in">memset</span>(msg_forwards, <span class="hljs-number">0</span>, MSG_SIZE);
+                        msg_forwards[<span class="hljs-number">0</span>] = QUIT_C;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TXT_SIZE; i++) {
+                            msg_forwards[TXT_PTR + i] = gone_saying[i];
+                        }
+                    }
+                }
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">case</span> PUB_C: {
+                <span class="hljs-comment">//get the username from the map</span>
+                string info=<span class="hljs-string">"received a public message from "</span>;
+                info+=username;
+                <span class="hljs-built_in">print_toggle</span>(LOG, info,<span class="hljs-built_in">get_time_str</span>());
+                <span class="hljs-built_in">broadcast</span>(msg, id);
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">case</span> PRI_C: {
+                <span class="hljs-comment">//get the username from the map</span>
+                string info=<span class="hljs-string">"received a public message from "</span>;
+                info+=username;
+                <span class="hljs-built_in">print_toggle</span>(LOG, info,<span class="hljs-built_in">get_time_str</span>());
+                <span class="hljs-comment">//get the target user</span>
+                <span class="hljs-type">char</span> target_user[NAME_SIZE];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NAME_SIZE; i++) {
+                    target_user[i] = msg[NAME_PTR + i];
+                }
+                <span class="hljs-function">string <span class="hljs-title">target_user_s</span><span class="hljs-params">(target_user)</span></span>;
+                <span class="hljs-comment">//check if the target user is online</span>
+                <span class="hljs-keyword">if</span> (username_map.<span class="hljs-built_in">find</span>(target_user) == username_map.<span class="hljs-built_in">end</span>()) {
+                    <span class="hljs-comment">//target user is not online</span>
+                    <span class="hljs-comment">// show log on the server</span>
+                    string error_msg = <span class="hljs-string">"the target user "</span>;
+                    error_msg.<span class="hljs-built_in">append</span>(target_user);
+                    error_msg.<span class="hljs-built_in">append</span>(<span class="hljs-string">" provided by "</span>);
+                    error_msg.<span class="hljs-built_in">append</span>(username);
+                    error_msg.<span class="hljs-built_in">append</span>(<span class="hljs-string">" is not online!"</span>);
+                    <span class="hljs-built_in">print_message</span>(LOG, error_msg);
+                    <span class="hljs-comment">//send the error message to the sender</span>
+                    <span class="hljs-type">char</span> msg_error[MSG_SIZE];
+                    <span class="hljs-built_in">memset</span>(msg_error, <span class="hljs-number">0</span>, MSG_SIZE);
+                    msg_error[<span class="hljs-number">0</span>] = ERR_C;
+                    string ree_msg_to_send = target_user_s + <span class="hljs-string">" is not online!"</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TXT_SIZE; i++) {
+                        msg_error[TXT_PTR + i] = error_msg[i];
+                    }
+                    <span class="hljs-built_in">send</span>(*socket, msg_error, MSG_SIZE, <span class="hljs-number">0</span>);
+                } <span class="hljs-keyword">else</span> {
+                    string info_pri=<span class="hljs-string">"received a private message from "</span>;
+                    info_pri+=username;
+                    <span class="hljs-built_in">print_toggle</span>(LOG, info_pri,<span class="hljs-built_in">get_time_str</span>());
+                    <span class="hljs-comment">//target user is online</span>
+                    <span class="hljs-comment">//send the message to the target user</span>
+                    <span class="hljs-type">int</span> target_id = username_map[target_user];
+                    <span class="hljs-comment">// replace the target user's name with the sender's name</span>
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NAME_SIZE; i++) {
+                        msg[NAME_PTR + i] = username[i];
+                    }
+                    <span class="hljs-built_in">send</span>(sock_connects[target_id], msg, MSG_SIZE, <span class="hljs-number">0</span>);
+                }
+                <span class="hljs-keyword">break</span>;
+            }
+
+        }
+
+    }
+}</code></pre></div></div>
+<h3 id="客户端进程">客户端进程</h3>
+<h4 id="主线程-1">主线程</h4>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5atr9hl9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-5atr9hl9y45vpd"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">connect</span>(sockClient, (SOCKADDR *) &amp;addrSrv, <span class="hljs-built_in">sizeof</span>(SOCKADDR)) != <span class="hljs-number">0</span>) {
+    <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"connect failed"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+<span class="hljs-built_in">print_toggle</span>(SUC, <span class="hljs-string">"connect success"</span>, <span class="hljs-built_in">get_time_str</span>());
+<span class="hljs-comment">// send username</span>
+<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+    <span class="hljs-built_in">print_toggle</span>(SERVER, <span class="hljs-string">"please input your username:"</span>, <span class="hljs-built_in">get_time_str</span>());
+    cin &gt;&gt; user_name;
+    <span class="hljs-comment">// check if the name is "all" or "quit" that may cause conflict</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(user_name, <span class="hljs-string">"all"</span>) == <span class="hljs-number">0</span> || <span class="hljs-built_in">strcmp</span>(user_name, <span class="hljs-string">"quit"</span>) == <span class="hljs-number">0</span>) {
+        <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"the username cannot be set to system reserved words"</span>);
+        <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-built_in">send</span>(sockClient, user_name, NAME_SIZE, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">//it must be a buffer, although it is only a char</span>
+    <span class="hljs-type">char</span> status[<span class="hljs-number">1</span>];
+    <span class="hljs-built_in">recv</span>(sockClient, status, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">if</span> (status[<span class="hljs-number">0</span>] == HELLO_C) {
+        <span class="hljs-built_in">print_toggle</span>(SUC, <span class="hljs-string">"welcome to the chat room!"</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+    <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"the username has been used, please input another one"</span>);
+
+}
+HANDLE h_thread[<span class="hljs-number">2</span>];
+<span class="hljs-comment">// separate the sending and receiving thread to avoid blocking</span>
+h_thread[<span class="hljs-number">0</span>] = <span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, handlerRec, (LPVOID) &amp;sockClient, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);
+h_thread[<span class="hljs-number">1</span>] = <span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, handlerSend, (LPVOID) &amp;sockClient, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);
+<span class="hljs-built_in">WaitForMultipleObjects</span>(<span class="hljs-number">2</span>, h_thread, TRUE, INFINITE);
+<span class="hljs-built_in">CloseHandle</span>(h_thread[<span class="hljs-number">0</span>]);
+<span class="hljs-built_in">CloseHandle</span>(h_thread[<span class="hljs-number">1</span>]);
+<span class="hljs-built_in">closesocket</span>(sockClient);
+<span class="hljs-built_in">WSACleanup</span>();
+<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</code></pre></div></div>
+<p>这一部分进行了用户信息发送以及创建了两个子线程用于发送和收取来自服务器的消息。之后阻塞等待线程结束。</p>
+<h4 id="发送线程">发送线程</h4>
+<p>首先将报文字段进行初始化，以便根据实际情况填入。循环等待用户输入，并在过程中两次检查是否需要退出。之后根据报文的控制段<code>TYPE</code>分别构建不同格式信息。注意在这一阶段并不是程报文中的每一个字段都一定用的到。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wq1wkol9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-wq1wkol9y45vpd"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handlerSend</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+    <span class="hljs-keyword">auto</span> *socket = (SOCKET *) lparam;
+    <span class="hljs-type">char</span> to_user[NAME_SIZE];
+    <span class="hljs-type">char</span> msg[MSG_SIZE];
+    <span class="hljs-type">char</span> saying[TXT_SIZE];
+    <span class="hljs-built_in">memset</span>(to_user, <span class="hljs-number">0</span>, NAME_SIZE);
+    <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
+    <span class="hljs-built_in">memset</span>(saying, <span class="hljs-number">0</span>, TXT_SIZE);
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-built_in">print_toggle</span>(TIP, <span class="hljs-string">"please input \"user message\", input 'all' to send to all users"</span>);
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%s"</span>, to_user);
+        <span class="hljs-comment">// if nothing is input, then continue to ask for input again</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strlen</span>(to_user) == <span class="hljs-number">0</span>) {
+            cout&lt;&lt;<span class="hljs-string">"please input something"</span>&lt;&lt;endl;
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">//check quit</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(to_user, <span class="hljs-string">"quit"</span>) == <span class="hljs-number">0</span>) {
+            <span class="hljs-built_in">print_toggle</span>(TIP, <span class="hljs-string">"you chose to quit the chat room"</span>);
+            <span class="hljs-comment">//send quit message to server</span>
+            msg[<span class="hljs-number">0</span>] = QUIT_C;
+            <span class="hljs-built_in">send</span>(*socket, msg, MSG_SIZE, <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%[^\n]"</span>, saying);
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strlen</span>(saying) == <span class="hljs-number">0</span>){
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">//check quit</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(saying, <span class="hljs-string">"quit"</span>) == <span class="hljs-number">0</span>) {
+            <span class="hljs-built_in">print_toggle</span>(TIP, <span class="hljs-string">"you have quit the chat room"</span>);
+            <span class="hljs-comment">//send quit message to server</span>
+            msg[<span class="hljs-number">0</span>] = QUIT_C;
+            <span class="hljs-built_in">send</span>(*socket, msg, MSG_SIZE, <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-comment">//send message to server for forwarding</span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strcmp</span>(to_user, <span class="hljs-string">"all"</span>) == <span class="hljs-number">0</span>){
+            msg[<span class="hljs-number">0</span>] = PUB_C;
+            <span class="hljs-comment">//construct the message</span>
+            <span class="hljs-comment">//content</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TXT_SIZE; i++){
+                msg[i + TXT_PTR] = saying[i];
+            }
+            <span class="hljs-comment">// from user</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NAME_SIZE; i++){
+                msg[i + NAME_PTR] = user_name[i];
+            }
+            <span class="hljs-comment">//time stamp</span>
+            string time_stamp = <span class="hljs-built_in">get_time_str</span>();
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TIME_SIZE; i++){
+                msg[i + TIME_PTR] = time_stamp[i];
+            }
+            <span class="hljs-built_in">send</span>(*socket, msg, MSG_SIZE, <span class="hljs-number">0</span>);
+        }<span class="hljs-keyword">else</span>{
+            msg[<span class="hljs-number">0</span>] = PRI_C;
+            <span class="hljs-comment">//construct the message</span>
+            <span class="hljs-comment">//content</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TXT_SIZE; i++){
+                msg[i + TXT_PTR] = saying[i];
+            }
+            <span class="hljs-comment">// to user</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NAME_SIZE; i++){
+                msg[i + NAME_PTR] = to_user[i];
+            }
+            <span class="hljs-comment">//time stamp</span>
+            string time_stamp = <span class="hljs-built_in">get_time_str</span>();
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TIME_SIZE; i++){
+                msg[i + TIME_PTR] = time_stamp[i];
+            }
+            <span class="hljs-built_in">send</span>(*socket, msg, MSG_SIZE, <span class="hljs-number">0</span>);
+        }
+
+    }
+}</code></pre></div></div>
+<h4 id="接收线程">接收线程</h4>
+<p>接收线程是一个解析的过程，并往控制台进行不同格式输出。模式基本类似。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kdu3xxl9y45vpd"></i><span>c++</span><div class="collapse show" id="collapse-kdu3xxl9y45vpd"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handlerRec</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+    <span class="hljs-keyword">auto</span> *socket = (SOCKET *) lparam;
+    <span class="hljs-type">char</span> msg[MSG_SIZE];
+    <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-built_in">recv</span>(*socket, msg, MSG_SIZE, <span class="hljs-number">0</span>);
+        <span class="hljs-type">char</span> type = msg[<span class="hljs-number">0</span>];
+        <span class="hljs-type">char</span> content[TXT_SIZE];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TXT_SIZE; i++)
+            content[i] = msg[i + TXT_PTR];
+        <span class="hljs-type">char</span> time[TIME_SIZE];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TIME_SIZE; i++)
+            time[i] = msg[i + TIME_PTR];
+        <span class="hljs-keyword">switch</span> (type) {
+            <span class="hljs-comment">// new server message</span>
+            <span class="hljs-keyword">case</span> NEW_C:
+                <span class="hljs-built_in">print_message</span>(NEW, content);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-comment">// typed "quit" and all resources are released, exit the program</span>
+            <span class="hljs-keyword">case</span> EXIT_C:
+                <span class="hljs-comment">// end of the program</span>
+                <span class="hljs-built_in">print_toggle</span>(WARN, content);
+                <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);
+            <span class="hljs-comment">// public normal message</span>
+            <span class="hljs-keyword">case</span> PUB_C:
+                <span class="hljs-comment">// get the sender's name</span>
+                <span class="hljs-type">char</span> fromUser[NAME_SIZE];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NAME_SIZE; i++)
+                    fromUser[i] = msg[i + NAME_PTR];
+                <span class="hljs-comment">// print the message</span>
+                <span class="hljs-built_in">print_message</span>(PUB, content, time, fromUser);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-comment">// handle message from server</span>
+            <span class="hljs-keyword">case</span> SERVER_C:
+                <span class="hljs-comment">//get the time from the message</span>
+                <span class="hljs-type">char</span> time_ser[TIME_SIZE];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TIME_SIZE; i++)
+                    time_ser[i] = msg[i + TIME_PTR];
+                <span class="hljs-built_in">print_message</span>(SERVER, content, time_ser);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-comment">// private message</span>
+            <span class="hljs-keyword">case</span> PRI_C:
+                <span class="hljs-comment">// get the sender's name</span>
+                <span class="hljs-type">char</span> from_user[NAME_SIZE];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NAME_SIZE; i++)
+                    from_user[i] = msg[i + NAME_PTR];
+                <span class="hljs-comment">// print the message</span>
+                <span class="hljs-built_in">print_message</span>(PRI, content, time, from_user);
+                <span class="hljs-keyword">break</span>;
+        }
+
+
+    }
+}</code></pre></div></div>
+<h2 id="思考">思考</h2>
+<p>在Java程序设计课上，也编写过一个聊天程序。那时只是机械的学习API，虽然也大致了解TCP，UDP的概念，但对于协议的设计还是非常朴素的。虽然本次实验的协议设计也比较简单，但随着学习的深入也会对此有更新的认识。比如很明显的一个设计缺陷是把时间放到了数据段之后。如果把数据段放到最后，可以通过增加长度字段来支持变长数据的传输。其他的比如数据校验等方面也可以继续改进。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AF%84%E7%BD%91/">#寄网</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络实验一_socket聊天程序</div>
+      <div>http://lunaticsky-tql.github.io/posts/54779/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月26日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年10月26日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/64911/" title="c++_基本语法和运算">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">c++_基本语法和运算</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/31769/" title="寄网-应用层">
+                        <span class="hidden-mobile">寄网-应用层</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

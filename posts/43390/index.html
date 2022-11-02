@@ -324,7 +324,7 @@
 <p>根据https://github.com/qixa/hexo-theme-fluid-mod修改</p>
 <h4 id="修改主题配置文件">修改主题配置文件</h4>
 <p>color下新增属性</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6ix1iwl9o6rhn8"></i><span>css</span><div class="collapse show" id="collapse-6ix1iwl9o6rhn8"><pre><code class="hljs css"># 侧边栏颜色
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o9ix08l9y45vpd"></i><span>css</span><div class="collapse show" id="collapse-o9ix08l9y45vpd"><pre><code class="hljs css"># 侧边栏颜色
 sidebar_text_color: <span class="hljs-string">"#3c4858"</span>
 sidebar_background_color: <span class="hljs-string">"rgba(246, 248, 250, 0.82)"</span> <span class="hljs-number">#f6f8fad1</span>
 sidebar_button_color: <span class="hljs-string">"#99a9bf"</span>
@@ -342,7 +342,7 @@ sidebar_friend_li_border: <span class="hljs-string">"1px dashed #bdbdbd"</span>
 sidebar_friend_li_hover: <span class="hljs-string">"#57A7D9"</span>
 sidebar_friend_ico: <span class="hljs-string">"#bfbfbf"</span></code></pre></div></div>
 <p>新增全局属性</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mgo3g6l9o6rhn8"></i><span>css</span><div class="collapse show" id="collapse-mgo3g6l9o6rhn8"><pre><code class="hljs css">sidebar:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-az8pa5l9y45vpd"></i><span>css</span><div class="collapse show" id="collapse-az8pa5l9y45vpd"><pre><code class="hljs css">sidebar:
     enable: true
     name: Lunatic sky
     introduce:  # 支持 HTML，留空则使用网站subtitle
@@ -358,7 +358,7 @@ sidebar_links:
   <span class="hljs-string">"my repository"</span>: https://github.com/Lunaticsky-tql?tab=repositories</code></pre></div></div>
 <h4 id="新增侧边栏模板文件">新增侧边栏模板文件</h4>
 <p>新建layout/_partial/sidebar.ejs</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o2dun1l9o6rhn8"></i><span>javascript</span><div class="collapse show" id="collapse-o2dun1l9o6rhn8"><pre><code class="hljs javascript">&lt;% <span class="hljs-keyword">if</span>(theme.<span class="hljs-property">sidebar</span>.<span class="hljs-property">enable</span>){ %&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sz8f5ql9y45vpd"></i><span>javascript</span><div class="collapse show" id="collapse-sz8f5ql9y45vpd"><pre><code class="hljs javascript">&lt;% <span class="hljs-keyword">if</span>(theme.<span class="hljs-property">sidebar</span>.<span class="hljs-property">enable</span>){ %&gt;
 <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"sidebar"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"sidebar-hide"</span>&gt;</span></span>
 <span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"sidebar-button sidebar-button-shift"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"toggle-sidebar"</span> &gt;</span></span>
 <span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"fa fa-arrow-right on"</span> <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">"true"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span></span>
@@ -402,11 +402,11 @@ sidebar_links:
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/Hexo%20%E5%8D%9A%E5%AE%A2%E5%A2%9E%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F/20220920002715526487_276_image-20220919235231945.png" srcset="/img/loading.gif" lazyload alt="image-20220919235231945">
 <figcaption aria-hidden="true">image-20220919235231945</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fw1t19l9o6rhn8"></i><span>javascript</span><div class="collapse show" id="collapse-fw1t19l9o6rhn8"><pre><code class="hljs javascript">&lt;%- <span class="hljs-title function_">partial</span>(<span class="hljs-string">'_partials/sidebar.ejs'</span>) %&gt;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ft4sb0l9y45vpd"></i><span>javascript</span><div class="collapse show" id="collapse-ft4sb0l9y45vpd"><pre><code class="hljs javascript">&lt;%- <span class="hljs-title function_">partial</span>(<span class="hljs-string">'_partials/sidebar.ejs'</span>) %&gt;</code></pre></div></div>
 <h4 id="修改css文件">修改CSS文件</h4>
 <p>source/css/_variables/base.styl</p>
 <p>增加侧边栏相关变量</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-77qd8nl9o6rhn8"></i><span>css</span><div class="collapse show" id="collapse-77qd8nl9o6rhn8"><pre><code class="hljs css">//toc
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ku403bl9y45vpd"></i><span>css</span><div class="collapse show" id="collapse-ku403bl9y45vpd"><pre><code class="hljs css">//toc
 $tocbot-link-shadow = theme-config("<span class="hljs-attribute">color</span><span class="hljs-selector-class">.tocbot_link_shadow</span>", "<span class="hljs-number">0.1em</span> <span class="hljs-number">0.1em</span> <span class="hljs-number">0.2em</span> <span class="hljs-selector-id">#ffffff</span>")
 $tocbot-active-link-shadow = theme-config("<span class="hljs-attribute">color</span><span class="hljs-selector-class">.tocbot_active_link_shadow</span>", "<span class="hljs-number">0.1em</span> <span class="hljs-number">0.1em</span> <span class="hljs-number">0.2em</span> <span class="hljs-selector-id">#ffbcbc</span>")
 
@@ -429,11 +429,11 @@ $sidebar-friend-<span class="hljs-selector-tag">li</span>-hover = theme-config("
 $sidebar-friend-ico = theme-config("<span class="hljs-attribute">color</span><span class="hljs-selector-class">.sidebar_friend_ico</span>", "<span class="hljs-selector-id">#bfbfbf</span>")</code></pre></div></div>
 <p>layout/_partials/css.ejs</p>
 <p>引入需要的图标字体</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kcmwvpl9o6rhn8"></i><span>javascript</span><div class="collapse show" id="collapse-kcmwvpl9o6rhn8"><pre><code class="hljs javascript">&lt;%- <span class="hljs-title function_">css_ex</span>(theme.<span class="hljs-property">static_prefix</span>.<span class="hljs-property">font_awesome</span>, <span class="hljs-string">"css/all.min.css"</span>) %&gt;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-svadl7l9y45vpd"></i><span>javascript</span><div class="collapse show" id="collapse-svadl7l9y45vpd"><pre><code class="hljs javascript">&lt;%- <span class="hljs-title function_">css_ex</span>(theme.<span class="hljs-property">static_prefix</span>.<span class="hljs-property">font_awesome</span>, <span class="hljs-string">"css/all.min.css"</span>) %&gt;</code></pre></div></div>
 <h4 id="js-文件">JS 文件</h4>
 <p>source/js/main.js</p>
 <p>增加侧边栏相关控制代码</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-flctb5l9o6rhn8"></i><span>javascript</span><div class="collapse show" id="collapse-flctb5l9o6rhn8"><pre><code class="hljs javascript"><span class="hljs-comment">/* Sidebar */</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5bxquvl9y45vpd"></i><span>javascript</span><div class="collapse show" id="collapse-5bxquvl9y45vpd"><pre><code class="hljs javascript"><span class="hljs-comment">/* Sidebar */</span>
 <span class="hljs-keyword">var</span> toggleSidebar = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>){
   $(<span class="hljs-string">"#sidebar"</span>).<span class="hljs-title function_">toggleClass</span>(<span class="hljs-string">'sidebar-hide'</span>);
   $(<span class="hljs-string">"#toggle-sidebar"</span>).<span class="hljs-title function_">toggleClass</span>(<span class="hljs-string">'sidebar-button-shift'</span>);
@@ -451,7 +451,7 @@ $(<span class="hljs-string">"#footerContent"</span>).<span class="hljs-title fun
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/Hexo%20%E5%8D%9A%E5%AE%A2%E5%A2%9E%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F/20220920002717155064_217_image-20220920000758138.png" srcset="/img/loading.gif" lazyload alt="image-20220920000758138">
 <figcaption aria-hidden="true">image-20220920000758138</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6jkrb8l9o6rhn8"></i><span>javascript</span><div class="collapse show" id="collapse-6jkrb8l9o6rhn8"><pre><code class="hljs javascript">&lt;%- <span class="hljs-title function_">js_ex</span>(theme.<span class="hljs-property">static_prefix</span>.<span class="hljs-property">internal_js</span>, <span class="hljs-string">'main.js'</span>) %&gt;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t03vmrl9y45vpd"></i><span>javascript</span><div class="collapse show" id="collapse-t03vmrl9y45vpd"><pre><code class="hljs javascript">&lt;%- <span class="hljs-title function_">js_ex</span>(theme.<span class="hljs-property">static_prefix</span>.<span class="hljs-property">internal_js</span>, <span class="hljs-string">'main.js'</span>) %&gt;</code></pre></div></div>
 <p>配置完成后，可以从左下角箭头打开侧边栏。</p>
 
                 

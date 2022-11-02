@@ -19,48 +19,50 @@
         <meta name="description" content="编译原理一二章 Lec1从代码到可执行文件 编译器要做哪些事情？   image-20220929095525300  一些gcc编译选项 Actions The action to perform on the input. shell-E, --preprocess Only run the preprocessor  -S, --assemble Only run preprocess an">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译原理一二章">
-<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/34739/index.html">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/34738/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="编译原理一二章 Lec1从代码到可执行文件 编译器要做哪些事情？   image-20220929095525300  一些gcc编译选项 Actions The action to perform on the input. shell-E, --preprocess Only run the preprocessor  -S, --assemble Only run preprocess an">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190733227216_229_image-20220929095525300.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190735472529_960_image-20220920154109066.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190736776341_330_image-20220920162038518.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190738941427_725_image-20221004193852281.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190740496671_209_image-20220927144906987.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190741666990_453_image-20220927144926174.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190742819758_795_image-20220927144938067.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190743880629_933_image-20220927144950874.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190746344914_185_image-20220927145026025.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190747551802_775_image-20221004164810301.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190748466161_250_image-20220927150609696.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190749626754_765_image-20220927150731839.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190750857129_584_image-20220927155732458.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190751862164_535_image-20220927154102321.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190753296213_768_image-20220927154131189.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190754314719_452_image-20220927154314035.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190755524185_246_image-20220927155426816.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190756637988_463_image-20220927161055294.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190758243317_959_image-20220927161040537.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190759789619_359_image-20220928164050330.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190801270074_244_image-20220928164220732.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190802895392_835_image-20220927164002512.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190804367395_700_image-20221004152318374.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190808051693_827_image-20221004153229852.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190811525061_463_image-20221004152448359.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190813022183_796_image-20221004152827769.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190816136501_201_image-20221004153753520.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190818280251_227_image-20221004154007046.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190819993463_865_image-20221004160548627.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190821656013_971_image-20221004160612826.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190823148967_751_image-20221004161628877.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190827034211_692_image-20221004161643180.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190733227216_229_image-20220929095525300.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190735472529_960_image-20220920154109066.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190736776341_330_image-20220920162038518.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190738941427_725_image-20221004193852281.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190740496671_209_image-20220927144906987.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190741666990_453_image-20220927144926174.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190742819758_795_image-20220927144938067.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190743880629_933_image-20220927144950874.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190746344914_185_image-20220927145026025.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190747551802_775_image-20221004164810301.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190748466161_250_image-20220927150609696.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190749626754_765_image-20220927150731839.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190750857129_584_image-20220927155732458.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190751862164_535_image-20220927154102321.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190753296213_768_image-20220927154131189.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190754314719_452_image-20220927154314035.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190755524185_246_image-20220927155426816.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190756637988_463_image-20220927161055294.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190758243317_959_image-20220927161040537.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190759789619_359_image-20220928164050330.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190801270074_244_image-20220928164220732.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221025232537498298_547_2.2.3-3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190802895392_835_image-20220927164002512.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190804367395_700_image-20221004152318374.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190808051693_827_image-20221004153229852.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190811525061_463_image-20221004152448359.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190813022183_796_image-20221004152827769.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190816136501_201_image-20221004153753520.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190818280251_227_image-20221004154007046.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190819993463_865_image-20221004160548627.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190821656013_971_image-20221004160612826.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190823148967_751_image-20221004161628877.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190827034211_692_image-20221004161643180.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221025232547008661_894_image-20221009204230516.png">
 <meta property="article:published_time" content="2022-10-23T07:30:46.035Z">
-<meta property="article:modified_time" content="2022-10-23T12:44:39.335Z">
+<meta property="article:modified_time" content="2022-10-25T15:25:48.927Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="编译原理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190733227216_229_image-20220929095525300.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190733227216_229_image-20220929095525300.png">
     
     
     
@@ -278,7 +280,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              2.1k 字
+              4k 字
                 
       </span>
       
@@ -341,7 +343,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年10月23日 晚上
+                    本文最后更新于：2022年10月25日 晚上
                   
                 
               </p>
@@ -353,13 +355,13 @@
 <h3 id="lec1从代码到可执行文件">Lec1从代码到可执行文件</h3>
 <h4 id="编译器要做哪些事情">编译器要做哪些事情？</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190733227216_229_image-20220929095525300.png" srcset="/img/loading.gif" lazyload alt="image-20220929095525300">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190733227216_229_image-20220929095525300.png" srcset="/img/loading.gif" lazyload alt="image-20220929095525300">
 <figcaption aria-hidden="true">image-20220929095525300</figcaption>
 </figure>
 <h5 id="一些gcc编译选项">一些gcc编译选项</h5>
 <h6 id="actions"><a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/ClangCommandLineReference.html#id6">Actions</a></h6>
 <p>The action to perform on the input.</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g6i0p4l9o6rhn8"></i><span>shell</span><div class="collapse show" id="collapse-g6i0p4l9o6rhn8"><pre><code class="hljs shell">-E, --preprocess
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-itmns8l9y45vpd"></i><span>shell</span><div class="collapse show" id="collapse-itmns8l9y45vpd"><pre><code class="hljs shell">-E, --preprocess
 Only run the preprocessor
 
 -S, --assemble
@@ -374,13 +376,13 @@ Use the LLVM representation for assembler and object files</code></pre></div></d
 flags</a></h6>
 <p>Flags controlling the behavior of Clang during compilation. These
 flags have no effect during actions that do not perform compilation.</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xsrbpgl9o6rhn8"></i><span>shell</span><div class="collapse show" id="collapse-xsrbpgl9o6rhn8"><pre><code class="hljs shell">-Xassembler &lt;arg&gt;`
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-543uscl9y45vpd"></i><span>shell</span><div class="collapse show" id="collapse-543uscl9y45vpd"><pre><code class="hljs shell">-Xassembler &lt;arg&gt;`
 Pass &lt;arg&gt; to the assembler
 
 -Xclang &lt;arg&gt;, -Xclang=&lt;arg&gt;
 Pass &lt;arg&gt; to clang -cc1</code></pre></div></div>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190735472529_960_image-20220920154109066.png" srcset="/img/loading.gif" lazyload alt="image-20220920154109066">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190735472529_960_image-20220920154109066.png" srcset="/img/loading.gif" lazyload alt="image-20220920154109066">
 <figcaption aria-hidden="true">image-20220920154109066</figcaption>
 </figure>
 <p>上面是<strong>抽象语法树</strong>：简化，只包含程序中出现的单词</p>
@@ -396,7 +398,7 @@ C++编译器过滤注释是在_<strong>阶段。
 C++编译器检查数组下标越界是在</strong>_阶段 C++并不会检查数组下标越界。
 </p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190736776341_330_image-20220920162038518.png" srcset="/img/loading.gif" lazyload alt="image-20220920162038518">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190736776341_330_image-20220920162038518.png" srcset="/img/loading.gif" lazyload alt="image-20220920162038518">
 <figcaption aria-hidden="true">image-20220920162038518</figcaption>
 </figure>
 <p>显然符号表中不会存变量值，因为变量值在运行时才会确定。</p>
@@ -405,154 +407,276 @@ C++编译器检查数组下标越界是在</strong>_阶段 C++并不会检查数
 </p>
 <p>但是据龙书：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190738941427_725_image-20221004193852281.png" srcset="/img/loading.gif" lazyload alt="image-20221004193852281">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190738941427_725_image-20221004193852281.png" srcset="/img/loading.gif" lazyload alt="image-20221004193852281">
 <figcaption aria-hidden="true">image-20221004193852281</figcaption>
 </figure>
 <h3 id="lec2-构造一个简单的编译器">Lec2 构造一个简单的编译器</h3>
 <h4 id="上下文无关文法">上下文无关文法</h4>
 <h5 id="感性理解">感性理解</h5>
 <p>BNF 是一种
-<strong>上下文无关文法</strong>，举个例子就是，人类的语言就是一种
-上下文<strong>有关</strong>文法，我随时都可以讲一句
-“以上说的都是废话”，改变我所说的话的涵义。</p>
+<strong>上下文无关文法</strong>，那什么是上下文相关文法(CSG呢？</p>
+<p>CSG 在 CFG的基础上进一步放宽限制。</p>
+<p>产生式的左手边也可以有终结符和非终结符。左手边的终结符就是“上下文”的来源。也就是说匹配的时候不能光看当前匹配到哪里了，还得看当前位置的左右到底有啥（也就是上下文是啥），上下文在这条规则应用的时候并不会被消耗掉，只是“看看”。</p>
 <h5 id="形式化定义">形式化定义</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190740496671_209_image-20220927144906987.png" srcset="/img/loading.gif" lazyload alt="image-20220927144906987">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190740496671_209_image-20220927144906987.png" srcset="/img/loading.gif" lazyload alt="image-20220927144906987">
 <figcaption aria-hidden="true">image-20220927144906987</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190741666990_453_image-20220927144926174.png" srcset="/img/loading.gif" lazyload alt="image-20220927144926174">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190741666990_453_image-20220927144926174.png" srcset="/img/loading.gif" lazyload alt="image-20220927144926174">
 <figcaption aria-hidden="true">image-20220927144926174</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190742819758_795_image-20220927144938067.png" srcset="/img/loading.gif" lazyload alt="image-20220927144938067">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190742819758_795_image-20220927144938067.png" srcset="/img/loading.gif" lazyload alt="image-20220927144938067">
 <figcaption aria-hidden="true">image-20220927144938067</figcaption>
 </figure>
 <p>对闭包的理解</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190743880629_933_image-20220927144950874.png" srcset="/img/loading.gif" lazyload alt="image-20220927144950874">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190743880629_933_image-20220927144950874.png" srcset="/img/loading.gif" lazyload alt="image-20220927144950874">
 <figcaption aria-hidden="true">image-20220927144950874</figcaption>
 </figure>
 <p>正闭包也叫正则闭包</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190746344914_185_image-20220927145026025.png" srcset="/img/loading.gif" lazyload alt="image-20220927145026025">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190746344914_185_image-20220927145026025.png" srcset="/img/loading.gif" lazyload alt="image-20220927145026025">
 <figcaption aria-hidden="true">image-20220927145026025</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190747551802_775_image-20221004164810301.png" srcset="/img/loading.gif" lazyload alt="image-20221004164810301">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190747551802_775_image-20221004164810301.png" srcset="/img/loading.gif" lazyload alt="image-20221004164810301">
 <figcaption aria-hidden="true">image-20221004164810301</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190748466161_250_image-20220927150609696.png" srcset="/img/loading.gif" lazyload alt="image-20220927150609696">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190748466161_250_image-20220927150609696.png" srcset="/img/loading.gif" lazyload alt="image-20220927150609696">
 <figcaption aria-hidden="true">image-20220927150609696</figcaption>
 </figure>
 <p>在词法分析阶段，所有的expr都是同等对待的，因此不需要加下标</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190749626754_765_image-20220927150731839.png" srcset="/img/loading.gif" lazyload alt="image-20220927150731839">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190749626754_765_image-20220927150731839.png" srcset="/img/loading.gif" lazyload alt="image-20220927150731839">
 <figcaption aria-hidden="true">image-20220927150731839</figcaption>
 </figure>
 <p>idlist也可用右递归表示。两种方式等价，但生成的语法分析树不一样。</p>
 <p>另外一种设计方案</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190750857129_584_image-20220927155732458.png" srcset="/img/loading.gif" lazyload alt="image-20220927155732458" style="zoom:50%;"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190750857129_584_image-20220927155732458.png" srcset="/img/loading.gif" lazyload alt="image-20220927155732458" width="50%" height="50%"></p>
 <h5 id="二义性语法和非二义性语法">二义性语法和非二义性语法</h5>
 <p>非二义性语法</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190751862164_535_image-20220927154102321.png" srcset="/img/loading.gif" lazyload alt="image-20220927154102321">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190751862164_535_image-20220927154102321.png" srcset="/img/loading.gif" lazyload alt="image-20220927154102321">
 <figcaption aria-hidden="true">image-20220927154102321</figcaption>
 </figure>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190753296213_768_image-20220927154131189.png" srcset="/img/loading.gif" lazyload alt="image-20220927154131189" style="zoom:50%;"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190753296213_768_image-20220927154131189.png" srcset="/img/loading.gif" lazyload alt="image-20220927154131189" width="50%" height="50%"></p>
 <p>采用二义性语法，则会产生歧义问题，同一段代码在不同编译器上产生不一样的结果，显然是我们不想看到的</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190754314719_452_image-20220927154314035.png" srcset="/img/loading.gif" lazyload alt="image-20220927154314035">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190754314719_452_image-20220927154314035.png" srcset="/img/loading.gif" lazyload alt="image-20220927154314035">
 <figcaption aria-hidden="true">image-20220927154314035</figcaption>
 </figure>
 <p>但是在一定的场合下，通过设计合理的语法分析算法，我们是容许一定的二义性的，因为可以减小语法分析树的复杂性。</p>
 <p>文法左递归，体现出运算符左结合，右递归则是右结合。</p>
 <p>一个右结合的例子</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190755524185_246_image-20220927155426816.png" srcset="/img/loading.gif" lazyload alt="image-20220927155426816" style="zoom:50%;"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190755524185_246_image-20220927155426816.png" srcset="/img/loading.gif" lazyload alt="image-20220927155426816" width="50%" height="50%"></p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190756637988_463_image-20220927161055294.png" srcset="/img/loading.gif" lazyload alt="image-20220927161055294">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190756637988_463_image-20220927161055294.png" srcset="/img/loading.gif" lazyload alt="image-20220927161055294">
 <figcaption aria-hidden="true">image-20220927161055294</figcaption>
 </figure>
 <p>注意：不要跳级！左结合的，且从左往右替换。</p>
+<h5 id="练习">练习</h5>
+<h6 id="推导练习">推导练习</h6>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190758243317_959_image-20220927161040537.png" srcset="/img/loading.gif" lazyload alt="image-20220927161040537">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190758243317_959_image-20220927161040537.png" srcset="/img/loading.gif" lazyload alt="image-20220927161040537">
 <figcaption aria-hidden="true">image-20220927161040537</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190759789619_359_image-20220928164050330.png" srcset="/img/loading.gif" lazyload alt="image-20220928164050330">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190759789619_359_image-20220928164050330.png" srcset="/img/loading.gif" lazyload alt="image-20220928164050330">
 <figcaption aria-hidden="true">image-20220928164050330</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190801270074_244_image-20220928164220732.png" srcset="/img/loading.gif" lazyload alt="image-20220928164220732">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190801270074_244_image-20220928164220732.png" srcset="/img/loading.gif" lazyload alt="image-20220928164220732">
 <figcaption aria-hidden="true">image-20220928164220732</figcaption>
 </figure>
-<h4 id="翻译模式">翻译模式</h4>
+<ol type="1">
+<li>S -&gt; 0 S 1 | 0 1</li>
+<li>S -&gt; + S S | - S S | a</li>
+<li>S -&gt; S ( S ) S | ε</li>
+<li>S -&gt; a S b S | b S a S | ε</li>
+</ol>
+<p>生成的语言：</p>
+<ol type="1">
+<li><p>L = {0<sup>n</sup>1<sup>n</sup> | n&gt;=1}</p></li>
+<li><p>L = {支持加法和减法的表达式的前缀表达形式}</p></li>
+<li><p>L = {匹配括号的任意排列和嵌套的括号串，包括 ε}</p>
+<p>()() (()())等</p>
+<p>有二义性：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221025232537498298_547_2.2.3-3.png" srcset="/img/loading.gif" lazyload alt="2.2.3-3">
+<figcaption aria-hidden="true">2.2.3-3</figcaption>
+</figure></li>
+<li><p>L = {数量相同的a和b组成的符号串，包括 ε}</p></li>
+</ol>
+<p class="note note-warning">
+一个文法有二义性不一定就有两个推导！但一定有两课语法树
+</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/severestcritic/article/details/109816062?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-109816062-blog-88792616.pc_relevant_aa&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-109816062-blog-88792616.pc_relevant_aa&amp;utm_relevant_index=1">证明语法具有二义性的方法</a></p>
+<h6 id="构建练习">构建练习</h6>
+<p>①</p>
+<p>通常左递归对应左结合，右递归对应右结合。</p>
+<p>比如对于标识符列表：</p>
+<ol type="1">
+<li>list -&gt; list , id | id</li>
+<li>list -&gt; id , list | id</li>
+</ol>
+<p>1是左结合的，2是右结合的。</p>
+<p>②</p>
+<ol type="1">
+<li><p>证明：用下面文法生成的所有二进制串的值都能被3整除。`</p>
+<p>num -&gt; 11 | 1001 | num 0 | num num</p>
+<p>符合该文法的二进制串一定是由任意数量的 11，1001 和 0
+组成的最左位不为0的序列</p>
+<p>该序列的十进制和为： <span class="math display">\[
+sum =\Sigma_n\left(2^1+2^0\right) *2^n+\Sigma_m\left(2^3+2^0\right) *
+2^m\\
+=\Sigma_n 3*2^n+\Sigma_m 9 * 2^m
+\]</span></p>
+<p>显然是能被3整除的</p></li>
+<li><p>上面的文法是否能生成所有能被3整除的二进制串？</p>
+<p>不能。二进制串10101，数值为21，可被3整除，但无法由文法推导出。</p></li>
+</ol>
+<h4 id="语法制导翻译">语法制导翻译</h4>
 <p>构造翻译模式，中缀-&gt;后缀
 构造9-5+2的带语义动作的语法分析树，即输出其后缀表达式95-2+</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190802895392_835_image-20220927164002512.png" srcset="/img/loading.gif" lazyload alt="image-20220927164002512">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190802895392_835_image-20220927164002512.png" srcset="/img/loading.gif" lazyload alt="image-20220927164002512">
 <figcaption aria-hidden="true">image-20220927164002512</figcaption>
 </figure>
-<p>按后序遍历即可打印（翻译）出后缀表达式</p>
-<h4 id="yacc">Yacc</h4>
-<p>见实验</p>
+<p>按深度优先遍历即可打印（翻译）出后缀表达式</p>
 <h4 id="语法分析">语法分析</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190804367395_700_image-20221004152318374.png" srcset="/img/loading.gif" lazyload alt="image-20221004152318374">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190804367395_700_image-20221004152318374.png" srcset="/img/loading.gif" lazyload alt="image-20221004152318374">
 <figcaption aria-hidden="true">image-20221004152318374</figcaption>
 </figure>
-<h5 id="自顶向下">自顶向下</h5>
+<h5 id="自顶向下构造">自顶向下构造</h5>
 <h6 id="平凡算法扫描输入分析">平凡算法：扫描输入分析</h6>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190808051693_827_image-20221004153229852.png" srcset="/img/loading.gif" lazyload alt="image-20221004153229852">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190808051693_827_image-20221004153229852.png" srcset="/img/loading.gif" lazyload alt="image-20221004153229852">
 <figcaption aria-hidden="true">image-20221004153229852</figcaption>
 </figure>
 <h6 id="优化预测分析">优化：预测分析</h6>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190811525061_463_image-20221004152448359.png" srcset="/img/loading.gif" lazyload alt="image-20221004152448359">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190811525061_463_image-20221004152448359.png" srcset="/img/loading.gif" lazyload alt="image-20221004152448359">
 <figcaption aria-hidden="true">image-20221004152448359</figcaption>
 </figure>
 <p><span class="math inline">\(lookahead\)</span>在构造编译器的时候就可以完成。</p>
 <p>实例分析</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190813022183_796_image-20221004152827769.png" srcset="/img/loading.gif" lazyload alt="image-20221004152827769">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190813022183_796_image-20221004152827769.png" srcset="/img/loading.gif" lazyload alt="image-20221004152827769">
 <figcaption aria-hidden="true">image-20221004152827769</figcaption>
 </figure>
 <p>对于<span class="math inline">\(simple\)</span>类似构造方法。</p>
 <p><span class="math inline">\(lookahead\)</span>怎么构造？</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190816136501_201_image-20221004153753520.png" srcset="/img/loading.gif" lazyload alt="image-20221004153753520">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190816136501_201_image-20221004153753520.png" srcset="/img/loading.gif" lazyload alt="image-20221004153753520">
 <figcaption aria-hidden="true">image-20221004153753520</figcaption>
 </figure>
 <p>总体思路是什么，还有什么问题？</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190818280251_227_image-20221004154007046.png" srcset="/img/loading.gif" lazyload alt="image-20221004154007046">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190818280251_227_image-20221004154007046.png" srcset="/img/loading.gif" lazyload alt="image-20221004154007046">
 <figcaption aria-hidden="true">image-20221004154007046</figcaption>
 </figure>
 <h5 id="左递归问题">左递归问题</h5>
-<p>针对上面的预测分析法，我们发现：左递归会导致递归下降程序无限循环，还会导致</p>
+<p>针对上面的预测分析法，我们发现：左递归会导致递归下降程序无限循环以及预测分析法的失效。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zzy16zl9y45vpd"></i><span>c</span><div class="collapse show" id="collapse-zzy16zl9y45vpd"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">A</span><span class="hljs-params">()</span>{
+    <span class="hljs-keyword">switch</span>(lookahead){
+        <span class="hljs-keyword">case</span> a:
+            A();match(a);<span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> b:
+            match(b):<span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:
+            report(<span class="hljs-string">"syntax error"</span>)
+    }
+}</code></pre></div></div>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190819993463_865_image-20221004160548627.png" srcset="/img/loading.gif" lazyload alt="image-20221004160548627">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190819993463_865_image-20221004160548627.png" srcset="/img/loading.gif" lazyload alt="image-20221004160548627">
 <figcaption aria-hidden="true">image-20221004160548627</figcaption>
 </figure>
 <p>怎么消除？</p>
 <p>固定的算法：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190821656013_971_image-20221004160612826.png" srcset="/img/loading.gif" lazyload alt="image-20221004160612826">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190821656013_971_image-20221004160612826.png" srcset="/img/loading.gif" lazyload alt="image-20221004160612826">
 <figcaption aria-hidden="true">image-20221004160612826</figcaption>
 </figure>
 <p>理解：<span class="math inline">\(A=\beta \alpha \alpha
 ...\)</span></p>
 <p>采用右递归进行翻译</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190823148967_751_image-20221004161628877.png" srcset="/img/loading.gif" lazyload alt="image-20221004161628877">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190823148967_751_image-20221004161628877.png" srcset="/img/loading.gif" lazyload alt="image-20221004161628877">
 <figcaption aria-hidden="true">image-20221004161628877</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190827034211_692_image-20221004161643180.png" srcset="/img/loading.gif" lazyload alt="image-20221004161643180">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221008190827034211_692_image-20221004161643180.png" srcset="/img/loading.gif" lazyload alt="image-20221004161643180">
 <figcaption aria-hidden="true">image-20221004161643180</figcaption>
 </figure>
+<h5 id="练习-1">练习</h5>
+<p>构造 S -&gt; S ( S ) S | ε 的语法分析器</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9okdmtl9y45vpd"></i><span>python</span><div class="collapse show" id="collapse-9okdmtl9y45vpd"><pre><code class="hljs python"><span class="hljs-comment"># a program to test lookahead grammar analysis</span>
+<span class="hljs-comment"># S -&gt; S ( S ) S | ε to match brackets</span>
+<span class="hljs-comment"># it can be simplified to S -&gt; ( S ) S | ε</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Matcher</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, string</span>):
+        self.string = string
+        self.index = <span class="hljs-number">0</span>
+        self.lookahead = self.string[self.index] <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(self.string) &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">""</span>
+        self.process = <span class="hljs-string">"S"</span>
+        self.lookaheads = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">match</span>(<span class="hljs-params">self, char</span>):
+        <span class="hljs-keyword">if</span> char == <span class="hljs-string">''</span>:
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">elif</span> char == self.lookahead:
+            self.index += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> self.index &lt; <span class="hljs-built_in">len</span>(self.string):
+                self.lookahead = self.string[self.index]
+            <span class="hljs-keyword">else</span>:
+                self.lookahead = <span class="hljs-string">""</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">"Not matched"</span>)
+            exit(<span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">S</span>(<span class="hljs-params">self</span>):
+        self.lookaheads.append(self.lookahead)
+        <span class="hljs-keyword">if</span> self.lookahead == <span class="hljs-string">'('</span>:
+            self.process = self.process.replace(<span class="hljs-string">"S"</span>, <span class="hljs-string">"( S ) S"</span>, <span class="hljs-number">1</span>)
+            <span class="hljs-built_in">print</span>(self.process)
+            self.<span class="hljs-keyword">match</span>(<span class="hljs-string">'('</span>)
+            self.S()
+            self.<span class="hljs-keyword">match</span>(<span class="hljs-string">')'</span>)
+            self.S()
+        <span class="hljs-keyword">else</span>:
+            self.process = self.process.replace(<span class="hljs-string">"S"</span>, <span class="hljs-string">"ε"</span>, <span class="hljs-number">1</span>)
+            <span class="hljs-built_in">print</span>(self.process)
+            self.<span class="hljs-keyword">match</span>(<span class="hljs-string">''</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">self</span>):
+        self.S()
+        <span class="hljs-keyword">if</span> self.lookahead == <span class="hljs-string">''</span>:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">"Matched"</span>)
+            <span class="hljs-built_in">print</span>(self.process)
+            <span class="hljs-built_in">print</span>(self.lookaheads)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">"Not matched,the lookahead now is"</span>, self.lookahead)
+            <span class="hljs-built_in">print</span>(self.process)
+            <span class="hljs-built_in">print</span>(self.lookaheads)
+            exit(<span class="hljs-number">1</span>)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Enter a string to match: "</span>)
+    target = <span class="hljs-built_in">input</span>()
+    matcher = Matcher(target)
+    matcher.main()</code></pre></div></div>
+<p>运行结果：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B8%80%E4%BA%8C%E7%AB%A0/20221025232547008661_894_image-20221009204230516.png" srcset="/img/loading.gif" lazyload alt="image-20221009204230516">
+<figcaption aria-hidden="true">image-20221009204230516</figcaption>
+</figure>
+<h4 id="词法分析">词法分析</h4>
 
                 
               </div>
@@ -599,7 +723,7 @@ C++编译器检查数组下标越界是在</strong>_阶段 C++并不会检查数
   <div class="license-box my-3">
     <div class="license-title">
       <div>编译原理一二章</div>
-      <div>http://lunaticsky-tql.github.io/posts/34739/</div>
+      <div>http://lunaticsky-tql.github.io/posts/34738/</div>
     </div>
     <div class="license-meta">
       
@@ -617,7 +741,7 @@ C++编译器检查数组下标越界是在</strong>_阶段 C++并不会检查数
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2022年10月23日</div>
+          <div>2022年10月25日</div>
         </div>
       
       
@@ -658,8 +782,8 @@ C++编译器检查数组下标越界是在</strong>_阶段 C++并不会检查数
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/16720/" title="信息检索_索引构建、压缩及查询支持">
-                        <span class="hidden-mobile">信息检索_索引构建、压缩及查询支持</span>
+                      <a href="/posts/51388/" title="如何在mac上编写运行c++程序">
+                        <span class="hidden-mobile">如何在mac上编写运行c++程序</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
