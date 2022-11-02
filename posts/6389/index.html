@@ -1,0 +1,1123 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="寄网-传输层 UDP 特点   image-20221019101254797    image-20221019102904831   D  复用分用  复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道） 分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道） 通常复用针对发送，分用针对接收。    image-20221019101337529   &gt; B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="寄网-传输层">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/6389/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="寄网-传输层 UDP 特点   image-20221019101254797    image-20221019102904831   D  复用分用  复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道） 分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道） 通常复用针对发送，分用针对接收。    image-20221019101337529   &gt; B">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112829451012_857_image-20221019101254797.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112833830874_553_image-20221019102904831.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112836012813_910_image-20221019101337529.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112841055514_461_image-20221019104559718.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112842251316_209_image-20221019102648654.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112844925605_254_image-20221019101834126.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112847899571_967_image-20221019102038599.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112851148719_202_image-20221019101153691.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112852360163_657_image-20221019102522221.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112854071267_984_image-20221019103901732.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112856140137_289_image-20221019161257579.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112857352548_948_image-20221019162323429.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112900136029_437_image-20221019162337067.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112902564743_320_image-20221019163254576.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112906743219_237_image-20221019164147811.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112909502820_948_image-20221019165240189.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112911602268_247_image-20221019170813474.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112913795898_163_image-20221019171058350.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112917959019_890_image-20221019171614203.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112919789535_361_image-20221019183702448.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112923670147_103_image-20221019184436444.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112929819897_715_image-20221019185155113.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112931855615_706_image-20221019185225064.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112933551292_417_image-20221019185429262.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112937343229_422_image-20221019185440433.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112939258493_256_image-20221026092203952.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112941284045_123_image-20221019185844985.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112942732666_577_image-20221019185852269.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112946369564_281_image-20221019185917983.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112949459658_238_image-20221019190539995.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112952032314_240_image-20221019190656995.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112956234191_425_image-20221019190714367.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113000887288_715_image-20221019190525409.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113003951000_939_image-20221026102125865.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113005960023_920_image-20221026102907586.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113010320175_456_image-20221028201125789.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113012417879_161_image-20221028202938399.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113015046715_418_image-20221028202640029.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113021254308_149_image-20221028202202650.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113022900814_335_image-20221028203537641.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113025521130_952_image-20221102090515967.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113027424562_662_image-20221102090928397.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113029523742_128_image-20221102091321589.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113031785988_286_image-20221102102355905.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113034340991_595_image-20221102100002266.png">
+<meta property="article:published_time" content="2022-11-02T03:30:38.653Z">
+<meta property="article:modified_time" content="2022-11-02T06:31:34.388Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="寄网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112829451012_857_image-20221019101254797.png">
+    
+    
+    
+    <title>寄网-传输层 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="寄网-传输层"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-11-02 11:30" pubdate>
+              2022年11月2日 中午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              3.6k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/寄网-传输层/寄网-传输层.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">寄网-传输层</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年11月2日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="寄网-传输层">寄网-传输层</h1>
+<h2 id="udp">UDP</h2>
+<h3 id="特点">特点</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112829451012_857_image-20221019101254797.png" srcset="/img/loading.gif" lazyload alt="image-20221019101254797">
+<figcaption aria-hidden="true">image-20221019101254797</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112833830874_553_image-20221019102904831.png" srcset="/img/loading.gif" lazyload alt="image-20221019102904831">
+<figcaption aria-hidden="true">image-20221019102904831</figcaption>
+</figure>
+<blockquote>
+<p>D</p>
+</blockquote>
+<h3 id="复用分用">复用分用</h3>
+<p class="note note-info">
+</p><p>复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道）</p>
+<p>分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道）</p>
+通常复用针对发送，分用针对接收。
+<p></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112836012813_910_image-20221019101337529.png" srcset="/img/loading.gif" lazyload alt="image-20221019101337529">
+<figcaption aria-hidden="true">image-20221019101337529</figcaption>
+</figure>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112841055514_461_image-20221019104559718.png" srcset="/img/loading.gif" lazyload alt="image-20221019104559718"> &gt; B</p>
+<h3 id="报文结构和校验">报文结构和校验</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112842251316_209_image-20221019102648654.png" srcset="/img/loading.gif" lazyload alt="image-20221019102648654">
+<figcaption aria-hidden="true">image-20221019102648654</figcaption>
+</figure>
+<p><font color="Apricot">算校验和的时候别忘了进位</font></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112844925605_254_image-20221019101834126.png" srcset="/img/loading.gif" lazyload alt="image-20221019101834126">
+<figcaption aria-hidden="true">image-20221019101834126</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112847899571_967_image-20221019102038599.png" srcset="/img/loading.gif" lazyload alt="image-20221019102038599">
+<figcaption aria-hidden="true">image-20221019102038599</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112851148719_202_image-20221019101153691.png" srcset="/img/loading.gif" lazyload alt="image-20221019101153691">
+<figcaption aria-hidden="true">image-20221019101153691</figcaption>
+</figure>
+<blockquote>
+<p>B：长度包含头部，但不包含伪首部</p>
+</blockquote>
+<p>最重要的“为什么”部分：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112852360163_657_image-20221019102522221.png" srcset="/img/loading.gif" lazyload alt="image-20221019102522221">
+<figcaption aria-hidden="true">image-20221019102522221</figcaption>
+</figure>
+<h3 id="应用">应用</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112854071267_984_image-20221019103901732.png" srcset="/img/loading.gif" lazyload alt="image-20221019103901732">
+<figcaption aria-hidden="true">image-20221019103901732</figcaption>
+</figure>
+<h2 id="可靠数据传输">可靠数据传输</h2>
+<h3 id="目标">目标</h3>
+<p>左边是希望对上层达到的抽象，右边是实际的情况。<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112856140137_289_image-20221019161257579.png" srcset="/img/loading.gif" lazyload alt="image-20221019161257579"></p>
+<h3 id="设计思路">设计思路</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112857352548_948_image-20221019162323429.png" srcset="/img/loading.gif" lazyload alt="image-20221019162323429">
+<figcaption aria-hidden="true">image-20221019162323429</figcaption>
+</figure>
+<h4 id="rdt1.0">rdt1.0</h4>
+<p>考虑最简单的情况，即底层信道是完全可靠的：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112900136029_437_image-20221019162337067.png" srcset="/img/loading.gif" lazyload alt="image-20221019162337067">
+<figcaption aria-hidden="true">image-20221019162337067</figcaption>
+</figure>
+<p>发送，打包/拆包，交给下层发送</p>
+<h4 id="rdt2.0">rdt2.0</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112902564743_320_image-20221019163254576.png" srcset="/img/loading.gif" lazyload alt="image-20221019163254576">
+<figcaption aria-hidden="true">image-20221019163254576</figcaption>
+</figure>
+<p class="note note-secondary">
+缩写：ACKnowledge character；Not AcKnowledge character
+肯定确认和否定确认 为简便直白，对于package的翻译，用包代替分组
+</p>
+<h5 id="发送端">发送端：</h5>
+<p>仅当接收到ACK并离开该状态时才能发生rdt_send()事件。因此，在发送方确信接收方已正确接收当前分组之前肯定不会发送新数据。由于这种行为，rdt2.0这样的协议被称为停等
+(stop-and-wait)协议。</p>
+<h5 id="接收端">接收端：</h5>
+<p>上面表示如果packet受损发送NAK，下面表示如果package正确向上层传送数据并发送ACK</p>
+<h5 id="存在的问题">存在的问题：</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112906743219_237_image-20221019164147811.png" srcset="/img/loading.gif" lazyload alt="image-20221019164147811">
+<figcaption aria-hidden="true">image-20221019164147811</figcaption>
+</figure>
+<h4 id="rdt2.1">rdt2.1</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112909502820_948_image-20221019165240189.png" srcset="/img/loading.gif" lazyload alt="image-20221019165240189">
+<figcaption aria-hidden="true">image-20221019165240189</figcaption>
+</figure>
+<p>答案是只需要1bit。因为如果发送端交替发送01包，接收端只需要知道收到的包是最近收到的(序号没变)还是新的(序号变了)。</p>
+<p>按照这样的思路状态机如下：</p>
+<p>发送端就是每当收到正确且是ACK的包的时候就准备发下一个，否则收到的是受损包或NAK就重发。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112911602268_247_image-20221019170813474.png" srcset="/img/loading.gif" lazyload alt="image-20221019170813474">
+<figcaption aria-hidden="true">image-20221019170813474</figcaption>
+</figure>
+<p>接收端：等待接受状态上面部分是发现包受损发NAK且等待，发现和上一次收到的包重复就发ACK(以让发送端发下一个包)，然后等待，也是什么也不做，不向下层传输信息(丢数据)</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112913795898_163_image-20221019171058350.png" srcset="/img/loading.gif" lazyload alt="image-20221019171058350">
+<figcaption aria-hidden="true">image-20221019171058350</figcaption>
+</figure>
+<p>还有，接受端收到受损包其实不需要发NAK，再发一次上一次正确接收的ACK，发送端发现收到了对同一个包的两个ACK就知道接收端没正确接收这个包。</p>
+<p>这其实就是rdt2.2</p>
+<h4 id="rdt2.2">rdt2.2</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112917959019_890_image-20221019171614203.png" srcset="/img/loading.gif" lazyload alt="image-20221019171614203">
+<figcaption aria-hidden="true">image-20221019171614203</figcaption>
+</figure>
+<p>在前面的基础上，看懂这种情况下的状态机就不再困难了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112919789535_361_image-20221019183702448.png" srcset="/img/loading.gif" lazyload alt="image-20221019183702448">
+<figcaption aria-hidden="true">image-20221019183702448</figcaption>
+</figure>
+<p>接收端的主要变化是：在ACk中添加最后收到的包的序列和号，对应<code>make_pkt第二个参数</code>。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112923670147_103_image-20221019184436444.png" srcset="/img/loading.gif" lazyload alt="image-20221019184436444">
+<figcaption aria-hidden="true">image-20221019184436444</figcaption>
+</figure>
+<h4 id="rdt3.0">rdt3.0</h4>
+<h5 id="方案">方案：</h5>
+<p>解决的问题：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112929819897_715_image-20221019185155113.png" srcset="/img/loading.gif" lazyload alt="image-20221019185155113">
+<figcaption aria-hidden="true">image-20221019185155113</figcaption>
+</figure>
+<p>添加了计时器的发送端：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112931855615_706_image-20221019185225064.png" srcset="/img/loading.gif" lazyload alt="image-20221019185225064">
+<figcaption aria-hidden="true">image-20221019185225064</figcaption>
+</figure>
+<p>接收端不需要改变。因为在2.3中已经实现了判断重复并丢弃了。</p>
+<h5 id="实例">实例</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112933551292_417_image-20221019185429262.png" srcset="/img/loading.gif" lazyload alt="image-20221019185429262">
+<figcaption aria-hidden="true">image-20221019185429262</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112937343229_422_image-20221019185440433.png" srcset="/img/loading.gif" lazyload alt="image-20221019185440433">
+<figcaption aria-hidden="true">image-20221019185440433</figcaption>
+</figure>
+<p class="note note-primary">
+失序问题(二义性)是不能解决的，如下图所示
+</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112939258493_256_image-20221026092203952.png" srcset="/img/loading.gif" lazyload alt="image-20221026092203952" width="67%" height="67%"></p>
+<p>如果是上述情况，接收端不能辨别是重传的pkt1还是想要的pkt1.</p>
+<p class="note note-primary">
+怎么解决？
+wifi用的是停等协议(和rdt3.0一样)，加入标志位表明是否是重传的包。如果接收端发现是接受过的，丢弃。但对于tcp性能优化后，就需要增加序号字段宽度
+</p>
+<h3 id="流水线可靠数据传输">流水线可靠数据传输</h3>
+<h4 id="停等协议的性能问题">停等协议的性能问题</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112941284045_123_image-20221019185844985.png" srcset="/img/loading.gif" lazyload alt="image-20221019185844985">
+<figcaption aria-hidden="true">image-20221019185844985</figcaption>
+</figure>
+<p>发送时间相比传输时间是极短的</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112942732666_577_image-20221019185852269.png" srcset="/img/loading.gif" lazyload alt="image-20221019185852269">
+<figcaption aria-hidden="true">image-20221019185852269</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112946369564_281_image-20221019185917983.png" srcset="/img/loading.gif" lazyload alt="image-20221019185917983">
+<figcaption aria-hidden="true">image-20221019185917983</figcaption>
+</figure>
+<h4 id="流水线协议">流水线协议</h4>
+<h5 id="go-back-ngbn">Go-Back-N(GBN)</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112949459658_238_image-20221019190539995.png" srcset="/img/loading.gif" lazyload alt="image-20221019190539995">
+<figcaption aria-hidden="true">image-20221019190539995</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112952032314_240_image-20221019190656995.png" srcset="/img/loading.gif" lazyload alt="image-20221019190656995">
+<figcaption aria-hidden="true">image-20221019190656995</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112956234191_425_image-20221019190714367.png" srcset="/img/loading.gif" lazyload alt="image-20221019190714367">
+<figcaption aria-hidden="true">image-20221019190714367</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113000887288_715_image-20221019190525409.png" srcset="/img/loading.gif" lazyload alt="image-20221019190525409">
+<figcaption aria-hidden="true">image-20221019190525409</figcaption>
+</figure>
+<p>GBN
+协议看起来很浪费，因为它会丢弃一个正确接收（但失序）的包。但这样做是有道理的。因为数据必须按序交付。接收方可能缓存包
+n + 1，但是，根据 GBN 重传规则，如果包 n 丢失，则这个包及第n +
+1及之后的包迟早会再重传，所以，接收方只需要直接丢弃第n + 1个包即可。</p>
+<p>这种方法的优点是<strong>接收方不需要缓存任何失序分组</strong>，<strong>唯一需要维护的信息就是下一个按序接收的分组的序号</strong>。缺点就是<strong>随后对该分组的重传也许会丢失或出错，进而引发更多的重传。</strong></p>
+<h5 id="sr">SR</h5>
+<p>与GBN的主要区别：</p>
+<ul>
+<li><p>发送端：</p>
+<ul>
+<li><p>每个分组必须拥有其自己的逻辑定时器，因为超时发生后只能发送一个包。</p></li>
+<li><p>记录收到的ACK(因为不再重复发送)，但仅当收到的ACK的序号等于基序号<code>base</code>时窗口才会移动，移动到最小的未确认分组处(接收到的最大ACK+1)</p></li>
+</ul></li>
+<li><p>接收端</p>
+<ul>
+<li><p>收到没收到过的包，在窗口口内，缓存并发ACK这个包的序号。(没收到的包在窗口外那肯定是接收端缓存放不下了)</p></li>
+<li><p>收到已经收到过的包，也发这个包的ACK。</p></li>
+</ul></li>
+</ul>
+<p class="note note-primary">
+第二种情况是什么情景？
+收到已经收到过的包，那么只有一种情况，那就是接收端的ACK丢失，发送端不知道接收端这个包已经接受了，认为是中途丢了，就会再发一次。
+为什么要返回 ACK？
+加入按照上图中所示的发送方和接收方的序号空间，如果分组 send_base 的 ACK
+没有从接收方传播回发送方，则发送方最终将重传分组
+send_base，即使显然接收方已经收了该分组。如果接收方不确认该分组，则发送方窗口将永远不能向前滑动。
+</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113003951000_939_image-20221026102125865.png" srcset="/img/loading.gif" lazyload alt="image-20221026102125865">
+<figcaption aria-hidden="true">image-20221026102125865</figcaption>
+</figure>
+<p>然而，SR还是没解决类似的失序问题(虽然产生原因不一样，但导致的后果是一样的，即二义性)</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113005960023_920_image-20221026102907586.png" srcset="/img/loading.gif" lazyload alt="image-20221026102907586">
+<figcaption aria-hidden="true">image-20221026102907586</figcaption>
+</figure>
+<p>我们能够直观的感觉到，只要<strong>序号空间应大于等于窗口大小的2倍</strong>，就能“错开”潜在的二义性区间。</p>
+<h3 id="tcp">TCP</h3>
+<h4 id="段格式">段格式</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113010320175_456_image-20221028201125789.png" srcset="/img/loading.gif" lazyload alt="image-20221028201125789">
+<figcaption aria-hidden="true">image-20221028201125789</figcaption>
+</figure>
+<p class="note note-info">
+报头长度为20~60B，其中固定部分为20B。由于数据偏移字段的单位是4B，也就是说当偏移取最大时TCP首部长度为15×4=60B。
+</p>
+<h4 id="连接管理">连接管理</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113012417879_161_image-20221028202938399.png" srcset="/img/loading.gif" lazyload alt="image-20221028202938399">
+<figcaption aria-hidden="true">image-20221028202938399</figcaption>
+</figure>
+<blockquote>
+<p>B</p>
+</blockquote>
+<p>关于连接的建立和释放(三次握手，四次挥手)等内容，在实验作业中有详细的阐述。</p>
+<p><a target="_blank" href="https://lunaticsky-tql.github.io/posts/13596/" style="position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; box-sizing: border-box; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; width: 390px; min-height: 84px; border-radius: 8px; max-width: 100%; overflow: hidden; margin: 16px auto; padding: 12px 12px 9px 12px; background-color: #F6F6F6;"><span class="LinkCard-contents"><span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 40px; line-height: 1.25; color: #121212;">Wireshark分析交互过程</span><span style="display: -webkit-box; font-size: 13px; height: 18px; line-height: 18px; color: #999; word-break: break-all; text-overflow: ellipsis; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical;"><span style="display: inline-flex; align-items: center;"><svg class="Zi Zi--InsertLink" fill="currentColor" viewBox="0 0 24 24" width="14" height="14"><path d="M13.414 4.222a4.5 4.5 0 1 1 6.364 6.364l-3.005 3.005a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l3.005-3.005a2.5 2.5 0 1 0-3.536-3.536l-3.005 3.005a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l3.005-3.005zm-6.187 6.187a.5.5 0 0 1 .638-.058l.07.058.706.707a.5.5 0 0 1 .058.638l-.058.07-3.005 3.004a2.5 2.5 0 0 0 3.405 3.658l.13-.122 3.006-3.005a.5.5 0 0 1 .638-.058l.069.058.707.707a.5.5 0 0 1 .058.638l-.058.069-3.005 3.005a4.5 4.5 0 0 1-6.524-6.196l.16-.168 3.005-3.005zm8.132-3.182a.25.25 0 0 1 .353 0l1.061 1.06a.25.25 0 0 1 0 .354l-8.132 8.132a.25.25 0 0 1-.353 0l-1.061-1.06a.25.25 0 0 1 0-.354l8.132-8.132z"></path></svg></span><span>https://lunaticsky-tql.github.io/posts/13596/</span></span></span></a></p>
+<h4 id="传输过程">传输过程</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113015046715_418_image-20221028202640029.png" srcset="/img/loading.gif" lazyload alt="image-20221028202640029">
+<figcaption aria-hidden="true">image-20221028202640029</figcaption>
+</figure>
+<p>对于某一端来说，seq表示发送的报文段中数据部分的第一个字节在其发送缓存区中的编号，<font color="Apricot">ack表示它期望收到的下一个报文段的数据部分的第一个字节在另一端的发送缓存区中的编号</font>。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113021254308_149_image-20221028202202650.png" srcset="/img/loading.gif" lazyload alt="image-20221028202202650">
+<figcaption aria-hidden="true">image-20221028202202650</figcaption>
+</figure>
+<blockquote>
+<p>同一个TCP报文中的seq和ack的值是没有联系。在B发给A的报文（捎带确认）
+中，seq值应和A发向B的报文中的ack值相同，即201：ack值表示B期望下次收到A发出的报文段的第一个字节的编号，应是200+2=202。</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113022900814_335_image-20221028203537641.png" srcset="/img/loading.gif" lazyload alt="image-20221028203537641">
+<figcaption aria-hidden="true">image-20221028203537641</figcaption>
+</figure>
+<blockquote>
+<p>D</p>
+</blockquote>
+<h4 id="重传场景">重传场景</h4>
+<h5 id="超时重传">超时重传</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113025521130_952_image-20221102090515967.png" srcset="/img/loading.gif" lazyload alt="image-20221102090515967">
+<figcaption aria-hidden="true">image-20221102090515967</figcaption>
+</figure>
+<h6 id="rto设置重要性">RTO设置重要性</h6>
+<p>RTO设置过大，对于丢失的报文段重传等待的时间过长，对于应用来说会引入较大的时延</p>
+<p>RTO设置过小，可能会提前超时，引入不必要的重传，浪费带宽资源</p>
+<h6 id="算法思路">算法思路</h6>
+<p>最新样本赋予的权值大于老样本的权值（老化算法）</p>
+<p>越新的样本越能更好地反映网络的当前状况</p>
+<p>不仅如此，在实际情况中，网络拥塞情况会对网络时延有很大影响(体现在下面的DevRTT中)</p>
+<p>启发式算法：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113027424562_662_image-20221102090928397.png" srcset="/img/loading.gif" lazyload alt="image-20221102090928397">
+<figcaption aria-hidden="true">image-20221102090928397</figcaption>
+</figure>
+<h5 id="快速重传">快速重传</h5>
+<p>“事不过三”。如果收到重复ACK，至少说明客户端接收到的包失序了。如果一两个，可能只是包跑的不一样快，但多了就认为很有可能是丢了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113029523742_128_image-20221102091321589.png" srcset="/img/loading.gif" lazyload alt="image-20221102091321589">
+<figcaption aria-hidden="true">image-20221102091321589</figcaption>
+</figure>
+<h4 id="流量控制">流量控制</h4>
+<h5 id="滑动窗口">滑动窗口</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113031785988_286_image-20221102102355905.png" srcset="/img/loading.gif" lazyload alt="image-20221102102355905">
+<figcaption aria-hidden="true">image-20221102102355905</figcaption>
+</figure>
+<p class="note note-primary">
+如果上图中黄×所在的ACK没收到咋办？会出现什么情况？如何解决？
+</p>
+<p>服务器不知道</p>
+<blockquote>
+<p>TCP使用滑动窗口机制来进行流量控制，其窗口尺寸的设置很重要，如果滑动窗口值设置得太小，那么会产生过多的ACK(因为窗口大可以累积确认，因此会有更少的ACK)，影响网络吞吐率；如果设置得太大，那么又会由于传送的数据过多而使路由器变得拥挤，浪费主机的存储资源，导致主机可能丢失分组。</p>
+</blockquote>
+<h5 id="性能问题image-20221102100002266">性能问题<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113034340991_595_image-20221102100002266.png" srcset="/img/loading.gif" lazyload alt="image-20221102100002266"></h5>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AF%84%E7%BD%91/">#寄网</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>寄网-传输层</div>
+      <div>http://lunaticsky-tql.github.io/posts/6389/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月2日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年11月2日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/23422/" title="信息检索_系统评价">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">信息检索_系统评价</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/13596/" title="计算机网络实验二_Wireshark分析交互过程">
+                        <span class="hidden-mobile">计算机网络实验二_Wireshark分析交互过程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
