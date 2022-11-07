@@ -1,0 +1,999 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="编译原理-词法分析 正则表达式 注意课上没提到的正则写法，仅作为了解 \w 用于查找字母、数字和下划线 \W 匹配除字母、数字和下划线之外的字符 \d 仅用来匹配数字 \D用来匹配数字之外的所有字符 \s 仅匹配空白字符  首尾符号不同的a、b串 c++(a(a*b)+) | (b(b*a)+) 或(a(a|b)*b) | (b(a|b)*a) 首尾符号相同的a、b串 包括只有a或b的情况 c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译原理-词法分析">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/6004/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="编译原理-词法分析 正则表达式 注意课上没提到的正则写法，仅作为了解 \w 用于查找字母、数字和下划线 \W 匹配除字母、数字和下划线之外的字符 \d 仅用来匹配数字 \D用来匹配数字之外的所有字符 \s 仅匹配空白字符  首尾符号不同的a、b串 c++(a(a*b)+) | (b(b*a)+) 或(a(a|b)*b) | (b(a|b)*a) 首尾符号相同的a、b串 包括只有a或b的情况 c++">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081612860400_768_image-20221105204422750.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081614097039_483_image-20221105211752301.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081615829280_894_image-20221105212835393.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081617166099_636_image-20221105213415355.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081618854779_247_image-20221106093147221.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081618854779_247_image-20221106093147221.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081622072895_220_image-20221106113307803.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081623719225_876_image-20221106113154787.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081625192588_768_image-20221106113520151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081626891613_879_image-20221106095750761.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081627912947_486_image-20221106094657352.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081629295837_152_image-20221106113947097.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081630470656_164_image-20221106100409568.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081632830316_747_image-20221106100750517.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081635290017_116_image-20221106114421614.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081636596912_786_image-20221106101039674.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081638049390_665_image-20221106101722642.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081639688157_503_image-20221106114710326.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081638049390_665_image-20221106101722642.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081642146138_964_image-20221106164356951.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081643785412_875_image-20221106164315789.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081645146555_627_image-20221106164515007.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081642146138_964_image-20221106164356951.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081643785412_875_image-20221106164315789.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081649213700_939_image-20221106164831871.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081650544945_592_image-20221106165419438.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081651688510_197_image-20221106114818599.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081651688510_197_image-20221106114818599.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081655357057_638_image-20221106175951220.png">
+<meta property="article:published_time" content="2022-11-07T00:16:56.702Z">
+<meta property="article:modified_time" content="2022-11-07T00:16:56.703Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="编译原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081612860400_768_image-20221105204422750.png">
+    
+    
+    
+    <title>编译原理-词法分析 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="编译原理-词法分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-11-07 08:16" pubdate>
+              2022年11月7日 早上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              2.9k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/编译原理-词法分析/编译原理-词法分析.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">编译原理-词法分析</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年11月7日 早上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="编译原理-词法分析">编译原理-词法分析</h1>
+<h2 id="正则表达式">正则表达式</h2>
+<p>注意课上没提到的正则写法，仅作为了解</p>
+<p><code>\w</code> 用于查找字母、数字和下划线</p>
+<p><code>\W</code> 匹配除字母、数字和下划线之外的字符</p>
+<p><code>\d</code> 仅用来匹配数字</p>
+<p><code>\D</code>用来匹配数字之外的所有字符</p>
+<p><code>\s</code> 仅匹配空白字符</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081612860400_768_image-20221105204422750.png" srcset="/img/loading.gif" lazyload alt="image-20221105204422750" width="50%" height="50%"></p>
+<p>首尾符号不同的a、b串</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ytk3kqla6b6uy2"></i><span>c++</span><div class="collapse show" id="collapse-ytk3kqla6b6uy2"><pre><code class="hljs c++">(<span class="hljs-built_in">a</span>(a*b)+) | (<span class="hljs-built_in">b</span>(b*a)+)
+或(<span class="hljs-built_in">a</span>(a|b)*b) | (<span class="hljs-built_in">b</span>(a|b)*a)</code></pre></div></div>
+<p>首尾符号相同的a、b串 <strong>包括只有a或b的情况</strong></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ey780ela6b6uy2"></i><span>c++</span><div class="collapse show" id="collapse-ey780ela6b6uy2"><pre><code class="hljs c++">(<span class="hljs-built_in">a</span>(b*a)*)|(<span class="hljs-built_in">b</span>(a*b)*)</code></pre></div></div>
+<h2 id="nfa设计">NFA设计</h2>
+<p>不包含字串011的01串</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081614097039_483_image-20221105211752301.png" srcset="/img/loading.gif" lazyload alt="image-20221105211752301">
+<figcaption aria-hidden="true">image-20221105211752301</figcaption>
+</figure>
+<p>偶数个0，偶数个1的0/1串</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081615829280_894_image-20221105212835393.png" srcset="/img/loading.gif" lazyload alt="image-20221105212835393">
+<figcaption aria-hidden="true">image-20221105212835393</figcaption>
+</figure>
+<p>能被3整除的二进制串</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081617166099_636_image-20221105213415355.png" srcset="/img/loading.gif" lazyload alt="image-20221105213415355">
+<figcaption aria-hidden="true">image-20221105213415355</figcaption>
+</figure>
+<h2 id="正则-nfa">正则-NFA</h2>
+<p><code>Thomson 构造法</code>。基本思想是递归：</p>
+<ol type="1">
+<li><p>对于基本的 re，直接构造</p></li>
+<li><p>对于复合的 re，递归构造</p></li>
+</ol>
+<p>具体构造方式比较简单，在此略去</p>
+<p>以(0 | 1)*110(0 | 1)*为例：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081618854779_247_image-20221106093147221.png" srcset="/img/loading.gif" lazyload alt="image-20221106093147221">
+<figcaption aria-hidden="true">image-20221106093147221</figcaption>
+</figure>
+<h3 id="nfa-dfa">NFA-DFA</h3>
+<p><code>子集构造法</code></p>
+<h4 id="算法理解">算法理解：</h4>
+<p>递推的思想</p>
+<p>最简单的符号串ε：NFA状态集合←→DFA 状态</p>
+<p>长度为1的串a=εa，在自动机中可达的状态为：从c对应的状态经过标记为a的边可达的状态</p>
+<p>长度为2的串...</p>
+<h4 id="算法需要注意的地方">算法需要注意的地方：</h4>
+<ol type="1">
+<li><p>DFA新的状态对应NFA状态集消耗一个字符，能够走到的状态集。所以很明显，这里要消耗，所以不能是
+ε，并且只能消耗一个。</p></li>
+<li><p>得到步骤 1 中的状态集之后，还需要考虑，这里面的所有节点，通过 ε
+能走到的所有状态。注意，这里的每个状态，只要可以通过 ε
+走，就必须一直走下去，也就是所谓的
+<code>ε-闭包</code>。这一步得到状态集的就是最后的结果。</p></li>
+<li><p>第二步需要格外注意的是别忘了检查克林顿闭包中往回返的边。</p></li>
+<li><p>只要包含了NFA中的终态，在DFA中就作为终态出现。</p></li>
+<li><p>直到检查某一个状态的ε-闭包不再产生新状态的时候，算法停止。</p></li>
+</ol>
+<h4 id="实例">实例</h4>
+<p>上面的图进行一遍子集构造的过程(往年的期末考题，推导过程要比课上讲的例子要长一些，小心出错)</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081618854779_247_image-20221106093147221.png" srcset="/img/loading.gif" lazyload alt="image-20221106093147221">
+<figcaption aria-hidden="true">image-20221106093147221</figcaption>
+</figure>
+<p>先考虑空串：</p>
+<p>ε_closure({0})={0, 1, 2, 4, 7}=A</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081622072895_220_image-20221106113307803.png" srcset="/img/loading.gif" lazyload alt="image-20221106113307803">
+<figcaption aria-hidden="true">image-20221106113307803</figcaption>
+</figure>
+<p>在DFA里加入开始状态A。</p>
+<p>由于只有2有能够消耗0的边，因此下一步从这个状态指向的3开始考虑：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081623719225_876_image-20221106113154787.png" srcset="/img/loading.gif" lazyload alt="image-20221106113154787">
+<figcaption aria-hidden="true">image-20221106113154787</figcaption>
+</figure>
+<p>ε_closure(δ(A, 0))=ε_closure({3})={3, 6, 7, 1, 2, 4}={1, 2, 3, 4, 6,
+7}=B</p>
+<p>同理。不过这一次在A中4和7都能提供消耗1的边，因此要从5和8开始拓展两次ε_closure：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081625192588_768_image-20221106113520151.png" srcset="/img/loading.gif" lazyload alt="image-20221106113520151">
+<figcaption aria-hidden="true">image-20221106113520151</figcaption>
+</figure>
+<p>ε_closure(δ(A, 1))=ε_closure({5,8})={5, 6, 7, 1, 2, 4, 8}={1, 2, 4,
+5, 6, 7, 8}=C</p>
+<p>考虑了所有消耗一个字符的情况后，我们的DFA应当是这个样子：</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081626891613_879_image-20221106095750761.png" srcset="/img/loading.gif" lazyload alt="image-20221106095750761" width="67%" height="67%"></p>
+<p>B状态消耗0的状态是{3}。而{3}的ε闭包我们已经求过，它就是B：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081627912947_486_image-20221106094657352.png" srcset="/img/loading.gif" lazyload alt="image-20221106094657352">
+<figcaption aria-hidden="true">image-20221106094657352</figcaption>
+</figure>
+<p>ε_closure(δ(B, 0))=ε_closure({3})=B</p>
+<p>同样的，B消耗1后为{5,8}，它的ε闭包我们也是知道的，是C。</p>
+<p>ε_closure(δ(B, 1))=ε_closure({5,8})=C</p>
+<p>那么有：</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081629295837_152_image-20221106113947097.png" srcset="/img/loading.gif" lazyload alt="image-20221106113947097" width="67%" height="67%"></p>
+<p>再来考察C：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081630470656_164_image-20221106100409568.png" srcset="/img/loading.gif" lazyload alt="image-20221106100409568">
+<figcaption aria-hidden="true">image-20221106100409568</figcaption>
+</figure>
+<p>ε_closure(δ(C, 0))=ε_closure({3})=B</p>
+<p>ε_closure(δ(C, 1))=ε_closure({5,8,9})={5, 6, 7, 1, 2, 4, 8, 9}={1, 2,
+4, 5, 6, 7, 8, 9}=D</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081632830316_747_image-20221106100750517.png" srcset="/img/loading.gif" lazyload alt="image-20221106100750517">
+<figcaption aria-hidden="true">image-20221106100750517</figcaption>
+</figure>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081635290017_116_image-20221106114421614.png" srcset="/img/loading.gif" lazyload alt="image-20221106114421614" width="67%" height="67%"></p>
+<p>考察新状态D：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081636596912_786_image-20221106101039674.png" srcset="/img/loading.gif" lazyload alt="image-20221106101039674">
+<figcaption aria-hidden="true">image-20221106101039674</figcaption>
+</figure>
+<p>ε_closure(δ(D, 0))=ε_closure({3,10})={3, 6, 7, 1, 2, 4, 10, 11, 12,
+14, 17}={1, 2, 3, 4, 6, 7, 10, 11, 12, 14, 17}=E</p>
+<p>这一次覆盖的状态包含了终态17.因此在DFG中E就要加一个圈，表示终态。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081638049390_665_image-20221106101722642.png" srcset="/img/loading.gif" lazyload alt="image-20221106101722642">
+<figcaption aria-hidden="true">image-20221106101722642</figcaption>
+</figure>
+<p>ε_closure(δ(D, 1))=ε_closure({4,7,8})=D</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081639688157_503_image-20221106114710326.png" srcset="/img/loading.gif" lazyload alt="image-20221106114710326" width="67%" height="67%"></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081638049390_665_image-20221106101722642.png" srcset="/img/loading.gif" lazyload alt="image-20221106101722642">
+<figcaption aria-hidden="true">image-20221106101722642</figcaption>
+</figure>
+<p>ε_closure(δ(E, 0))=ε_closure({3,13})={1, 2, 3, 4, 6, 7, 11, 12, 13,
+14, 16, 17}=F</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081642146138_964_image-20221106164356951.png" srcset="/img/loading.gif" lazyload alt="image-20221106164356951">
+<figcaption aria-hidden="true">image-20221106164356951</figcaption>
+</figure>
+<p>ε_closure(δ(E, 1))=ε_closure({5,8,15})={ 1, 2, 4, 5, 6, 7, 8, 11, 12,
+14, 15, 16, 17}=G</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081643785412_875_image-20221106164315789.png" srcset="/img/loading.gif" lazyload alt="image-20221106164315789">
+<figcaption aria-hidden="true">image-20221106164315789</figcaption>
+</figure>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081645146555_627_image-20221106164515007.png" srcset="/img/loading.gif" lazyload alt="image-20221106164515007" width="67%" height="67%"></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081642146138_964_image-20221106164356951.png" srcset="/img/loading.gif" lazyload alt="image-20221106164356951">
+<figcaption aria-hidden="true">image-20221106164356951</figcaption>
+</figure>
+<p>ε_closure(δ(F, 0))=ε_closure({3,13})=F</p>
+<p>ε_closure(δ(F, 1))=ε_closure({5,8,15})=G</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081643785412_875_image-20221106164315789.png" srcset="/img/loading.gif" lazyload alt="image-20221106164315789">
+<figcaption aria-hidden="true">image-20221106164315789</figcaption>
+</figure>
+<p>ε_closure(δ(G, 0))=ε_closure({3,13})=F</p>
+<p>ε_closure(δ(G, 1))= ε_closure({5,8,9,15})={ 1, 2, 4, 5, 6, 7, 8, 9,
+11, 12, 14, 15, 16, 17}=H</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081649213700_939_image-20221106164831871.png" srcset="/img/loading.gif" lazyload alt="image-20221106164831871">
+<figcaption aria-hidden="true">image-20221106164831871</figcaption>
+</figure>
+<p>ε_closure(δ(H, 0))=ε_closure({3,10,13})={1, 2, 3, 4, 6, 7, 10, 11,
+12, 13, 14, 16, 17}=I</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081650544945_592_image-20221106165419438.png" srcset="/img/loading.gif" lazyload alt="image-20221106165419438">
+<figcaption aria-hidden="true">image-20221106165419438</figcaption>
+</figure>
+<p>ε_closure(δ(H, 1))=H</p>
+<p>ε_closure(δ(I, 0))=F</p>
+<p>ε_closure(δ(I, 1))=G</p>
+<p>发现I不再产生新的状态了，长舒一口气，终于可以结束了。</p>
+<p>最终的DFA如下所示：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081651688510_197_image-20221106114818599.png" srcset="/img/loading.gif" lazyload alt="image-20221106114818599">
+<figcaption aria-hidden="true">image-20221106114818599</figcaption>
+</figure>
+<p>做题技巧：做到后面可以连同记下求过的ε_closure。A⊆B则ε_closure(A)⊆ε_closure(B)</p>
+<p>识别0111010过程：A →B →C →D →D →E →G →F</p>
+<h2 id="dfa优化">DFA优化</h2>
+<h4 id="优化思想">优化思想</h4>
+<p>具有非ε的输出边的状态显然是NFA中的重要状态</p>
+<p>δ(s，a)不空，当且仅当s是重要状态→
+决定了ε_closure(δ(T，a))的计算→子集构造法的核心</p>
+<p>两个子集若具有相同的重要状态，且同时包含或同时不包含终态，则可看作等价</p>
+<h4 id="算法理解-1">算法理解</h4>
+<p>下面这一篇文章对正则到DFA和DFA最小化的思想和具体实现剖析的比较透彻。其中正则到DFA并非重点考察内容，但对理解DFA优化的思想有比较大的帮助。</p>
+<p><a target="_blank" href="https://wangwangok.github.io/2019/10/28/compiler_regular2dfa/" style="position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; box-sizing: border-box; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; width: 390px; min-height: 84px; border-radius: 8px; max-width: 100%; overflow: hidden; margin: 16px auto; padding: 12px 12px 9px 12px; background-color: #F6F6F6;"><span class="LinkCard-contents"><span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 40px; line-height: 1.25; color: #121212;">词法分析-正则表达式到DFA</span><span style="display: -webkit-box; font-size: 13px; height: 18px; line-height: 18px; color: #999; word-break: break-all; text-overflow: ellipsis; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical;"><span style="display: inline-flex; align-items: center;"><svg class="Zi Zi--InsertLink" fill="currentColor" viewBox="0 0 24 24" width="14" height="14"><path d="M13.414 4.222a4.5 4.5 0 1 1 6.364 6.364l-3.005 3.005a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l3.005-3.005a2.5 2.5 0 1 0-3.536-3.536l-3.005 3.005a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l3.005-3.005zm-6.187 6.187a.5.5 0 0 1 .638-.058l.07.058.706.707a.5.5 0 0 1 .058.638l-.058.07-3.005 3.004a2.5 2.5 0 0 0 3.405 3.658l.13-.122 3.006-3.005a.5.5 0 0 1 .638-.058l.069.058.707.707a.5.5 0 0 1 .058.638l-.058.069-3.005 3.005a4.5 4.5 0 0 1-6.524-6.196l.16-.168 3.005-3.005zm8.132-3.182a.25.25 0 0 1 .353 0l1.061 1.06a.25.25 0 0 1 0 .354l-8.132 8.132a.25.25 0 0 1-.353 0l-1.061-1.06a.25.25 0 0 1 0-.354l8.132-8.132z"></path></svg></span><span>https://wangwangok.github.io/2019/10/28/compiler_regular2dfa/</span></span></span></a></p>
+<h4 id="实例-1">实例</h4>
+<p>最小化上面求得的DFA：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081651688510_197_image-20221106114818599.png" srcset="/img/loading.gif" lazyload alt="image-20221106114818599">
+<figcaption aria-hidden="true">image-20221106114818599</figcaption>
+</figure>
+<p>初始非终态{A, B, C, D}，终态{E, F, G, H, I}，</p>
+<p>终态内部自己打转儿，不可再分</p>
+<p>0将前者分裂为{A, B, C}和{D}，1将前者分裂为{A,
+B}和{C}，至此不可再分</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/20221107081655357057_638_image-20221106175951220.png" srcset="/img/loading.gif" lazyload alt="image-20221106175951220">
+<figcaption aria-hidden="true">image-20221106175951220</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">#编译原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>编译原理-词法分析</div>
+      <div>http://lunaticsky-tql.github.io/posts/6004/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月7日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年11月7日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/23422/" title="信息检索_系统评价">
+                        <span class="hidden-mobile">信息检索_系统评价</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
