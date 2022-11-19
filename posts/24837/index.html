@@ -1,0 +1,1205 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="计算机网络实验3.1-基于UDP服务设计可靠传输协议(停等版本) 实验要求 利用数据报套接字在用户空间实现面向连接的可靠数据传输，功能包括：建立连接、差错检测、确认重传等。流量控制采用停等机制，完成给定测试文件的传输。 程序流程展示 协议设计 在本次实验中采用基于rdt3.0的协议设计。 报文结构   image-20221119150328876  如图所示，报文头长度共128Bits。下面介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2013599_田佳业_实验3.1">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/24837/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="计算机网络实验3.1-基于UDP服务设计可靠传输协议(停等版本) 实验要求 利用数据报套接字在用户空间实现面向连接的可靠数据传输，功能包括：建立连接、差错检测、确认重传等。流量控制采用停等机制，完成给定测试文件的传输。 程序流程展示 协议设计 在本次实验中采用基于rdt3.0的协议设计。 报文结构   image-20221119150328876  如图所示，报文头长度共128Bits。下面介绍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192011936961_320_image-20221119150328876.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192018406166_865_image-20221119154308774.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192021770008_725_image-20221119162017409.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192117915929_703_image-20221119162044532.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192126693722_492_image-20221119162927049.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192129767531_984_image-20221119163135874.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192132716638_161_image-20221119185527966.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192135114475_628_image-20221119184351874.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192137753520_483_image-20221119184414935.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192140166643_147_image-20221119184511051.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192142733601_999_image-20221119184627493.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192145332007_368_image-20221119184759988.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192148152631_686_image-20221119185617149.png">
+<meta property="article:published_time" content="2022-11-19T11:21:49.943Z">
+<meta property="article:modified_time" content="2022-11-19T11:21:49.944Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="寄网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192011936961_320_image-20221119150328876.png">
+    
+    
+    
+    <title>2013599_田佳业_实验3.1 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2013599_田佳业_实验3.1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-11-19 19:21" pubdate>
+              2022年11月19日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              9.3k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/2013599_田佳业_实验3.1/2013599_田佳业_实验3.1.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">2013599_田佳业_实验3.1</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年11月19日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="计算机网络实验3.1-基于udp服务设计可靠传输协议停等版本">计算机网络实验3.1-基于UDP服务设计可靠传输协议(停等版本)</h1>
+<h2 id="实验要求">实验要求</h2>
+<p>利用数据报套接字在用户空间实现面向连接的可靠数据传输，功能包括：建立连接、差错检测、确认重传等。流量控制采用停等机制，完成给定测试文件的传输。</p>
+<h2 id="程序流程展示">程序流程展示</h2>
+<h3 id="协议设计">协议设计</h3>
+<p>在本次实验中采用基于rdt3.0的协议设计。</p>
+<h4 id="报文结构">报文结构</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192011936961_320_image-20221119150328876.png" srcset="/img/loading.gif" lazyload alt="image-20221119150328876">
+<figcaption aria-hidden="true">image-20221119150328876</figcaption>
+</figure>
+<p>如图所示，报文头长度共<code>128Bits</code>。下面介绍报文结构设计的思路。</p>
+<p>首先，注意到我们的实验只需要从客户端到服务器单向传输数据，因此我们事实上整个实验只需要一个序列号字段即可满足需求。对于发送端对应<code>TCP</code>中的<code>seq</code>,接收端对应<code>TCP</code>中的<code>ack</code>。</p>
+<p>下面是十六位校验和以及数据报字段长度，与<code>TCP</code>相同。</p>
+<p>目前使用<code>u_short</code>来存放<code>flag</code>。其字段含义如下：</p>
+<p><code>F</code>:<code>FIN</code></p>
+<p><code>S</code>:<code>SYN</code></p>
+<p><code>A</code>:<code>ACK</code></p>
+<p><code>H</code>:<code>FILE_HEAD</code></p>
+<p><code>FILE_HEAD</code>用于指示接收端此报文包含文件信息的字段。</p>
+<p><code>window_size</code>本次实验还没有用到。</p>
+<p><code>option</code>为可选字段，在本次实验中暂时用于存放文件名。</p>
+<p><code>data</code>的最大长度可以调节，本次实验定义为1024字节。</p>
+<p>此部分定义代码段如下;</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gorz0vlanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-gorz0vlanubr1y"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> DATA 0x0</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> FIN 0x1</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SYN 0x2</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ACK 0x4</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ACK_SYN 0x6</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ACK_FIN 0x5</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE_HEAD 0x8</span>
+<span class="hljs-comment">// datagram format:</span>
+<span class="hljs-meta">#<span class="hljs-keyword">pragma</span> pack(1)</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">packet_head</span> {
+    u_int seq;
+    u_short check_sum;
+    u_short data_size;
+    u_short flag;
+    u_short window_size;
+    u_int option;
+
+    <span class="hljs-built_in">packet_head</span>() {
+        seq = <span class="hljs-number">0</span>;
+        check_sum = <span class="hljs-number">0</span>;
+        data_size = <span class="hljs-number">0</span>;
+        flag = <span class="hljs-number">0</span>;
+        window_size = <span class="hljs-number">0</span>;
+        option = <span class="hljs-number">0</span>;
+    }
+};
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">packet</span> {
+    packet_head head;
+    <span class="hljs-type">char</span> data[MAX_SIZE]{};
+
+    <span class="hljs-built_in">packet</span>() {
+        <span class="hljs-built_in">packet_head</span>();
+        <span class="hljs-built_in">memset</span>(data, <span class="hljs-number">0</span>, MAX_SIZE);
+    }
+};
+<span class="hljs-meta">#<span class="hljs-keyword">pragma</span> pack()</span></code></pre></div></div>
+<p><code>#pragma pack(1)</code>用于指示结构体内容按1Byte对齐，以保证报文大小是我们期望的紧凑形式。</p>
+<h4 id="建连和断连">建连和断连</h4>
+<p>依然是注意到单向传输的特点，对握手和挥手的过程也进行了优化：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192018406166_865_image-20221119154308774.png" srcset="/img/loading.gif" lazyload alt="image-20221119154308774">
+<figcaption aria-hidden="true">image-20221119154308774</figcaption>
+</figure>
+<p>左边是TCP三次握手的过程，右侧是我为本次实验设计的握手过程。</p>
+<p>TCP第三次握手的目的是“server”需要知道“client”能够收到他的应答。这在server向client发送数据时是有必要的，而本次实验只要发送端知道接收端能发能收，就可以放心的向其发送文件，握手成功。</p>
+<p>接收端在收到发送端的握手信息后就可以准备好接受文件了。此时接收端预料的应当是发送端发送文件信息。但是这时候如果发送端断线了，接收端显然不能干等着，否则在真实情景下完全可以发起类似SYN洪泛攻击的行为。因此我们需要设置定时器，如果在这段时间发送端没有任何信息发来，这时应当释放资源并退出。在此次实验中这个最大时间设置的是1min。</p>
+<p>同时，虽然此次实验假设接收端向发送端发送数据丢包率为0，但是在实验中仍旧考虑了这种情况：如果接收端的ACK丢了，会发生什么情况？因此在接收端准备接受文件时，仍旧检查收到的是否是握手信息。如果是握手信息，那么重置上述提到的定时器，仍旧停留在等待文件信息的状态。</p>
+<p>断连的过程和上述分析类似，也是只需要两次即可。</p>
+<p>另外，不需要文件结束位的原因是因为接受者在得到文件信息的时候就知道文件大小，从而知道有几个数据包，什么时候结束。</p>
+<h3 id="流程设计">流程设计</h3>
+<p>程序支持一次建连发送多个文件。</p>
+<h4 id="服务器">服务器</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192021770008_725_image-20221119162017409.png" srcset="/img/loading.gif" lazyload alt="image-20221119162017409">
+<figcaption aria-hidden="true">image-20221119162017409</figcaption>
+</figure>
+<h4 id="客户端">客户端</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192117915929_703_image-20221119162044532.png" srcset="/img/loading.gif" lazyload alt="image-20221119162044532">
+<figcaption aria-hidden="true">image-20221119162044532</figcaption>
+</figure>
+<p>发送文件数据时遵循rdt3.0的整个过程，也即，在这次实验中序列号暂时只用到0和1。</p>
+<h2 id="程序代码解释">程序代码解释</h2>
+<h3 id="文件发送过程">文件发送过程</h3>
+<h5 id="发送端">发送端</h5>
+<p>首先对照发送端的状态机进行分析： <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192126693722_492_image-20221119162927049.png" srcset="/img/loading.gif" lazyload alt="image-20221119162927049">
+程序中的函数名与状态机中名称基本一致，思路也非常清晰。主要的变动为把<code>waitACK0</code>和<code>waitACK1</code>合并到了函数中，而不是作为单独的状态出现。这样做的原因是由于握手和挥手阶段的等待过程和文件传输过程中完全一致，通过相同发代码能够将过程统一起来。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wfi5eylanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-wfi5eylanubr1y"><pre><code class="hljs c++"><span class="hljs-keyword">while</span>(pkt_no&lt;pkt_total)
+{
+    pkt_data_size=<span class="hljs-built_in">min</span>(MAX_SIZE,file_len-pkt_no*MAX_SIZE);
+    <span class="hljs-keyword">switch</span>(stage)
+    {
+        <span class="hljs-keyword">case</span> SEND0:
+        {
+            packet sndpkt = <span class="hljs-built_in">make_pkt</span>(DATA, <span class="hljs-number">0</span>, pkt_data_size, file_data + pkt_no * MAX_SIZE);
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">wait_ACK0</span>(sndpkt)) {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Failed when sending packet number "</span> + <span class="hljs-built_in">to_string</span>(pkt_no), ERR);
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+            }
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Sent packet number "</span> + <span class="hljs-built_in">to_string</span>(pkt_no)+<span class="hljs-string">" with seq 0"</span>, DEBUG);
+            pkt_no++;
+            stage = SEND1;
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">case</span> SEND1:
+        {
+            packet sndpkt = <span class="hljs-built_in">make_pkt</span>(DATA, <span class="hljs-number">1</span>, pkt_data_size, file_data + pkt_no * MAX_SIZE);
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">wait_ACK1</span>(sndpkt)) {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Failed when sending packet number "</span> + <span class="hljs-built_in">to_string</span>(pkt_no), ERR);
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Sent packet number "</span> + <span class="hljs-built_in">to_string</span>(pkt_no)+<span class="hljs-string">" with seq 1"</span>, DEBUG);
+            pkt_no++;
+            stage=SEND0;
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">default</span>:
+            <span class="hljs-keyword">break</span>;
+    }
+}</code></pre></div></div>
+<p>下面是<code>waitACK</code>相关函数的实现，以<code>waitACK0</code>为例：</p>
+<p>首先由于需要处理超时事件，发送端和接收端所有的·<code>socket</code>都是非阻塞状态的。对于发送端<code>while</code>条件中的<code>rdt_rcv</code>是非阻塞的，以便在循环内判断超时进行消息重发。当没有收到消息时返回0，收到消息时返回1。循环内的重发若超过一定次数（<code>MAX_RESEND_TIMES</code>,其值为10），便可认为接收端由于意外断连，不再向其发送消息，程序退出。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k9wewzlanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-k9wewzlanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">wait_ACK0</span><span class="hljs-params">(packet sndpkt)</span> </span>{
+    <span class="hljs-type">int</span> resend_times = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">//start a timer</span>
+    <span class="hljs-type">clock_t</span> start = <span class="hljs-built_in">clock</span>();
+    packet rcvpkt;
+    <span class="hljs-comment">//non-blocking receive here</span>
+    <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">rdt_rcv</span>(rcvpkt) || <span class="hljs-built_in">isACK</span>(rcvpkt, <span class="hljs-number">1</span>)||<span class="hljs-built_in">corrupt</span>(rcvpkt)) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">timeout</span>(start)) {
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            start = <span class="hljs-built_in">clock</span>();
+            <span class="hljs-keyword">if</span> (resend_times &gt; MAX_RESEND_TIMES) {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Resend times exceed the limit, there must be something wrong with the network"</span>, ERR);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Resend packet with seq 0"</span>, WARNING);
+                resend_times++;
+            }
+        }
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isACK</span>(rcvpkt, <span class="hljs-number">1</span>)) {
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received ACK1, discard it"</span>, DEBUG);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}</code></pre></div></div>
+<p><code>rdt_rcv(rcvpkt)</code>实现如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ikm0bflanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-ikm0bflanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">rdt_rcv</span><span class="hljs-params">(packet &amp;packet1)</span> </span>{
+    <span class="hljs-type">int</span> len = <span class="hljs-built_in">sizeof</span>(addr_server);
+    <span class="hljs-type">int</span> ret = <span class="hljs-built_in">recvfrom</span>(socket_sender, (<span class="hljs-type">char</span> *) &amp;packet1, PACKET_SIZE, <span class="hljs-number">0</span>, (SOCKADDR *) &amp;addr_server, &amp;len);
+    <span class="hljs-keyword">if</span> (ret == SOCKET_ERROR) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> ret != <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<h5 id="接收端">接收端</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192129767531_984_image-20221119163135874.png" srcset="/img/loading.gif" lazyload alt="image-20221119163135874">
+<figcaption aria-hidden="true">image-20221119163135874</figcaption>
+</figure>
+<p>与发送端有所不同，这里的<code>rdt_rcv(rcvpkt)</code>是阻塞的，内含一个非阻塞的<code>recvfrom</code>进行循环接收。若超时（一分钟）仍未收到消息，认为发送端可能意外退出，跳出接收循环，并随后判断文件是否完整接收，以作退出之前的保存和清理工作。这样设计的原因也是在握手和挥手时不依赖其他条件的需要同样的操作，能够较好的统一起来。</p>
+<p>其他部分与状态机中一致。在循环内部需要判断接收到的文件是否已经完全接受，若接受完毕保存文件并退出，准备继续接受下一个文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sb6tr1lanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-sb6tr1lanubr1y"><pre><code class="hljs c++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">has_seq0</span>(rcvpkt)) {
+            <span class="hljs-keyword">if</span> (stage == WAIT0) {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_no) + <span class="hljs-string">", with seq 0"</span>, DEBUG);
+                pkt_data_size = rcvpkt.head.data_size;
+                <span class="hljs-built_in">memcpy</span>(file_buffer + received_file_len, rcvpkt.data, pkt_data_size);
+                received_file_len += pkt_data_size;
+                packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, <span class="hljs-number">0</span>);
+                <span class="hljs-built_in">udt_send</span>(sndpkt);
+                pkt_no++;
+                stage = WAIT1;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a packet with seq 0, but we are waiting for seq 1"</span>, WARNING);
+                <span class="hljs-keyword">continue</span>;
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">has_seq1</span>(rcvpkt)) {
+            <span class="hljs-keyword">if</span> (stage == WAIT1) {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_no) + <span class="hljs-string">", with seq 1"</span>, DEBUG);
+                pkt_data_size = rcvpkt.head.data_size;
+                <span class="hljs-built_in">memcpy</span>(file_buffer + received_file_len, rcvpkt.data, pkt_data_size);
+                received_file_len += pkt_data_size;
+                packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, <span class="hljs-number">1</span>);
+                <span class="hljs-built_in">udt_send</span>(sndpkt);
+                pkt_no++;
+                stage = WAIT0;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a packet with seq 1, but we are waiting for seq 0"</span>, WARNING);
+                <span class="hljs-keyword">continue</span>;
+            }
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a corrupt packet"</span>, DEBUG);
+        <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-keyword">if</span> (received_file_len == file_size) {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received file successfully"</span>, SUC);
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Time used: "</span> + <span class="hljs-built_in">to_string</span>(<span class="hljs-built_in">clock</span>() - single_file_start) + <span class="hljs-string">"ms"</span>, INFO);
+        <span class="hljs-comment">//write the file to disk</span>
+        string file_path = <span class="hljs-built_in">get_file_path</span>(file_name);
+        <span class="hljs-function">ofstream <span class="hljs-title">file</span><span class="hljs-params">(file_path, ios::binary)</span></span>;
+        <span class="hljs-keyword">if</span> (file.<span class="hljs-built_in">is_open</span>()) {
+            file.<span class="hljs-built_in">write</span>(file_buffer, file_size);
+            file.<span class="hljs-built_in">close</span>();
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"File saved to "</span> + file_path, SUC);
+            new_file_received = <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Failed to open file "</span> + file_path, ERR);
+        }
+        <span class="hljs-keyword">break</span>;
+    }
+}</code></pre></div></div>
+<p><code>rdt_rcv(rcvpkt)</code>的实现如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n1gemilanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-n1gemilanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">rdt_rcv</span><span class="hljs-params">(packet &amp;packet1)</span> </span>{
+    <span class="hljs-type">clock_t</span> wait_file_start = <span class="hljs-built_in">clock</span>();
+    <span class="hljs-comment">//non-blocking receive here</span>
+    <span class="hljs-type">int</span> ret = <span class="hljs-built_in">recvfrom</span>(socket_receiver, (<span class="hljs-type">char</span> *) &amp;packet1, PACKET_SIZE, <span class="hljs-number">0</span>, (SOCKADDR *) &amp;addr_server, &amp;addr_len);
+    <span class="hljs-keyword">while</span> (ret == SOCKET_ERROR || ret == <span class="hljs-number">0</span>) {
+        <span class="hljs-comment">//no packet received</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">wait_file_timeout</span>(wait_file_start)) {
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Timeout, no packet received"</span>, ERR);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        ret = <span class="hljs-built_in">recvfrom</span>(socket_receiver, (<span class="hljs-type">char</span> *) &amp;packet1, PACKET_SIZE, <span class="hljs-number">0</span>, (SOCKADDR *) &amp;addr_server, &amp;addr_len);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}</code></pre></div></div>
+<h3 id="握手和挥手过程">握手和挥手过程</h3>
+<p>有了文件传输过程的分析，握手和挥手便很容易理解，因为实际上只是文件传输的特例。当然，由于握手和挥手的代码在传输之前完成，因此在编写代码时这一部分设计比较困难，后面完成传输过程时又对其进行了一些优化。</p>
+<p>相比传输过程，握手和挥手主要是需要处理流程上的细节。</p>
+<h4 id="握手">握手</h4>
+<h5 id="发送端-1">发送端</h5>
+<p>发送端握手很简单:把包发过去，等ACK，等不到就重发，重发多了就退出。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p78fp7lanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-p78fp7lanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handshake</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//as the transmitting is single-direction, so we only need to "shake" two times</span>
+    packet sndpkt = <span class="hljs-built_in">make_pkt</span>(SYN);
+    <span class="hljs-built_in">udt_send</span>(sndpkt);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">wait_SYN_ACK</span>();
+}</code></pre></div></div>
+<h5 id="接收端-1">接收端</h5>
+<p>接收端思路也很明确：“阻塞”等待发送端的握手信息（一分钟内等不到就退出），如果接收到就握手成功，收到错误的包（比如校验和错误）丢弃。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9w0u9zlanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-9w0u9zlanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handshake</span><span class="hljs-params">()</span> </span>{
+    packet rcvpkt;
+    <span class="hljs-type">int</span> wrong_times = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Waiting for handshake"</span>, INFO);
+        <span class="hljs-comment">//blocking receive here</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isSYN</span>(rcvpkt) &amp;&amp; <span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
+                packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK_SYN);
+                <span class="hljs-built_in">udt_send</span>(sndpkt);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received wrong packet"</span>, ERR);
+                <span class="hljs-comment">//discard the packet and continue to wait</span>
+                <span class="hljs-keyword">if</span> (wrong_times &gt; MAX_WRONG_TIMES) {
+                    <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Wrong times exceed the limit, there must be something wrong with the network"</span>, ERR);
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                } <span class="hljs-keyword">else</span> {
+                    wrong_times++;
+                    <span class="hljs-keyword">continue</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//timeout</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }
+}</code></pre></div></div>
+<h4 id="挥手">挥手</h4>
+<p>由上面的流程图所示，挥手过程仅应当发生在文件传输的间隔中。每次等待用户传送新文件时，用户有两种选择：传或不传。若传则发送文件信息，不传发送挥手信息。不管如何，这时接收端一定处在等待接收文件信息的阶段。</p>
+<h5 id="发送端-2">发送端</h5>
+<p>用户没有给出文件名或者选择放弃传送，仅以第一种调用情况为例：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4gtrgulanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-4gtrgulanubr1y"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (file_path.<span class="hljs-built_in">empty</span>()) {
+    <span class="hljs-comment">//close the connection</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">bye_bye</span>();
+}</code></pre></div></div>
+<p>挥手成功退出程序，流程结束。 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rbhwxelanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-rbhwxelanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bye_bye</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//send FIN</span>
+    packet sndpkt = <span class="hljs-built_in">make_pkt</span>(FIN);
+    <span class="hljs-built_in">udt_send</span>(sndpkt);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">wait_FIN_ACK</span>()) {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Failed to receive FIN ACK"</span>, ERR);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Connection closed elegantly, Task finished!"</span>, SUC);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+}</code></pre></div></div><p></p>
+<h5 id="接收端-2">接收端</h5>
+<p>首先需要介绍接收端等待文件信息的逻辑。如一开始的流程图所示，这发生在握手刚完成或文件传输间隙。如果此时无响应，说明发送端异常退出，接收端也应当退出。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eebi6tlanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-eebi6tlanubr1y"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (!<span class="hljs-built_in">ready_for_file</span>(file_name, file_size)) {
+    <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Exit because of no response"</span>,INFO);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p><code>ready_for_file</code>的设计：</p>
+<p>首先为了方便状态机设计，约定传送文件信息的报文序列是1。成功收到消息返回ACK。若收到握手消息，通过递归调用达到重置计时的作用。</p>
+<p>在此过程中若发送方发送挥手消息，给予回应并退出程序，流程结束。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fa21znlanubr1y"></i><span>C++</span><div class="collapse show" id="collapse-fa21znlanubr1y"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ready_for_file</span><span class="hljs-params">(string &amp;file_name, <span class="hljs-type">int</span> &amp;file_size)</span> </span>{
+    packet rcvpkt;
+    <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Waiting for file info"</span>, INFO);
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">has_seq1</span>(rcvpkt)) {
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"File name: "</span> + <span class="hljs-built_in">string</span>(rcvpkt.data), DEBUG);
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"File size: "</span> + <span class="hljs-built_in">to_string</span>(rcvpkt.head.option), DEBUG);
+            file_name = <span class="hljs-built_in">string</span>(rcvpkt.data);
+            file_size = rcvpkt.head.option;
+            string file_path = <span class="hljs-built_in">get_file_path</span>(file_name);
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"File will be saved to "</span> + file_path, DEBUG);
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Ready to receive files"</span>, SUC);
+            packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, <span class="hljs-number">1</span>);
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isSYN</span>(rcvpkt)) {
+            <span class="hljs-comment">//if the ack is lost, the sender will resend the SYN packet</span>
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a SYN packet, reset the timer"</span>, WARNING);
+            <span class="hljs-comment">// wait for the file info again</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">ready_for_file</span>(file_name, file_size);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isFIN</span>(rcvpkt)) {
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a FIN packet, close the connection"</span>, SUC);
+            packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK_FIN);
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a wrong packet"</span>, ERR);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Timeout when waiting for file info"</span>, ERR);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}</code></pre></div></div>
+<h3 id="其他工具类">其他工具类</h3>
+<h4 id="校验和">校验和</h4>
+<p>由于此次实验并没有要求可变ip和端口号，因此不必加入伪首部的校验。编写代码如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s4l82zlanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-s4l82zlanubr1y"><pre><code class="hljs c++"><span class="hljs-function">u_short <span class="hljs-title">check_sum</span><span class="hljs-params">(u_short *packet, <span class="hljs-type">int</span> packet_len)</span> </span>{
+    u_long sum = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// make 16 bit words adjacent</span>
+    <span class="hljs-type">int</span> count = (packet_len + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">auto</span> *temp = <span class="hljs-keyword">new</span> u_short[count + <span class="hljs-number">1</span>];
+    <span class="hljs-built_in">memset</span>(temp, <span class="hljs-number">0</span>, count + <span class="hljs-number">1</span>);
+    <span class="hljs-built_in">memcpy</span>(temp, packet, packet_len);
+    <span class="hljs-keyword">while</span> (count--) {
+        sum += *temp++;
+        <span class="hljs-comment">//overflow carry</span>
+        <span class="hljs-keyword">if</span> (sum &amp; <span class="hljs-number">0xFFFF0000</span>) {
+            sum &amp;= <span class="hljs-number">0xFFFF</span>;
+            sum++;
+        }
+    }
+    <span class="hljs-comment">//complement</span>
+    <span class="hljs-keyword">return</span> ~(sum &amp; <span class="hljs-number">0xFFFF</span>);
+}</code></pre></div></div>
+<p>校验方法： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wsbws7lanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-wsbws7lanubr1y"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">not_corrupt</span><span class="hljs-params">(packet &amp;p)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">check_sum</span>((u_short *) &amp;p, HEAD_SIZE + p.head.data_size) == <span class="hljs-number">0</span>;
+}
+</code></pre></div></div><p></p>
+<h4 id="创建数据包">创建数据包</h4>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l2xravlanubr1y"></i><span>c++</span><div class="collapse show" id="collapse-l2xravlanubr1y"><pre><code class="hljs c++"><span class="hljs-function">packet <span class="hljs-title">make_pkt</span><span class="hljs-params">(u_int flag, u_int seq = <span class="hljs-number">0</span>, u_short data_size = <span class="hljs-number">0</span>, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-literal">nullptr</span>, u_short window_size = <span class="hljs-number">0</span>,</span></span>
+<span class="hljs-params"><span class="hljs-function">                u_int option = <span class="hljs-number">0</span>)</span> </span>{
+    packet pkt;
+    pkt.head.flag = flag;
+    pkt.head.seq = seq;
+    pkt.head.window_size = window_size;
+    pkt.head.data_size = data_size;
+    pkt.head.option = option;
+    <span class="hljs-keyword">if</span> (data != <span class="hljs-literal">nullptr</span>) {
+        <span class="hljs-built_in">memcpy</span>(pkt.data, data, data_size);
+    }
+    pkt.head.check_sum = <span class="hljs-built_in">check_sum</span>((u_short *) &amp;pkt, PACKET_SIZE);
+    <span class="hljs-keyword">return</span> pkt;
+}</code></pre></div></div>
+<h2 id="程序演示">程序演示</h2>
+<h3 id="建立连接">建立连接</h3>
+<p>路由器设置：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192132716638_161_image-20221119185527966.png" srcset="/img/loading.gif" lazyload alt="image-20221119185527966">
+<figcaption aria-hidden="true">image-20221119185527966</figcaption>
+</figure>
+<p>接收端开启的稍微晚一些，可以看到发送端有一些重发的握手包：</p>
+<p>发送端：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192135114475_628_image-20221119184351874.png" srcset="/img/loading.gif" lazyload alt="image-20221119184351874">
+<figcaption aria-hidden="true">image-20221119184351874</figcaption>
+</figure>
+<p>接收端：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192137753520_483_image-20221119184414935.png" srcset="/img/loading.gif" lazyload alt="image-20221119184414935">
+<figcaption aria-hidden="true">image-20221119184414935</figcaption>
+</figure>
+<p>发送端没有进行文件发送，接收端超时退出：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192140166643_147_image-20221119184511051.png" srcset="/img/loading.gif" lazyload alt="image-20221119184511051">
+<figcaption aria-hidden="true">image-20221119184511051</figcaption>
+</figure>
+<p>异常丢包提示：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192142733601_999_image-20221119184627493.png" srcset="/img/loading.gif" lazyload alt="image-20221119184627493">
+<figcaption aria-hidden="true">image-20221119184627493</figcaption>
+</figure>
+<p>发送端文件发送完毕：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192145332007_368_image-20221119184759988.png" srcset="/img/loading.gif" lazyload alt="image-20221119184759988">
+<figcaption aria-hidden="true">image-20221119184759988</figcaption>
+</figure>
+<p>多文件接收</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192148152631_686_image-20221119185617149.png" srcset="/img/loading.gif" lazyload alt="image-20221119185617149">
+<figcaption aria-hidden="true">image-20221119185617149</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AF%84%E7%BD%91/">#寄网</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2013599_田佳业_实验3.1</div>
+      <div>http://lunaticsky-tql.github.io/posts/24837/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月19日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年11月19日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/64660/" title="体系结构-cache">
+                        <span class="hidden-mobile">体系结构-cache</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

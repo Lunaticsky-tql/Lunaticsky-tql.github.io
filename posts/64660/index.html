@@ -16,28 +16,28 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="体系结构-cache 个人答案仅供参考   BDE01ED506906D92EDDFF59FB5BA32D9    8777BD10551663F195CC6E5C33F5C986    8D44BC68FBC1F5D2361F564FDEC15B81    74966D2A3FF6BD074F7A29C5CF3A4832    36197BA4AFEF78EF89A0D8635CBFBEF7">
+        <meta name="description" content="体系结构-cache经典题目 这是计算机体系结构的课后习题。 通过逆向的思维更深的理解了cache的结构和cache优化的方向，是一道挺有意思的题。   image-20221107215520312    BDE01ED506906D92EDDFF59FB5BA32D9    image-20221110201142068    image-20221107220004897    74966D">
 <meta property="og:type" content="article">
 <meta property="og:title" content="体系结构-cache">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/64660/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="体系结构-cache 个人答案仅供参考   BDE01ED506906D92EDDFF59FB5BA32D9    8777BD10551663F195CC6E5C33F5C986    8D44BC68FBC1F5D2361F564FDEC15B81    74966D2A3FF6BD074F7A29C5CF3A4832    36197BA4AFEF78EF89A0D8635CBFBEF7">
+<meta property="og:description" content="体系结构-cache经典题目 这是计算机体系结构的课后习题。 通过逆向的思维更深的理解了cache的结构和cache优化的方向，是一道挺有意思的题。   image-20221107215520312    BDE01ED506906D92EDDFF59FB5BA32D9    image-20221110201142068    image-20221107220004897    74966D">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220133912940_232_image-20221107215520312.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135836770239_118_BDE01ED506906D92EDDFF59FB5BA32D9.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135838302992_961_8777BD10551663F195CC6E5C33F5C986.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135839682055_383_8D44BC68FBC1F5D2361F564FDEC15B81.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221110201157288967_934_image-20221110201142068.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220136090940_467_image-20221107220004897.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135841382575_356_74966D2A3FF6BD074F7A29C5CF3A4832.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135842709137_738_36197BA4AFEF78EF89A0D8635CBFBEF7.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135844032615_523_A025FDFE253E78CE2CDB8743D58DD963.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135844032615_523_A025FDFE253E78CE2CDB8743D58DD963.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135846798715_233_4ABA312DA9B30A099E5046AC93F5666D.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220140271744_579_image-20221107220103032.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135848168421_297_5C5A1A71E12687C41E251DEF29A3AE6B.jpg">
 <meta property="article:published_time" content="2022-11-07T05:58:49.585Z">
-<meta property="article:modified_time" content="2022-11-07T05:58:49.585Z">
+<meta property="article:modified_time" content="2022-11-11T10:29:29.793Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="体系结构">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135836770239_118_BDE01ED506906D92EDDFF59FB5BA32D9.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220133912940_232_image-20221107215520312.png">
     
     
     
@@ -255,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              306 字
+              324 字
                 
       </span>
       
@@ -315,22 +315,35 @@
             <!-- SEO header -->
             <h1 style="display: none">体系结构-cache</h1>
             
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年11月11日 晚上
+                  
+                
+              </p>
+            
             
               <div class="markdown-body">
                 
-                <h1 id="体系结构-cache">体系结构-cache</h1>
-<p>个人答案仅供参考</p>
+                <h1 id="体系结构-cache经典题目">体系结构-cache经典题目</h1>
+<p>这是计算机体系结构的课后习题。
+通过逆向的思维更深的理解了cache的结构和cache优化的方向，是一道挺有意思的题。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220133912940_232_image-20221107215520312.png" srcset="/img/loading.gif" lazyload alt="image-20221107215520312">
+<figcaption aria-hidden="true">image-20221107215520312</figcaption>
+</figure>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135836770239_118_BDE01ED506906D92EDDFF59FB5BA32D9.jpg" srcset="/img/loading.gif" lazyload alt="BDE01ED506906D92EDDFF59FB5BA32D9">
 <figcaption aria-hidden="true">BDE01ED506906D92EDDFF59FB5BA32D9</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135838302992_961_8777BD10551663F195CC6E5C33F5C986.jpg" srcset="/img/loading.gif" lazyload alt="8777BD10551663F195CC6E5C33F5C986">
-<figcaption aria-hidden="true">8777BD10551663F195CC6E5C33F5C986</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221110201157288967_934_image-20221110201142068.png" srcset="/img/loading.gif" lazyload alt="image-20221110201142068">
+<figcaption aria-hidden="true">image-20221110201142068</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135839682055_383_8D44BC68FBC1F5D2361F564FDEC15B81.jpg" srcset="/img/loading.gif" lazyload alt="8D44BC68FBC1F5D2361F564FDEC15B81">
-<figcaption aria-hidden="true">8D44BC68FBC1F5D2361F564FDEC15B81</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220136090940_467_image-20221107220004897.png" srcset="/img/loading.gif" lazyload alt="image-20221107220004897">
+<figcaption aria-hidden="true">image-20221107220004897</figcaption>
 </figure>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135841382575_356_74966D2A3FF6BD074F7A29C5CF3A4832.jpg" srcset="/img/loading.gif" lazyload alt="74966D2A3FF6BD074F7A29C5CF3A4832">
@@ -345,12 +358,8 @@
 <figcaption aria-hidden="true">A025FDFE253E78CE2CDB8743D58DD963</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135844032615_523_A025FDFE253E78CE2CDB8743D58DD963.jpg" srcset="/img/loading.gif" lazyload alt="A025FDFE253E78CE2CDB8743D58DD963">
-<figcaption aria-hidden="true">A025FDFE253E78CE2CDB8743D58DD963</figcaption>
-</figure>
-<figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135846798715_233_4ABA312DA9B30A099E5046AC93F5666D.jpg" srcset="/img/loading.gif" lazyload alt="4ABA312DA9B30A099E5046AC93F5666D">
-<figcaption aria-hidden="true">4ABA312DA9B30A099E5046AC93F5666D</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107220140271744_579_image-20221107220103032.png" srcset="/img/loading.gif" lazyload alt="image-20221107220103032">
+<figcaption aria-hidden="true">image-20221107220103032</figcaption>
 </figure>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-cache/20221107135848168421_297_5C5A1A71E12687C41E251DEF29A3AE6B.jpg" srcset="/img/loading.gif" lazyload alt="8D44BC68FBC1F5D2361F564FDEC15B81">
@@ -418,6 +427,11 @@
         </div>
       
       
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年11月11日</div>
+        </div>
+      
       
         <div class="license-meta-item">
           <div>许可协议</div>
@@ -445,6 +459,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/posts/24837/" title="2013599_田佳业_实验3.1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2013599_田佳业_实验3.1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

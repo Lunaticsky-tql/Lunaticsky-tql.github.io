@@ -16,12 +16,12 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="寄网-传输层 UDP 特点   image-20221019101254797    image-20221019102904831   D  复用分用  复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道） 分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道） 通常复用针对发送，分用针对接收。    image-20221019101337529   &gt; B">
+        <meta name="description" content="寄网-传输层 UDP 特点   image-20221019101254797    image-20221019102904831   D  复用分用  如何理解复用和分用？  复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道） 分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道） 通常复用针对发送，分用针对接收。   image-2022101910133752">
 <meta property="og:type" content="article">
 <meta property="og:title" content="寄网-传输层">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/6389/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="寄网-传输层 UDP 特点   image-20221019101254797    image-20221019102904831   D  复用分用  复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道） 分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道） 通常复用针对发送，分用针对接收。    image-20221019101337529   &gt; B">
+<meta property="og:description" content="寄网-传输层 UDP 特点   image-20221019101254797    image-20221019102904831   D  复用分用  如何理解复用和分用？  复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道） 分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道） 通常复用针对发送，分用针对接收。   image-2022101910133752">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112829451012_857_image-20221019101254797.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112833830874_553_image-20221019102904831.png">
@@ -69,7 +69,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113031785988_286_image-20221102102355905.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102113034340991_595_image-20221102100002266.png">
 <meta property="article:published_time" content="2022-11-02T03:30:38.653Z">
-<meta property="article:modified_time" content="2022-11-03T12:03:11.831Z">
+<meta property="article:modified_time" content="2022-11-19T11:13:27.904Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="寄网">
 <meta name="twitter:card" content="summary_large_image">
@@ -354,7 +354,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年11月3日 晚上
+                    本文最后更新于：2022年11月19日 晚上
                   
                 
               </p>
@@ -377,11 +377,12 @@
 <p>D</p>
 </blockquote>
 <h3 id="复用分用">复用分用</h3>
-<p class="note note-info">
-</p><p>复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道）</p>
+<div class="note note-info">
+如何理解复用和分用？
+</div>
+<p>复用就是多个应用层进程汇聚成一个传输层进程（八车道变一车道）</p>
 <p>分用就是反过来，传输层的多个进程相应的通向多个应用层进程（单车道变八车道）</p>
-通常复用针对发送，分用针对接收。
-<p></p>
+<p>通常复用针对发送，分用针对接收。</p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112836012813_910_image-20221019101337529.png" srcset="/img/loading.gif" lazyload alt="image-20221019101337529">
 <figcaption aria-hidden="true">image-20221019101337529</figcaption>
@@ -432,15 +433,17 @@
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112900136029_437_image-20221019162337067.png" srcset="/img/loading.gif" lazyload alt="image-20221019162337067">
 <figcaption aria-hidden="true">image-20221019162337067</figcaption>
 </figure>
-<p>发送，打包/拆包，交给下层发送</p>
+<p>发送端：打包数据，直接调用底层信道进行传输；</p>
+<p>接收端：拆包，将数据交给上层应用</p>
 <h4 id="rdt2.0">rdt2.0</h4>
+<p>下层通道可能造成某些位出现错误（如:1变0，0变1)</p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%AF%84%E7%BD%91-%E4%BC%A0%E8%BE%93%E5%B1%82/20221102112902564743_320_image-20221019163254576.png" srcset="/img/loading.gif" lazyload alt="image-20221019163254576">
 <figcaption aria-hidden="true">image-20221019163254576</figcaption>
 </figure>
 <p class="note note-secondary">
 缩写：ACKnowledge character；Not AcKnowledge character
-肯定确认和否定确认 为简便直白，对于package的翻译，用包代替分组
+肯定确认和否定确认。 同时为简便直白，对于package的翻译，用包代替分组
 </p>
 <h5 id="发送端">发送端：</h5>
 <p>仅当接收到ACK并离开该状态时才能发生rdt_send()事件。因此，在发送方确信接收方已正确接收当前分组之前肯定不会发送新数据。由于这种行为，rdt2.0这样的协议被称为停等
@@ -729,7 +732,7 @@ send_base，即使显然接收方已经收了该分组。如果接收方不确�
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2022年11月3日</div>
+          <div>2022年11月19日</div>
         </div>
       
       
