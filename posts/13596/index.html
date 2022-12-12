@@ -90,12 +90,13 @@
 <link rel="stylesheet" href="/css/remove-shadow.css">
 <link rel="stylesheet" href="/css/zan.css">
 <link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
 
                                 
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -356,9 +357,9 @@
 <h2 id="服务器搭建">服务器搭建</h2>
 <p>在本次实验中我使用了本地服务器。我们可以使用Springboot，flask等在localhost上搭建Web服务器。不过最近恰好在研究博客搭建相关内容，这里通过使用Hexo搭建静态博客的比较“自动化”的方式在本机搭建Web服务器。</p>
 <p>通过下面命令安装<code>hexo</code>环境。(其实还需要安装<code>npm</code>环境，不过在此就略去了)。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0xi01glaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-0xi01glaxrfp9u"><pre><code class="hljs shell">sudo npm install -g hexo-cli</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0cqaublb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-0cqaublb4jx62s"><pre><code class="hljs shell">sudo npm install -g hexo-cli</code></pre></div></div>
 <p>新建博客目录结构如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i2xr9mlaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-i2xr9mlaxrfp9u"><pre><code class="hljs shell">my_hexo_test_server
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7382ohlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-7382ohlb4jx62s"><pre><code class="hljs shell">my_hexo_test_server
 .
 ├── _config.yml
 ├── db.json
@@ -382,7 +383,7 @@
             ├── img
             └── js</code></pre></div></div>
 <p><code>_config.yml</code>中<code>theme</code>改为自定义的<code>wireshark</code>，在<code>index.ejs</code>中写入网页内容：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-osh1solaxrfp9u"></i><span>html</span><div class="collapse show" id="collapse-osh1solaxrfp9u"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pzpq9mlb4jx62s"></i><span>html</span><div class="collapse show" id="collapse-pzpq9mlb4jx62s"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
@@ -401,7 +402,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div></div>
-<p>在终端执行 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eyoktklaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-eyoktklaxrfp9u"><pre><code class="hljs shell">(base) ➜  my_hexo_test_server hexo g
+<p>在终端执行 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s6nzthlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-s6nzthlb4jx62s"><pre><code class="hljs shell">(base) ➜  my_hexo_test_server hexo g
 (base) ➜  my_hexo_test_server hexo s</code></pre></div></div><p></p>
 <p>可以看到生成网页如下所示：</p>
 <figure>
@@ -570,7 +571,7 @@ TCP头中定义的接收窗口，就得到真正的 TCP接收窗口了。</p>
 <figcaption aria-hidden="true">image-20221028191208877</figcaption>
 </figure>
 <p>分析文本的十六进制编码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lnr6dglaxrfp9u"></i><span>apache</span><div class="collapse show" id="collapse-lnr6dglaxrfp9u"><pre><code class="hljs apache"><span class="hljs-attribute">0000</span>   <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">3</span>c <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">20</span> <span class="hljs-number">32</span> <span class="hljs-number">30</span> <span class="hljs-number">31</span> <span class="hljs-number">33</span> <span class="hljs-number">35</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yx4rajlb4jx62s"></i><span>apache</span><div class="collapse show" id="collapse-yx4rajlb4jx62s"><pre><code class="hljs apache"><span class="hljs-attribute">0000</span>   <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">3</span>c <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">20</span> <span class="hljs-number">32</span> <span class="hljs-number">30</span> <span class="hljs-number">31</span> <span class="hljs-number">33</span> <span class="hljs-number">35</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>
 <span class="hljs-attribute">0010</span>   <span class="hljs-number">20</span> e7 <span class="hljs-number">94</span> b0 e4 bd b3 e4 b8 <span class="hljs-number">9</span>a <span class="hljs-number">3</span>c <span class="hljs-number">2</span>f <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">0</span>a</code></pre></div></div>
 <p>第一行末尾可以看到是我的学号<code>2013599</code>的ASCII码。</p>
 <p>中文采用的是Unicode编码。具体方式为：</p>
@@ -747,9 +748,6 @@ TCP头中定义的接收窗口，就得到真正的 TCP接收窗口了。</p>
 
   
 
-
-
-  
 
 
 
@@ -936,44 +934,6 @@ TCP头中定义的接收窗口，就得到真正的 TCP接收窗口了。</p>
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
   <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
 
 
   

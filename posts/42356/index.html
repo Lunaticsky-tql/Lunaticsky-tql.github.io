@@ -68,12 +68,13 @@
 <link rel="stylesheet" href="/css/remove-shadow.css">
 <link rel="stylesheet" href="/css/zan.css">
 <link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
 
                                 
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -320,27 +321,27 @@
 <h3 id="临时别名">临时别名</h3>
 <p>和在linux系统一样，直接输入<code>alias</code>命令即可。在当前的终端下生效。</p>
 <p>比如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9bfu66laxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-9bfu66laxrfp9u"><pre><code class="hljs shell">alias v="vim"</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ibbplilb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-ibbplilb4jx62s"><pre><code class="hljs shell">alias v="vim"</code></pre></div></div>
 <h3 id="永久别名">永久别名</h3>
 <p>由于现在的macOS默认是采用的<code>zsh</code>而不是<code>bash</code>，因此配置文件路径为</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eriwwrlaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-eriwwrlaxrfp9u"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5n2fj0lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-5n2fj0lb4jx62s"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div></div>
 <p>当然也可以</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-td51nblaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-td51nblaxrfp9u"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r534bhlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-r534bhlb4jx62s"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div></div>
 <p>进入<code>bash</code>，不过目前没什么理由这么干(</p>
 <p>然后会发现这个文件是只读的。</p>
 <p>有两个解决方案。</p>
 <h4 id="简单粗暴的">简单粗暴的</h4>
 <p>去除写权限</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2uge3glaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-2uge3glaxrfp9u"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k7a05vlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-k7a05vlb4jx62s"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div></div>
 <p>然后写入别名，保存</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d0vlaglaxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-d0vlaglaxrfp9u"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bbmpo3lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-bbmpo3lb4jx62s"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div></div>
 <p>最后将写权限去除</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m39yn8laxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-m39yn8laxrfp9u"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8elfaglb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-8elfaglb4jx62s"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div></div>
 <h4 id="安装插件">安装插件</h4>
 <p><a target="_blank" rel="noopener" href="https://github.com/ohmyzsh/ohmyzsh"><strong>Oh My
 Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，插件等。</p>
 <p>用curl方式安装</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-choou6laxrfp9u"></i><span>shell</span><div class="collapse show" id="collapse-choou6laxrfp9u"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aet0w2lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-aet0w2lb4jx62s"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div></div>
 <p>在<code>.zshrc</code>中配置<code>alias</code>，<code>source</code>保存即可，里面还可以配置其他实用的配置。<a target="_blank" rel="noopener" href="https://mrseawave.github.io/blogs/articles/2021/08/29/oh-my-zsh/">这个博客</a>有较详细叙述。</p>
 
                 
@@ -473,9 +474,6 @@ Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，�
 
   
 
-
-
-  
 
 
 
@@ -662,44 +660,6 @@ Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，�
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
   <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
 
 
   

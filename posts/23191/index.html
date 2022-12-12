@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222057952350_733_image-20221130221851517.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222100838376_161_image-20221130222030887.png">
 <meta property="article:published_time" content="2022-10-23T07:30:46.033Z">
-<meta property="article:modified_time" content="2022-11-30T14:21:03.670Z">
+<meta property="article:modified_time" content="2022-11-30T14:22:40.188Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary_large_image">
@@ -77,12 +77,13 @@
 <link rel="stylesheet" href="/css/remove-shadow.css">
 <link rel="stylesheet" href="/css/zan.css">
 <link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
 
                                 
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -333,11 +334,11 @@ Mac</h2>
 <h3 id="qemu安装">qemu安装</h3>
 <p>qemu是非常成熟的虚拟化解决方案，通过软件的方式逐条将目标文件的二进制指令翻译成目标架构支持的二进制指令，虽然效率不高，但是使用方便，对M1芯片支持也比较完善，足够用来调试ucore了。</p>
 <p>指导书中针对linux给出了使用包管理工具的安装方案。在mac上这个过程也同样比较简单。安装<code>homebrew</code>包管理工具后只需要</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tlrtk1lb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-tlrtk1lb3qmb2a"><pre><code class="hljs shell">brew install qemu</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zi0v8klb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-zi0v8klb4jx62s"><pre><code class="hljs shell">brew install qemu</code></pre></div></div>
 <p>即可。当然为了保证是最新版本，安装之前可以更新一下homebrew：<code>brew update</code>。</p>
 <h3 id="i386-elf-gcc和i386-elf-gdb安装">i386-elf-gcc和i386-elf-gdb安装</h3>
 <p>按照网上的解决方案，我安装了<code>macport</code>，并</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ysjhz5lb3qmb2a"></i><span>elm</span><div class="collapse show" id="collapse-ysjhz5lb3qmb2a"><pre><code class="hljs elm"><span class="hljs-title">sudo</span> <span class="hljs-keyword">port</span> -v selfupdate
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1ec36ilb4jx62s"></i><span>elm</span><div class="collapse show" id="collapse-1ec36ilb4jx62s"><pre><code class="hljs elm"><span class="hljs-title">sudo</span> <span class="hljs-keyword">port</span> -v selfupdate
 sudo <span class="hljs-keyword">port</span> install i386-elf-gcc</code></pre></div></div>
 <p>但是发现它安装过程中构建失败了。</p>
 <figure>
@@ -360,9 +361,9 @@ issue</a>中得知是有支持apple silicon版本的最新i386-elf-gcc的。</p>
 <figcaption aria-hidden="true">image-20221003225245971</figcaption>
 </figure>
 <p>有希望！但是按官网命令安装问题也没有解决，所谓补丁也不起效。后来尝试用homebrew安装：<code>brew install i386-elf-gdb</code>，但没有安装成功。提示</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-muvuqmlb3qmb2a"></i><span>awk</span><div class="collapse show" id="collapse-muvuqmlb3qmb2a"><pre><code class="hljs awk">fatal: not <span class="hljs-keyword">in</span> a git directory Error: Command failed with <span class="hljs-keyword">exit</span> <span class="hljs-number">128</span>: git</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g2p67glb4jx62s"></i><span>awk</span><div class="collapse show" id="collapse-g2p67glb4jx62s"><pre><code class="hljs awk">fatal: not <span class="hljs-keyword">in</span> a git directory Error: Command failed with <span class="hljs-keyword">exit</span> <span class="hljs-number">128</span>: git</code></pre></div></div>
 <p>又经过一番谷歌找到了<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/07243d214abd">解决方法</a>。执行</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x1tyyllb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-x1tyyllb3qmb2a"><pre><code class="hljs shell">git config --global --add safe.directory 报错信息中homebrew-core路径
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dfiosvlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-dfiosvlb4jx62s"><pre><code class="hljs shell">git config --global --add safe.directory 报错信息中homebrew-core路径
 git config --global --add safe.directory 报错信息中homebrew-cask路径</code></pre></div></div>
 <p>即可。</p>
 <p>然后需要添加一下环境变量。</p>
@@ -380,11 +381,11 @@ git config --global --add safe.directory 报错信息中homebrew-cask路径</cod
 <p>以调试lab1中的BIOS的执行为例。</p>
 <p>下面的过程与指导书中“使用远程调试”部分类似。除此之外，额外将运行的汇编指令保存在q.log中。</p>
 <p>在一个终端先执行：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gr3lf0lb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-gr3lf0lb3qmb2a"><pre><code class="hljs shell">qemu-system-i386 -S -s -d in_asm -D bin/q.log -monitor stdio -hda bin/ucore.img</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uc34j2lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-uc34j2lb4jx62s"><pre><code class="hljs shell">qemu-system-i386 -S -s -d in_asm -D bin/q.log -monitor stdio -hda bin/ucore.img</code></pre></div></div>
 <p>后在另一个终端执行:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m0t2o4lb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-m0t2o4lb3qmb2a"><pre><code class="hljs shell">i386-elf-gdb</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6w4puflb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-6w4puflb4jx62s"><pre><code class="hljs shell">i386-elf-gdb</code></pre></div></div>
 <p>进入gdb调试界面。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xqfysflb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-xqfysflb3qmb2a"><pre><code class="hljs shell">(gdb) file bin/kernel
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-snytahlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-snytahlb4jx62s"><pre><code class="hljs shell">(gdb) file bin/kernel
 Reading symbols from bin/kernel...
 (gdb) target remote :1234
 Remote debugging using :1234
@@ -392,26 +393,26 @@ Remote debugging using :1234
 <p>上述的过程相比原来<code>makrfile</code>中提供的<code>make debug</code>主要有两个好处：一是能够重定向到<code>q.log</code>方便进行对比；二是可以绕开<code>make</code>中的<code>TERMINAL:=gnome-terminal</code>(<code>gnome-terminal</code>仅在linux下可使用)</p>
 <p>查看 CS:EIP 由于此时在实际模式下 CPU 在加电后执行的第一条指令的地址为
 0xf000:0xfff0 =&gt; 0xffff0</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wa2fjmlb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-wa2fjmlb3qmb2a"><pre><code class="hljs shell">(gdb) x/i $cs
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-24od2mlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-24od2mlb4jx62s"><pre><code class="hljs shell">(gdb) x/i $cs
 	0xf000:	add    %al,(%eax)
 (gdb) x/i $eip
 	0xfff0:	add    %al,(%eax)</code></pre></div></div>
-<p>再来看看这个地址的指令是什么 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kulfw2lb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-kulfw2lb3qmb2a"><pre><code class="hljs shell">(gdb) x/2i 0xffff0
+<p>再来看看这个地址的指令是什么 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qhqf6zlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-qhqf6zlb4jx62s"><pre><code class="hljs shell">(gdb) x/2i 0xffff0
    0xffff0:	ljmp   $0x3630,$0xf000e05b
    0xffff7:	das</code></pre></div></div><p></p>
 <p>可以看到 第一条指令执行完以后 会跳转到<code>0xf000e05b</code>也就是说
 BIOS 开始的地址是 <code>0xfe05b</code>。</p>
 <p>打上断点</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2qs09hlb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-2qs09hlb3qmb2a"><pre><code class="hljs shell">(gdb) b *0x7c00
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5x6fj1lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-5x6fj1lb4jx62s"><pre><code class="hljs shell">(gdb) b *0x7c00
 Breakpoint 1 at 0x7c00
 (gdb) c
 Continuing.
 
 Breakpoint 1, 0x00007c00 in ?? ()</code></pre></div></div>
 <p>一开始为了方便后续在终端中配置了永久别名：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1itx23lb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-1itx23lb3qmb2a"><pre><code class="hljs shell">alias makeq="make GCCPREFIX=x86_64-elf-"</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jul7r8lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-jul7r8lb4jx62s"><pre><code class="hljs shell">alias makeq="make GCCPREFIX=x86_64-elf-"</code></pre></div></div>
 <p>当然更优雅的方法其实是修改make中的宏：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vfb8fblb3qmb2a"></i><span>makefile</span><div class="collapse show" id="collapse-vfb8fblb3qmb2a"><pre><code class="hljs makefile"><span class="hljs-comment"># try to infer the correct GCCPREFX</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xbrczdlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-xbrczdlb4jx62s"><pre><code class="hljs makefile"><span class="hljs-comment"># try to infer the correct GCCPREFX</span>
 <span class="hljs-keyword">ifndef</span> GCCPREFIX
 <span class="hljs-comment"># GCCPREFIX := $(shell if i386-elf-objdump -i 2&gt;&amp;1 | </span>
 <span class="hljs-comment">#...comment the original shell function</span>
@@ -419,9 +420,9 @@ Breakpoint 1, 0x00007c00 in ?? ()</code></pre></div></div>
 GCCPREFIX := x86_64-elf-
 <span class="hljs-keyword">endif</span></code></pre></div></div>
 <p>但是，由于<code>makefile</code>里默认认为调试工具一定叫<code>gdb</code>，且mac里没有gdb对应的command，因此这时候用永久别名是比较合适的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ti5m6qlb3qmb2a"></i><span>shell</span><div class="collapse show" id="collapse-ti5m6qlb3qmb2a"><pre><code class="hljs shell">alias gdb="i386-elf-gdb"</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a4dqnnlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-a4dqnnlb4jx62s"><pre><code class="hljs shell">alias gdb="i386-elf-gdb"</code></pre></div></div>
 <p>这时候也可以修改make来达到自动化调试的目的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c2t9ullb3qmb2a"></i><span>makefile</span><div class="collapse show" id="collapse-c2t9ullb3qmb2a"><pre><code class="hljs makefile">WORKING_DIR=<span class="hljs-variable">$(<span class="hljs-built_in">shell</span> pwd)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gpfzirlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-gpfzirlb4jx62s"><pre><code class="hljs makefile">WORKING_DIR=<span class="hljs-variable">$(<span class="hljs-built_in">shell</span> pwd)</span>
 <span class="hljs-section">debug: <span class="hljs-variable">$(UCOREIMG)</span></span>
 	<span class="hljs-variable">$(V)</span><span class="hljs-variable">$(QEMU)</span> -S -s -parallel stdio -hda <span class="hljs-variable">$&lt;</span> -serial null &amp;
 	<span class="hljs-variable">$(V)</span>sleep 2
@@ -540,9 +541,9 @@ GCCPREFIX := x86_64-elf-
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/4810/" title="机器学习-模型评估与选择">
+                      <a href="/posts/30344/" title="数据库系统期末工程作业设计">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">机器学习-模型评估与选择</span>
+                        <span class="hidden-mobile">数据库系统期末工程作业设计</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -593,9 +594,6 @@ GCCPREFIX := x86_64-elf-
 
   
 
-
-
-  
 
 
 
@@ -782,44 +780,6 @@ GCCPREFIX := x86_64-elf-
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
   <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
 
 
   

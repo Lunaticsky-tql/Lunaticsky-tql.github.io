@@ -1,0 +1,1098 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)  写在前面：这次由于突然发烧隔离（虽然不是阳，也是挺重的一次感冒）导致没能及时检查作业，比较可惜。也借此提醒自己：一定要注意身体。另外也得接受教训。如金哥所言，提高应急处突能力还是非常重要的。  实验要求 在实验3-1的基础上，将停等机制改成基于滑动窗口的流量控制机制，采用固定窗口大小，支持累积确认，完成给定测试文件的传输。  多个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/39007/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)  写在前面：这次由于突然发烧隔离（虽然不是阳，也是挺重的一次感冒）导致没能及时检查作业，比较可惜。也借此提醒自己：一定要注意身体。另外也得接受教训。如金哥所言，提高应急处突能力还是非常重要的。  实验要求 在实验3-1的基础上，将停等机制改成基于滑动窗口的流量控制机制，采用固定窗口大小，支持累积确认，完成给定测试文件的传输。  多个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213512464145_894_image-20221210213415264.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213259977349_103_image-20221119154308774.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213515660596_123_image-20221210115848469.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213517155143_340_image-20221210115903632.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213518957536_859_image-20221210123705619.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213520764848_548_image-20221210200312667.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213542209437_469_image-20221210201321172.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213544187165_779_image-20221119185527966.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213545630220_743_image-20221210212155885.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213547529597_432_image-20221210212321733.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213549149283_237_image-20221210211645995.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213550895116_592_image-20221210211627874.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213552672768_860_image-20221210211424408.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213554281337_662_image-20221210211449133.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213555912889_771_image-20221210212403935.png">
+<meta property="article:published_time" content="2022-12-10T13:38:16.851Z">
+<meta property="article:modified_time" content="2022-12-10T13:46:04.503Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="寄网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213512464145_894_image-20221210213415264.png">
+    
+    
+    
+    <title>计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制) - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-12-10 21:38" pubdate>
+              2022年12月10日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              7.8k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)/计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制).md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年12月10日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="计算机网络实验3.2-基于udp服务设计可靠传输协议流量控制">计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)</h1>
+<div class="note note-info">
+写在前面：这次由于突然发烧隔离（虽然不是阳，也是挺重的一次感冒）导致没能及时检查作业，比较可惜。也借此提醒自己：一定要注意身体。另外也得接受教训。如金哥所言，提高应急处突能力还是非常重要的。
+</div>
+<h2 id="实验要求">实验要求</h2>
+<p>在实验3-1的基础上，将停等机制改成基于滑动窗口的流量控制机制，采用固定窗口大小，支持累积确认，完成给定测试文件的传输。</p>
+<ul>
+<li>多个序列号；</li>
+<li>发送缓冲区、接受缓冲区；</li>
+<li>滑动窗口：Go Back N；</li>
+<li>有必要日志输出（须显示传输过程中发送端、接收端的窗口具体情况）。</li>
+</ul>
+<h2 id="程序流程展示">程序流程展示</h2>
+<p>注：与实验3.1相同的部分仅作简要叙述，详细可以参见<a href="https://lunaticsky-tql.github.io/posts/24837/">计算机网络实验实验3.1</a></p>
+<h3 id="协议设计">协议设计</h3>
+<p>基于rdt3.0,本次实验实现了GBN和SR两种流水线协议，并采用多线程编程。</p>
+<h4 id="报文结构">报文结构</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213512464145_894_image-20221210213415264.png" srcset="/img/loading.gif" lazyload alt="image-20221210213415264">
+<figcaption aria-hidden="true">image-20221210213415264</figcaption>
+</figure>
+<p>如图所示，报文头长度共<code>128Bits</code>。下面介绍报文结构如下所示：</p>
+<p>整个实验只使用一个序列号字段。对于发送端对应<code>TCP</code>中的<code>seq</code>,接收端对应<code>TCP</code>中的<code>ack</code>。</p>
+<p>下面是十六位校验和以及数据报字段长度，与<code>TCP</code>相同。</p>
+<p>使用<code>u_short</code>来存放<code>flag</code>。其字段含义如下：</p>
+<p><code>F</code>:<code>FIN</code></p>
+<p><code>S</code>:<code>SYN</code></p>
+<p><code>A</code>:<code>ACK</code></p>
+<p><code>H</code>:<code>FILE_HEAD</code></p>
+<p><code>FILE_HEAD</code>用于指示接收端此报文包含文件信息的字段。</p>
+<p><code>window_size</code>存放接收端通告给发送端的窗口大小。</p>
+<p><code>option</code>为可选字段，在本次实验中暂时用于存放文件长度。</p>
+<p><code>data</code>的最大长度可以调节，本次实验定义为1024字节。</p>
+<p>此部分定义代码段如下;</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dytm25lbkwh0sj"></i><span>c++</span><div class="collapse show" id="collapse-dytm25lbkwh0sj"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> DATA 0x0</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> FIN 0x1</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SYN 0x2</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ACK 0x4</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ACK_SYN 0x6</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ACK_FIN 0x5</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE_HEAD 0x8</span>
+<span class="hljs-comment">// datagram format:</span>
+<span class="hljs-meta">#<span class="hljs-keyword">pragma</span> pack(1)</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">packet_head</span> {
+    u_int seq;
+    u_short check_sum;
+    u_short data_size;
+    u_short flag;
+    u_short window_size;
+    u_int option;
+
+    <span class="hljs-built_in">packet_head</span>() {
+        seq = <span class="hljs-number">0</span>;
+        check_sum = <span class="hljs-number">0</span>;
+        data_size = <span class="hljs-number">0</span>;
+        flag = <span class="hljs-number">0</span>;
+        window_size = <span class="hljs-number">0</span>;
+        option = <span class="hljs-number">0</span>;
+    }
+};
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">packet</span> {
+    packet_head head;
+    <span class="hljs-type">char</span> data[MAX_SIZE]{};
+
+    <span class="hljs-built_in">packet</span>() {
+        <span class="hljs-built_in">packet_head</span>();
+        <span class="hljs-built_in">memset</span>(data, <span class="hljs-number">0</span>, MAX_SIZE);
+    }
+};
+<span class="hljs-meta">#<span class="hljs-keyword">pragma</span> pack()</span></code></pre></div></div>
+<p><code>#pragma pack(1)</code>用于指示结构体内容按1Byte对齐，以保证报文大小是我们期望的紧凑形式。</p>
+<h4 id="建连和断连">建连和断连</h4>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213259977349_103_image-20221119154308774.png" srcset="/img/loading.gif" lazyload alt="image-20221119154308774">
+<figcaption aria-hidden="true">image-20221119154308774</figcaption>
+</figure>
+<p>建连和断连过程与3.1无太大变化。主要是在建连过程中增加了接收方初始窗口大小的通告。</p>
+<h3 id="流程设计">流程设计</h3>
+<p>程序支持一次建连发送多个文件。</p>
+<p>本次实验与上次相比，整体逻辑没有变化，但序列号递增使用。在本次实验中序列号为<code>u_int</code>类型，可存储<span class="math inline">\(2^{32}\)</span>个序列号，每个数据包最大为<span class="math inline">\(1024\)</span>即<span class="math inline">\(2^{10}\)</span>字节，故最大可传输<span class="math inline">\(2^{42}=8TB\)</span>的单个文件，故不需循环使用即可满足需求。<strong>当需求确定时，整个系统是为可用性和简洁性而不是复杂性服务的</strong>。</p>
+<h2 id="程序代码解释">程序代码解释</h2>
+<h3 id="文件发送过程">文件发送过程</h3>
+<h4 id="gbn">GBN</h4>
+<p>下面先以基础的GBN为基础分析程序代码：</p>
+<h5 id="发送端">发送端</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213515660596_123_image-20221210115848469.png" srcset="/img/loading.gif" lazyload alt="image-20221210115848469">
+<figcaption aria-hidden="true">image-20221210115848469</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213517155143_340_image-20221210115903632.png" srcset="/img/loading.gif" lazyload alt="image-20221210115903632">
+<figcaption aria-hidden="true">image-20221210115903632</figcaption>
+</figure>
+<p>课件中讲述也很直观，对照伪代码实现即可。</p>
+<h6 id="发送进程主进程">发送进程（主进程）</h6>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0o5z11lbkwh0sj"></i><span>c++</span><div class="collapse show" id="collapse-0o5z11lbkwh0sj"><pre><code class="hljs c++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
+<span class="hljs-keyword">auto</span> *sndpkt = <span class="hljs-keyword">new</span> packet[pkt_total + <span class="hljs-number">1</span>];
+<span class="hljs-keyword">while</span> (base &lt; pkt_total) {
+    <span class="hljs-comment">//send packets</span>
+    <span class="hljs-keyword">if</span> (nextseqnum &lt; base + N &amp;&amp; nextseqnum &lt; pkt_total) {
+        pkt_data_size = <span class="hljs-built_in">min</span>(MAX_SIZE, file_len - nextseqnum * MAX_SIZE);
+        sndpkt[nextseqnum] = <span class="hljs-built_in">make_pkt</span>(DATA, nextseqnum, pkt_data_size, file_data + nextseqnum * MAX_SIZE);
+        <span class="hljs-built_in">udt_send</span>(sndpkt[nextseqnum]);
+        cout &lt;&lt; <span class="hljs-string">"Sent packet "</span> + <span class="hljs-built_in">to_string</span>(nextseqnum) + <span class="hljs-string">" "</span>;
+        <span class="hljs-keyword">if</span> (base == nextseqnum) {
+            timer.<span class="hljs-built_in">start_timer</span>();
+        }
+        nextseqnum++;
+        <span class="hljs-built_in">print_window</span>();
+    }
+    <span class="hljs-comment">//handle timeout</span>
+    <span class="hljs-keyword">if</span> (timer.<span class="hljs-built_in">timeout</span>()) {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Timeout, resend packets from "</span> + <span class="hljs-built_in">to_string</span>(base) + <span class="hljs-string">" to "</span> + <span class="hljs-built_in">to_string</span>(nextseqnum - <span class="hljs-number">1</span>),
+                      WARNING);
+        <span class="hljs-keyword">for</span> (u_int i = base; i &lt; nextseqnum; i++) {
+            <span class="hljs-built_in">udt_send</span>(sndpkt[i]);
+        }
+        timer.<span class="hljs-built_in">start_timer</span>();
+    }
+}</code></pre></div></div>
+<p>这一部分逻辑与状态机中右上角两个部分完全一致。其中<code>timer</code>是一个全局的计时器，为自己编写的类。用法可以顾名思义。<code>print_window();</code>按照<code>[base|nexeseqnum|base+n]</code>的格式将当前窗口状态打印出来。</p>
+<h6 id="接收进程">接收进程</h6>
+<p>接收进程在发送之前创建。实现如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1u0hdklbkwh0sj"></i><span>c++</span><div class="collapse show" id="collapse-1u0hdklbkwh0sj"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_ACK</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
+    packet rcvpkt;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-comment">//non-blocking rdt_rcv (if not rcv any packet it, it will return 0)</span>
+        <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">rdt_rcv</span>(rcvpkt) || <span class="hljs-built_in">corrupt</span>(rcvpkt) || !<span class="hljs-built_in">isACK</span>(rcvpkt)) {
+            <span class="hljs-comment">//the packet must be ACK and not corrupt to jump out of the loop</span>
+        }
+<span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
+        acked[<span class="hljs-built_in">get_ack_num</span>(rcvpkt)] = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">while</span> (acked[base]) {
+            base++;
+        }
+        cout &lt;&lt; <span class="hljs-string">"Received ACK "</span> + <span class="hljs-built_in">to_string</span>(<span class="hljs-built_in">get_ack_num</span>(rcvpkt)) + <span class="hljs-string">" "</span>;
+        <span class="hljs-built_in">print_window</span>();
+        <span class="hljs-keyword">if</span> (base == pkt_total) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (base == nextseqnum) {
+            timer.<span class="hljs-built_in">stop_timer</span>();
+            <span class="hljs-keyword">continue</span>;
+        } <span class="hljs-keyword">else</span> {
+            timer.<span class="hljs-built_in">start_timer</span>();
+        }
+    }
+}</code></pre></div></div>
+<p>这一部分助教思考的也非常深入：虽然实验环境下ACK不会丢失且能按序到达，但真实的网络环境下ACK也会丢失，且由于传输速度可能不一样快，ACK未必是按序到达的。这一点在上一次实验的握手建连部分考虑到了且有所叙述（接收方在确认握手成功后也有可能因为ACK丢失而收到发送方重发的握手包），但这一次实验囿于伪代码的惯性思维没有考虑周全，感谢助教提醒指正。</p>
+<p>因此此处可参考后续SR的实现，移动时不能简单的移动到当前收到的序号+1，而是从base开始移动到按序收到的包序号之后，即：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c0s7hflbkwh0sj"></i><span>c++</span><div class="collapse show" id="collapse-c0s7hflbkwh0sj"><pre><code class="hljs c++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
+        acked[<span class="hljs-built_in">get_ack_num</span>(rcvpkt)] = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">while</span> (acked[base]) {
+            base++;
+        }</code></pre></div></div>
+<p>当然这也需要把收到包的状态保存为数组。此处的空间复杂度还可以优化，也即实际上我们只需要窗口内的ACK状态即可，但这样就伴随着较为费时的“移动”。因此此处直接将所有状态都保存了下来。</p>
+<h5 id="接收端">接收端</h5>
+<p>接收端的变化主要一个是将窗口通告给发送方。这个任务只需要修改<code>make_pkt</code>即可，不再赘述。</p>
+<p>另外一个是接收发送方数据的逻辑。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213518957536_859_image-20221210123705619.png" srcset="/img/loading.gif" lazyload alt="image-20221210123705619">
+<figcaption aria-hidden="true">image-20221210123705619</figcaption>
+</figure>
+<p>代码如下所示：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xn7jlolbkwh0sj"></i><span>C++</span><div class="collapse show" id="collapse-xn7jlolbkwh0sj"><pre><code class="hljs C++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">hasseqnum</span>(rcvpkt, expectedseqnum)) {
+            pkt_data_size = rcvpkt.head.data_size;
+            <span class="hljs-built_in">memcpy</span>(file_buffer + received_file_len, rcvpkt.data, pkt_data_size);
+            received_file_len += pkt_data_size;
+            packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK,expectedseqnum);
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(expectedseqnum), DEBUG);
+            expectedseqnum++;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//discard the packet and wait for the next one</span>
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a out-of-order packet"</span>, WARNING);
+            <span class="hljs-keyword">continue</span>;
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a corrupt packet"</span>, DEBUG);
+        <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-keyword">if</span> (received_file_len == file_size) {
+        ...file received, writing file to the disk...
+    }
+}</code></pre></div></div>
+<p>可以从状态机看到，我们只需要关注<code>expectedseqnum</code>对应的包即可，其他的包收到直接丢弃即可。这一部分并不复杂，对照状态机容易理解。</p>
+<h4 id="sr">SR</h4>
+<p>在这次实验中也额外实现了SR选择重传流水线协议。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213520764848_548_image-20221210200312667.png" srcset="/img/loading.gif" lazyload alt="image-20221210200312667">
+<figcaption aria-hidden="true">image-20221210200312667</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213542209437_469_image-20221210201321172.png" srcset="/img/loading.gif" lazyload alt="image-20221210201321172">
+<figcaption aria-hidden="true">image-20221210201321172</figcaption>
+</figure>
+<h5 id="发送端-1">发送端</h5>
+<p>发送端相比GBN，需要为每一个分组都加入定时器。一开始是希望每一个包发出后都创建一个相同进程用于监听ACK并处理超时事件，但实践中发现由于，传入的<code>packet</code>地址会在发送过程中被修改，在线程中无法正确每个线程获取需要等待的分组的序号和内容。因此转而采用线程池的方式进行实现，每个线程维护自己的定时器和需要重发的分组。代码如下所示：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yjs5j7lbkwh0sj"></i><span>C++</span><div class="collapse show" id="collapse-yjs5j7lbkwh0sj"><pre><code class="hljs C++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
+<span class="hljs-type">clock_t</span> single_file_timer = <span class="hljs-built_in">clock</span>();
+<span class="hljs-keyword">while</span> (base &lt; pkt_total) {
+    <span class="hljs-comment">//send packets</span>
+    <span class="hljs-keyword">if</span> (nextseqnum &lt; base + N &amp;&amp; nextseqnum &lt; pkt_total) {
+        pkt_data_size = <span class="hljs-built_in">min</span>(MAX_SIZE, file_len - nextseqnum * MAX_SIZE);
+        sndpkt_buffer[nextseqnum] = <span class="hljs-built_in">make_pkt</span>(DATA, nextseqnum, pkt_data_size,
+                                             file_data + nextseqnum * MAX_SIZE);
+        <span class="hljs-built_in">udt_send</span>(sndpkt_buffer[nextseqnum]);
+        cout &lt;&lt; <span class="hljs-string">"Sent packet "</span> + <span class="hljs-built_in">to_string</span>(nextseqnum) + <span class="hljs-string">" "</span>;
+        <span class="hljs-built_in">print_window</span>();
+        thread_pool[nextseqnum] = <span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>, SR, &amp;sndpkt_buffer[nextseqnum], <span class="hljs-number">0</span>, <span class="hljs-literal">nullptr</span>);
+        nextseqnum++;
+    }
+}</code></pre></div></div>
+<p>其中<code>SR</code>线程的实现思路如下：</p>
+<p><code>acked</code>数组中保存了当前分组确认的状态，和GBN中所叙述的类似。这个数组的内容由接收线程（与GBN相同，但只标记<code>acked</code>数组状态，不进行窗口滑动）进行修改。当第<code>wait_seq</code>个包对应的SR线程发现监听到了对应<code>acked</code>数组变化（即<code>接收ACK(n)</code>）判断是否进行窗口滑动。若超时，则重发对应的包，重启定时器。</p>
+<p>下面是对应的代码：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q0bwl5lbkwh0sj"></i><span>C++</span><div class="collapse show" id="collapse-q0bwl5lbkwh0sj"><pre><code class="hljs C++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">SR</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
+    packet sndpkt = *<span class="hljs-built_in">reinterpret_cast</span>&lt;packet *&gt;(lpParam);
+    u_int wait_seq = sndpkt.head.seq;
+    <span class="hljs-type">int</span> resend_times = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">//start a timer</span>
+    <span class="hljs-type">clock_t</span> start = <span class="hljs-built_in">clock</span>();
+    <span class="hljs-keyword">while</span> (!acked[wait_seq]) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">timeout</span>(start)) {
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            start = <span class="hljs-built_in">clock</span>();
+            <span class="hljs-keyword">if</span> (resend_times &gt; MAX_RESEND_TIMES) {
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Resend times exceed the limit, there must be something wrong with the network"</span>, ERR);
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                cout &lt;&lt; <span class="hljs-string">"Resend packet "</span> + <span class="hljs-built_in">to_string</span>(sndpkt.head.seq) + <span class="hljs-string">" "</span>;
+                <span class="hljs-built_in">print_window</span>();
+                resend_times++;
+            }
+        }
+    }
+    <span class="hljs-comment">//if reach here, the packet is ACKed</span>
+    <span class="hljs-keyword">if</span> (wait_seq == base) {
+        <span class="hljs-comment">//if the ACKed packet is the base, move the window to the first unACKed packet</span>
+        <span class="hljs-keyword">while</span> (acked[base]) {
+            base++;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<h5 id="接收端-1">接收端</h5>
+<p>接收端比GBN的情况要复杂一些，因为需要缓存失序的包。实现如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a921nylbkwh0sj"></i><span>C++</span><div class="collapse show" id="collapse-a921nylbkwh0sj"><pre><code class="hljs C++"><span class="hljs-comment">//"blocking receive" here</span>
+<span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
+        u_int pkt_seq = rcvpkt.head.seq;
+        <span class="hljs-keyword">if</span> (pkt_seq &gt;= rcv_base &amp;&amp; pkt_seq &lt; rcv_base + N) {
+            <span class="hljs-comment">//in the window</span>
+            <span class="hljs-keyword">if</span> (!acked[pkt_seq]) {
+                <span class="hljs-keyword">if</span> (pkt_seq == rcv_base) {
+                    <span class="hljs-comment">//the first packet in the window</span>
+                    pkt_data_size = rcvpkt.head.data_size;
+                    <span class="hljs-built_in">memcpy</span>(file_buffer + pkt_seq * MAX_SIZE, rcvpkt.data, pkt_data_size);
+                    acked[pkt_seq] = <span class="hljs-literal">true</span>;
+                    packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, rcv_base);
+                    <span class="hljs-built_in">udt_send</span>(sndpkt);
+                    <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq), DEBUG);
+                    <span class="hljs-comment">//slide the window</span>
+                    <span class="hljs-keyword">while</span> (acked[rcv_base]) {
+                        rcv_base++;
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-comment">//not the first packet in the window, cache it</span>
+                    pkt_data_size = rcvpkt.head.data_size;
+                    <span class="hljs-built_in">memcpy</span>(file_buffer + pkt_seq * MAX_SIZE, rcvpkt.data, pkt_data_size);
+                    acked[pkt_seq] = <span class="hljs-literal">true</span>;
+                    packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, pkt_seq);
+                    <span class="hljs-built_in">udt_send</span>(sndpkt);
+                    <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq)+<span class="hljs-string">", cached"</span>, DEBUG);
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">//already acked in the window, resend the ack</span>
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq) + <span class="hljs-string">" again"</span>, WARNING);
+                <span class="hljs-comment">//send ack</span>
+                packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, pkt_seq);
+                <span class="hljs-built_in">udt_send</span>(sndpkt);
+                <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Sent ack "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq), DEBUG);
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((pkt_seq &gt;= rcv_base - N) &amp;&amp; (pkt_seq &lt; rcv_base)) {
+            <span class="hljs-comment">//out of the window, but in the buffer</span>
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq) + <span class="hljs-string">" again"</span>, WARNING);
+            <span class="hljs-comment">//send ack</span>
+            packet sndpkt = <span class="hljs-built_in">make_pkt</span>(ACK, pkt_seq);
+            <span class="hljs-built_in">udt_send</span>(sndpkt);
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Sent ack "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq), DEBUG);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//out of the window and buffer</span>
+            <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received packet "</span> + <span class="hljs-built_in">to_string</span>(pkt_seq) + <span class="hljs-string">" out of the window"</span>, WARNING);
+            <span class="hljs-comment">//do nothing</span>
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Received a corrupt packet"</span>, DEBUG);
+        <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-keyword">if</span> (rcv_base * MAX_SIZE &gt;= file_size) {
+        ...file received, writing file to the disk...
+    }
+}</code></pre></div></div>
+<p>虽然代码较长，但无非是区分了接收的分组在窗口内，窗口之前或者超出了缓冲区三种情况。</p>
+<h2 id="程序演示">程序演示</h2>
+<h3 id="建立连接">建立连接</h3>
+<p>路由器设置：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213544187165_779_image-20221119185527966.png" srcset="/img/loading.gif" lazyload alt="image-20221119185527966">
+<figcaption aria-hidden="true">image-20221119185527966</figcaption>
+</figure>
+<p>流程展示在上一次实验已经展示的比较完善。本次实验主要演示有丢包延时条件下的发送情况。</p>
+<h3 id="gbn流水线协议">GBN流水线协议</h3>
+<p>可以看到发送方当发现超时候会将<code>base</code>到<code>nextseqnum</code>之间的包全部重发。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213545630220_743_image-20221210212155885.png" srcset="/img/loading.gif" lazyload alt="image-20221210212155885">
+<figcaption aria-hidden="true">image-20221210212155885</figcaption>
+</figure>
+<p>接收方也能判断失序的分组：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213547529597_432_image-20221210212321733.png" srcset="/img/loading.gif" lazyload alt="image-20221210212321733">
+<figcaption aria-hidden="true">image-20221210212321733</figcaption>
+</figure>
+<h3 id="sr流水线协议">SR流水线协议</h3>
+<p>在SN协议的实践中，发现发送方会经常由于超时重发接收方能够收到的包。猜测是由于接收方串行接收且接收的逻辑比发送方发送的逻辑复杂，导致了接收的速度跟不上发送的速度。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213549149283_237_image-20221210211645995.png" srcset="/img/loading.gif" lazyload alt="image-20221210211645995">
+<figcaption aria-hidden="true">image-20221210211645995</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213550895116_592_image-20221210211627874.png" srcset="/img/loading.gif" lazyload alt="image-20221210211627874">
+<figcaption aria-hidden="true">image-20221210211627874</figcaption>
+</figure>
+<p>因此尝试略微调大超时时间（3*MAX_TIME）可以看到正常的接收发送过程。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213552672768_860_image-20221210211424408.png" srcset="/img/loading.gif" lazyload alt="image-20221210211424408">
+<figcaption aria-hidden="true">image-20221210211424408</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213554281337_662_image-20221210211449133.png" srcset="/img/loading.gif" lazyload alt="image-20221210211449133">
+<figcaption aria-hidden="true">image-20221210211449133</figcaption>
+</figure>
+<p>发送成功！</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213555912889_771_image-20221210212403935.png" srcset="/img/loading.gif" lazyload alt="image-20221210212403935">
+<figcaption aria-hidden="true">image-20221210212403935</figcaption>
+</figure>
+<p>GitHub:</p>
+<p>https://github.com/Lunaticsky-tql/rdt_on_udp</p>
+<p>GBN对应lab3.2分支，SR对应lab3.2-SR分支。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AF%84%E7%BD%91/">#寄网</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)</div>
+      <div>http://lunaticsky-tql.github.io/posts/39007/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年12月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/44201/" title="编译原理-上下文无关文法">
+                        <span class="hidden-mobile">编译原理-上下文无关文法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
