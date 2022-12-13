@@ -16,15 +16,15 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="Makefile 急速入门 或许你和我一样在完全没有接触过makefile的时候看到相对复杂一点的项目依赖感到头大。这里从最简单的情况，到常见用法，快速把makefile的基本用法捋一遍。 最小示例 下面的过程想必接触过linux平台下的编程都应该很熟悉： 示例代码main.c： c++#include &lt;stdio.h&gt; int main(){  printf(&quot;hello worl">
+        <meta name="description" content="Makefile 急速入门 或许你和我一样在完全没有接触过makefile的时候看到相对复杂一点的项目依赖感到头大。这里从最简单的情况，到常见用法，快速把makefile的基本用法捋一遍。 最小示例 下面的过程想必接触过linux平台下的编程都应该很熟悉： 新建一个示例程序main.c： c++#include &lt;stdio.h&gt; int main(){  printf(&quot;hello">
 <meta property="og:type" content="article">
 <meta property="og:title" content="makefile急速入门">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/23557/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="Makefile 急速入门 或许你和我一样在完全没有接触过makefile的时候看到相对复杂一点的项目依赖感到头大。这里从最简单的情况，到常见用法，快速把makefile的基本用法捋一遍。 最小示例 下面的过程想必接触过linux平台下的编程都应该很熟悉： 示例代码main.c： c++#include &lt;stdio.h&gt; int main(){  printf(&quot;hello worl">
+<meta property="og:description" content="Makefile 急速入门 或许你和我一样在完全没有接触过makefile的时候看到相对复杂一点的项目依赖感到头大。这里从最简单的情况，到常见用法，快速把makefile的基本用法捋一遍。 最小示例 下面的过程想必接触过linux平台下的编程都应该很熟悉： 新建一个示例程序main.c： c++#include &lt;stdio.h&gt; int main(){  printf(&quot;hello">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-25T08:29:03.975Z">
-<meta property="article:modified_time" content="2022-11-29T07:31:12.585Z">
+<meta property="article:modified_time" content="2022-12-13T13:10:24.220Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="环境配置">
 <meta name="twitter:card" content="summary_large_image">
@@ -246,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              6.5k 字
+              6.9k 字
                 
       </span>
       
@@ -309,7 +309,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年11月29日 下午
+                    本文最后更新于：2022年12月13日 晚上
                   
                 
               </p>
@@ -321,8 +321,8 @@
 <p>或许你和我一样在完全没有接触过<code>makefile</code>的时候看到相对复杂一点的项目依赖感到头大。这里从最简单的情况，到常见用法，快速把<code>makefile</code>的基本用法捋一遍。</p>
 <h2 id="最小示例">最小示例</h2>
 <p>下面的过程想必接触过linux平台下的编程都应该很熟悉：</p>
-<p>示例代码<em>main.c</em>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sllxcrlb4jx62s"></i><span>c++</span><div class="collapse show" id="collapse-sllxcrlb4jx62s"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<p>新建一个示例程序<em>main.c</em>：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h0ju8slbm8uzgl"></i><span>c++</span><div class="collapse show" id="collapse-h0ju8slbm8uzgl"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
 
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">"hello world!"</span>);
@@ -332,19 +332,19 @@
 }</code></pre></div></div>
 <p>正常情况下，通过 <code>gcc</code>
 在命令行将其编译后产出相应文件，可执行文件或 object 文件等。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r5d7htlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-r5d7htlb4jx62s"><pre><code class="hljs shell">(base) ➜ gcc -o main.out main.c</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jeippnlbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-jeippnlbm8uzgl"><pre><code class="hljs shell">(base) ➜ gcc -o main.out main.c</code></pre></div></div>
 <p>上面命令编译后运行 <code>main.out</code> 可执行文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z0j9qzlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-z0j9qzlb4jx62s"><pre><code class="hljs shell">(base) ➜ ./main.out
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0kqt44lbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-0kqt44lbm8uzgl"><pre><code class="hljs shell">(base) ➜ ./main.out
 hello world!</code></pre></div></div>
 <h2 id="makefile-初步认知">Makefile 初步认知</h2>
 <h3 id="从动手做开始">从动手做开始</h3>
-<p>如果我们想用到中间代码联合编译/链接，或者有大量的源文件做不同的处理，那么敲一行一行的命令将是灾难级的。即使通过按上下箭头的方式回退命令也会浪费很多时间。<code>makefile</code>的作用便显现出来了。但是为了便于学习，从上面的最小示例开始，先动手做一下，有一个感性的认知：</p>
+<p>如果我们想用到中间代码联合编译/链接，或者有大量的源文件做不同的处理，那么敲一行一行的命令将是灾难级的。即使通过按上下箭头的方式回退命令也会浪费很多时间，这时<code>makefile</code>的作用便显现出来了。但是为了便于学习，从上面的最小示例开始，先动手做一下，有一个感性的认知：</p>
 <p>在与<code>main.c</code>同目录下创建文件<code>makefile</code>:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dorydhlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-dorydhlb4jx62s"><pre><code class="hljs shell">touch makefile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zvsw5jlbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-zvsw5jlbm8uzgl"><pre><code class="hljs shell">touch makefile</code></pre></div></div>
 <p>填入以下内容：</p>
 <p><em>Makefile</em></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m1re2elb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-m1re2elb4jx62s"><pre><code class="hljs makefile"><span class="hljs-section">all:main.out</span>
-
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-goatl4lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-goatl4lbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-section">all:main.out</span>
+  <span class="hljs-comment"># make all</span>
 <span class="hljs-section">main.out: main.c</span>
 	<span class="hljs-comment"># test make</span>
 	gcc -o main.out main.c
@@ -354,66 +354,67 @@ hello world!</code></pre></div></div>
 <p>上面的 Makefile 中定义了三个任务，调用时可通过
 <code>make &lt;target name&gt;</code> 形式来调用。</p>
 <p>比如:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vxifhxlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-vxifhxlb4jx62s"><pre><code class="hljs shell">(base) ➜ make main.out
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lw1bpklbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-lw1bpklbm8uzgl"><pre><code class="hljs shell">(base) ➜ make main.out
 <span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-built_in">test</span> make</span>
 gcc -o main.out main.c</code></pre></div></div>
 <p>默认情况下<code>makefile</code>会打印每条命令(包括注释)，然后再执行，也就是所谓的echoing。这是在基于在构建时需要了解当前在执行哪条命令的需要。</p>
 <p>之后你会发现在目录下产生了<code>main.out</code> 文件。</p>
 <p>如果想关闭回声，可以在命令的前面加上@。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q0gazulb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-q0gazulb4jx62s"><pre><code class="hljs makefile"><span class="hljs-section">main.out: main.c</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0qqu9ylbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-0qqu9ylbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-section">main.out: main.c</span>
 	@<span class="hljs-comment"># test make</span>
 	gcc -o main.out main.c</code></pre></div></div>
-<p>再试一下用<code>clean</code>把刚刚的<code>main.out</code>删掉：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-816nzjlb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-816nzjlb4jx62s"><pre><code class="hljs shell">(base) ➜ make clean
+<p>习惯上<code>clean</code>任务被定义用于清除生成的目标构建文件。在这里试一下用<code>clean</code>把刚刚的<code>main.out</code>删掉：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ms4tgklbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-ms4tgklbm8uzgl"><pre><code class="hljs shell">(base) ➜ make clean
 rm main.out</code></pre></div></div>
-<p>上面的三个任务中，<code>all</code> 为内置的任务名，一般一个 Makefile
-中都会包含，当直接调用 <code>make</code>
-后面没有跟任务名时，默认执行的就是
-<code>all</code>因此<code>make all</code>可以简写为<code>make</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4h7bk4lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-4h7bk4lb4jx62s"><pre><code class="hljs shell">(base) ➜ make
-gcc -o main.out main.c</code></pre></div></div>
+<p>如果<code>make</code>后面什么都不跟，会默认只执行第一个任务。因此我们通常会在第一行定义一个依赖(习惯上叫做<code>all</code>)来使<code>makefile</code>在我们输入<code>make</code>时能够将所有需要的目标都构建出来。</p>
+<p>可以试一下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gv5u9plbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-gv5u9plbm8uzgl"><pre><code class="hljs shell">(base) ➜ make
+gcc -o main.out main.c
+<span class="hljs-meta prompt_"># </span><span class="language-bash">make all</span></code></pre></div></div>
+<p>和所预料的一样。</p>
 <h3 id="make-规则">Make 规则</h3>
 <p>可以看到，通过 <code>make</code>
 命令，能将上面的编译进行有效自动化管理。通过将从输入文件到输出文件的编译规则编写成
 Makefile 脚本，Make 工具将自动处理文件间依赖及是否需要编译的检测。</p>
 <p>定义任务的基本语法为：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ac490tlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-ac490tlb4jx62s"><pre><code class="hljs makefile">target1 [target2 ...]: [pre-req-1 pre-req-2 ...]
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1kyitylbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-1kyitylbm8uzgl"><pre><code class="hljs makefile">target [target2 ...]: [pre-req-1 pre-req-2 ...]
 	[command1
 	 command2
 	 ......]</code></pre></div></div>
-<p>上面的形式也可称作是一条编译规则（rule）。</p>
 <p>其中，</p>
 <ul>
 <li><code>target</code>
-为任务名或文件产出。如果该任务不产出文件，则称该任务为
-<code>Phony Targets</code>。<code>make</code> 内置的
-<code>phony targets</code> 有 <code>all</code>, <code>install</code> 及
-<code>clean</code>
-等，这些任务都不实际产出文件，一般用来执行一些命令。</li>
+为任务名或文件产出。从上面的例子可以看出，<code>target</code>可以是一个目标文件(如<code>main.out</code>)，也可以是一个执行文件，还可以是一个标签（如<code>all</code>，<code>clean</code>)等。</li>
 <li><code>pre-req123...</code>
-这些是依赖项，即该任务所需要的外部输入，这些输入可以是其他文件，也可以是其他任务产出的文件。</li>
+这些是依赖项，即该任务所需要的外部输入，这些输入可以是已有的文件，也可以是其他任务产出的文件。</li>
 <li><code>command</code> 为该任务具体需要执行的 shell 命令。</li>
 </ul>
-<h3 id="任务间的依赖">任务间的依赖</h3>
-<p>前面调用 <code>all</code> 的效果等同于调用 <code>main.out</code>
-任务，因为 <code>all</code> 的输入依赖为 <code>main.out</code>
-文件。Make 在执行任务前会先检查其输入的依赖项，执行 <code>all</code>
-时发现它依赖 <code>main.out</code>
-文件，于是本地查找，发现本地没有，再从 Makefile
-中查找看是否有相应任务会产生该文件，结果确实有相应任务(<code>main.out</code>对应的规则)能产生该文件，所以先执行能够产生依赖项的任务。</p>
+<p>因此简单的说，我们把想生成的文件或者想执行的命令名写到冒号前面，把生成的目标文件依赖文件写到冒号后面，下面<code>tab</code>对齐写想执行的命令就可以了。</p>
+<h3 id="make是如何工作的">make是如何工作的</h3>
+<p>现在来以输入<code>make</code>命令为例，简要分析make的工作过程。</p>
+<p>首先在当前目录下找名字叫“makefile”的文件；</p>
+<blockquote>
+<p>事实上，执行make命令时，是按照GNUmakefile、makefile、Makefile的顺序依次尝试找到存在的文件并执行。</p>
+</blockquote>
+<p><code>make</code>执行第一条指令对应任务<code>all</code>；</p>
+<p><code>all</code>发现其依赖<code>main.out</code>不存在，需要更新，转而去执行<code>main.out</code>对应的任务；</p>
+<p><code>main.out</code>发现它所依赖的<code>main.c</code>不存在，需要更新，而且没有找到对应<code>main.c</code>任务，执行自己的<code>command</code>产生<code>main.c</code>；</p>
+<p><code>main.out</code>执行完了，<code>all</code>继续执行自己的<code>command</code>把注释打印了出来。</p>
 <h3 id="增量编译">增量编译</h3>
-<p>使用 Makefile
-进行编译有个好处是，在执行任务时，它会先检查依赖项是否比需要产出的文件新，如果说依赖项更新，则说明我们需要产出的目标文件属于过时的产物，需要重新生成。</p>
+<p>其实上面说的还不是很严谨。准确的说，在执行任务时，它会先检查依赖项是否比需要产出的文件新，如果说依赖项更新(包括依赖项不存在)，则说明我们需要产出的目标文件属于过时的产物，需要重新生成。</p>
 <p>什么意思。比如上面的示例，当执行</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jae9sklb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-jae9sklb4jx62s"><pre><code class="hljs shell">(base) ➜ make main.out</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cbcxpdlbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-cbcxpdlbm8uzgl"><pre><code class="hljs shell">(base) ➜ make main.out</code></pre></div></div>
 <p>试图生成 <code>main.out</code> 产出时，会检查这个任务的依赖文件
 <code>main.c</code> 是否有修改过。</p>
 <p>前面我们已经执行过该任务产生过
 <code>main.out</code>。再次执行时，会得到如下提示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kprlz2lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-kprlz2lb4jx62s"><pre><code class="hljs shell">(base) ➜ make main.out 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7x3km6lbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-7x3km6lbm8uzgl"><pre><code class="hljs shell">(base) ➜ make main.out 
 make: Nothing to be done for 'main.out'.</code></pre></div></div>
+<blockquote>
+<p>有的版本的GNU make 提示的也可能是 make: 'main.out' is up to date.</p>
+</blockquote>
 <p>现在对输入文件 <code>main.c</code> 进行修改：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hu4haglb4jx62s"></i><span>c++</span><div class="collapse show" id="collapse-hu4haglb4jx62s"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-illz67lbm8uzgl"></i><span>c++</span><div class="collapse show" id="collapse-illz67lbm8uzgl"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
 
 -     <span class="hljs-built_in">printf</span>(<span class="hljs-string">"hello world!"</span>);
@@ -425,7 +426,7 @@ make: Nothing to be done for 'main.out'.</code></pre></div></div>
 }</code></pre></div></div>
 <p>再次执行 <code>make main.out</code>
 会发现任务正常执行并产生了新的输出，</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kp8p1flb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-kp8p1flb4jx62s"><pre><code class="hljs shell">(base) ➜ make main.out
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r3p5axlbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-r3p5axlbm8uzgl"><pre><code class="hljs shell">(base) ➜ make main.out
 gcc -o main.out main.c
 (base) ➜ ./main.out
 hello ucore!⏎</code></pre></div></div>
@@ -433,56 +434,45 @@ hello ucore!⏎</code></pre></div></div>
 <code>main.out</code> 更新了，所以我们说 <code>main.out</code>
 这个目标， <strong>过时（out-dated）</strong> 了。</p>
 <p>过时的任务才会被重新执行，而未过时的会跳过，并输出相应信息。</p>
-<p>以上，Makefile
-天然实现了增量编译的效果，在大型项目下会节省不少编译时间，因为它只编译过期的任务。</p>
+<p>Makefile 天然实现了增量编译的效果，这是使用 Makefile
+进行自动化编译的最大的方便之处。在大型项目下会节省不少编译时间，因为它只编译过期的任务。</p>
 <h3 id="phony-类型任务的执行">Phony 类型任务的执行</h3>
-<p>需要注意的是，phony 类型的任务永远都属于过时类型，即，每次
-<code>make</code>
+<p>上面提到，<code>target</code>既可以是文件名，也可以是标签，那么<code>make</code>怎么知道到底是指哪一种情况？有疑惑就对了。我们还是通过实验来验证这个问题：</p>
+<p>还是使用一开始的示例，这次钻一个牛角尖：在这个目录下创建一个名叫<code>clean</code>的文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4ewx5tlbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-4ewx5tlbm8uzgl"><pre><code class="hljs shell">touch clean</code></pre></div></div>
+<p>然后再<code>make clean</code>一下，我们会看到：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7kygdelbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-7kygdelbm8uzgl"><pre><code class="hljs shell">(base) ➜ make clean
+make: Nothing to be done for 'clean'.</code></pre></div></div>
+<p>也就是说，<code>make</code>会将其优先视作文件。那么我们如果只是希望将其用作标签，那么应该如何解决呢？</p>
+<p>Makefile中，有一个<code>.PHONY</code>指令。<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ih411e7gn/?spm_id_from=333.337.search-card.all.click&amp;vd_source=acb594007d0011f12244c20c5476e73d">Phony</a>的意思是伪造的，假的。可以理解为，在Makefile中，<code>.PHONY</code>后面的target表示的也是一个伪造的target,
+而不是真实存在的文件target。</p>
+<p>因此，在头部加上一行<code>.PHONY: clean</code>就可以解决这样的二义性问题。</p>
+<p>当然，即便不加<code>.PHONY</code>，将<code>target</code>用作标签的任务，也属于phony类型的任务，只是有潜在的二义性罢了。phony
+类型的任务永远都属于过时类型，即，每次 <code>make</code>
 都会执行。因为这种类型的任务它没有文件产出，就无所谓检查，它的主体只是调用了另外的命令而以。</p>
-<p>拿这里的 <code>all</code> 来说，当我们执行 <code>make</code> 或
-<code>make all</code> 时，得到：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-71jv75lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-71jv75lb4jx62s"><pre><code class="hljs shell">(base) ➜ make
-make: Nothing to be done for 'all'.</code></pre></div></div>
-<p>这里看不出来 <code>all</code>
-有没有执行，因为目前它还没有包含任何一句命令，调用 <code>all</code>
-后实际执行的是它的依赖文件 <code>main.out</code>
-中的任务，而因为后者已经是最新的了，所以无须执行，所以得到了如上的输出。</p>
-<p>为了验证 phony 类型任务是否每次都执行，向 <code>all</code> 及
-<code>main.out</code> 中添加 <code>echo</code> 命令打印一些信息、</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zmtbgelb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-zmtbgelb4jx62s"><pre><code class="hljs makefile"><span class="hljs-section">all:main.out</span>
-+	echo <span class="hljs-string">"[all] done"</span>
-<span class="hljs-section">main.out: main.c</span>
-
+<p>拿这里的 <code>all</code> 来说，当我们连续两次执行 <code>make</code>
+或 <code>make all</code> 时，得到：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eg90q3lbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-eg90q3lbm8uzgl"><pre><code class="hljs shell">(base) ➜ make
 gcc -o main.out main.c
-
-+	echo <span class="hljs-string">"[main.out] done"</span>
-<span class="hljs-section">clean:</span>
-
-rm main.out</code></pre></div></div>
-<p>再次执行：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t6b8felb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-t6b8felb4jx62s"><pre><code class="hljs shell">(base) ➜ make
-echo "[all] done"
-[all] done
+<span class="hljs-meta prompt_"># </span><span class="language-bash">make all</span>
 (base) ➜ make
-echo "[all] done"
-[all] done
-(base) ➜ make main.out
-make: `main.out' is up to date.</code></pre></div></div>
+<span class="hljs-meta prompt_"># </span><span class="language-bash">make all</span></code></pre></div></div>
 <p>可以看到，属于 phony 类型的任务 <code>all</code>
-每次都会执行其中定义的 shell 命令，而非 phony 类型的任务
-<code>main.out</code> 则走了增量编译的逻辑。</p>
+每次都会执行其中定义的 <code>command</code>(在这里只是一行注释)，而非
+phony 类型的任务 <code>main.out</code> 则走了增量编译的逻辑。</p>
 <h2 id="makefile-基本知识">Makefile 基本知识</h2>
 <p>如果说通过上面的部分能够对<code>makefile</code>的工作方式和用途有了大概的理解，弄清楚下面的内容将能够看懂大部分<code>makefile</code>代码，并且尝试根据自己的实际情况添加或修改命令。</p>
+<p>当然，如果要深入使用，还是离不开查阅文档。这里只是抛砖引玉，仅介绍部分最常用的语法和特性。</p>
 <h3 id="变量宏">变量/宏</h3>
 <p>Makefile 中可使用变量（宏）来让脚本更加灵活和减少冗余。</p>
 <p>其中变量使用 <code>$</code>
 加圆括号或花括号的形式来使用，<code>$(VAR)</code>，定义时类似于 C
 中定义宏，所以变量也可叫 Makefile 中的宏，</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2nkdbelb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-2nkdbelb4jx62s"><pre><code class="hljs shell">CC=gcc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rgpxyclbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-rgpxyclbm8uzgl"><pre><code class="hljs shell">CC=gcc</code></pre></div></div>
 <p>这里定义 <code>CC</code> 表示 <code>gcc</code>
 编译工具。然后在后续编译命令中，就可以使用 <code>$(CC)</code> 代替
 <code>gcc</code> 来书写 shell 命令了。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ym3iovlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-ym3iovlb4jx62s"><pre><code class="hljs makefile">+ CC=gcc
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-60ttnmlbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-60ttnmlbm8uzgl"><pre><code class="hljs makefile">+ CC=gcc
 <span class="hljs-section">all:main.out</span>
 <span class="hljs-section">main.out: main.c</span>
 
@@ -511,37 +501,38 @@ rm main.out</code></pre></div></div>
 <p>这些变量都只有一个符号，区别于正常用字母命名的变量需要使用
 <code>$(VAL)</code> 的形式来使用，自动变量无需加括号。</p>
 <p>利用自动变量，前面示例可改造成：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c2valklb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-c2valklb4jx62s"><pre><code class="hljs makefile">CC=gcc
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p4sjmrlbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-p4sjmrlbm8uzgl"><pre><code class="hljs makefile">CC=gcc
 TARGET=main.out
 <span class="hljs-section">all:<span class="hljs-variable">$(TARGET)</span></span>
 <span class="hljs-variable">$(TARGET)</span>: main.c
 	<span class="hljs-variable">$(CC)</span> -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$^</span>
 <span class="hljs-section">clean:</span>
 	rm <span class="hljs-variable">$(TARGET)</span></code></pre></div></div>
-<p>减少了重复代码，更加易于维护，需要修改时，改动比较小。自动变量特别是<code>$@</code>和<code>$^</code>在实际中用的比较多，建议熟记。</p>
+<p>减少了重复代码，更加易于维护，需要修改时，改动比较小。</p>
+<p>自动变量特别是<code>$@</code>和<code>$^</code>在实际中用的比较多，建议熟记。</p>
 <h3 id="vpath-vpath">VPATH &amp; vpath</h3>
 <p>可通过 <code>VPATH</code> 指定依赖文件及产出文件的搜索目录。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0nqs8klb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-0nqs8klb4jx62s"><pre><code class="hljs makefile">VPATH = src <span class="hljs-keyword">include</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-phjgtwlbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-phjgtwlbm8uzgl"><pre><code class="hljs makefile">VPATH = src <span class="hljs-keyword">include</span></code></pre></div></div>
 <p>通过小写的 <code>vpath</code> 可指定具体的文件名及扩展名类型，</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f54t2zlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-f54t2zlb4jx62s"><pre><code class="hljs makefile"><span class="hljs-keyword">vpath</span> %.c src
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tq5s1tlbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-tq5s1tlbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-keyword">vpath</span> %.c src
 <span class="hljs-keyword">vpath</span> %.h <span class="hljs-keyword">include</span></code></pre></div></div>
 <p>此处 <code>%</code> 表示文件名。</p>
 <h3 id="依赖原则和匹配规则">依赖原则和匹配规则</h3>
 <p>只定义了产出与依赖没包含任务命令的规则，我们常称为依赖规则。像下面这样：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g6apdrlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-g6apdrlb4jx62s"><pre><code class="hljs makefile">Main.o : Main.h Test1.h Test2.h
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r9nw98lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-r9nw98lbm8uzgl"><pre><code class="hljs makefile">Main.o : Main.h Test1.h Test2.h
 Test1.o : Test1.h Test2.h
 Test2.o : Test2.h</code></pre></div></div>
 <p>这种规则可达到这种效果，即，右边任何文件有变更，左边的产出便成为过时的了。</p>
 <p>区别于明确指定了产出与依赖，如果一条规则包含通配符，则称作匹配规则（Pattern
 Rules）。</p>
 <p>比如，</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-caavsdlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-caavsdlb4jx62s"><pre><code class="hljs makefile"><span class="hljs-section">%.o: %.c</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w2lsiflbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-w2lsiflbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-section">%.o: %.c</span>
 	gcc -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$^</span></code></pre></div></div>
 <p>上面定义了这么一条编译规则，将所有匹配到的 c 文件编译成 Object
 产出。</p>
 <p>有什么用？</p>
 <p>这种规则一般不是直接调用的，是被其他它规则触间接使用。比如上面的依赖规则。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-chken3lb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-chken3lb4jx62s"><pre><code class="hljs makefile">%.o : %.cpp
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hb29tmlbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-hb29tmlbm8uzgl"><pre><code class="hljs makefile">%.o : %.cpp
 	g++ -g -o <span class="hljs-variable">$@</span> -c <span class="hljs-variable">$&lt;</span>
 Main.o : Main.h Test1.h Test2.h
 Test1.o : Test1.h Test2.h
@@ -551,7 +542,7 @@ Test2.o : Test2.h</code></pre></div></div>
 会被匹配到，所以匹配规则里面的命令会执行，从而将 <code>cpp</code>
 文件编译成相应 Object
 文件。达到了依赖更新后批量更新产出的目的，而不需要写成这样：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vsy2zjlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-vsy2zjlb4jx62s"><pre><code class="hljs makefile">Main.o : Main.h Test1.h Test2.h
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oz0pk4lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-oz0pk4lbm8uzgl"><pre><code class="hljs makefile">Main.o : Main.h Test1.h Test2.h
     g++ -g -o <span class="hljs-variable">$@</span> -c <span class="hljs-variable">$&lt;</span>
 Test1.o : Test1.h Test2.h
     g++ -g -o <span class="hljs-variable">$@</span> -c <span class="hljs-variable">$&lt;</span>
@@ -559,7 +550,7 @@ Test2.o : Test2.h
     g++ -g -o <span class="hljs-variable">$@</span> -c <span class="hljs-variable">$&lt;</span></code></pre></div></div>
 <h3 id="makefile-赋值">Makefile 赋值</h3>
 <p><code>=</code> : <strong>最容易出错</strong> 的赋值等号</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aqfd8slb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-aqfd8slb4jx62s"><pre><code class="hljs makefile">VIR_A = A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fj68oslbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-fj68oslbm8uzgl"><pre><code class="hljs makefile">VIR_A = A
 VIR_B = <span class="hljs-variable">$(VIR_A)</span> B
 VIR_A = AA</code></pre></div></div>
 <p>最后<code>VIR_B</code>的值是<code>AA B</code>，而不是<code>A B</code>。
@@ -568,7 +559,7 @@ VIR_A = AA</code></pre></div></div>
 <p><code>+=</code> : 追加(append)</p>
 <p><code>:=</code> : <strong>“正常”</strong> 的赋值</p>
 <p>以一个小例子进行说明：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4fsuq4lb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-4fsuq4lb4jx62s"><pre><code class="hljs makefile"><span class="hljs-keyword">ifdef</span> DEFINE_VAR
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wukn1klbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-wukn1klbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-keyword">ifdef</span> DEFINE_VAR
 	VAR = “Hello World!”
 <span class="hljs-keyword">else</span>
 <span class="hljs-keyword">endif</span>
@@ -588,7 +579,7 @@ VIR_A = AA</code></pre></div></div>
 <span class="hljs-section">all:</span>
 	@echo <span class="hljs-variable">$(VAR)</span></code></pre></div></div>
 <p>测试这些命令：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9wrbp9lb4jx62s"></i><span>shell</span><div class="collapse show" id="collapse-9wrbp9lb4jx62s"><pre><code class="hljs shell">(base) ➜ make DEFINE_VAR=true OPT=define
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y3u0unlbm8uzgl"></i><span>shell</span><div class="collapse show" id="collapse-y3u0unlbm8uzgl"><pre><code class="hljs shell">(base) ➜ make DEFINE_VAR=true OPT=define
 “Hello World!”
 (base) ➜ make DEFINE_VAR=true OPT=add
 “Hello World!” “Kelly!”
@@ -606,12 +597,12 @@ make内嵌的函数，直接引用就可以了；对于用户自定义的函数�
 <h4 id="内置函数">内置函数</h4>
 <h5 id="通配符函数">通配符函数</h5>
 <p>当我们想要对文件名进行通配时，可以采用通配符*或%来进行，如上所述。但只能将其用于规则目标或依赖以及<code>shell</code>命令中：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bg61hflb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-bg61hflb4jx62s"><pre><code class="hljs makefile"><span class="hljs-section">test: *.o</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d12xq4lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-d12xq4lbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-section">test: *.o</span>
 	gcc -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$^</span>
 <span class="hljs-section">*.o: *.c    </span>
 	gcc -c <span class="hljs-variable">$^</span></code></pre></div></div>
 <p>但是其他情况比如如果我们想要获取某个目录下所有的C文件列表，可以使用扩展通配符函数<code>wildcard</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6tby8mlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-6tby8mlb4jx62s"><pre><code class="hljs makefile">SRC  = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.c)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3coud0lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-3coud0lbm8uzgl"><pre><code class="hljs makefile">SRC  = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.c)</span>
 HEAD = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.h)</span>
 <span class="hljs-section">all:    </span>
 	@echo <span class="hljs-string">"SRC = <span class="hljs-variable">$(SRC)</span>"</span>    
@@ -622,31 +613,31 @@ HEAD = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span>
 <p>用shell
 函数在<code>makefile</code>执行过程中使用shell命令。函数的参数就是命令，返回值是命令的执行结果。它和反引号
 `` 具有相同的功能。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dpkn2jlb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-dpkn2jlb4jx62s"><pre><code class="hljs makefile"><span class="hljs-meta"><span class="hljs-keyword">.PHONY</span>: all</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tg6r85lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-tg6r85lbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-meta"><span class="hljs-keyword">.PHONY</span>: all</span>
 current_path = <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> pwd)</span>
 <span class="hljs-section">all:    </span>
 @echo <span class="hljs-string">"current_path = <span class="hljs-variable">$(current_path)</span>"</span></code></pre></div></div>
 <h5 id="addprefix">addprefix</h5>
 <p>格式：$(addprefix <code>prefix</code>,<code>&lt;names...&gt;</code>)
 功能：为文件序列添加前缀</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cx4gw6lb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-cx4gw6lb4jx62s"><pre><code class="hljs makefile">Variable := <span class="hljs-variable">$(<span class="hljs-built_in">addprefix</span> src/,foo bar)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4l4uk8lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-4l4uk8lbm8uzgl"><pre><code class="hljs makefile">Variable := <span class="hljs-variable">$(<span class="hljs-built_in">addprefix</span> src/,foo bar)</span>
 <span class="hljs-comment"># Variable ==&gt; src/foo src/bar</span></code></pre></div></div>
 <h5 id="addsuffix">addsuffix</h5>
 <p>格式：$(addsuffix
 <code>addsuffix</code>,<code>&lt;names...&gt;</code>)
 功能：为文件序列添加后缀</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nf5ks9lb4jx62s"></i><span>gams</span><div class="collapse show" id="collapse-nf5ks9lb4jx62s"><pre><code class="hljs gams"><span class="hljs-keyword">Variable</span> := $(addsuffix <span class="hljs-comment">.c,foo bar)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bbai2qlbm8uzgl"></i><span>gams</span><div class="collapse show" id="collapse-bbai2qlbm8uzgl"><pre><code class="hljs gams"><span class="hljs-keyword">Variable</span> := $(addsuffix <span class="hljs-comment">.c,foo bar)</span>
 # <span class="hljs-keyword">Variable</span> <span class="hljs-comment">==&gt; foo.c bar.c</span>
 </code></pre></div></div>
 <h5 id="basename">basename</h5>
 <p>格式：$(basename <code>&lt;names...&gt;</code>)
 功能：从文件名序列中取出各个文件名的前缀部分（除去扩展名后的剩余部分）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-28drhilb4jx62s"></i><span>gams</span><div class="collapse show" id="collapse-28drhilb4jx62s"><pre><code class="hljs gams"><span class="hljs-keyword">Variable</span> := $(basename <span class="hljs-comment">src</span>/foo.c src<span class="hljs-number">-1.0</span>/<span class="hljs-comment">bar.c hacks)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cjco6plbm8uzgl"></i><span>gams</span><div class="collapse show" id="collapse-cjco6plbm8uzgl"><pre><code class="hljs gams"><span class="hljs-keyword">Variable</span> := $(basename <span class="hljs-comment">src</span>/foo.c src<span class="hljs-number">-1.0</span>/<span class="hljs-comment">bar.c hacks)</span>
 # <span class="hljs-keyword">Variable</span> <span class="hljs-comment">==&gt; src</span>/foo src<span class="hljs-number">-1.0</span>/<span class="hljs-comment">bar hacks</span></code></pre></div></div>
 <h4 id="用户自定义函数">用户自定义函数</h4>
 <p>GNU
 make提供了大量的内嵌函数，大大方便了makefile编写。但根据需要，我们也需要自定义一些函数，然后在makefile中引用它们：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ny3srllb4jx62s"></i><span>makefile</span><div class="collapse show" id="collapse-ny3srllb4jx62s"><pre><code class="hljs makefile"><span class="hljs-section">PHONY: all</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hc0af3lbm8uzgl"></i><span>makefile</span><div class="collapse show" id="collapse-hc0af3lbm8uzgl"><pre><code class="hljs makefile"><span class="hljs-section">PHONY: all</span>
 <span class="hljs-keyword">define</span> func    
 @echo <span class="hljs-string">"pram1 = $(0)"</span>    
 @echo <span class="hljs-string">"pram2 = $(1)"</span>
@@ -657,11 +648,11 @@ make提供了大量的内嵌函数，大大方便了makefile编写。但根据�
 调用时要使用call函数间接调用，各个参数之间使用空格隔开。</p>
 <h2 id="参考链接">参考链接</h2>
 <p>如果希望进行更深入的了解可以参阅：</p>
-<p><a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/">官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/">GNU make官网</a></p>
 <p><a target="_blank" rel="noopener" href="https://www3.ntu.edu.sg/home/ehchua/programming/cpp/gcc_make.html#zz-2.">GCC
 and Make Compiling, Linking and Building C/C++ Applications</a></p>
 <p>以及中文教程：</p>
-<p><a target="_blank" rel="noopener" href="https://www.zhaixue.cc/makefile/makefile-intro.html">宅学部落</a></p>
+<p><a target="_blank" rel="noopener" href="https://seisman.github.io/how-to-write-makefile/index.html">跟我一起写Makefile</a></p>
 
                 
               </div>
@@ -726,7 +717,7 @@ and Make Compiling, Linking and Building C/C++ Applications</a></p>
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2022年11月29日</div>
+          <div>2022年12月13日</div>
         </div>
       
       
