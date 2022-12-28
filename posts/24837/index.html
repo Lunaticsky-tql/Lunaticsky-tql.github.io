@@ -355,7 +355,7 @@
 <p><code>option</code>为可选字段，在本次实验中暂时用于存放文件名。</p>
 <p><code>data</code>的最大长度可以调节，本次实验定义为1024字节。</p>
 <p>此部分定义代码段如下;</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m73y9plb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-m73y9plb4jx62r"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5vcfjrlc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-5vcfjrlc750v8a"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> DATA 0x0</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> FIN 0x1</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> SYN 0x2</span>
@@ -424,7 +424,7 @@
 <h5 id="发送端">发送端</h5>
 <p>首先对照发送端的状态机进行分析： <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.1/20221119192126693722_492_image-20221119162927049.png" srcset="/img/loading.gif" lazyload alt="image-20221119162927049">
 程序中的函数名与状态机中名称基本一致，思路也非常清晰。主要的变动为把<code>waitACK0</code>和<code>waitACK1</code>合并到了函数中，而不是作为单独的状态出现。这样做的原因是由于握手和挥手阶段的等待过程和文件传输过程中完全一致，通过相同发代码能够将过程统一起来。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4akjv5lb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-4akjv5lb4jx62r"><pre><code class="hljs c++"><span class="hljs-keyword">while</span>(pkt_no&lt;pkt_total)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eklsiylc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-eklsiylc750v8a"><pre><code class="hljs c++"><span class="hljs-keyword">while</span>(pkt_no&lt;pkt_total)
 {
     pkt_data_size=<span class="hljs-built_in">min</span>(MAX_SIZE,file_len-pkt_no*MAX_SIZE);
     <span class="hljs-keyword">switch</span>(stage)
@@ -461,7 +461,7 @@
 }</code></pre></div></div>
 <p>下面是<code>waitACK</code>相关函数的实现，以<code>waitACK0</code>为例：</p>
 <p>首先由于需要处理超时事件，发送端和接收端所有的·<code>socket</code>都是非阻塞状态的。对于发送端<code>while</code>条件中的<code>rdt_rcv</code>是非阻塞的，以便在循环内判断超时进行消息重发。当没有收到消息时返回0，收到消息时返回1。循环内的重发若超过一定次数（<code>MAX_RESEND_TIMES</code>,其值为10），便可认为接收端由于意外断连，不再向其发送消息，程序退出。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jqb8w8lb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-jqb8w8lb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">wait_ACK0</span><span class="hljs-params">(packet sndpkt)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-inybddlc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-inybddlc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">wait_ACK0</span><span class="hljs-params">(packet sndpkt)</span> </span>{
     <span class="hljs-type">int</span> resend_times = <span class="hljs-number">0</span>;
     <span class="hljs-comment">//start a timer</span>
     <span class="hljs-type">clock_t</span> start = <span class="hljs-built_in">clock</span>();
@@ -486,7 +486,7 @@
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }</code></pre></div></div>
 <p><code>rdt_rcv(rcvpkt)</code>实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1uvh2rlb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-1uvh2rlb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">rdt_rcv</span><span class="hljs-params">(packet &amp;packet1)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q6aeu9lc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-q6aeu9lc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">rdt_rcv</span><span class="hljs-params">(packet &amp;packet1)</span> </span>{
     <span class="hljs-type">int</span> len = <span class="hljs-built_in">sizeof</span>(addr_server);
     <span class="hljs-type">int</span> ret = <span class="hljs-built_in">recvfrom</span>(socket_sender, (<span class="hljs-type">char</span> *) &amp;packet1, PACKET_SIZE, <span class="hljs-number">0</span>, (SOCKADDR *) &amp;addr_server, &amp;len);
     <span class="hljs-keyword">if</span> (ret == SOCKET_ERROR) {
@@ -501,7 +501,7 @@
 </figure>
 <p>与发送端有所不同，这里的<code>rdt_rcv(rcvpkt)</code>是阻塞的，内含一个非阻塞的<code>recvfrom</code>进行循环接收。若超时（一分钟）仍未收到消息，认为发送端可能意外退出，跳出接收循环，并随后判断文件是否完整接收，以作退出之前的保存和清理工作。这样设计的原因也是在握手和挥手时不依赖其他条件的需要同样的操作，能够较好的统一起来。</p>
 <p>其他部分与状态机中一致。在循环内部需要判断接收到的文件是否已经完全接受，若接受完毕保存文件并退出，准备继续接受下一个文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pvy9azlb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-pvy9azlb4jx62r"><pre><code class="hljs c++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xvgzp4lc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-xvgzp4lc750v8a"><pre><code class="hljs c++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">has_seq0</span>(rcvpkt)) {
             <span class="hljs-keyword">if</span> (stage == WAIT0) {
@@ -554,7 +554,7 @@
     }
 }</code></pre></div></div>
 <p><code>rdt_rcv(rcvpkt)</code>的实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5f2119lb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-5f2119lb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">rdt_rcv</span><span class="hljs-params">(packet &amp;packet1)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ysb6aalc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-ysb6aalc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">rdt_rcv</span><span class="hljs-params">(packet &amp;packet1)</span> </span>{
     <span class="hljs-type">clock_t</span> wait_file_start = <span class="hljs-built_in">clock</span>();
     <span class="hljs-comment">//non-blocking receive here</span>
     <span class="hljs-type">int</span> ret = <span class="hljs-built_in">recvfrom</span>(socket_receiver, (<span class="hljs-type">char</span> *) &amp;packet1, PACKET_SIZE, <span class="hljs-number">0</span>, (SOCKADDR *) &amp;addr_server, &amp;addr_len);
@@ -574,7 +574,7 @@
 <h4 id="握手">握手</h4>
 <h5 id="发送端-1">发送端</h5>
 <p>发送端握手很简单:把包发过去，等ACK，等不到就重发，重发多了就退出。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x7nd7clb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-x7nd7clb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handshake</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6uwgqvlc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-6uwgqvlc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handshake</span><span class="hljs-params">()</span> </span>{
     <span class="hljs-comment">//as the transmitting is single-direction, so we only need to "shake" two times</span>
     packet sndpkt = <span class="hljs-built_in">make_pkt</span>(SYN);
     <span class="hljs-built_in">udt_send</span>(sndpkt);
@@ -582,7 +582,7 @@
 }</code></pre></div></div>
 <h5 id="接收端-1">接收端</h5>
 <p>接收端思路也很明确：“阻塞”等待发送端的握手信息（一分钟内等不到就退出），如果接收到就握手成功，收到错误的包（比如校验和错误）丢弃。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fptp0elb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-fptp0elb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handshake</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zicygllc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-zicygllc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handshake</span><span class="hljs-params">()</span> </span>{
     packet rcvpkt;
     <span class="hljs-type">int</span> wrong_times = <span class="hljs-number">0</span>;
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
@@ -615,11 +615,11 @@
 <p>由上面的流程图所示，挥手过程仅应当发生在文件传输的间隔中。每次等待用户传送新文件时，用户有两种选择：传或不传。若传则发送文件信息，不传发送挥手信息。不管如何，这时接收端一定处在等待接收文件信息的阶段。</p>
 <h5 id="发送端-2">发送端</h5>
 <p>用户没有给出文件名或者选择放弃传送，仅以第一种调用情况为例：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1q6ztnlb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-1q6ztnlb4jx62r"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (file_path.<span class="hljs-built_in">empty</span>()) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3zone2lc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-3zone2lc750v8a"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (file_path.<span class="hljs-built_in">empty</span>()) {
     <span class="hljs-comment">//close the connection</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">bye_bye</span>();
 }</code></pre></div></div>
-<p>挥手成功退出程序，流程结束。 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ffhpzmlb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-ffhpzmlb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bye_bye</span><span class="hljs-params">()</span> </span>{
+<p>挥手成功退出程序，流程结束。 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vku9r3lc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-vku9r3lc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bye_bye</span><span class="hljs-params">()</span> </span>{
     <span class="hljs-comment">//send FIN</span>
     packet sndpkt = <span class="hljs-built_in">make_pkt</span>(FIN);
     <span class="hljs-built_in">udt_send</span>(sndpkt);
@@ -635,14 +635,14 @@
 }</code></pre></div></div><p></p>
 <h5 id="接收端-2">接收端</h5>
 <p>首先需要介绍接收端等待文件信息的逻辑。如一开始的流程图所示，这发生在握手刚完成或文件传输间隙。如果此时无响应，说明发送端异常退出，接收端也应当退出。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ijvo19lb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-ijvo19lb4jx62r"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (!<span class="hljs-built_in">ready_for_file</span>(file_name, file_size)) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hzmgr3lc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-hzmgr3lc750v8a"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (!<span class="hljs-built_in">ready_for_file</span>(file_name, file_size)) {
     <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Exit because of no response"</span>,INFO);
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
 <p><code>ready_for_file</code>的设计：</p>
 <p>首先为了方便状态机设计，约定传送文件信息的报文序列是1。成功收到消息返回ACK。若收到握手消息，通过递归调用达到重置计时的作用。</p>
 <p>在此过程中若发送方发送挥手消息，给予回应并退出程序，流程结束。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-emwjhtlb4jx62r"></i><span>C++</span><div class="collapse show" id="collapse-emwjhtlb4jx62r"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ready_for_file</span><span class="hljs-params">(string &amp;file_name, <span class="hljs-type">int</span> &amp;file_size)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o0kzmllc750v8a"></i><span>C++</span><div class="collapse show" id="collapse-o0kzmllc750v8a"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ready_for_file</span><span class="hljs-params">(string &amp;file_name, <span class="hljs-type">int</span> &amp;file_size)</span> </span>{
     packet rcvpkt;
     <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Waiting for file info"</span>, INFO);
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
@@ -679,7 +679,7 @@
 <h3 id="其他工具类">其他工具类</h3>
 <h4 id="校验和">校验和</h4>
 <p>由于此次实验并没有要求可变ip和端口号，因此不必加入伪首部的校验。编写代码如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kp1p5flb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-kp1p5flb4jx62r"><pre><code class="hljs c++"><span class="hljs-function">u_short <span class="hljs-title">check_sum</span><span class="hljs-params">(u_short *packet, <span class="hljs-type">int</span> packet_len)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zc3npblc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-zc3npblc750v8a"><pre><code class="hljs c++"><span class="hljs-function">u_short <span class="hljs-title">check_sum</span><span class="hljs-params">(u_short *packet, <span class="hljs-type">int</span> packet_len)</span> </span>{
     u_long sum = <span class="hljs-number">0</span>;
     <span class="hljs-comment">// make 16 bit words adjacent</span>
     <span class="hljs-type">int</span> count = (packet_len + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
@@ -697,12 +697,12 @@
     <span class="hljs-comment">//complement</span>
     <span class="hljs-keyword">return</span> ~(sum &amp; <span class="hljs-number">0xFFFF</span>);
 }</code></pre></div></div>
-<p>校验方法： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m0iaiglb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-m0iaiglb4jx62r"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">not_corrupt</span><span class="hljs-params">(packet &amp;p)</span> </span>{
+<p>校验方法： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-efxafjlc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-efxafjlc750v8a"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">not_corrupt</span><span class="hljs-params">(packet &amp;p)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">check_sum</span>((u_short *) &amp;p, HEAD_SIZE + p.head.data_size) == <span class="hljs-number">0</span>;
 }
 </code></pre></div></div><p></p>
 <h4 id="创建数据包">创建数据包</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xxjlkclb4jx62r"></i><span>c++</span><div class="collapse show" id="collapse-xxjlkclb4jx62r"><pre><code class="hljs c++"><span class="hljs-function">packet <span class="hljs-title">make_pkt</span><span class="hljs-params">(u_int flag, u_int seq = <span class="hljs-number">0</span>, u_short data_size = <span class="hljs-number">0</span>, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-literal">nullptr</span>, u_short window_size = <span class="hljs-number">0</span>,</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-99bgsjlc750v8a"></i><span>c++</span><div class="collapse show" id="collapse-99bgsjlc750v8a"><pre><code class="hljs c++"><span class="hljs-function">packet <span class="hljs-title">make_pkt</span><span class="hljs-params">(u_int flag, u_int seq = <span class="hljs-number">0</span>, u_short data_size = <span class="hljs-number">0</span>, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-literal">nullptr</span>, u_short window_size = <span class="hljs-number">0</span>,</span></span>
 <span class="hljs-params"><span class="hljs-function">                u_int option = <span class="hljs-number">0</span>)</span> </span>{
     packet pkt;
     pkt.head.flag = flag;
