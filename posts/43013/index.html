@@ -1,0 +1,941 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="MLP_BP反向传播 写在前面：我觉得正确结果的形式可能不太应该这么复杂。仅供参考，也欢迎交流。 实验要求 以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。 Define \(S_w\) and \(S_b\) as: \[ \begin{aligned} &amp;S_w&#x3D;\sum_{c&#x3D;1}^C \sum_{\boldsymbol{y}_i^M \in c}\left(\bolds">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MLP_BP反向传播">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/43013/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="MLP_BP反向传播 写在前面：我觉得正确结果的形式可能不太应该这么复杂。仅供参考，也欢迎交流。 实验要求 以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。 Define \(S_w\) and \(S_b\) as: \[ \begin{aligned} &amp;S_w&#x3D;\sum_{c&#x3D;1}^C \sum_{\boldsymbol{y}_i^M \in c}\left(\bolds">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231353617444_705_image-20221124210535110.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231357983833_279_image-20221124230019479.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231401909241_717_image-20221124210539379.png">
+<meta property="article:published_time" content="2022-12-28T04:23:00.876Z">
+<meta property="article:modified_time" content="2022-12-28T04:23:00.876Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231353617444_705_image-20221124210535110.png">
+    
+    
+    
+    <title>MLP_BP反向传播 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MLP_BP反向传播"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-12-28 12:23" pubdate>
+              2022年12月28日 中午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              7.7k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/MLP_BP反向传播/MLP_BP反向传播.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MLP_BP反向传播</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="mlp_bp反向传播">MLP_BP反向传播</h1>
+<p>写在前面：我觉得正确结果的形式可能不太应该这么复杂。仅供参考，也欢迎交流。</p>
+<h2 id="实验要求">实验要求</h2>
+<p>以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。</p>
+<p>Define <span class="math inline">\(S_w\)</span> and <span class="math inline">\(S_b\)</span> as: <span class="math display">\[
+\begin{aligned}
+&amp;S_w=\sum_{c=1}^C \sum_{\boldsymbol{y}_i^M \in
+c}\left(\boldsymbol{y}_i^M-\boldsymbol{m}_c^M\right)\left(\boldsymbol{y}_i^M-\boldsymbol{m}_c^M\right)^T
+\\
+&amp;S_b=\sum_{c=1}^C
+n_c\left(\boldsymbol{m}_c^M-\boldsymbol{m}^M\right)\left(\boldsymbol{m}_c^M-\boldsymbol{m}^M\right)^T
+\end{aligned}
+\]</span> where <span class="math inline">\(m_c^M\)</span> is the mean
+vector of <span class="math inline">\(\boldsymbol{y}_i^M\)</span> (the
+output of the <span class="math inline">\(i\)</span> th sample from the
+cth class), <span class="math inline">\(\boldsymbol{m}^M\)</span> is the
+mean vector of the output <span class="math inline">\(\boldsymbol{y}_i^M\)</span> from all classes,
+<span class="math inline">\(n_c\)</span> is the number of samples from
+the cth class. Define the discriminative regularization term <span class="math inline">\(\operatorname{tr}\left(S_w\right)-\operatorname{tr}\left(S_b\right)\)</span>
+and incorporate it into the objective function of the MLP: <span class="math display">\[
+E=\sum_i \sum_j \frac{1}{2}\left(\boldsymbol{y}_{i,
+j}^M-\boldsymbol{d}_{i, j}\right)^2+\frac{1}{2}
+\gamma\left(\operatorname{tr}\left(S_w\right)-\operatorname{tr}\left(S_b\right)\right)
+.
+\]</span></p>
+<h2 id="符号说明">符号说明</h2>
+<p>以经典的手写体识别任务为例，说明本次实验推导所用符号的含义：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231353617444_705_image-20221124210535110.png" srcset="/img/loading.gif" lazyload alt="image-20221124210535110">
+<figcaption aria-hidden="true">image-20221124210535110</figcaption>
+</figure>
+<p>其中<span class="math inline">\(\sigma\)</span>为激活函数，此处使用sigmoid函数即</p>
+<p><span class="math display">\[
+\sigma(x)=\frac{1}{1+e^{-x}}
+\]</span> 导函数为 <span class="math display">\[
+\sigma^{\prime}(x)=\sigma(x)(1-\sigma(x))
+\]</span></p>
+<h2 id="对正则项的理解">对正则项的理解</h2>
+<p>首先我们看到，这个题目中的正则项不同于常见的L1正则项或者L2正则项。那么它代表什么含义，又是怎么起到正则化的作用的呢？</p>
+<p>在了解了线性判别分析之后，发现这个正则项与线性判别分析中所谓的”类内散度矩阵“和”类问散度矩阵"非常相似。而线性判别分析的核心思想便是”类内方差小、类间间隔大“，在这里也是如此。
+<span class="math display">\[
+\begin{aligned}
+&amp;S_w=\sum_{c=1}^C \sum_{\boldsymbol{y}_i^M \in
+c}\left(\boldsymbol{y}_i^M-\boldsymbol{m}_c^M\right)\left(\boldsymbol{y}_i^M-\boldsymbol{m}_c^M\right)^T
+\\
+&amp;S_b=\sum_{c=1}^C
+n_c\left(\boldsymbol{m}_c^M-\boldsymbol{m}^M\right)\left(\boldsymbol{m}_c^M-\boldsymbol{m}^M\right)^T
+\end{aligned}
+\]</span> <span class="math display">\[
+E=\sum_i \sum_j \frac{1}{2}\left(\boldsymbol{y}_{i,
+j}^M-\boldsymbol{d}_{i, j}\right)^2+\frac{1}{2}
+\gamma\left(\operatorname{tr}\left(S_w\right)-\operatorname{tr}\left(S_b\right)\right).
+\]</span></p>
+<p>从损失函数可以看出，，我们希望让类内散度矩阵<span class="math inline">\(S_w\)</span>尽可能小，即同一类的样本尽量预测结果一致；同时<span class="math inline">\(S_b\)</span>是类间散度矩阵，我们希望让它尽可能大，以让模型更好的”区别“开不同的样本。</p>
+<p>为了下面分析的方便，对损失函数进行拆解。</p>
+<p>容易证明，对于两个阶数都是 <span class="math inline">\(m \times
+n\)</span> 的矩阵 <span class="math inline">\(\boldsymbol{A}_{m \times
+n}, \boldsymbol{B}_{m \times n}\)</span>, 其中一个矩阵乘以
+另一个矩阵的转置的迹, 本质是 <span class="math inline">\(\boldsymbol{A}_{m \times n}, \boldsymbol{B}_{m
+\times n}\)</span> 两个矩阵对应位置的元素相乘并相加,
+可以理解为向量的点积在矩阵上的推广, 即: <span class="math display">\[
+\begin{aligned}
+\operatorname{tr}\left(\boldsymbol{A} \boldsymbol{B}^T\right)
+&amp;=a_{11} b_{11}+a_{12} b_{12}+\cdots+a_{1 n} b_{1 n} \\
+&amp;+a_{21} b_{21}+a_{22} b_{22}+\cdots+a_{2 n} b_{2 n} \\
+&amp;+\cdots \\
+&amp;+a_{m 1} b_{m 1}+a_{m 2} b_{m 2}+\cdots+a_{m n} b_{m n}
+\end{aligned}
+\]</span>
+则对于题中的列向量也是如此，在损失函数中表现为各元素的平方和。</p>
+<p>由此可以得到单个样本单个特征的损失函数: <span class="math display">\[
+E_{ij}=\frac{1}{2}\left({y}_{i, j}-{d}_{i, j}\right)^2+\frac{1}{2}
+\gamma\left[\left({y}_{i,
+j}-{m}_{c,j}\right)^2-\left({m}_{c,j}-m_j\right)^2\right]
+\]</span></p>
+<p>对此公式符号的含义进行如下直观解释:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231357983833_279_image-20221124230019479.png" srcset="/img/loading.gif" lazyload alt="image-20221124230019479">
+<figcaption aria-hidden="true">image-20221124230019479</figcaption>
+</figure>
+<p>注：上图所指<span class="math inline">\(j\)</span>也为<span class="math inline">\(3\)</span>；<span class="math inline">\(m_j\)</span>表示第<span class="math inline">\(j\)</span>类上的预测值在所有样本上的平均。 ##
+梯度下降求解</p>
+<h3 id="目标">目标</h3>
+<p>首先我们需要清楚反向传播的目的：我们希望根据模型在样本上的表现结果调节模型，最小化损失函数以让其其在训练集上的表现更好。</p>
+<p>具体到神经网络，我们需要调节的是每一条边对应的权重或偏置，依据是损失函数对该层权重的偏导。直观一点说，偏导反映的是参数的微小变化对损失的影响。我们希望最小化损失函数，那么比如如果求出来对权重的偏导是正的，那么说明损失函数随权重增大而增大，那么就要让权重变小一点。</p>
+<p>因此我们更新参数的方式如下： <span class="math display">\[
+\begin{aligned} W^{(l)} &amp;=W^{(l)}-\frac{\alpha}{d }\frac{\partial
+E}{\partial W^{(l)}}\\ \boldsymbol b^{(l)} &amp;=\boldsymbol
+b^{(l)}-\frac{\alpha}{d}\frac{\partial E}{\partial b^{(l)}}
+\end{aligned}\tag{1}
+\]</span> 其中<span class="math inline">\(l\)</span>是权重和偏置所在的层数，对于三层感知机<span class="math inline">\(l=1,2\)</span>。<span class="math inline">\(\alpha\)</span>为学习率。 <span class="math inline">\(d\)</span>为整个训练集大小，比如对于MNIST这个值为60000。</p>
+<h3 id="偏导求解">偏导求解</h3>
+<p>在上面定义了对于单个样本单个特征的损失函数。下面为简化叙述，采用逐样本进行偏导的求解。根据题目的含义我们应该是使用<strong>批量梯度下降法</strong>进行更新，此时将对每个样本求得的偏导加起来求得总的<span class="math inline">\(E\)</span>带入<span class="math inline">\((1)\)</span>中即可。</p>
+<p>也就是 <span class="math display">\[
+E_i=\sum_{j=1}^{c} E_{ij}\\
+E=\sum_{i=1}^{d} E_{i}
+\]</span></p>
+<p><span class="math inline">\(c\)</span>为类的个数，比如手写体识别中为10，数字<span class="math inline">\(j\)</span>对应于类<span class="math inline">\(j+1\)</span>。</p>
+<p>阅读下面的求解过程时建议将下图固定在屏幕上。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231401909241_717_image-20221124210539379.png" srcset="/img/loading.gif" lazyload alt="image-20221124210539379">
+<figcaption aria-hidden="true">image-20221124210539379</figcaption>
+</figure>
+<h4 id="最后一层">最后一层</h4>
+<p>从总体来看，对于最后一层的某个边<span class="math inline">\(w_{jk}\)</span>的权重更新是比较容易进行的。如图所示，<span class="math inline">\(j=1,2...c\)</span>，<span class="math inline">\(c\)</span>为类别的个数。<span class="math inline">\(k=1,2...h\)</span>，<span class="math inline">\(h\)</span>为隐层包含的神经元个数。</p>
+<p>由链式法则，有：</p>
+<p><span class="math display">\[
+\frac{\partial E_i}{\partial w_{jk}}=
+\frac{\partial z_{i,j}}{\partial w_{jk}}
+\frac{\partial y_{i,j}}{\partial z_{i,j}}
+\frac{\partial E_i}{\partial y_{i,j}}
+\]</span>
+由于符号定义中第三层的神经元能够比较好的和第二层的区别开，故省略了表示层数的上标；而<span class="math inline">\(z\)</span>和<span class="math inline">\(a\)</span>的取值与均与特定的样本有关，故都保留了表示样本的下角标<span class="math inline">\(i\)</span>。</p>
+<p>我们仍旧可以直观的理解链式法则对应于参数更新的含义。我们要求的是损失函数<span class="math inline">\(E_i\)</span>对<span class="math inline">\(w_{jk}\)</span>的敏感程度，而<span class="math inline">\(w_{jk}\)</span>能够直接影响的是<span class="math inline">\(z_{ij}\)</span>，<span class="math inline">\(z_{i,j}\)</span>影响<span class="math inline">\(y_{ij}\)</span>，<span class="math inline">\(y_{i,j}\)</span>才直接影响到损失函数。因此需要借助链式法则将这个”影响链“串起来。</p>
+<p><span class="math inline">\(z_{i,j}\)</span>取决于第二层所有神经元，但我们只需要关注与正在求偏导的边相关的节点：
+<span class="math display">\[
+z_{i,j}=\cdots+w_{j k} a_k+\cdots
+\]</span> 故有 <span class="math display">\[
+\frac{\partial z_{i,j}}{\partial w_{jk}}=a_{i,k}
+\]</span> <span class="math inline">\(y_{i,j}=\sigma\left(z_{ij}\right)\)</span>，因此
+<span class="math inline">\(\frac{\partial y_{i,j}}{\partial z_{i,j}
+}\)</span> 就等于激活函数的导数，即<span class="math inline">\({\sigma}’\left(z_{i,j}\right)\)</span>。重点是最后一项：
+<span class="math display">\[
+\frac{\partial E_i}{\partial y_{i,j}}=\frac{\partial{(\sum_{p=1}^{c}
+}E_{ip})}{\partial y_{i,j}}
+\]</span> 而 <span class="math display">\[
+E_{ip}=\frac{1}{2}\left({y}_{i,p}-{d}_{i, p}\right)^2+\frac{1}{2}
+\gamma\left[\left({y}_{i,
+p}-{m}_{c,p}\right)^2-\left({m}_{c,p}-m_p\right)^2\right]
+\]</span> <span class="math inline">\(E_{ip}\)</span>中包含<span class="math inline">\(E_{ij}\)</span>，而且我们只关心<span class="math inline">\(E_{ij}\)</span>。<span class="math inline">\(E_{ij}\)</span>里面自然有一个<span class="math inline">\(y_{ij}\)</span>。不仅如此，别忘了<span class="math inline">\({m}_{c,j}\)</span>和<span class="math inline">\(m_j\)</span>也都是与<span class="math inline">\(y_{ij}\)</span>相关的变量，比如 <span class="math display">\[
+{m}_{c,j}=\frac{1}{n_c}\sum_{N=1}^{n_c}{y}_{N,j}
+\]</span> <span class="math inline">\(c_N\)</span>是这个样本所属的类在训练集中的数目，比如这个样本实际上是个"3"，那么<span class="math inline">\(c_N\)</span>就是训练集中"3"的数目。</p>
+<p><span class="math inline">\({y}_{i, j}\)</span>自然对应<span class="math inline">\({y}_{N, j}\)</span>中的某一个。因此 <span class="math display">\[
+\frac{\partial {m}_{c,j}}{\partial y_{ij}}=\frac{1}{n_c}
+\]</span></p>
+<p>同样的， <span class="math display">\[
+{m}_{j}=\frac{1}{d}\sum_{N=1}^{d}{y}_{N, j}\\
+\frac{\partial {m}_{j}}{\partial y_{ij}}=\frac{1}{d}
+\]</span> <span class="math inline">\(d\)</span>是训练集中样本数目。</p>
+<p>由此我们可以继续求解：</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\partial E_i}{\partial
+y_{i,j}}&amp;=\frac{\partial{(\sum_{p=1}^{c} }E_{ip})}{\partial
+y_{ij}}=\frac{\partial{E_{ij} }}{\partial y_{ij}}\\
+&amp;={y}_{i,j}-{d}_{i,
+j}+\gamma\left[(y_{ij}-m_{c,j})(1-\frac{1}{n_c})-(m_{cj}-m_{j})(\frac{1}{n_c}-\frac{1}{d})\right]
+    \end{align}
+\]</span></p>
+<p>将上面求得的结果代入对<span class="math inline">\(w_{jk}\)</span>求偏导的式子中： <span class="math display">\[
+\begin{align}
+\frac{\partial E_i}{\partial w_{jk}}&amp;=
+\frac{\partial z_{i,j}}{\partial w_{jk}}
+\frac{\partial y_{i,j}}{\partial z_{i,j}}
+\frac{\partial E_i}{\partial y_{i,j}}\\
+&amp;=a_{i,k}\;{\sigma}’\left(z_{i,j}\right)\;\left \{ {y}_{i,j}-{d}_{i,
+j}+\gamma\left[(y_{ij}-m_{c,j})(1-\frac{1}{n_c})-(m_{cj}-m_{j})(\frac{1}{n_c}-\frac{1}{d})\right]\right
+\}
+    \end{align}
+\]</span>
+最后，如果我们想要进行批量梯度下降，需要将所有训练集中样本的损失函数加起来求平均，进行一次更新：
+<span class="math display">\[
+\begin{align}
+\frac{\partial E}{\partial w_{jk}}&amp;=\sum_{i=1}^{d}
+\frac{\partial E_i}{\partial w_{jk}}\\
+&amp;=\sum_{i=1}^{d}a_{i,k}\;{\sigma}’\left(z_{i，j}\right)\;\left \{
+{y}_{i,j}-{d}_{i,
+j}+\gamma\left[(y_{ij}-m_{c,j})(1-\frac{1}{n_c})-(m_{cj}-m_{j})(\frac{1}{n_c}-\frac{1}{d})\right]\right
+\}
+    \end{align}
+\]</span> 由于三个部分均与<span class="math inline">\(i\)</span>有关，所以没有可以提取的公因子，需要逐项累加。并且该式子与第<span class="math inline">\(i\)</span>个样本所属类有关，因此也要根据样本情况代入相应的的<span class="math inline">\(n_c\)</span>和</p>
+<p><span class="math inline">\(m_{c,j}\)</span>。</p>
+<p>此时我们就可以代入<span class="math inline">\((1)\)</span>式(更新参数的方式)中，进行每条权重边的更新了。</p>
+<p>对于最后一层的<span class="math inline">\(b_j\)</span>对应偏置的边求解的方式和<span class="math inline">\(w_{jk}\)</span>类似。 <span class="math display">\[
+\frac{\partial E_i}{\partial b_{j}}=
+\frac{\partial z_{i,j}}{\partial b_{j}}
+\frac{\partial y_{i,j}}{\partial z_{i,j}}
+\frac{\partial E_i}{\partial y_{i,j}}
+\]</span> <span class="math inline">\(\frac{\partial z_{i,j}}{\partial
+b_{j}}=b^{(2)}\)</span>，<span class="math inline">\(\frac{\partial
+y_{i,j}}{\partial z_{i,j}}\)</span>和<span class="math inline">\(\frac{\partial E_i}{\partial
+y_{i,j}}\)</span>已经求得，代入即可。</p>
+<h4 id="倒数第二层">倒数第二层</h4>
+<p>倒数第二层某一条权重边记为<span class="math inline">\(w_{kn}\)</span>。 <span class="math display">\[
+\frac{\partial E_i}{\partial w_{kn}}=
+\frac{\partial z_{i,k}}{\partial w_{kn}}
+\frac{\partial a_{i,k}}{\partial z_{i,k}}
+\frac{\partial E_i}{\partial a_{i,k}}
+\]</span></p>
+<p>重点是<span class="math inline">\(\frac{\partial E_i}{\partial
+a_{i,k}}\)</span>。它通过影响最后一层的所有节点去影响最终的损失函数。
+<span class="math display">\[
+\frac{\partial E_i}{\partial a_{i,k}}=\underbrace{\sum_{p=1}^{c}
+\frac{\partial z_{i,j}}{\partial a_{i,k}} \frac{\partial
+y_{i,j}}{\partial z_{i,j}} \frac{\partial E_i}{\partial y_{i,j}}}_{\text
+{Sum over the output layer }}
+\]</span> 不同于<span class="math inline">\(z_{i,k}\)</span>，<span class="math inline">\(z_{i,j}\)</span>自然是指最后一层的线性变换。</p>
+<p><span class="math inline">\(\frac{\partial y_{i,j}}{\partial z_{i,j}}
+\frac{\partial E_i}{\partial y_{i,j}}\)</span>我们前面已经求得了。<span class="math inline">\(\frac{\partial z_{i,j}}{\partial
+a_{i,k}}=w_{jk}\)</span>。</p>
+<p>根据递推关系其实也没有很复杂。</p>
+<p>前面两项非常容易求得： <span class="math display">\[
+\frac{\partial a_{i,k}}{\partial z_{i,k}}=\sigma’\left(z_{i,k}\right)\\
+\frac{\partial z_{i,k}}{\partial w_{kn}}=x_{i,n}
+\]</span></p>
+<p>同样的，各个样本上的偏导累加并求平均，然后设置学习率进行梯度下降更新参数即可。
+<span class="math display">\[
+\frac{\partial E_i}{\partial b_{k}}=
+\frac{\partial z_{i,k}}{\partial b_{k}}
+\frac{\partial a_{i,k}}{\partial z_{i,k}}
+\frac{\partial E_i}{\partial a_{i,k}}
+\]</span> <span class="math inline">\(\frac{\partial z_{i,k}}{\partial
+b_{k}}=b^{(1)}\)</span>，其余部分也都已经知道了，因此代入即可按同样的方式更新<span class="math inline">\(\boldsymbol b\)</span>。</p>
+<p>至此，所有的权重和偏置项都已经更新完毕。</p>
+<h2 id="思考">思考</h2>
+<p>这个正则项与线性判别分析一样，思路很自然，数学表达也很严谨，确远不如L1或L2正则项用的广泛。虽然并没有基于此做过实验，但从推导的过程可以看到，相比L1或L2正则项直接对权重矩阵的范数求导，计算量明显要大的多。比如至少要预先把预测每一类对应的样本数和样本向量均值算出来，在求偏导时也要判断是属于哪一类，对性能肯定是有所损耗。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MLP_BP反向传播</div>
+      <div>http://lunaticsky-tql.github.io/posts/43013/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/64911/" title="c++_基本语法和运算">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">c++_基本语法和运算</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/23191/" title="Ucore Lab0 on Apple Silicon Mac">
+                        <span class="hidden-mobile">Ucore Lab0 on Apple Silicon Mac</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="计算机网络-书面作业1 2013599_田佳业 第一章问题 网络结构如下图所示，主机A与主机B之间通过两段链路和一台转发设备R进行连接，每条链路的长度和传输速率已经在图中标出，R采用存储转发机制。主机A向主机B发送一个长度为10000字节的报文，请回答以下问题（设电磁波传播速度为2*108米&#x2F;秒）  如果采用报文交换，请计算端到端的最小时延，即从主机A传输报文的第一位开始，到主机B接收到报文的最后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-书面作业1">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/54831/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="计算机网络-书面作业1 2013599_田佳业 第一章问题 网络结构如下图所示，主机A与主机B之间通过两段链路和一台转发设备R进行连接，每条链路的长度和传输速率已经在图中标出，R采用存储转发机制。主机A向主机B发送一个长度为10000字节的报文，请回答以下问题（设电磁波传播速度为2*108米&#x2F;秒）  如果采用报文交换，请计算端到端的最小时延，即从主机A传输报文的第一位开始，到主机B接收到报文的最后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095815944612_600_clip_image002.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221228103350003675_727_image-20221228093807403.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221228103353392389_877_image-20221228095021089.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221228103355518362_356_image-20221228101441745.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095816836309_574_image-20221115205303473.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095817744460_340_image-20221115210510064.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095840824680_626_image-20221115211104602.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095842598552_479_image-20221115211202585.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095845117430_948_image-20221115211646689.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100009402791_134_image-20221115220024906.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100010926561_580_image-20221115222340231.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100012567584_212_image-20221115230206425.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100014215164_756_image-20221115230406295.png">
+<meta property="article:published_time" content="2022-12-28T04:23:00.890Z">
+<meta property="article:modified_time" content="2022-12-28T04:23:00.890Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="寄网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095815944612_600_clip_image002.png">
+    
+    
+    
+    <title>计算机网络-书面作业1 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络-书面作业1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2022-12-28 12:23" pubdate>
+              2022年12月28日 中午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              2.8k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/计算机网络-书面作业1/计算机网络-书面作业1.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">计算机网络-书面作业1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="计算机网络-书面作业1">计算机网络-书面作业1</h1>
+<p>2013599_田佳业</p>
+<h3 id="第一章问题">第一章问题</h3>
+<p>网络结构如下图所示，主机A与主机B之间通过两段链路和一台转发设备R进行连接，每条链路的长度和传输速率已经在图中标出，R采用存储转发机制。主机A向主机B发送一个长度为10000字节的报文，请回答以下问题（设电磁波传播速度为2*108米/秒）</p>
+<ol type="1">
+<li><p>如果采用报文交换，请计算端到端的最小时延，即从主机A传输报文的第一位开始，到主机B接收到报文的最后一位为止所用的时间。</p></li>
+<li><p>如果将报文分成5个报文分组传输，请计算完成报文传输的最小端到端时延（忽略报文分组的封装开销）。</p></li>
+</ol>
+<p>在统计多路复用机制中，端到端的时延具有不确定性，请简要分析影响端到端时延的主要因素。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095815944612_600_clip_image002.png" srcset="/img/loading.gif" lazyload alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li></li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221228103350003675_727_image-20221228093807403.png" srcset="/img/loading.gif" lazyload alt="image-20221228093807403">
+<figcaption aria-hidden="true">image-20221228093807403</figcaption>
+</figure>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221228103353392389_877_image-20221228095021089.png" srcset="/img/loading.gif" lazyload alt="image-20221228095021089"> <span class="math display">\[
+\mathrm{Latency_1 = PROP + TRANSP}=\frac{(4+2)\times 10^3}{2 \times
+10^{8}}+\frac{10^{4} \times 8}{100\times 10^6}+\frac{10^{4} \times
+8}{10\times 10^6}\\
+=3\times 10^{-5}+8\times 10^{-4}+8\times 10^{-3}=8.83\times
+10^{-3}\text{s}
+\]</span> 可以看到传播速率主要取决于链路2的传输速度。</p>
+<ol start="2" type="1">
+<li></li>
+</ol>
+<p><span class="math display">\[
+\mathrm{Latency_2} =\mathrm{Latency_1}-\frac{4}{5}\frac{10^{4} \times
+8}{100\times 10^6}=8.19\times 10^{-3}\text{s}
+\]</span> 为什么可以这么算?</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221228103355518362_356_image-20221228101441745.png" srcset="/img/loading.gif" lazyload alt="image-20221228101441745">
+<figcaption aria-hidden="true">image-20221228101441745</figcaption>
+</figure>
+<p>同时也可以看出，在这个问题中，节省的时间仅取决于第一个链路的时延。因为第二条链路比较慢，所以总体上来说并没有节省太多时间。</p>
+<p>（3）主要因素包括：</p>
+<ul>
+<li><p>核心：存储转发设备中的排队时延</p></li>
+<li><p>路由器中的处理时间：路由决策、差错检验、分片等操作</p></li>
+<li><p>报文分组大小和分组数量，数据流的个数，数据流占带宽的频率，都会影响时延。</p></li>
+<li><p>链路的传输速率，链路长度</p></li>
+</ul>
+<p>排队时延是导致“不确定性“的最主要因素。</p>
+<h3 id="第二章问题">第二章问题</h3>
+<h6 id="section">1.</h6>
+<p>通过使用Windows命令行模式提供的nslookup命令查询www.baidu.com的IP地址，给出结果截图，并对返回的结果进行解释。同时，利用Wireshark捕获查询的交互过程，给出结果截图，并进行简要说明。</p>
+<ol type="1">
+<li></li>
+</ol>
+<p>nslookup命令用于<strong>查询DNS的记录，查看域名解析是否正常，在网络故障的时候用来诊断网络问题</strong></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095816836309_574_image-20221115205303473.png" srcset="/img/loading.gif" lazyload alt="image-20221115205303473">
+<figcaption aria-hidden="true">image-20221115205303473</figcaption>
+</figure>
+<p>服务器为本机DNS服务器信息，Address表示的是 DNS 服务器地址。</p>
+<p>非权威应答表示，非从域名的权威服务器获得结果，而是从本地DNS缓存中获取的结果</p>
+<p>www.a.shifen.com是百度域名曾经的一个别名，<code>shifen.com</code>和<code>baidu.com</code>两台域服务器其实是同一台服务器。</p>
+<p>下面的Address便是百度域名对应的ip地址。以第一个为例，搜索一下看看:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095817744460_340_image-20221115210510064.png" srcset="/img/loading.gif" lazyload alt="image-20221115210510064">
+<figcaption aria-hidden="true">image-20221115210510064</figcaption>
+</figure>
+<ol start="2" type="1">
+<li></li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095840824680_626_image-20221115211104602.png" srcset="/img/loading.gif" lazyload alt="image-20221115211104602">
+<figcaption aria-hidden="true">image-20221115211104602</figcaption>
+</figure>
+<p>输入dns进行过滤，可以看到解析百度时的报文发送和应答，对应左边灰色的箭头。</p>
+<p>可以看出 ，DNS 为应用层协议 ，下层传输层采用 UDP ，再下层网络层是
+IPV4 协议 。</p>
+<p>下面结合DNS报文格式进行分析:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095842598552_479_image-20221115211202585.png" srcset="/img/loading.gif" lazyload alt="image-20221115211202585">
+<figcaption aria-hidden="true">image-20221115211202585</figcaption>
+</figure>
+<p>本机(10.130.93.171是WLAN的IPv4地址)首先向服务器发出查询请求 ，
+然后服务器解析 IP 找到主机 ，做出响应 。接着 ，主机向服务器发送查询
+www.baidu.com信息的对应请求，服务器接受到请求后作出响应
+。并且可以看到回应的报文Answers区域报文包括的内容未必是等长，格式相同的。每一个回答反映一部分需要的信息。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120095845117430_948_image-20221115211646689.png" srcset="/img/loading.gif" lazyload alt="image-20221115211646689">
+<figcaption aria-hidden="true">image-20221115211646689</figcaption>
+</figure>
+<p>资源记录结构如下所示:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100009402791_134_image-20221115220024906.png" srcset="/img/loading.gif" lazyload alt="image-20221115220024906">
+<figcaption aria-hidden="true">image-20221115220024906</figcaption>
+</figure>
+<p>比如图中的A对应将名称对应到IPv4的32位地址。</p>
+<h6 id="section-1">2.</h6>
+<p>以反复解析为例，说明域名解析的基本工作过程（可以结合图例）。给出内容分发网络（CDN）中DNS重定向的基本方法，说明原始资源记录应该如何修改，并描述重定向过程。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100010926561_580_image-20221115222340231.png" srcset="/img/loading.gif" lazyload alt="image-20221115222340231" style="zoom: 67%;"></p>
+<p>1.2.首先查本地缓存，如果没有记录，则以DNS客户的身份向根域名服务器发出解析请求(2)，如果有直接将IP地址返回请求主机(实验操作中的情况，对应图中的8)</p>
+<p>3.根域名服务器收到请求后，判断该域名属于.com
+域，将对应的TLD(顶级域名服务器，此处为.com)的IP地址返回给本地域名服务器。
+4.本地域名服务器再次请求</p>
+<p>5.TLD收到请求后，判断该域名属于baidu.com域，因此将对应的授权域名服务器baidu.com
+的IP地址返回给本地域名服务器。</p>
+<p>6.向百度的顶级域名服务器baidu.com.请求www.baidu.com。</p>
+<p>7.返回ip地址</p>
+<p>8.本地域名服务器把结果返回客户机并缓存</p>
+<p>当然对于百度这个例子，它发现这个www有别名叫www.a.shifen.com。</p>
+<p>拿到www.baidu.com的别名www.a.shifen.com的时候，本来要重新到com域查找shifen.com的NS，又因为，两个域在同一台NS上，所以直接向本机(授权域名服务器)发起了shifen.com域的查找请求，把a.shifen.com的IP返回。</p>
+<h6 id="section-2">3.</h6>
+<p>在DNS域名系统中，域名解析时使用UDP协议提供的传输层服务（DNS服务器使用UDP的53端口），而UDP提供的是不可靠的传输层服务，请你解释DNS协议应如何保证可靠机制。</p>
+<p>首先，查阅了解了为什么DNS使用UDP:其实感性上就可以理解，DNS并不需要TCP所提供的全部可靠性机制，而TCP会相比UDP耗费更多的资源。当然，其实DNS
+在设计之初就在区域传输中引入了 TCP 协议的可选项。</p>
+<p>关于如何保证可靠性，主要有以下几个方面:</p>
+<p>从DNS应用层本身来说，首先报文中问题的数量、回答的数量，就可以可以用来进行一定的校验，同时DNS也是有生存周期的，在生命周期过后会进行重新请求更新以保证数据的正确性。</p>
+<p>从可用性上来说，DNS的权威服务器也是冗余支持的。</p>
+<p>从安全性上来说，DNS脆弱性主要有两个可能的方面:一是课本中提到的DDoS攻击，当然由于缓存机制的存在很难造成实质性的危害;另外更常见的是针对缓存进行欺骗的所谓投毒攻击，现在也有DNS
+安全扩展 (<a target="_blank" rel="noopener" href="https://cloud.google.com/dns/docs/dnssec?hl=zh-cn">DNSSEC</a>)对其进行保护。</p>
+<p>当然以上几个方面和TCP从协议层面上保证的可靠性肯定不能等同而论，但足以满足实际应用是需求。</p>
+<blockquote>
+<p>答案就写了超时重传和差错检测，大概其实是想问如果要实现可靠机制需要增加哪些机制吧。</p>
+</blockquote>
+<h6 id="捎带复习一下域名格式压缩">捎带复习一下域名格式压缩</h6>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100012567584_212_image-20221115230206425.png" srcset="/img/loading.gif" lazyload alt="image-20221115230206425">
+<figcaption aria-hidden="true">image-20221115230206425</figcaption>
+</figure>
+<p>"11"指字节的前两位</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%B9%A6%E9%9D%A2%E4%BD%9C%E4%B8%9A1/20221120100014215164_756_image-20221115230406295.png" srcset="/img/loading.gif" lazyload alt="image-20221115230406295">
+<figcaption aria-hidden="true">image-20221115230406295</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AF%84%E7%BD%91/">#寄网</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络-书面作业1</div>
+      <div>http://lunaticsky-tql.github.io/posts/54831/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/54779/" title="计算机网络实验一_socket聊天程序">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络实验一_socket聊天程序</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/55151/" title="计算机网络-书面作业2">
+                        <span class="hidden-mobile">计算机网络-书面作业2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
