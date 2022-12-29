@@ -4,31 +4,6 @@
   
   
   <entry>
-    <title>notes</title>
-    <link href="/posts/29406/"/>
-    <url>/posts/29406/</url>
-    
-    <content type="html"><![CDATA[<p>查看库的路径</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m42sa3lc96bq3q"></i><span>python</span><div class="collapse show" id="collapse-m42sa3lc96bq3q"><pre><code class="hljs python"><span class="hljs-keyword">import</span> tensorflow<span class="hljs-built_in">print</span>(tensorflow.__file__)</code></pre></div></div><p>启动radis</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ugwieolc96bq3q"></i><span>shell</span><div class="collapse show" id="collapse-ugwieolc96bq3q"><pre><code class="hljs shell">redis-server.exe redis.windows.conf</code></pre></div></div><p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/notes/20221229200836148347_588_image-20220727113222196.png" alt="image-20220727113222196" style="zoom: 33%;"></p><p>gitdir</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q68hoxlc96bq3q"></i><span>livecodeserver</span><div class="collapse show" id="collapse-q68hoxlc96bq3q"><pre><code class="hljs livecodeserver">usage: gitdir [-h] [<span class="hljs-comment">--output_dir OUTPUT_DIR] [--flatten] urls [urls ...]</span>Download <span class="hljs-built_in">directories</span>/<span class="hljs-built_in">folders</span> <span class="hljs-built_in">from</span> GitHubpositional arguments:  urls                  List <span class="hljs-keyword">of</span> Github <span class="hljs-built_in">directories</span> <span class="hljs-built_in">to</span> download.optional arguments:  -h, <span class="hljs-comment">--help            show this help message and exit</span>  <span class="hljs-comment">--output_dir OUTPUT_DIR, -d OUTPUT_DIR</span>                        All <span class="hljs-built_in">directories</span> will be downloaded <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> specified                        <span class="hljs-built_in">directory</span>.  <span class="hljs-comment">--flatten, -f         Flatten directory structures. Do not create extra</span>                        <span class="hljs-built_in">directory</span> <span class="hljs-keyword">and</span> download found <span class="hljs-built_in">files</span> <span class="hljs-built_in">to</span> output                        <span class="hljs-built_in">directory</span>. (default <span class="hljs-built_in">to</span> current <span class="hljs-built_in">directory</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span>                        specified)</code></pre></div></div><p>连接mysql</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uszis6lc96bq3q"></i><span>css</span><div class="collapse show" id="collapse-uszis6lc96bq3q"><pre><code class="hljs css">mysql -u root -<span class="hljs-selector-tag">p</span></code></pre></div></div><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fyjuunlc96bq3q"></i><span>python</span><div class="collapse show" id="collapse-fyjuunlc96bq3q"><pre><code class="hljs python"><span class="hljs-comment"># 亦可以使用下面语句完成单一单元格中多个变量的输出，但是仅在当前notebook中起作用</span><span class="hljs-keyword">from</span> IPython.core.interactiveshell <span class="hljs-keyword">import</span> InteractiveShellInteractiveShell.ast_node_interactivity = <span class="hljs-string">"all"</span></code></pre></div></div><p>dataspell debug ctrl+f8</p><p>adb forward tcp:15511 localabstract:Unity-2048</p><p>meld默认使用GBK编码</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h3lq0dlc96bq3q"></i><span>css</span><div class="collapse show" id="collapse-h3lq0dlc96bq3q"><pre><code class="hljs css">gsettings set org<span class="hljs-selector-class">.gnome</span><span class="hljs-selector-class">.meld</span> detect-encodings "<span class="hljs-selector-attr">[<span class="hljs-string">'GBK'</span>, <span class="hljs-string">'UTF-8'</span>, <span class="hljs-string">'ISO-8859-15'</span>, <span class="hljs-string">'UTF-16'</span>]</span>"</code></pre></div></div><p>test</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>测试</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>test</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Hexo 多设备同步</title>
     <link href="/posts/63534/"/>
     <url>/posts/63534/</url>
