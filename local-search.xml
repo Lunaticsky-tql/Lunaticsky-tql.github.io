@@ -531,6 +531,31 @@
   
   
   <entry>
+    <title>macOS配置命令别名</title>
+    <link href="/posts/42356/"/>
+    <url>/posts/42356/</url>
+    
+    <content type="html"><![CDATA[<h2 id="macos配置命令别名">macOS配置命令别名</h2><h3 id="临时别名">临时别名</h3><p>和在linux系统一样，直接输入<code>alias</code>命令即可。在当前的终端下生效。</p><p>比如：</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ej1kn3lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-ej1kn3lc8pd4qf"><pre><code class="hljs shell">alias v="vim"</code></pre></div></div><h3 id="永久别名">永久别名</h3><p>由于现在的macOS默认是采用的<code>zsh</code>而不是<code>bash</code>，因此配置文件路径为</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ibty20lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-ibty20lc8pd4qf"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div></div><p>当然也可以</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z0f9f5lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-z0f9f5lc8pd4qf"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div></div><p>进入<code>bash</code>，不过目前没什么理由这么干(</p><p>然后会发现这个文件是只读的。</p><p>有两个解决方案。</p><h4 id="简单粗暴的">简单粗暴的</h4><p>去除写权限</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bd4gv0lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-bd4gv0lc8pd4qf"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div></div><p>然后写入别名，保存</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1bud25lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-1bud25lc8pd4qf"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div></div><p>最后将写权限去除</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nsw7jalc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-nsw7jalc8pd4qf"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div></div><h4 id="安装插件">安装插件</h4><p><a href="https://github.com/ohmyzsh/ohmyzsh"><strong>Oh MyZsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，插件等。</p><p>用curl方式安装</p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kp73iklc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-kp73iklc8pd4qf"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div></div><p>在<code>.zshrc</code>中配置<code>alias</code>，<code>source</code>保存即可，里面还可以配置其他实用的配置。<a href="https://mrseawave.github.io/blogs/articles/2021/08/29/oh-my-zsh/">这个博客</a>有较详细叙述。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>小寄巧</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Ucore Lab0 on Apple Silicon Mac</title>
     <link href="/posts/23191/"/>
     <url>/posts/23191/</url>
@@ -548,6 +573,31 @@
     <tags>
       
       <tag>操作系统</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>test</title>
+    <link href="/posts/63534/"/>
+    <url>/posts/63534/</url>
+    
+    <content type="html"><![CDATA[<p>aaaa</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>小寄巧</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>test</tag>
       
     </tags>
     
