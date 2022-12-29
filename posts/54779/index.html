@@ -32,8 +32,8 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193759994557_881_image-20221022224632714.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193801774887_602_image-20221022224533046.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%B8%80_socket%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8F/20221026193803523871_125_image-20221022225008715.png">
-<meta property="article:published_time" content="2022-10-26T11:38:04.755Z">
-<meta property="article:modified_time" content="2022-10-26T11:38:04.755Z">
+<meta property="article:published_time" content="2022-12-29T09:49:57.123Z">
+<meta property="article:modified_time" content="2022-12-29T09:49:57.123Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="寄网">
 <meta name="twitter:card" content="summary_large_image">
@@ -244,8 +244,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2022-10-26 19:38" pubdate>
-              2022年10月26日 晚上
+            <time datetime="2022-12-29 17:49" pubdate>
+              2022年12月29日 下午
             </time>
           </span>
           
@@ -400,7 +400,7 @@
 <li><p>消息中需要包含时间戳。因为聊天程序中的时间是需要以发送时间为准的。当然接收时间可以从系统获得，基于此也可以进行时延计算。</p></li>
 </ol>
 <p>以下是程序中关于协议中控制部分的宏定义：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1047xblc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-1047xblc8gmqft"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NEW_C <span class="hljs-string">'N'</span> <span class="hljs-comment">// new client</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gar0melc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-gar0melc8x5dr2"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NEW_C <span class="hljs-string">'N'</span> <span class="hljs-comment">// new client</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> PUB_C <span class="hljs-string">'P'</span> <span class="hljs-comment">// public message</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> PRI_C <span class="hljs-string">'R'</span>  <span class="hljs-comment">// private message</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> QUIT_C <span class="hljs-string">'Q'</span> <span class="hljs-comment">// quit</span></span>
@@ -413,7 +413,7 @@
 <p>C++中对字符串的处理<code>char*</code>和<code>string</code>各有各的优势，有时也会出现各种奇怪的坑，在写代码时一度让人很头疼，因此也在某些地方会有一些不太优雅的写法。</p>
 <h3 id="环境配置">环境配置</h3>
 <p>在<code>cmake</code>项目中进行<code>socket</code>编程需要在CMakeLists中添加以下内容，否则不能正常编译：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wvqpkjlc8gmqft"></i><span>cmake</span><div class="collapse show" id="collapse-wvqpkjlc8gmqft"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.21</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5wrq22lc8x5dr2"></i><span>cmake</span><div class="collapse show" id="collapse-5wrq22lc8x5dr2"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.21</span>)
 <span class="hljs-keyword">project</span>(chatting)
 <span class="hljs-keyword">set</span>(CMAKE_EXE_LINKER_FLAGS <span class="hljs-string">"-static"</span>)
 <span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">14</span>)
@@ -421,16 +421,16 @@
 <span class="hljs-keyword">add_executable</span>(server server.cpp)
 <span class="hljs-keyword">add_executable</span>(client client.cpp)</code></pre></div></div>
 <p>需额外包含的头文件：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7r2x3zlc8gmqft"></i><span>cmake</span><div class="collapse show" id="collapse-7r2x3zlc8gmqft"><pre><code class="hljs cmake"><span class="hljs-comment">#include &lt;windows.h&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5rklpalc8x5dr2"></i><span>cmake</span><div class="collapse show" id="collapse-5rklpalc8x5dr2"><pre><code class="hljs cmake"><span class="hljs-comment">#include &lt;windows.h&gt;</span>
 <span class="hljs-comment">#include &lt;WinSock2.h&gt;</span>
 <span class="hljs-comment">#pragma comment(lib, "ws2_32.lib")</span></code></pre></div></div>
 <h3 id="工具类">工具类</h3>
 <p><code>color.h</code>以及部分<code>helper.h</code>的代码主要定义了一些与控制台颜色以及格式化输出显示相关的宏及函数。</p>
 <p><code>print_toggle</code>主要用来格式化打印控制台输出。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mb7mq7lc8gmqft"></i><span>reasonml</span><div class="collapse show" id="collapse-mb7mq7lc8gmqft"><pre><code class="hljs reasonml">print<span class="hljs-constructor">_toggle(<span class="hljs-params">const</span> <span class="hljs-params">string</span>&amp; <span class="hljs-params">type</span>,<span class="hljs-params">const</span> <span class="hljs-params">string</span> &amp;<span class="hljs-params">txt</span>,<span class="hljs-params">const</span> <span class="hljs-params">string</span>&amp; <span class="hljs-params">time_str</span>=<span class="hljs-string">""</span>)</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hzg8w8lc8x5dr2"></i><span>reasonml</span><div class="collapse show" id="collapse-hzg8w8lc8x5dr2"><pre><code class="hljs reasonml">print<span class="hljs-constructor">_toggle(<span class="hljs-params">const</span> <span class="hljs-params">string</span>&amp; <span class="hljs-params">type</span>,<span class="hljs-params">const</span> <span class="hljs-params">string</span> &amp;<span class="hljs-params">txt</span>,<span class="hljs-params">const</span> <span class="hljs-params">string</span>&amp; <span class="hljs-params">time_str</span>=<span class="hljs-string">""</span>)</span></code></pre></div></div>
 <p>第一个参数是打印格式，取值是下面的宏定义，决定了输出以怎样的颜色和格式进行。第二个参数是内容。并附带可选参数时间。</p>
 <p>宏的定义如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aoq9y4lc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-aoq9y4lc8gmqft"><pre><code class="hljs c++"><span class="hljs-comment">//message datagram parameters</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cur6tzlc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-cur6tzlc8x5dr2"><pre><code class="hljs c++"><span class="hljs-comment">//message datagram parameters</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> NAME_SIZE 12</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> TXT_SIZE 125</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> MSG_SIZE 144</span>
@@ -455,7 +455,7 @@
 <p>第一部分主要是方便对数据保处理时使用，第二部分则是在控制台上显示相关命令是需要的宏。</p>
 <h3 id="初始化工作">初始化工作</h3>
 <h4 id="服务器端">服务器端</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9vrkqxlc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-9vrkqxlc8gmqft"><pre><code class="hljs c++"><span class="hljs-comment">//initialize websocket</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gih914lc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-gih914lc8x5dr2"><pre><code class="hljs c++"><span class="hljs-comment">//initialize websocket</span>
 WSADATA wsaData;
 <span class="hljs-keyword">if</span> (<span class="hljs-built_in">WSAStartup</span>(<span class="hljs-built_in">MAKEWORD</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), &amp;wsaData) != <span class="hljs-number">0</span>) {
     <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"WSAStartup failed"</span>);
@@ -474,7 +474,7 @@ server_addr.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(
 }
 <span class="hljs-built_in">print_toggle</span>(LOG, <span class="hljs-string">"listen success"</span>);</code></pre></div></div>
 <h4 id="客户端-1">客户端：</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xjoma7lc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-xjoma7lc8gmqft"><pre><code class="hljs c++">WSADATA wsaData;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ntzw2blc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-ntzw2blc8x5dr2"><pre><code class="hljs c++">WSADATA wsaData;
 <span class="hljs-keyword">if</span> (<span class="hljs-built_in">WSAStartup</span>(<span class="hljs-built_in">MAKEWORD</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), &amp;wsaData) != <span class="hljs-number">0</span>) {
     <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"WSAStartup failed"</span>);
     <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
@@ -498,7 +498,7 @@ addrSrv.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCA
 <h3 id="服务器进程">服务器进程</h3>
 <h4 id="主线程">主线程</h4>
 <p>这一部分主要做的工作是初始化套接字池，并使用<code>client_manager</code>函数创建线程，以监听客户端连接。之后便监听输入以控制服务器群发消息或退出。另外，如果没有客户端连接，显然套接字池中所有套接字都不可用，什么也不用做。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-25h9zhlc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-25h9zhlc8gmqft"><pre><code class="hljs c++">    <span class="hljs-comment">//initialize socket array</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ge35a1lc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-ge35a1lc8x5dr2"><pre><code class="hljs c++">    <span class="hljs-comment">//initialize socket array</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> &amp;sock_connect: sock_connects) {
         sock_connect = INVALID_SOCKET;
     }
@@ -548,7 +548,7 @@ addrSrv.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCA
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
 <p>其中的<code>broadcast</code>函数便是群发消息所使用的是。下面看其实现：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9d3yw3lc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-9d3yw3lc8gmqft"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">broadcast</span><span class="hljs-params">(<span class="hljs-type">char</span> msg[MSG_SIZE], <span class="hljs-type">int</span> id = <span class="hljs-number">-1</span>)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2qze1plc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-2qze1plc8x5dr2"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">broadcast</span><span class="hljs-params">(<span class="hljs-type">char</span> msg[MSG_SIZE], <span class="hljs-type">int</span> id = <span class="hljs-number">-1</span>)</span> </span>{
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAX_CLIENT; i++) {
         <span class="hljs-keyword">if</span> (sock_connects[i] != INVALID_SOCKET &amp;&amp; i != id) {
             <span class="hljs-comment">//we don't send the message to the sender</span>
@@ -559,7 +559,7 @@ addrSrv.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCA
 <p>依次检查<code>socket</code>池，然后给有效且不是<code>id</code>对应的socket发送消息。</p>
 <h4 id="客户端连接线程">客户端连接线程</h4>
 <p><code>[[noreturn]]</code>表明这个函数自始至终监听新加入的<code>socket</code>。连接时服务器不提示，发送用户名时服务器进行第一次消息接收并根据情况发送欢迎信息或要求客户端重新输入用户名。每次接收消息循环结束，表示有客户端进入或离开，更新一次在线信息，并启动<code>handle_msg</code>线程进行消息转发。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-me75t3lc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-me75t3lc8gmqft"><pre><code class="hljs c++">[[noreturn]] <span class="hljs-function">DWORD WINAPI <span class="hljs-title">client_manager</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vym9zulc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-vym9zulc8x5dr2"><pre><code class="hljs c++">[[noreturn]] <span class="hljs-function">DWORD WINAPI <span class="hljs-title">client_manager</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
     <span class="hljs-comment">//accept new clients</span>
     <span class="hljs-keyword">auto</span> *sock_server = (SOCKET *) lparam;
 
@@ -623,7 +623,7 @@ addrSrv.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCA
 </figure>
 <p>在程序中除了根据姓名找<code>socket id</code>,也常常出现反着找的情况。</p>
 <p>这一部分需要注意的点是在<code>PRI_C</code>即私密聊天情况下，如果客户端给出的姓名不在当前上线用户的范围之内，会单独给发送者提示。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fwcjyblc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-fwcjyblc8gmqft"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_msg</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yumkq9lc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-yumkq9lc8x5dr2"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_msg</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
     <span class="hljs-keyword">auto</span> *socket = (SOCKET *) lparam;
     <span class="hljs-type">int</span> id = <span class="hljs-number">0</span>;
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAX_CLIENT; i++) {
@@ -751,7 +751,7 @@ addrSrv.sin_addr.S_un.S_addr = <span class="hljs-built_in">inet_addr</span>(LOCA
 }</code></pre></div></div>
 <h3 id="客户端进程">客户端进程</h3>
 <h4 id="主线程-1">主线程</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k58cyvlc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-k58cyvlc8gmqft"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">connect</span>(sockClient, (SOCKADDR *) &amp;addrSrv, <span class="hljs-built_in">sizeof</span>(SOCKADDR)) != <span class="hljs-number">0</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zo1n3wlc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-zo1n3wlc8x5dr2"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">connect</span>(sockClient, (SOCKADDR *) &amp;addrSrv, <span class="hljs-built_in">sizeof</span>(SOCKADDR)) != <span class="hljs-number">0</span>) {
     <span class="hljs-built_in">print_toggle</span>(ERR, <span class="hljs-string">"connect failed"</span>);
     <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
 }
@@ -789,7 +789,7 @@ h_thread[<span class="hljs-number">1</span>] = <span class="hljs-built_in">Creat
 <p>这一部分进行了用户信息发送以及创建了两个子线程用于发送和收取来自服务器的消息。之后阻塞等待线程结束。</p>
 <h4 id="发送线程">发送线程</h4>
 <p>首先将报文字段进行初始化，以便根据实际情况填入。循环等待用户输入，并在过程中两次检查是否需要退出。之后根据报文的控制段<code>TYPE</code>分别构建不同格式信息。注意在这一阶段并不是程报文中的每一个字段都一定用的到。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zh16vklc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-zh16vklc8gmqft"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handlerSend</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w3okhalc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-w3okhalc8x5dr2"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handlerSend</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
     <span class="hljs-keyword">auto</span> *socket = (SOCKET *) lparam;
     <span class="hljs-type">char</span> to_user[NAME_SIZE];
     <span class="hljs-type">char</span> msg[MSG_SIZE];
@@ -866,7 +866,7 @@ h_thread[<span class="hljs-number">1</span>] = <span class="hljs-built_in">Creat
 }</code></pre></div></div>
 <h4 id="接收线程">接收线程</h4>
 <p>接收线程是一个解析的过程，并往控制台进行不同格式输出。模式基本类似。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3gvqtslc8gmqft"></i><span>c++</span><div class="collapse show" id="collapse-3gvqtslc8gmqft"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handlerRec</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-10i3zclc8x5dr2"></i><span>c++</span><div class="collapse show" id="collapse-10i3zclc8x5dr2"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handlerRec</span><span class="hljs-params">(LPVOID lparam)</span> </span>{
     <span class="hljs-keyword">auto</span> *socket = (SOCKET *) lparam;
     <span class="hljs-type">char</span> msg[MSG_SIZE];
     <span class="hljs-built_in">memset</span>(msg, <span class="hljs-number">0</span>, MSG_SIZE);
@@ -980,7 +980,7 @@ h_thread[<span class="hljs-number">1</span>] = <span class="hljs-built_in">Creat
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年10月26日</div>
+          <div>2022年12月29日</div>
         </div>
       
       
@@ -1012,9 +1012,9 @@ h_thread[<span class="hljs-number">1</span>] = <span class="hljs-built_in">Creat
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/64911/" title="c++_基本语法和运算">
+                      <a href="/posts/63534/" title="test">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">c++_基本语法和运算</span>
+                        <span class="hidden-mobile">test</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -1022,8 +1022,8 @@ h_thread[<span class="hljs-number">1</span>] = <span class="hljs-built_in">Creat
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/31769/" title="寄网-应用层">
-                        <span class="hidden-mobile">寄网-应用层</span>
+                      <a href="/posts/13596/" title="计算机网络实验二_Wireshark分析交互过程">
+                        <span class="hidden-mobile">计算机网络实验二_Wireshark分析交互过程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -23,8 +23,8 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="macOS配置命令别名 临时别名 和在linux系统一样，直接输入alias命令即可。在当前的终端下生效。 比如： shellalias v&#x3D;&quot;vim&quot; 永久别名 由于现在的macOS默认是采用的zsh而不是bash，因此配置文件路径为 shellsudo vim &#x2F;etc&#x2F;zshrc 当然也可以 shellchsh -s &#x2F;bin&#x2F;bash 进入bash，不过目前没什么理由这么干( 然后会发现这">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-10-23T07:30:46.033Z">
-<meta property="article:modified_time" content="2022-10-23T07:30:46.033Z">
+<meta property="article:published_time" content="2022-12-29T09:49:57.114Z">
+<meta property="article:modified_time" content="2022-12-29T09:49:57.114Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -234,8 +234,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2022-10-23 15:30" pubdate>
-              2022年10月23日 下午
+            <time datetime="2022-12-29 17:49" pubdate>
+              2022年12月29日 下午
             </time>
           </span>
           
@@ -313,27 +313,27 @@
 <h3 id="临时别名">临时别名</h3>
 <p>和在linux系统一样，直接输入<code>alias</code>命令即可。在当前的终端下生效。</p>
 <p>比如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ej1kn3lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-ej1kn3lc8pd4qf"><pre><code class="hljs shell">alias v="vim"</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-shq8l1lc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-shq8l1lc8x5dr2"><pre><code class="hljs shell">alias v="vim"</code></pre></div></div>
 <h3 id="永久别名">永久别名</h3>
 <p>由于现在的macOS默认是采用的<code>zsh</code>而不是<code>bash</code>，因此配置文件路径为</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ibty20lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-ibty20lc8pd4qf"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-79tmy0lc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-79tmy0lc8x5dr2"><pre><code class="hljs shell">sudo vim /etc/zshrc</code></pre></div></div>
 <p>当然也可以</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z0f9f5lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-z0f9f5lc8pd4qf"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9x7bvulc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-9x7bvulc8x5dr2"><pre><code class="hljs shell">chsh -s /bin/bash</code></pre></div></div>
 <p>进入<code>bash</code>，不过目前没什么理由这么干(</p>
 <p>然后会发现这个文件是只读的。</p>
 <p>有两个解决方案。</p>
 <h4 id="简单粗暴的">简单粗暴的</h4>
 <p>去除写权限</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bd4gv0lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-bd4gv0lc8pd4qf"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tsl7yqlc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-tsl7yqlc8x5dr2"><pre><code class="hljs shell">sudo chmod u+w /etc/bashrc</code></pre></div></div>
 <p>然后写入别名，保存</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1bud25lc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-1bud25lc8pd4qf"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-32qkdalc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-32qkdalc8x5dr2"><pre><code class="hljs shell">source /etc/bashrc</code></pre></div></div>
 <p>最后将写权限去除</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nsw7jalc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-nsw7jalc8pd4qf"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h65j4blc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-h65j4blc8x5dr2"><pre><code class="hljs shell">sudo chmod u-w /etc/bashrc</code></pre></div></div>
 <h4 id="安装插件">安装插件</h4>
 <p><a target="_blank" rel="noopener" href="https://github.com/ohmyzsh/ohmyzsh"><strong>Oh My
 Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，插件等。</p>
 <p>用curl方式安装</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kp73iklc8pd4qf"></i><span>shell</span><div class="collapse show" id="collapse-kp73iklc8pd4qf"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gdgb8plc8x5dr2"></i><span>shell</span><div class="collapse show" id="collapse-gdgb8plc8x5dr2"><pre><code class="hljs shell">sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre></div></div>
 <p>在<code>.zshrc</code>中配置<code>alias</code>，<code>source</code>保存即可，里面还可以配置其他实用的配置。<a target="_blank" rel="noopener" href="https://mrseawave.github.io/blogs/articles/2021/08/29/oh-my-zsh/">这个博客</a>有较详细叙述。</p>
 
                 
@@ -393,7 +393,7 @@ Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，�
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年10月23日</div>
+          <div>2022年12月29日</div>
         </div>
       
       
@@ -425,9 +425,9 @@ Zsh</strong></a>是一款社区驱动的命令行工具，可以配置主题，�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/4810/" title="机器学习-模型评估与选择">
+                      <a href="/posts/64911/" title="c++_基本语法和运算">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">机器学习-模型评估与选择</span>
+                        <span class="hidden-mobile">c++_基本语法和运算</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

@@ -26,8 +26,8 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%9F%E6%9C%AB%E5%B7%A5%E7%A8%8B%E4%BD%9C%E4%B8%9A/20220919004325018293_610_image-20220919004148336.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%9F%E6%9C%AB%E5%B7%A5%E7%A8%8B%E4%BD%9C%E4%B8%9A/20220919004326633367_468_image-20220415222750452.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%9F%E6%9C%AB%E5%B7%A5%E7%A8%8B%E4%BD%9C%E4%B8%9A/20220919004327928426_899_image-20220415222820109.png">
-<meta property="article:published_time" content="2022-10-23T07:30:46.034Z">
-<meta property="article:modified_time" content="2022-10-23T07:30:46.034Z">
+<meta property="article:published_time" content="2022-12-29T09:49:57.119Z">
+<meta property="article:modified_time" content="2022-12-29T09:49:57.119Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
@@ -238,8 +238,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2022-10-23 15:30" pubdate>
-              2022年10月23日 下午
+            <time datetime="2022-12-29 17:49" pubdate>
+              2022年12月29日 下午
             </time>
           </span>
           
@@ -345,7 +345,7 @@ buy_costs)</p>
 <p>shelf(<u>shelf_id</u>, goods_num_on_shelf)</p>
 <p>sell (<u><em>emp_no</em></u>, <em><u>goods_id</u></em>)</p>
 <h4 id="sql创建关系模式">2.3 SQL创建关系模式</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9od66mlc8gmqft"></i><span>sql</span><div class="collapse show" id="collapse-9od66mlc8gmqft"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> goods 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f7hhgulc8x5dr2"></i><span>sql</span><div class="collapse show" id="collapse-f7hhgulc8x5dr2"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> goods 
 (
    goods_id             <span class="hljs-type">integer</span>                        <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span>,
    shelf_id             <span class="hljs-type">integer</span>                        <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span>,
@@ -440,21 +440,21 @@ buy_costs)</p>
 <h4 id="查询语句样例">2.4 查询语句样例</h4>
 <p>1.单表查询</p>
 <p>查询单价为10元的商品名称</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r3waqnlc8gmqft"></i><span>sql</span><div class="collapse show" id="collapse-r3waqnlc8gmqft"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h3o0mflc8x5dr2"></i><span>sql</span><div class="collapse show" id="collapse-h3o0mflc8x5dr2"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name 
 <span class="hljs-keyword">from</span> goods
 <span class="hljs-keyword">where</span> price<span class="hljs-operator">=</span><span class="hljs-number">10</span></code></pre></div></div>
 <p>2.多表连接查询</p>
 <p>查询每个厂商生产商品的平均价格</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fytnmmlc8gmqft"></i><span>SQL</span><div class="collapse show" id="collapse-fytnmmlc8gmqft"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sp_id,<span class="hljs-built_in">avg</span>(price)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0iwvgolc8x5dr2"></i><span>SQL</span><div class="collapse show" id="collapse-0iwvgolc8x5dr2"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sp_id,<span class="hljs-built_in">avg</span>(price)
 <span class="hljs-keyword">from</span> supply <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> goods
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> sp_id</code></pre></div></div>
 <p>3.4多表嵌套查询和exist查询</p>
 <p>查询只有一种商品的货架，返回这种商品的名称和货架id</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t41p24lc8gmqft"></i><span>sql</span><div class="collapse show" id="collapse-t41p24lc8gmqft"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name,shelf_id
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-imalzjlc8x5dr2"></i><span>sql</span><div class="collapse show" id="collapse-imalzjlc8x5dr2"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name,shelf_id
 <span class="hljs-keyword">from</span> goods,shelf
 <span class="hljs-keyword">where</span> goods.shelf_id<span class="hljs-operator">=</span>shelf.shelf_id <span class="hljs-keyword">and</span> goods.goods_num<span class="hljs-operator">=</span>shelf.goods_num_on_shelf</code></pre></div></div>
 <p>也可以只在goods表中查</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-muxpqclc8gmqft"></i><span>sql</span><div class="collapse show" id="collapse-muxpqclc8gmqft"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ot0tlmlc8x5dr2"></i><span>sql</span><div class="collapse show" id="collapse-ot0tlmlc8x5dr2"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name
 <span class="hljs-keyword">from</span> goods g1
 <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span>
 <span class="hljs-operator">*</span>
@@ -463,7 +463,7 @@ buy_costs)</p>
 goods_name<span class="hljs-operator">&amp;</span>lt;<span class="hljs-operator">&amp;</span>gt;e1.goods_name);</code></pre></div></div>
 <p>5.聚合查询</p>
 <p>有10种以上商品的货架，以及拥有的商品种类数</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9yiea2lc8gmqft"></i><span>sql</span><div class="collapse show" id="collapse-9yiea2lc8gmqft"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> shelf_id,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l5vg6glc8x5dr2"></i><span>sql</span><div class="collapse show" id="collapse-l5vg6glc8x5dr2"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> shelf_id,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
 <span class="hljs-keyword">from</span> goods
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> shef_id
 <span class="hljs-keyword">having</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&amp;</span>gt; <span class="hljs-number">10</span>;</code></pre></div></div>
@@ -478,7 +478,7 @@ goods_name<span class="hljs-operator">&amp;</span>lt;<span class="hljs-operator"
 <figcaption aria-hidden="true">image-20220415222820109</figcaption>
 </figure>
 <h4 id="生成sql语句">3.3 生成SQL语句</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oaw2pjlc8gmqft"></i><span>sql</span><div class="collapse show" id="collapse-oaw2pjlc8gmqft"><pre><code class="hljs sql"><span class="hljs-comment">/*==============================================================*/</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pcypf4lc8x5dr2"></i><span>sql</span><div class="collapse show" id="collapse-pcypf4lc8x5dr2"><pre><code class="hljs sql"><span class="hljs-comment">/*==============================================================*/</span>
 <span class="hljs-comment">/* DBMS name:      Sybase SQL Anywhere 12                       */</span>
 <span class="hljs-comment">/* Created on:     2022/4/15 22:28:49                           */</span>
 <span class="hljs-comment">/*==============================================================*/</span>
@@ -869,7 +869,7 @@ sp_id <span class="hljs-keyword">ASC</span>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年10月23日</div>
+          <div>2022年12月29日</div>
         </div>
       
       
@@ -901,9 +901,9 @@ sp_id <span class="hljs-keyword">ASC</span>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/16720/" title="信息检索_索引构建、压缩及查询支持">
+                      <a href="/posts/6004/" title="编译原理-词法分析">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">信息检索_索引构建、压缩及查询支持</span>
+                        <span class="hidden-mobile">编译原理-词法分析</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
