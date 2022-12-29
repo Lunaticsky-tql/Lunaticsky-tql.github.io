@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%BA%8C_Wireshark%E5%88%86%E6%9E%90%E4%BA%A4%E4%BA%92%E8%BF%87%E7%A8%8B/20221028232117064239_862_image-20221028193717733.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C%E4%BA%8C_Wireshark%E5%88%86%E6%9E%90%E4%BA%A4%E4%BA%92%E8%BF%87%E7%A8%8B/20221028232118651904_458_image-20221028194251309.png">
 <meta property="article:published_time" content="2022-10-28T15:21:21.607Z">
-<meta property="article:modified_time" content="2022-11-02T06:31:34.392Z">
+<meta property="article:modified_time" content="2022-10-28T15:21:21.607Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="寄网">
 <meta name="twitter:card" content="summary_large_image">
@@ -328,14 +328,6 @@
             <!-- SEO header -->
             <h1 style="display: none">计算机网络实验二_Wireshark分析交互过程</h1>
             
-              <p class="note note-info">
-                
-                  
-                    本文最后更新于：2022年11月2日 下午
-                  
-                
-              </p>
-            
             
               <div class="markdown-body">
                 
@@ -357,9 +349,9 @@
 <h2 id="服务器搭建">服务器搭建</h2>
 <p>在本次实验中我使用了本地服务器。我们可以使用Springboot，flask等在localhost上搭建Web服务器。不过最近恰好在研究博客搭建相关内容，这里通过使用Hexo搭建静态博客的比较“自动化”的方式在本机搭建Web服务器。</p>
 <p>通过下面命令安装<code>hexo</code>环境。(其实还需要安装<code>npm</code>环境，不过在此就略去了)。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j7gebilc750v8b"></i><span>shell</span><div class="collapse show" id="collapse-j7gebilc750v8b"><pre><code class="hljs shell">sudo npm install -g hexo-cli</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-34a03xlc8gmqft"></i><span>shell</span><div class="collapse show" id="collapse-34a03xlc8gmqft"><pre><code class="hljs shell">sudo npm install -g hexo-cli</code></pre></div></div>
 <p>新建博客目录结构如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ty4h6slc750v8b"></i><span>shell</span><div class="collapse show" id="collapse-ty4h6slc750v8b"><pre><code class="hljs shell">my_hexo_test_server
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qve7lulc8gmqft"></i><span>shell</span><div class="collapse show" id="collapse-qve7lulc8gmqft"><pre><code class="hljs shell">my_hexo_test_server
 .
 ├── _config.yml
 ├── db.json
@@ -383,7 +375,7 @@
             ├── img
             └── js</code></pre></div></div>
 <p><code>_config.yml</code>中<code>theme</code>改为自定义的<code>wireshark</code>，在<code>index.ejs</code>中写入网页内容：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nmcr6llc750v8b"></i><span>html</span><div class="collapse show" id="collapse-nmcr6llc750v8b"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xp230llc8gmqft"></i><span>html</span><div class="collapse show" id="collapse-xp230llc8gmqft"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
@@ -402,7 +394,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div></div>
-<p>在终端执行 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zd8a0tlc750v8b"></i><span>shell</span><div class="collapse show" id="collapse-zd8a0tlc750v8b"><pre><code class="hljs shell">(base) ➜  my_hexo_test_server hexo g
+<p>在终端执行 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c2c5xolc8gmqft"></i><span>shell</span><div class="collapse show" id="collapse-c2c5xolc8gmqft"><pre><code class="hljs shell">(base) ➜  my_hexo_test_server hexo g
 (base) ➜  my_hexo_test_server hexo s</code></pre></div></div><p></p>
 <p>可以看到生成网页如下所示：</p>
 <figure>
@@ -571,7 +563,7 @@ TCP头中定义的接收窗口，就得到真正的 TCP接收窗口了。</p>
 <figcaption aria-hidden="true">image-20221028191208877</figcaption>
 </figure>
 <p>分析文本的十六进制编码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0snqrglc750v8b"></i><span>apache</span><div class="collapse show" id="collapse-0snqrglc750v8b"><pre><code class="hljs apache"><span class="hljs-attribute">0000</span>   <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">3</span>c <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">20</span> <span class="hljs-number">32</span> <span class="hljs-number">30</span> <span class="hljs-number">31</span> <span class="hljs-number">33</span> <span class="hljs-number">35</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d86eimlc8gmqft"></i><span>apache</span><div class="collapse show" id="collapse-d86eimlc8gmqft"><pre><code class="hljs apache"><span class="hljs-attribute">0000</span>   <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span> <span class="hljs-number">3</span>c <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">20</span> <span class="hljs-number">32</span> <span class="hljs-number">30</span> <span class="hljs-number">31</span> <span class="hljs-number">33</span> <span class="hljs-number">35</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>
 <span class="hljs-attribute">0010</span>   <span class="hljs-number">20</span> e7 <span class="hljs-number">94</span> b0 e4 bd b3 e4 b8 <span class="hljs-number">9</span>a <span class="hljs-number">3</span>c <span class="hljs-number">2</span>f <span class="hljs-number">68</span> <span class="hljs-number">32</span> <span class="hljs-number">3</span>e <span class="hljs-number">0</span>a</code></pre></div></div>
 <p>第一行末尾可以看到是我的学号<code>2013599</code>的ASCII码。</p>
 <p>中文采用的是Unicode编码。具体方式为：</p>
@@ -655,11 +647,6 @@ TCP头中定义的接收窗口，就得到真正的 TCP接收窗口了。</p>
           <div>2022年10月28日</div>
         </div>
       
-      
-        <div class="license-meta-item license-meta-date">
-          <div>更新于</div>
-          <div>2022年11月2日</div>
-        </div>
       
       
         <div class="license-meta-item">
