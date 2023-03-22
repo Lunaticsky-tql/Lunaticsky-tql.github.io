@@ -16,22 +16,22 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="MLP_BP反向传播 写在前面：我觉得正确结果的形式可能不太应该这么复杂。仅供参考，也欢迎交流。 实验要求 以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。 Define \(S_w\) and \(S_b\) as: \[ \begin{aligned} &amp;S_w&#x3D;\sum_{c&#x3D;1}^C \sum_{\boldsymbol{y}_i^M \in c}\left(\bolds">
+        <meta name="description" content="MLP_BP反向传播 实验要求 以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。 Define \(S_w\) and \(S_b\) as: \[ \begin{aligned} &amp;S_w&#x3D;\sum_{c&#x3D;1}^C \sum_{\boldsymbol{y}_i^M \in c}\left(\boldsymbol{y}_i^M-\boldsymbol{m}_c^M\right)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MLP_BP反向传播">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/43013/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="MLP_BP反向传播 写在前面：我觉得正确结果的形式可能不太应该这么复杂。仅供参考，也欢迎交流。 实验要求 以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。 Define \(S_w\) and \(S_b\) as: \[ \begin{aligned} &amp;S_w&#x3D;\sum_{c&#x3D;1}^C \sum_{\boldsymbol{y}_i^M \in c}\left(\bolds">
+<meta property="og:description" content="MLP_BP反向传播 实验要求 以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。 Define \(S_w\) and \(S_b\) as: \[ \begin{aligned} &amp;S_w&#x3D;\sum_{c&#x3D;1}^C \sum_{\boldsymbol{y}_i^M \in c}\left(\boldsymbol{y}_i^M-\boldsymbol{m}_c^M\right)">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231353617444_705_image-20221124210535110.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221231171137685205_418_image-20221231170939828.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231357983833_279_image-20221124230019479.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231401909241_717_image-20221124210539379.png">
-<meta property="article:published_time" content="2022-12-29T09:49:57.112Z">
-<meta property="article:modified_time" content="2022-12-29T09:49:57.112Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221231171137685205_418_image-20221231170939828.png">
+<meta property="article:published_time" content="2022-12-11T09:11:51.000Z">
+<meta property="article:modified_time" content="2022-12-11T09:11:51.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231353617444_705_image-20221124210535110.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221231171137685205_418_image-20221231170939828.png">
     
     
     
@@ -238,8 +238,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2022-12-29 17:49" pubdate>
-              2022年12月29日 下午
+            <time datetime="2022-12-11 17:11" pubdate>
+              2022年12月11日 下午
             </time>
           </span>
           
@@ -250,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              7.7k 字
+              7.6k 字
                 
       </span>
       
@@ -314,7 +314,6 @@
               <div class="markdown-body">
                 
                 <h1 id="mlp_bp反向传播">MLP_BP反向传播</h1>
-<p>写在前面：我觉得正确结果的形式可能不太应该这么复杂。仅供参考，也欢迎交流。</p>
 <h2 id="实验要求">实验要求</h2>
 <p>以三层感知机为例，使用反向传播算法更新MLP的权重和偏置项。</p>
 <p>Define <span class="math inline">\(S_w\)</span> and <span class="math inline">\(S_b\)</span> as: <span class="math display">\[
@@ -340,10 +339,7 @@ j}^M-\boldsymbol{d}_{i, j}\right)^2+\frac{1}{2}
 \]</span></p>
 <h2 id="符号说明">符号说明</h2>
 <p>以经典的手写体识别任务为例，说明本次实验推导所用符号的含义：</p>
-<figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231353617444_705_image-20221124210535110.png" srcset="/img/loading.gif" lazyload alt="image-20221124210535110">
-<figcaption aria-hidden="true">image-20221124210535110</figcaption>
-</figure>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221231171137685205_418_image-20221231170939828.png" srcset="/img/loading.gif" lazyload></p>
 <p>其中<span class="math inline">\(\sigma\)</span>为激活函数，此处使用sigmoid函数即</p>
 <p><span class="math display">\[
 \sigma(x)=\frac{1}{1+e^{-x}}
@@ -396,7 +392,7 @@ j}-{m}_{c,j}\right)^2-\left({m}_{c,j}-m_j\right)^2\right]
 <p>注：上图所指<span class="math inline">\(j\)</span>也为<span class="math inline">\(3\)</span>；<span class="math inline">\(m_j\)</span>表示第<span class="math inline">\(j\)</span>类上的预测值在所有样本上的平均。 ##
 梯度下降求解</p>
 <h3 id="目标">目标</h3>
-<p>首先我们需要清楚反向传播的目的：我们希望根据模型在样本上的表现结果调节模型，最小化损失函数以让其其在训练集上的表现更好。</p>
+<p>首先我们需要清楚反向传播的目的：我们希望根据模型在样本上的表现结果调节模型，最小化损失函数以让其在训练集上的表现更好。</p>
 <p>具体到神经网络，我们需要调节的是每一条边对应的权重或偏置，依据是损失函数对该层权重的偏导。直观一点说，偏导反映的是参数的微小变化对损失的影响。我们希望最小化损失函数，那么比如如果求出来对权重的偏导是正的，那么说明损失函数随权重增大而增大，那么就要让权重变小一点。</p>
 <p>因此我们更新参数的方式如下： <span class="math display">\[
 \begin{aligned} W^{(l)} &amp;=W^{(l)}-\frac{\alpha}{d }\frac{\partial
@@ -405,17 +401,14 @@ b^{(l)}-\frac{\alpha}{d}\frac{\partial E}{\partial b^{(l)}}
 \end{aligned}\tag{1}
 \]</span> 其中<span class="math inline">\(l\)</span>是权重和偏置所在的层数，对于三层感知机<span class="math inline">\(l=1,2\)</span>。<span class="math inline">\(\alpha\)</span>为学习率。 <span class="math inline">\(d\)</span>为整个训练集大小，比如对于MNIST这个值为60000。</p>
 <h3 id="偏导求解">偏导求解</h3>
-<p>在上面定义了对于单个样本单个特征的损失函数。下面为简化叙述，采用逐样本进行偏导的求解。根据题目的含义我们应该是使用<strong>批量梯度下降法</strong>进行更新，此时将对每个样本求得的偏导加起来求得总的<span class="math inline">\(E\)</span>带入<span class="math inline">\((1)\)</span>中即可。</p>
+<p>在上面定义了对于单个样本单个特征的损失函数。下面为简化叙述，采用逐样本进行偏导的求解。根据题目的含义我们应该是使用<strong>批量梯度下降法</strong>进行更新，此时将对每个样本求得的偏导加起来求得总的<span class="math inline">\(E\)</span>代入<span class="math inline">\((1)\)</span>中（而不是每个样本都使用<span class="math inline">\((1)\)</span>式进行更新）即可。</p>
 <p>也就是 <span class="math display">\[
 E_i=\sum_{j=1}^{c} E_{ij}\\
 E=\sum_{i=1}^{d} E_{i}
 \]</span></p>
 <p><span class="math inline">\(c\)</span>为类的个数，比如手写体识别中为10，数字<span class="math inline">\(j\)</span>对应于类<span class="math inline">\(j+1\)</span>。</p>
-<p>阅读下面的求解过程时建议将下图固定在屏幕上。</p>
-<figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221124231401909241_717_image-20221124210539379.png" srcset="/img/loading.gif" lazyload alt="image-20221124210539379">
-<figcaption aria-hidden="true">image-20221124210539379</figcaption>
-</figure>
+<p>阅读下面的求解过程时如果担心忘记符号对应的含义，可以将下图固定在屏幕上。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/MLP_BP%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/20221231171137685205_418_image-20221231170939828.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="最后一层">最后一层</h4>
 <p>从总体来看，对于最后一层的某个边<span class="math inline">\(w_{jk}\)</span>的权重更新是比较容易进行的。如图所示，<span class="math inline">\(j=1,2...c\)</span>，<span class="math inline">\(c\)</span>为类别的个数。<span class="math inline">\(k=1,2...h\)</span>，<span class="math inline">\(h\)</span>为隐层包含的神经元个数。</p>
 <p>由链式法则，有：</p>
@@ -587,7 +580,7 @@ b_{k}}=b^{(1)}\)</span>，其余部分也都已经知道了，因此代入即可
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年12月29日</div>
+          <div>2022年12月11日</div>
         </div>
       
       
@@ -619,9 +612,9 @@ b_{k}}=b^{(1)}\)</span>，其余部分也都已经知道了，因此代入即可
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/39007/" title="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)">
+                      <a href="/posts/55151/" title="计算机网络-书面作业2">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)</span>
+                        <span class="hidden-mobile">计算机网络-书面作业2</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -629,8 +622,8 @@ b_{k}}=b^{(1)}\)</span>，其余部分也都已经知道了，因此代入即可
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/24837/" title="计算机网络实验3.1-基于UDP服务设计可靠传输协议">
-                        <span class="hidden-mobile">计算机网络实验3.1-基于UDP服务设计可靠传输协议</span>
+                      <a href="/posts/23557/" title="makefile急速入门">
+                        <span class="hidden-mobile">makefile急速入门</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

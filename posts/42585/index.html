@@ -1,0 +1,1072 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="Lenet5 手写数字分类 2013599 田佳业 实验要求 用Python实现LeNet5来完成对MNIST数据集中10个手写数字的分类。不使用PyTorch或TensorFlow框架。 网络结构 Lenet5的提出在当时主要依靠人工进行特征提取的时代无疑是划时代的。下面阐述原论文中Lenet5得到结构，并同时说明在此次作业中结合当前深度学习发展为加快训练速度和提高准确率做出的改进。 关于维度表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lenet5 手写数字分类">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/42585/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="Lenet5 手写数字分类 2013599 田佳业 实验要求 用Python实现LeNet5来完成对MNIST数据集中10个手写数字的分类。不使用PyTorch或TensorFlow框架。 网络结构 Lenet5的提出在当时主要依靠人工进行特征提取的时代无疑是划时代的。下面阐述原论文中Lenet5得到结构，并同时说明在此次作业中结合当前深度学习发展为加快训练速度和提高准确率做出的改进。 关于维度表">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200443272609_409_image-20230108195305664.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200444819985_702_image-20230108193022548.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200446840095_839_image-20230108225739278.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200448882525_978_image-20230108223119000.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200450427910_422_image-20230108223730899.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200451954546_926_image-20230108232916872.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200453760864_136_image-20230108234919998.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200455107633_269_image-20230108234646628.png">
+<meta property="article:published_time" content="2023-01-05T12:04:56.000Z">
+<meta property="article:modified_time" content="2023-01-05T12:04:56.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200443272609_409_image-20230108195305664.png">
+    
+    
+    
+    <title>Lenet5 手写数字分类 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lenet5 手写数字分类"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-01-05 20:04" pubdate>
+              2023年1月5日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              10k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Lenet5 手写数字分类/Lenet5 手写数字分类.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Lenet5 手写数字分类</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="lenet5-手写数字分类">Lenet5 手写数字分类</h1>
+<p>2013599 田佳业</p>
+<h2 id="实验要求">实验要求</h2>
+<p>用Python实现LeNet5来完成对MNIST数据集中10个手写数字的分类。不使用PyTorch或TensorFlow框架。</p>
+<h2 id="网络结构">网络结构</h2>
+<p>Lenet5的提出在当时主要依靠人工进行特征提取的时代无疑是划时代的。下面阐述原论文中Lenet5得到结构，并同时说明在此次作业中结合当前深度学习发展为加快训练速度和提高准确率做出的改进。</p>
+<p>关于维度表示的说明：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200443272609_409_image-20230108195305664.png" srcset="/img/loading.gif" lazyload alt="image-20230108195305664">
+<figcaption aria-hidden="true">image-20230108195305664</figcaption>
+</figure>
+<p>整体的结构图如下所示：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200444819985_702_image-20230108193022548.png" srcset="/img/loading.gif" lazyload alt="image-20230108193022548">
+<figcaption aria-hidden="true">image-20230108193022548</figcaption>
+</figure>
+<ul>
+<li><p>C1 卷积层。</p>
+<p>滤波器（6,1,5,5)，步长为 1，无 padding，即输入通道数为
+1，滤波器数量（等于输出通道数）为 6，大小为5×5 使用偏置项 b。
+输出图像大小变为 6 × 28 × 28 。</p>
+<blockquote>
+<p>本次实验中由于图像是28*28的，为尽可能少的改变网络结构，将其进行padding，resize到32*32。</p>
+</blockquote></li>
+<li><p>S2 池化层</p>
+<p>滤波器 大小 2×2，步长 为2，无 padding，输出矩阵大小为 14×14×6。 &gt;
+论文中采用的是平均池化，本次实验中采用最大池化，更能有效的提取关键特征。</p></li>
+<li><p>C3 卷积层</p>
+<p>滤波器 (16,6,5,5)，输出图像变为 16 × 5 × 5。</p>
+<blockquote>
+<p>论文中 C3
+卷积层的每个滤波器只与上一层中指定的通道进行连接。LeCun认为这样能减少参数数量的同时破坏不同核的对称性，希望不同的核去关注互补的特征。这种策略在现在看来事实上是一种静态的dropout
+策略，通常用于缓解过拟合。在Pytorch上实验发现会显著使准确率下降，因此不对其进行实现。</p>
+</blockquote></li>
+<li><p>S4 池化层</p>
+<p>其设置与 S2 相同。 输出图像大小变为 5 × 5 × 16。</p></li>
+<li><p>C5-C6 全连接层</p>
+<p>其实现与一般的神经网络相同。比如C5图像大小仅为 5 ×
+5，与滤波器大小相同，因此该层与将输入拉平后进行全连接完全等价。</p></li>
+<li><p>输出层</p>
+<blockquote>
+<p>论文中采用了欧氏径向基函数（RBF）输出层。RBF
+是将计算结果和标准图案进行像素级对比，即预先绘制数字的ASCII点阵图，然后计算输入向量和其欧式距离。这种方法使神经网络的输出有了一定的“可解释性”，但还是局限于特征工程，实现复杂且效果并不比普通的softmax变换好。</p>
+</blockquote></li>
+<li><p>激活和损失函数</p>
+<blockquote>
+<p>论文中采用类似于sigmoid的tanh函数作为激活函数，本次实验采用tanh作为激活函数，并在最后使用softmax归一，采用交叉熵误差作为损失函数。</p>
+</blockquote></li>
+</ul>
+<p>体现在代码中，整个网络的结构定义如下:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-be2m4jlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-be2m4jlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLeNet5</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        self.conv1 = layers.Conv2d(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>)
+        self.relu1 = layers.ReLu()
+        self.pool1 = layers.MaxPool2d((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))
+        self.conv2 = layers.Conv2d(<span class="hljs-number">6</span>, <span class="hljs-number">16</span>, <span class="hljs-number">5</span>)
+        self.relu2 = layers.ReLu()
+        self.pool2 = layers.MaxPool2d((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))
+        self.fc1 = layers.Linear(<span class="hljs-number">16</span> * <span class="hljs-number">5</span> * <span class="hljs-number">5</span>, <span class="hljs-number">120</span>)
+        self.relu3 = layers.ReLu()
+        self.fc2 = layers.Linear(<span class="hljs-number">120</span>, <span class="hljs-number">84</span>)
+        self.relu4 = layers.ReLu()
+        self.fc3 = layers.Linear(<span class="hljs-number">84</span>, <span class="hljs-number">10</span>)</code></pre></div></div>
+<h3 id="代码细节">代码细节</h3>
+<h4 id="准备工作">准备工作</h4>
+<p>代码整体仿照Pytorch的形式进行编写，但由于没有Pytorch的自动求导机制，反向传播与参数更新方面必然与其有所差距。</p>
+<p>首先进行数据获取和处理，定义模型和优化器：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zieoimlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-zieoimlfizqusd"><pre><code class="hljs python">model = MyLeNet5()
+mnist_train = datasets.MNIST(<span class="hljs-string">'./data/MNIST/raw'</span>, train=<span class="hljs-literal">True</span>)
+mnist_test = datasets.MNIST(<span class="hljs-string">'./data/MNIST/raw'</span>, train=<span class="hljs-literal">False</span>)
+mnist_train, mnist_val = split(mnist_train, [<span class="hljs-number">54000</span>, <span class="hljs-number">6000</span>])
+train_loader = DataLoader(mnist_train, batch_size=<span class="hljs-number">120</span>, shuffle=<span class="hljs-literal">True</span>)
+val_loader = DataLoader(mnist_val, batch_size=<span class="hljs-number">120</span>, shuffle=<span class="hljs-literal">False</span>)
+test_loader = DataLoader(mnist_test, batch_size=<span class="hljs-number">1</span>, shuffle=<span class="hljs-literal">False</span>)
+loss_fn = loss.CrossEntropyLoss()
+optimizer = optim.Adam(lr=<span class="hljs-number">1e-3</span>)</code></pre></div></div>
+<p>与Pytorch类似，DataLoader实现了迭代器，如下所示：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ofbeq0lfizqusd"></i><span>python</span><div class="collapse show" id="collapse-ofbeq0lfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">__iter__</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(self.num_batches):
+        batch_indices = self.indices[i * self.batch_size:(i + <span class="hljs-number">1</span>) * self.batch_size]
+        batch_data = self.data[batch_indices]
+        batch_labels = self.labels[batch_indices]
+        <span class="hljs-keyword">yield</span> batch_data, batch_labels</code></pre></div></div>
+<p>交叉熵损失函数如下所示。为避免取对数时数据过小除0，将预测数据过一遍softmax进行归一化：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z0cz8jlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-z0cz8jlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CrossEntropyLoss</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        self.<span class="hljs-built_in">input</span> = <span class="hljs-literal">None</span>
+        self.output = <span class="hljs-literal">None</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, y_pred, y</span>):
+        <span class="hljs-comment"># y_pred: (N, C_out)</span>
+        <span class="hljs-comment"># y: (N, 1)</span>
+        <span class="hljs-comment"># N = y_pred.shape[0]</span>
+        <span class="hljs-comment"># self.input = y_pred</span>
+        <span class="hljs-comment"># self.output = np.mean(-np.log(y_pred[range(N), list(y)]))</span>
+        <span class="hljs-comment"># grad = y_pred</span>
+        <span class="hljs-comment"># grad[range(N), list(y)] -= 1</span>
+        <span class="hljs-comment"># grad /= N</span>
+        <span class="hljs-comment"># return self.output, grad</span>
+        N = y_pred.shape[<span class="hljs-number">0</span>]
+        ex = np.exp(y_pred)
+        sumx = np.<span class="hljs-built_in">sum</span>(ex, axis=<span class="hljs-number">1</span>)
+        loss = np.mean(np.log(sumx)-y_pred[<span class="hljs-built_in">range</span>(N), <span class="hljs-built_in">list</span>(y)])
+        grad = ex/sumx.reshape(N, <span class="hljs-number">1</span>)
+        grad[<span class="hljs-built_in">range</span>(N), <span class="hljs-built_in">list</span>(y)] -= <span class="hljs-number">1</span>
+        grad /= N
+        <span class="hljs-keyword">return</span> loss, grad</code></pre></div></div>
+<p>优化算法上，论文中使用的是随机梯度下降算法，为加快收敛速度，对当前流行的Adam算法进行了学习和实现。</p>
+<p>Adam是2015年提出的新方法。它的理论有些复杂，直观地讲，就是融合了Momentum和AdaGrad的方法，也就是说，结合“速度”和“加速度”进行方向向量判断，同时具有AdaGrad学习率递减的特征。通过组合前面两个方法的优点，有望实现参数空间的高效搜索。此外，进行超参数的“偏置校正”也是Adam的特征。</p>
+<p>首先计算历史梯度的一阶指数平滑值，用于得到带有动量的梯度值 <span class="math display">\[
+m_t=\beta_1^t m_{t-1}+\left(1-\beta_1^t\right) g
+\]</span>
+然后计算历史梯度平方的一阶指数平滑值，用于得到每个权重参数的学习率权重参数
+<span class="math display">\[
+v_t=\beta_2^t v_{t-1}+\left(1-\beta_2^t\right) g^2
+\]</span> 对一阶和二阶动量做偏置校正 <span class="math display">\[
+\begin{aligned}
+\hat{m}_t &amp; =\frac{m_t}{1-\beta_1^t} \\
+\hat{v}_t &amp; =\frac{v_t}{1-\beta_2^t}
+\end{aligned}
+\]</span>
+最后计算变量更新值，变量更新值正比于历史梯度的一阶指数平滑值，反比于历史梯度平方的一阶指数平滑值
+<span class="math display">\[
+\theta=\theta_{t-1}-\frac{\alpha \hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}
+\]</span> Adam会设置 3个超参数。一个是学习率（论文中以α出现），另外两
+个是一次momentum系数β1和二次momentum系数<span class="math inline">\(β2\)</span>。根据论文， 标准的设定值是<span class="math inline">\(β1\)</span>为 0.9，<span class="math inline">\(β2\)</span> 为 0.999。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tg1qltlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-tg1qltlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">step</span>(<span class="hljs-params">self, params</span>):
+    vals = params[<span class="hljs-number">0</span>]
+    grads = params[<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">if</span> self.m <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        self.m, self.v = [], []
+        <span class="hljs-keyword">for</span> param, grad <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(vals, grads):
+            self.m.append(np.zeros_like(param))
+            self.v.append(np.zeros_like(grad))
+
+    self.<span class="hljs-built_in">iter</span> += <span class="hljs-number">1</span>
+    lr_t = self.lr * np.sqrt(<span class="hljs-number">1.0</span> - self.beta2 ** self.<span class="hljs-built_in">iter</span>) / (<span class="hljs-number">1.0</span> - self.beta1 ** self.<span class="hljs-built_in">iter</span>)
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(vals)):
+        self.m[i] += (<span class="hljs-number">1</span> - self.beta1) * (grads[i] - self.m[i])
+        self.v[i] += (<span class="hljs-number">1</span> - self.beta2) * (grads[i] ** <span class="hljs-number">2</span> - self.v[i])
+        vals[i] -= lr_t * self.m[i] / (np.sqrt(self.v[i]) + <span class="hljs-number">1e-7</span>)
+    <span class="hljs-keyword">return</span> vals</code></pre></div></div>
+<p><span class="math inline">\(\epsilon\)</span>的设置同样是为了防止<span class="math inline">\(\sqrt{\hat{v}_t}\)</span>过小进行除零运算。代码中将其设为1e-7。</p>
+<h3 id="模型实现">模型实现</h3>
+<p><code>layer.py</code>中定义基类<code>layer</code>，各种层均由其继承得来。</p>
+<h3 id="卷积层">卷积层</h3>
+<p>由于Lenet5中除第一层外不涉及padding和stride不等于1的情况，因此很多地方可以简化实现，加快迭代速度。</p>
+<p>其前向传播的运算如下 <span class="math display">\[
+\mathbf{Y}=\mathbf{x} \otimes \mathbf{W}+\mathbf{b}
+\]</span>
+我们可以通过<code>im2col</code>来进行优化，将卷积运算转化为矩阵相乘。<a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/332186100_DeLTA_GPU_Performance_Model_for_Deep_Learning_Applications_with_In-depth_Memory_System_Traffic_Analysis">这篇论文</a>中对<code>im2col</code>实现的排布方式进行了非常直观的展示：</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200446840095_839_image-20230108225739278.png" srcset="/img/loading.gif" lazyload alt="image-20230108225739278" width="80%" height="80%"></p>
+<p>其中<span class="math inline">\(C_i\)</span>为输入通道个数，图中为3。<span class="math inline">\(C_o\)</span>为输出通道个数，图中为2。<span class="math inline">\(H_0\)</span>和<span class="math inline">\(W_0\)</span>代表卷积后输出图像的高和宽，对应于文中第一张图中的<span class="math inline">\(OH\)</span>和<span class="math inline">\(OW\)</span> <span class="math display">\[
+\begin{aligned}
+O H &amp; =\frac{H+2 P-F H}{S}+1 \\
+O W &amp; =\frac{W+2 P-F W}{S}+1
+\end{aligned}
+\]</span> 本实验中$O H =H-FH+1 <span class="math inline">\(，\)</span>O
+W =W-FW+1 $。代码实现可如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lkrvyzlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-lkrvyzlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">im2col</span>(<span class="hljs-params">img, filter_h, filter_w, out_H, out_W</span>):
+    N, C, H, W = img.shape
+    col = np.zeros((N * out_H * out_W, C * filter_h * filter_w))
+    <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(out_H):
+        y_start = y * out_W
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(out_W):
+            col[y_start + x::out_H * out_W, :] = img[:, :, y:y + filter_h, x:x + filter_w].reshape(N, -<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> col</code></pre></div></div>
+<p>内层循环执行一次，滤波器覆盖的区域被展成“长条”，放到<code>col</code>的对应位置，比如第一次执行内层循环，上图的红黄蓝三条<code>l0 l1 l3 l4</code>均就位。</p>
+<p>另外《深度学习入门：基于Python的理论与实现》中有另外一种实现，避免了步长的切片，数据访问局部性更好。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hrgejwlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-hrgejwlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">im2col</span>(<span class="hljs-params">img, filter_h, filter_w, out_H, out_W</span>):
+    N, C, H, W = img.shape
+    col = np.zeros((N, C, filter_h, filter_w, out_H, out_W))
+    <span class="hljs-keyword">for</span> h <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(filter_h):
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(filter_w):
+            col[:, :, h, w, :, :] = img[:, :, h:h + out_H, w:w + out_W]
+    col = col.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>).reshape(N * out_H * out_W, -<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> col</code></pre></div></div>
+<p>整个前向传播的实现如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wouquplfizqusd"></i><span>python</span><div class="collapse show" id="collapse-wouquplfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, X</span>):
+    N, C, H, W = X.shape
+    out_H = H - self.filter_size + <span class="hljs-number">1</span>
+    out_W = W - self.filter_size + <span class="hljs-number">1</span>
+    <span class="hljs-comment"># use im2col to convert input to column</span>
+    col = im2col(X, self.filter_size, self.filter_size, out_H, out_W)
+    col_W = self.W.reshape(self.out_channels, -<span class="hljs-number">1</span>).T
+    <span class="hljs-comment"># thus we can use matrix multiplication to calculate output</span>
+    out = np.dot(col, col_W) + self.b
+    out = out.reshape(N, out_H, out_W, -<span class="hljs-number">1</span>).transpose(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+    self.X = X
+    self.col = col
+    self.col_W = col_W
+    <span class="hljs-keyword">return</span> out</code></pre></div></div>
+<p>对于反向传播，可以通过下面简单的例子进行理解：</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200448882525_978_image-20230108223119000.png" srcset="/img/loading.gif" lazyload alt="image-20230108223119000" width="50%" height="50%"></p>
+<p>列出 <span class="math inline">\(a ， W ， z\)</span>
+的矩阵表达式如下: <span class="math display">\[
+\left[\begin{array}{ll}
+z_{11} &amp; z_{12} \\
+z_{21} &amp; z_{22}
+\end{array}\right]=\left[\begin{array}{lll}
+a_{11} &amp; a_{12} &amp; a_{13} \\
+a_{21} &amp; a_{22} &amp; a_{23} \\
+a_{31} &amp; a_{32} &amp; a_{33}
+\end{array}\right] *\left[\begin{array}{cc}
+w_{11} &amp; w_{12} \\
+w_{21} &amp; w_{22}
+\end{array}\right]
+\]</span> 利用卷积的定义，很容易得出: <span class="math display">\[
+\begin{aligned}
+&amp; z_{11}=a_{11} w_{11}+a_{12} w_{12}+a_{21} w_{21}+a_{22} w_{22} \\
+&amp; z_{12}=a_{12} w_{11}+a_{13} w_{12}+a_{22} w_{21}+a_{23} w_{22} \\
+&amp; z_{21}=a_{21} w_{11}+a_{22} w_{12}+a_{31} w_{21}+a_{32} w_{22} \\
+&amp; z_{22}=a_{22} w_{11}+a_{23} w_{12}+a_{32} w_{21}+a_{33} w_{22}
+\end{aligned}
+\]</span></p>
+<p>比如求损失函数 <span class="math inline">\(J\)</span> 对 <span class="math inline">\(a_{11}\)</span> 的梯度: <span class="math display">\[
+\frac{\partial J}{\partial a_{11}}=\frac{\partial J}{\partial z_{11}}
+\frac{\partial z_{11}}{\partial a_{11}}=\delta_{z 11} \cdot w_{11}
+\]</span> 上式中， <span class="math inline">\(\delta_{z 11}\)</span>
+是从网络后端回传到本层的 <span class="math inline">\(z_{11}\)</span>
+单元的梯度。 求 <span class="math inline">\(J\)</span> 对 <span class="math inline">\(a_{12}\)</span> 的梯度 <span class="math inline">\(a_{12}\)</span> 对 <span class="math inline">\(z_{11}\)</span> 和 <span class="math inline">\(z_{12}\)</span> 都有贡献，二者的偏导数相加： <span class="math display">\[
+\frac{\partial J}{\partial a_{12}}=\frac{\partial J}{\partial z_{11}}
+\frac{\partial z_{11}}{\partial a_{12}}+\frac{\partial J}{\partial
+z_{12}} \frac{\partial z_{12}}{\partial a_{12}}=\delta_{z 11} \cdot
+w_{12}+\delta_{z 12} \cdot w_{11}
+\]</span> <span class="math display">\[
+\frac{\partial J}{\partial a_{22}}=\frac{\partial J}{\partial z_{11}}
+\frac{\partial z_{11}}{\partial a_{22}}+\frac{\partial J}{\partial
+z_{12}} \frac{\partial z_{12}}{\partial a_{22}}+\frac{\partial
+J}{\partial z_{21}} \frac{\partial z_{21}}{\partial
+a_{22}}+\frac{\partial J}{\partial z_{22}} \frac{\partial
+z_{22}}{\partial a_{22}} =\delta_{z 11} \cdot w_{22}+\delta_{z 12} \cdot
+w_{21}+\delta_{z 21} \cdot w_{12}+\delta_{z 22} \cdot w_{11}
+\]</span> 同理可得所有 <span class="math inline">\(a\)</span>
+的梯度。</p>
+<p>观察公式，可以发现把原始的卷积核旋转了180度，再与传入误差项做卷积操作，即可得到所有元素的误差项。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200450427910_422_image-20230108223730899.png" srcset="/img/loading.gif" lazyload alt="image-20230108223730899" width="50%" height="50%"></p>
+<p>可以得到 <span class="math display">\[
+\delta_{\text {out }}=\delta_{\text {in }} * W^{\text {rot180 }}
+\]</span></p>
+<p>同样的道理，对<span class="math inline">\(\mathbf{W}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别求偏导，可以得到：</p>
+<p><span class="math display">\[
+\begin{gathered}
+\operatorname{\delta}_{\mathbf{W}}=\mathbf{X} \otimes \delta_{\text {in
+}} \\
+\operatorname{\delta}_{\mathbf{b}}=\sum \delta_{\text {in }}
+\end{gathered}
+\]</span> 代码中用<code>back_grad</code>指代<span class="math inline">\(\delta_{\text {in
+}}\)</span>,表示从后面的层反向传播过来的梯度。</p>
+<p>同时结合<code>im2col</code>的逆操作，代码可如下实现：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-atvv9zlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-atvv9zlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+    FN, C, FH, FW = self.W.shape
+    back_grad = back_grad.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>).reshape(-<span class="hljs-number">1</span>, FN)
+    self.db = np.<span class="hljs-built_in">sum</span>(back_grad, axis=<span class="hljs-number">0</span>)
+    self.dW = np.dot(self.col.T, back_grad)
+    self.dW = self.dW.transpose(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>).reshape(FN, C, FH, FW)
+    dcol = np.dot(back_grad, self.col_W.T)
+    dx = col2im(dcol, self.X.shape, FH, FW)
+    <span class="hljs-keyword">return</span> dx</code></pre></div></div>
+<p>其中<code>col2im</code>作如下实现，道理和<code>im2col</code>类似，不再赘述。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-znf8vwlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-znf8vwlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">col2im</span>(<span class="hljs-params">col, input_shape, filter_h, filter_w</span>):
+    N, C, H, W = input_shape
+    out_H = H - filter_h + <span class="hljs-number">1</span>
+    out_W = W - filter_w + <span class="hljs-number">1</span>
+    img = np.zeros((N, C, H, W))
+    <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(out_H):
+        y_start = y * out_W
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(out_W):
+            img[:, :, y:y + filter_h, x:x + filter_w] += col[y_start + x::out_H * out_W, :].reshape(N, C, filter_h,
+                                                                                                    filter_w)
+    <span class="hljs-keyword">return</span> img</code></pre></div></div>
+<h3 id="池化层">池化层</h3>
+<p>在本次实验中，池化层采用了最大池化的方式，即通过滤波器筛选出最大的元素作为池化结果。反向传播时只有被选择为最大值的元素位置对应会被梯度反向传播，其余的位置都赋值为0。</p>
+<p>反向传播也可以通过<code>im2col</code>实现，不过可以利用掩码达到类似的加速效果，且比<code>col2im</code>快。</p>
+<p><code>col2im</code>方法：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-azdk4rlfizqusd"></i><span>python</span><div class="collapse show" id="collapse-azdk4rlfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+    back_grad = back_grad.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+    pool_size = self.pool_H * self.pool_W
+    dmax = np.zeros((back_grad.size, pool_size))
+    dmax[np.arange(self.arg_max.size), self.arg_max.flatten()] = back_grad.flatten()
+    dmax = dmax.reshape(back_grad.shape + (pool_size,))
+    dcol = dmax.reshape(dmax.shape[<span class="hljs-number">0</span>] * dmax.shape[<span class="hljs-number">1</span>] * dmax.shape[<span class="hljs-number">2</span>], -<span class="hljs-number">1</span>)
+    dx = col2im(dcol, self.X.shape, self.pool_H, self.pool_W)
+    <span class="hljs-keyword">return</span> dx</code></pre></div></div>
+<p><code>mask</code>方法：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-il6jlslfizqusd"></i><span>python</span><div class="collapse show" id="collapse-il6jlslfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+    h_size = self.pool_H
+    w_size = self.pool_W
+    N, C, H, W = self.X.shape
+    output_H = H // h_size
+    output_W = W // w_size
+    grad = np.zeros_like(self.X)
+    <span class="hljs-keyword">for</span> h <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(output_H):
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(output_W):
+            tmp_x = self.X[:, :, h * h_size:(h + <span class="hljs-number">1</span>) * h_size, w * w_size:(w + <span class="hljs-number">1</span>) * w_size].reshape((N, C, -<span class="hljs-number">1</span>))
+            mask = np.zeros((N, C, h_size * w_size))
+            mask[np.arange(N)[:, <span class="hljs-literal">None</span>], np.arange(C)[<span class="hljs-literal">None</span>, :], np.argmax(tmp_x, axis=<span class="hljs-number">2</span>)] = <span class="hljs-number">1</span>
+            grad[:, :, h * h_size:(h + <span class="hljs-number">1</span>) * h_size, w * w_size:(w + <span class="hljs-number">1</span>) * w_size] = mask.reshape(
+                (N, C, h_size, w_size)) * back_grad[:, :, h, w][:, :, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>]
+    <span class="hljs-keyword">return</span> grad</code></pre></div></div>
+<h3 id="全连接层">全连接层</h3>
+<p>全连接层与正常的神经网络基本相同。正向传播就是正常的线性变换，反向传播在实际实现时使用计算图的思想理解比较容易，比如下面是3节点层和2节点层反向传播的示意图：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200451954546_926_image-20230108232916872.png" srcset="/img/loading.gif" lazyload alt="image-20230108232916872">
+<figcaption aria-hidden="true">image-20230108232916872</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-arrnbelfizqusd"></i><span>python</span><div class="collapse show" id="collapse-arrnbelfizqusd"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Linear</span>(<span class="hljs-title class_ inherited__">Layer</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, input_size, output_size</span>):
+        <span class="hljs-built_in">super</span>().__init__()
+        self.<span class="hljs-built_in">input</span> = <span class="hljs-literal">None</span>
+        self.output = <span class="hljs-literal">None</span>
+        <span class="hljs-comment"># use "He" initialization</span>
+        <span class="hljs-comment"># self.W = np.random.randn(input_size, output_size) * np.sqrt(2 / input_size)</span>
+        <span class="hljs-comment"># use normal distribution initialization</span>
+        self.W = np.random.normal(scale=<span class="hljs-number">1e-3</span>, size=(input_size, output_size))
+        self.b = np.zeros(output_size)
+        self.dW = np.zeros((input_size, output_size))
+        self.db = np.zeros(output_size)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, X</span>):
+        self.<span class="hljs-built_in">input</span> = X.copy()
+        self.output = np.dot(self.<span class="hljs-built_in">input</span>, self.W) + self.b
+        <span class="hljs-keyword">return</span> self.output
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+        self.dW = np.dot(self.<span class="hljs-built_in">input</span>.T, back_grad)
+        self.db = np.<span class="hljs-built_in">sum</span>(back_grad, axis=<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> np.dot(back_grad, self.W.T)</code></pre></div></div>
+<h2 id="实验结果">实验结果</h2>
+<h4 id="实验环境">实验环境</h4>
+<p>python3.8，依赖numpy及matplotlib。</p>
+<h4 id="运行结果及分析">运行结果及分析</h4>
+<p>使用54000个数据作为训练集，6000个数据作为验证集，Adam的学习率设置为1e-3。执行20个epoch得到的结果，测试集准确率为98.27%。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200453760864_136_image-20230108234919998.png" srcset="/img/loading.gif" lazyload alt="image-20230108234919998" width="80%" height="80%"></p>
+<p>从验证集及损失函数看，模型比较有效的学得了训练集上的参数，且训练集和测试集的正确率同步上升，未发生明显的过拟合。由于并没有对模型进行更细致的参数调优或组合，和LeCun
+论文中的 99.27%仍有微小的差距。</p>
+<p>同时还打印出了错误分类的样本及其标签，左边为标签，右边为错误预测。可以看到，这些样本很多都比较“奇怪”，即使人来粗看也非常容易犯错。比如右下角的2，本身写的就很难与1分辨开来，一定程度上也说明模型对相似度的正确判断。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200455107633_269_image-20230108234646628.png" srcset="/img/loading.gif" lazyload alt="image-20230108234646628">
+<figcaption aria-hidden="true">image-20230108234646628</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Lenet5 手写数字分类</div>
+      <div>http://lunaticsky-tql.github.io/posts/42585/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/42356/" title="macOS配置命令别名">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">macOS配置命令别名</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/55174/" title="计算机网络实验3.4-基于UDP服务设计可靠传输协议(性能测试)">
+                        <span class="hidden-mobile">计算机网络实验3.4-基于UDP服务设计可靠传输协议(性能测试)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
