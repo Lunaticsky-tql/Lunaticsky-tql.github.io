@@ -330,10 +330,10 @@
 <h4 id="直接高斯滤波">直接高斯滤波</h4>
 <p>最简单的，我们可以调用OpenCV的<code>GaussianBlur</code>对图像进行高斯滤波，得到低频图像，然后用原图像和减去低频图像就可以得到高频图像。</p>
 <p><code>GaussianBlur</code>函数对操作进行了封装。如</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qcarx9lftonpag"></i><span>C++</span><div class="collapse show" id="collapse-qcarx9lftonpag"><pre><code class="hljs C++"><span class="hljs-built_in">GaussianBlur</span>(low_img, blurred_low, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lql1i9lftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-lql1i9lftoouf2"><pre><code class="hljs C++"><span class="hljs-built_in">GaussianBlur</span>(low_img, blurred_low, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</code></pre></div></div>
 <p>生成的高斯滤波器<code>kernel size</code>为25×25，后两个参数为0表示让OpenCV自动根据滤波器大小选择高斯函数中的<span class="math inline">\(\sigma\)</span>参数。最后面省略了一个参数表示<code>padding</code>的方式，默认为<code>BORDER_DEFAULT</code>，及不含边界值倒序填充。</p>
 <p>完整代码如下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xfeez5lftonpag"></i><span>C++</span><div class="collapse show" id="collapse-xfeez5lftonpag"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2\opencv.hpp&gt;</span> </span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g0hxs2lftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-g0hxs2lftoouf2"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2\opencv.hpp&gt;</span> </span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;
@@ -386,7 +386,7 @@ g(i, j)=E X P\left(-\frac{(x-i)^2+(y-j)^2}{2 \sigma^2}\right)
 \]</span> 其中 <span class="math inline">\(\sigma\)</span>截止频率,
 <span class="math inline">\((i, j)\)</span> 是图片像素点位置, 而 <span class="math inline">\((x, y)\)</span> 是中心点。</p>
 <p>下面参照原理动手实现频率域高斯滤波操作。其中<a target="_blank" rel="noopener" href="https://tigercosmos.xyz/post/2020/04/cv/hybrid-image/">这篇文章</a>的python代码给我的整体思路有较大帮助。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pfvpqulftonpag"></i><span>C++</span><div class="collapse show" id="collapse-pfvpqulftonpag"><pre><code class="hljs C++">output[<span class="hljs-number">0</span>] = img.<span class="hljs-built_in">clone</span>();
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tu3dvslftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-tu3dvslftoouf2"><pre><code class="hljs C++">output[<span class="hljs-number">0</span>] = img.<span class="hljs-built_in">clone</span>();
 output[<span class="hljs-number">1</span>] = Mat::<span class="hljs-built_in">zeros</span>(img.<span class="hljs-built_in">size</span>(), CV_32FC1);
 Mat complexIm;
 <span class="hljs-built_in">merge</span>(output, <span class="hljs-number">2</span>, complexIm); 
@@ -404,7 +404,7 @@ Mat complexIm;
 2,0\right]\)</span> 部分的一样，如果想看 <span class="math inline">\(\left[-\mathrm{f}_{\mathrm{s}},
 \mathrm{f}_{\mathrm{s}}\right]\)</span> 部分
 ，就需要做<code>fftshift</code>，将零频分量移到序列中间，对于一维，左右交换即可。图像是二维的，那么就左上和右下交换。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4fbnxylftonpag"></i><span>C++</span><div class="collapse show" id="collapse-4fbnxylftonpag"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fftshift</span><span class="hljs-params">(Mat&amp; output0, Mat&amp; output1)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xr07vjlftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-xr07vjlftoouf2"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fftshift</span><span class="hljs-params">(Mat&amp; output0, Mat&amp; output1)</span></span>
 <span class="hljs-function"></span>{
 	<span class="hljs-comment">// 以下的操作是移动图像  (零频移到中心)</span>
 	<span class="hljs-type">int</span> cx = output0.cols / <span class="hljs-number">2</span>;
@@ -437,7 +437,7 @@ Mat complexIm;
 	temp.<span class="hljs-built_in">copyTo</span>(part3_i);
 }</code></pre></div></div>
 <p>之后按照公式进行高斯滤波即可。取高频信号时可以直接将高斯滤波器翻转。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nv91sklftonpag"></i><span>C++</span><div class="collapse show" id="collapse-nv91sklftonpag"><pre><code class="hljs C++"><span class="hljs-function">Mat <span class="hljs-title">gaussianBlur</span><span class="hljs-params">(test.size(), CV_32FC1)</span></span>; <span class="hljs-comment">//，CV_32FC1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8k5luxlftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-8k5luxlftoouf2"><pre><code class="hljs C++"><span class="hljs-function">Mat <span class="hljs-title">gaussianBlur</span><span class="hljs-params">(test.size(), CV_32FC1)</span></span>; <span class="hljs-comment">//，CV_32FC1</span>
 <span class="hljs-keyword">if</span> (is_high)
 {
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; test.rows; i++) {
@@ -456,7 +456,7 @@ Mat complexIm;
     }
 }</code></pre></div></div>
 <p>得到高斯滤波器后对图片进行过滤，实部虚部分别与滤波器模板对应元素相乘。最后还要进行逆变换，归一化，得到最终滤波图像。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kkusralftonpag"></i><span>C++</span><div class="collapse show" id="collapse-kkusralftonpag"><pre><code class="hljs C++">Mat blur_r, blur_i, blur_full;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-amqqrslftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-amqqrslftoouf2"><pre><code class="hljs C++">Mat blur_r, blur_i, blur_full;
 <span class="hljs-built_in">multiply</span>(output[<span class="hljs-number">0</span>], gaussianBlur, blur_r);
 <span class="hljs-built_in">multiply</span>(output[<span class="hljs-number">1</span>], gaussianBlur, blur_i);
 Mat blur_split[] = { blur_r, blur_i };
@@ -467,7 +467,7 @@ blur_full = blur_full / blur_full.rows / blur_full.cols; <span class="hljs-comme
 <span class="hljs-built_in">split</span>(blur_full, output);
 output[<span class="hljs-number">0</span>] = output[<span class="hljs-number">0</span>] / <span class="hljs-number">255</span>;</code></pre></div></div>
 <p>我们还可以将离散傅里叶变换得到的结果转换成幅值矩阵展示出来:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pwbaailftonpag"></i><span>C++</span><div class="collapse show" id="collapse-pwbaailftonpag"><pre><code class="hljs C++">Mat amplitude;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-akwf7xlftoouf2"></i><span>C++</span><div class="collapse show" id="collapse-akwf7xlftoouf2"><pre><code class="hljs C++">Mat amplitude;
 <span class="hljs-built_in">magnitude</span>(output[<span class="hljs-number">0</span>], output[<span class="hljs-number">1</span>], amplitude);
 amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span class="hljs-number">1</span>);
 <span class="hljs-built_in">log</span>(amplitude, amplitude);
