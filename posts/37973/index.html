@@ -1,0 +1,890 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="Hybrid Image   image-20230329203201849  •A. Oliva, A. Torralba, P.G. Schyns, “Hybrid Images,” SIGGRAPH 2006 实验目的 了解图像处理的基础，熟悉高斯滤波操作。 实验原理 根据论文，混合图像是通过在两个不同的空间尺度上叠加两个图像来生成的：低空间尺度是通过低通滤波器对一个图像进行滤波来获得的；通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2013599_田佳业_HW1">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/37973/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="Hybrid Image   image-20230329203201849  •A. Oliva, A. Torralba, P.G. Schyns, “Hybrid Images,” SIGGRAPH 2006 实验目的 了解图像处理的基础，熟悉高斯滤波操作。 实验原理 根据论文，混合图像是通过在两个不同的空间尺度上叠加两个图像来生成的：低空间尺度是通过低通滤波器对一个图像进行滤波来获得的；通">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329203430934130_398_image-20230329203201849.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204715965717_301_image-20230329095603969.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204718785139_962_image-20230329110649015.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204722119165_954_image-20230329112108249.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204725159317_763_image-20230329112218382.png">
+<meta property="article:published_time" content="2023-03-29T12:47:26.589Z">
+<meta property="article:modified_time" content="2023-03-29T12:47:26.589Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329203430934130_398_image-20230329203201849.png">
+    
+    
+    
+    <title>2013599_田佳业_HW1 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2013599_田佳业_HW1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-03-29 20:47" pubdate>
+              2023年3月29日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              4.7k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/2013599_田佳业_HW1/2013599_田佳业_HW1.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">2013599_田佳业_HW1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="hybrid-image">Hybrid Image</h1>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329203430934130_398_image-20230329203201849.png" srcset="/img/loading.gif" lazyload alt="image-20230329203201849">
+<figcaption aria-hidden="true">image-20230329203201849</figcaption>
+</figure>
+<p>•A. Oliva, A. Torralba, P.G. Schyns, <a target="_blank" rel="noopener" href="http://cvcl.mit.edu/hybridimage.htm">“Hybrid Images,”</a> SIGGRAPH
+2006</p>
+<h3 id="实验目的">实验目的</h3>
+<p>了解图像处理的基础，熟悉高斯滤波操作。</p>
+<h3 id="实验原理">实验原理</h3>
+<p>根据论文，混合图像是通过在两个不同的空间尺度上叠加两个图像来生成的：低空间尺度是通过低通滤波器对一个图像进行滤波来获得的；通过用高通滤波器对第二图像进行滤波来获得高空间尺度。通过将这两个滤波后的图像相加来合成最终图像。</p>
+<h3 id="实验过程">实验过程</h3>
+<h4 id="直接高斯滤波">直接高斯滤波</h4>
+<p>最简单的，我们可以调用OpenCV的<code>GaussianBlur</code>对图像进行高斯滤波，得到低频图像，然后用原图像和减去低频图像就可以得到高频图像。</p>
+<p><code>GaussianBlur</code>函数对操作进行了封装。如</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qcarx9lftonpag"></i><span>C++</span><div class="collapse show" id="collapse-qcarx9lftonpag"><pre><code class="hljs C++"><span class="hljs-built_in">GaussianBlur</span>(low_img, blurred_low, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</code></pre></div></div>
+<p>生成的高斯滤波器<code>kernel size</code>为25×25，后两个参数为0表示让OpenCV自动根据滤波器大小选择高斯函数中的<span class="math inline">\(\sigma\)</span>参数。最后面省略了一个参数表示<code>padding</code>的方式，默认为<code>BORDER_DEFAULT</code>，及不含边界值倒序填充。</p>
+<p>完整代码如下:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xfeez5lftonpag"></i><span>C++</span><div class="collapse show" id="collapse-xfeez5lftonpag"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2\opencv.hpp&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>{
+	Mat high_img;
+	Mat low_img;
+	high_img = <span class="hljs-built_in">imread</span>(<span class="hljs-string">"C:/Users/LENOVO/Desktop/CV_course/Einstein.png"</span>);
+	low_img = <span class="hljs-built_in">imread</span>(<span class="hljs-string">"C:/Users/LENOVO/Desktop/CV_course/Marilyn.png"</span>);
+	Mat blurred_low;
+	<span class="hljs-built_in">GaussianBlur</span>(low_img, blurred_low, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+	Mat einstein_mask;
+	<span class="hljs-built_in">imshow</span>(<span class="hljs-string">"blurred"</span>, blurred_low);
+	Mat highpassed_high;
+	<span class="hljs-built_in">GaussianBlur</span>(high_img, highpassed_high, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+	<span class="hljs-built_in">subtract</span>(high_img, highpassed_high, highpassed_high);
+	<span class="hljs-built_in">imshow</span>(<span class="hljs-string">"highpassed"</span>, highpassed_high);
+	Mat hybrid_img = blurred_low + highpassed_high;
+	<span class="hljs-built_in">imshow</span>(<span class="hljs-string">"Hybrid Image"</span>, hybrid_img);
+	<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);
+	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p>以经典的<code>Einstein</code>和<code>Marilyn</code>为例得到结果如下所示:</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204715965717_301_image-20230329095603969.png" srcset="/img/loading.gif" lazyload alt="image-20230329095603969" width="67%" height="67%"></p>
+<h4 id="频率域高斯滤波">频率域高斯滤波</h4>
+<p>实际上论文中原文有:</p>
+<blockquote>
+<p>A hybrid image <span class="math inline">\((H)\)</span> is obtained
+by combining two images <span class="math inline">\(\left(I_1\right.\)</span> and <span class="math inline">\(I_2\)</span> ), one filtered with a low-pass
+filter <span class="math inline">\(\left(G_1\right)\)</span> and the
+second one filtered with a high-pass filter <span class="math inline">\(\left(1-G_2\right): H=I_1 \cdot G_1+I_2
+\cdot\left(1-G_2\right)\)</span>, the operations are defined in the
+Fourier domain. Hybrid images</p>
+</blockquote>
+<p>也就是说我们需要在频率域进行操作。</p>
+<p>一张图片可以表示成 <span class="math inline">\(\sum_{i, j} R_{i
+j}\)</span>, 其中 <span class="math inline">\(R_{i j}\)</span>
+代表作坐标为 <span class="math inline">\((i, j)\)</span>
+的图片像素。</p>
+<p>过滤过的图片 <span class="math inline">\(R\)</span>, 是由滤波器 <span class="math inline">\(H\)</span> 对 <span class="math inline">\(F\)</span> 做卷积。 <span class="math display">\[
+\begin{aligned}
+R_{i j} &amp; =\sum_{u, v} H_{i-u, j-v} F_{u, v} \\
+\mathbf{R} &amp; =\mathbf{H} * * \mathbf{F}
+\end{aligned}
+\]</span> 与直接高斯滤波不同， <span class="math inline">\(F\)</span>是将目标图片做过傅立叶转换(FFT)，并且将频率零平移置中(FFT
+Shift) 而产生的2D 频谱(Spectrum) 靠近中央代表低频信号,
+靠近边界代表高频信号。其中高频信号代表剧烈或是边角。 其中高斯滤波器
+<span class="math inline">\(H\)</span> 定义如下: <span class="math display">\[
+g(i, j)=E X P\left(-\frac{(x-i)^2+(y-j)^2}{2 \sigma^2}\right)
+\]</span> 其中 <span class="math inline">\(\sigma\)</span>截止频率,
+<span class="math inline">\((i, j)\)</span> 是图片像素点位置, 而 <span class="math inline">\((x, y)\)</span> 是中心点。</p>
+<p>下面参照原理动手实现频率域高斯滤波操作。其中<a target="_blank" rel="noopener" href="https://tigercosmos.xyz/post/2020/04/cv/hybrid-image/">这篇文章</a>的python代码给我的整体思路有较大帮助。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pfvpqulftonpag"></i><span>C++</span><div class="collapse show" id="collapse-pfvpqulftonpag"><pre><code class="hljs C++">output[<span class="hljs-number">0</span>] = img.<span class="hljs-built_in">clone</span>();
+output[<span class="hljs-number">1</span>] = Mat::<span class="hljs-built_in">zeros</span>(img.<span class="hljs-built_in">size</span>(), CV_32FC1);
+Mat complexIm;
+<span class="hljs-built_in">merge</span>(output, <span class="hljs-number">2</span>, complexIm); 
+<span class="hljs-built_in">dft</span>(complexIm, complexIm);
+<span class="hljs-comment">// 分离通道（数组分离）</span>
+<span class="hljs-built_in">split</span>(complexIm, output);
+<span class="hljs-comment">// 以下的操作是频域迁移</span>
+<span class="hljs-built_in">fftshift</span>(output[<span class="hljs-number">0</span>], output[<span class="hljs-number">1</span>]);</code></pre></div></div>
+<p>先将原来的图像分成实数域和复数域(暂时为0),再合并通道
+（把两个矩阵合并为一个2通道的Mat类容器），进行离散傅里叶变换。</p>
+<p>为了方便观察，使用<code>fftshift</code>频域迁移将原点移到中间。<code>OpenCV</code>中没有直接给出<code>fftshift</code>的接口，但实际上它很简单，只是<code>dft</code>取了频谱上$
+[ 0 , f s ] $的部分，由于频谱是按 <span class="math inline">\(\mathrm{f}_{\mathrm{s}}\)</span> 周期延拓，所以
+<span class="math inline">\(\left[\mathrm{f}_{\mathrm{s}} / 2,
+\mathrm{f}_{\mathrm{s}}\right]\)</span> 部分的频谱与 <span class="math inline">\(\left[-\mathrm{f}_{\mathrm{s}} /
+2,0\right]\)</span> 部分的一样，如果想看 <span class="math inline">\(\left[-\mathrm{f}_{\mathrm{s}},
+\mathrm{f}_{\mathrm{s}}\right]\)</span> 部分
+，就需要做<code>fftshift</code>，将零频分量移到序列中间，对于一维，左右交换即可。图像是二维的，那么就左上和右下交换。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4fbnxylftonpag"></i><span>C++</span><div class="collapse show" id="collapse-4fbnxylftonpag"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fftshift</span><span class="hljs-params">(Mat&amp; output0, Mat&amp; output1)</span></span>
+<span class="hljs-function"></span>{
+	<span class="hljs-comment">// 以下的操作是移动图像  (零频移到中心)</span>
+	<span class="hljs-type">int</span> cx = output0.cols / <span class="hljs-number">2</span>;
+	<span class="hljs-type">int</span> cy = output0.rows / <span class="hljs-number">2</span>;
+	<span class="hljs-function">Mat <span class="hljs-title">part1_r</span><span class="hljs-params">(output0, Rect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, cx, cy))</span></span>;  <span class="hljs-comment">// 元素坐标表示为(cx, cy)</span>
+	<span class="hljs-function">Mat <span class="hljs-title">part2_r</span><span class="hljs-params">(output0, Rect(cx, <span class="hljs-number">0</span>, cx, cy))</span></span>;
+	<span class="hljs-function">Mat <span class="hljs-title">part3_r</span><span class="hljs-params">(output0, Rect(<span class="hljs-number">0</span>, cy, cx, cy))</span></span>;
+	<span class="hljs-function">Mat <span class="hljs-title">part4_r</span><span class="hljs-params">(output0, Rect(cx, cy, cx, cy))</span></span>;
+
+	Mat temp;
+	part1_r.<span class="hljs-built_in">copyTo</span>(temp);  <span class="hljs-comment">//左上与右下交换位置(实部)</span>
+	part4_r.<span class="hljs-built_in">copyTo</span>(part1_r);
+	temp.<span class="hljs-built_in">copyTo</span>(part4_r);
+
+	part2_r.<span class="hljs-built_in">copyTo</span>(temp);  <span class="hljs-comment">//右上与左下交换位置(实部)</span>
+	part3_r.<span class="hljs-built_in">copyTo</span>(part2_r);
+	temp.<span class="hljs-built_in">copyTo</span>(part3_r);
+
+	<span class="hljs-function">Mat <span class="hljs-title">part1_i</span><span class="hljs-params">(output1, Rect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, cx, cy))</span></span>;  <span class="hljs-comment">//元素坐标(cx,cy)</span>
+	<span class="hljs-function">Mat <span class="hljs-title">part2_i</span><span class="hljs-params">(output1, Rect(cx, <span class="hljs-number">0</span>, cx, cy))</span></span>;
+	<span class="hljs-function">Mat <span class="hljs-title">part3_i</span><span class="hljs-params">(output1, Rect(<span class="hljs-number">0</span>, cy, cx, cy))</span></span>;
+	<span class="hljs-function">Mat <span class="hljs-title">part4_i</span><span class="hljs-params">(output1, Rect(cx, cy, cx, cy))</span></span>;
+
+	part1_i.<span class="hljs-built_in">copyTo</span>(temp);  <span class="hljs-comment">//左上与右下交换位置(虚部)</span>
+	part4_i.<span class="hljs-built_in">copyTo</span>(part1_i);
+	temp.<span class="hljs-built_in">copyTo</span>(part4_i);
+
+	part2_i.<span class="hljs-built_in">copyTo</span>(temp);  <span class="hljs-comment">//右上与左下交换位置(虚部)</span>
+	part3_i.<span class="hljs-built_in">copyTo</span>(part2_i);
+	temp.<span class="hljs-built_in">copyTo</span>(part3_i);
+}</code></pre></div></div>
+<p>之后按照公式进行高斯滤波即可。取高频信号时可以直接将高斯滤波器翻转。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nv91sklftonpag"></i><span>C++</span><div class="collapse show" id="collapse-nv91sklftonpag"><pre><code class="hljs C++"><span class="hljs-function">Mat <span class="hljs-title">gaussianBlur</span><span class="hljs-params">(test.size(), CV_32FC1)</span></span>; <span class="hljs-comment">//，CV_32FC1</span>
+<span class="hljs-keyword">if</span> (is_high)
+{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; test.rows; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; test.cols; j++) {
+            <span class="hljs-type">float</span> d = <span class="hljs-built_in">pow</span>(<span class="hljs-built_in">float</span>(i - test.rows / <span class="hljs-number">2</span>), <span class="hljs-number">2</span>) + <span class="hljs-built_in">pow</span>(<span class="hljs-built_in">float</span>(j - test.cols / <span class="hljs-number">2</span>), <span class="hljs-number">2</span>);
+            gaussianBlur.<span class="hljs-built_in">at</span>&lt;<span class="hljs-type">float</span>&gt;(i, j) = <span class="hljs-number">1</span> - <span class="hljs-built_in">expf</span>(-d / (<span class="hljs-number">2</span> * sigma * sigma));
+        }
+    }
+}
+<span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; test.rows; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; test.cols; j++) {
+            <span class="hljs-type">float</span> d = <span class="hljs-built_in">pow</span>(<span class="hljs-built_in">float</span>(i - test.rows / <span class="hljs-number">2</span>), <span class="hljs-number">2</span>) + <span class="hljs-built_in">pow</span>(<span class="hljs-built_in">float</span>(j - test.cols / <span class="hljs-number">2</span>), <span class="hljs-number">2</span>);
+            gaussianBlur.<span class="hljs-built_in">at</span>&lt;<span class="hljs-type">float</span>&gt;(i, j) = <span class="hljs-built_in">expf</span>(-d / (<span class="hljs-number">2</span> * sigma * sigma));
+        }
+    }
+}</code></pre></div></div>
+<p>得到高斯滤波器后对图片进行过滤，实部虚部分别与滤波器模板对应元素相乘。最后还要进行逆变换，归一化，得到最终滤波图像。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kkusralftonpag"></i><span>C++</span><div class="collapse show" id="collapse-kkusralftonpag"><pre><code class="hljs C++">Mat blur_r, blur_i, blur_full;
+<span class="hljs-built_in">multiply</span>(output[<span class="hljs-number">0</span>], gaussianBlur, blur_r);
+<span class="hljs-built_in">multiply</span>(output[<span class="hljs-number">1</span>], gaussianBlur, blur_i);
+Mat blur_split[] = { blur_r, blur_i };
+<span class="hljs-built_in">fftshift</span>(blur_split[<span class="hljs-number">0</span>], blur_split[<span class="hljs-number">1</span>]);
+<span class="hljs-built_in">merge</span>(blur_split, <span class="hljs-number">2</span>, blur_full);
+<span class="hljs-built_in">idft</span>(blur_full, blur_full);
+blur_full = blur_full / blur_full.rows / blur_full.cols; <span class="hljs-comment">// 归一化</span>
+<span class="hljs-built_in">split</span>(blur_full, output);
+output[<span class="hljs-number">0</span>] = output[<span class="hljs-number">0</span>] / <span class="hljs-number">255</span>;</code></pre></div></div>
+<p>我们还可以将离散傅里叶变换得到的结果转换成幅值矩阵展示出来:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pwbaailftonpag"></i><span>C++</span><div class="collapse show" id="collapse-pwbaailftonpag"><pre><code class="hljs C++">Mat amplitude;
+<span class="hljs-built_in">magnitude</span>(output[<span class="hljs-number">0</span>], output[<span class="hljs-number">1</span>], amplitude);
+amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span class="hljs-number">1</span>);
+<span class="hljs-built_in">log</span>(amplitude, amplitude);
+<span class="hljs-built_in">normalize</span>(amplitude, amplitude, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, NORM_MINMAX);
+<span class="hljs-built_in">imshow</span>(text, amplitude);</code></pre></div></div>
+<p>一般来说，低频的信号幅值大，组成一个信号的基本面，高频的信号幅值小，刻画细节、轮廓。</p>
+<p>对傅里叶变换及应用的粗浅理解参照了<a target="_blank" rel="noopener" href="https://juejin.cn/post/7188914545476239418">这里</a>。</p>
+<h3 id="结果展示">结果展示</h3>
+<p>使用OpenCV附带的Trackbar功能实现了自动调节截止频率的功能。展示如下:</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204718785139_962_image-20230329110649015.png" srcset="/img/loading.gif" lazyload alt="image-20230329110649015" width="67%" height="67%"></p>
+<p>可以看到<span class="math inline">\(\sigma=16\)</span>时能够取得较好的混合效果。</p>
+<p>得到两个图片的幅值矩阵如下所示:</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204722119165_954_image-20230329112108249.png" srcset="/img/loading.gif" lazyload alt="image-20230329112108249" width="67%" height="67%"></p>
+<p>换用自己喜欢的图像尝试一下:</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204725159317_763_image-20230329112218382.png" srcset="/img/loading.gif" lazyload alt="image-20230329112218382" width="67%" height="67%"></p>
+<p>因为这两张图片都不存在明显的高频信号，因此不是一个很好的样例。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">#计算机视觉</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2013599_田佳业_HW1</div>
+      <div>http://lunaticsky-tql.github.io/posts/37973/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/18710/" title="使用frp内网穿透远程访问Vmware虚拟机">
+                        <span class="hidden-mobile">使用frp内网穿透远程访问Vmware虚拟机</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
