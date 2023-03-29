@@ -321,16 +321,16 @@
 <p>https://gofrp.org/docs/setup/systemd/</p>
 <h2 id="操作步骤">操作步骤</h2>
 <p>服务器和客户端都需要下载:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p45wiolfj07mey"></i><span>shell</span><div class="collapse show" id="collapse-p45wiolfj07mey"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ihuzwulftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-ihuzwulftoynt9"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
 <p><strong>注:下载时一定要注意选对系统架构。比如2016南京大学PA的环境是32位Ubuntu，就要下<code>frp_0.47.0_linux_386.tar.gz</code>。</strong></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mmrroplfj07mey"></i><span>shell</span><div class="collapse show" id="collapse-mmrroplfj07mey"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_386.tar.gz</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rd7y9klftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-rd7y9klftoynt9"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_386.tar.gz</code></pre></div></div>
 <p>解压</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u64zzslfj07mey"></i><span>shell</span><div class="collapse show" id="collapse-u64zzslfj07mey"><pre><code class="hljs shell">tar -zxvf frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u4q7w9lftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-u4q7w9lftoynt9"><pre><code class="hljs shell">tar -zxvf frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
 <p>改名。非必须，但方便后续配置</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-egnio0lfj07mey"></i><span>shell</span><div class="collapse show" id="collapse-egnio0lfj07mey"><pre><code class="hljs shell">mv frp_0.47.0_linux_amd64 frp</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g7ljcclftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-g7ljcclftoynt9"><pre><code class="hljs shell">mv frp_0.47.0_linux_amd64 frp</code></pre></div></div>
 <p>具体的配置项可以参见第一篇博客。<a target="_blank" rel="noopener" href="https://gofrp.org/docs/examples/ssh/">官方</a>也说的很简洁明了。</p>
 <p>按照官网里的<a target="_blank" rel="noopener" href="https://gofrp.org/docs/setup/systemd/">开机自启</a>配置发现开机自启不成功，原因和解决方法可参见<a target="_blank" rel="noopener" href="https://www.mmuaa.com/post/537d04e936b78620.html">这个博客</a></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lyhmpslfj07mey"></i><span>shell</span><div class="collapse show" id="collapse-lyhmpslfj07mey"><pre><code class="hljs shell">[Unit]
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yzrzxclftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-yzrzxclftoynt9"><pre><code class="hljs shell">[Unit]
 <span class="hljs-meta prompt_"># </span><span class="language-bash">服务名称，可自定义</span>
 Description = frp client
 After = network.target syslog.target
@@ -434,9 +434,9 @@ WantedBy = multi-user.target</code></pre></div></div>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/37973/" title="2013599_田佳业_HW1">
+                      <a href="/posts/37973/" title="Hybrid Image">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2013599_田佳业_HW1</span>
+                        <span class="hidden-mobile">Hybrid Image</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
