@@ -1,0 +1,934 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="在线选课管理系统需求分析 2013599 田佳业 一、引言 编写目的  对要实现的软件功能做总体描述，帮助判断所规定的软件是否符合当前要求。 尽可能的除了在管理日常教学事务层面活动的同时考虑后续各种情况，使系统具有良好的可拓展性。 提高开发效率，为成本计划和编制计划进度提供基础。  项目背景 学校选课信息数据庞杂，且各种限制条件繁多，由教师及管理员手动进行选课信息处理负担较重，且效率极低，耽误正常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件工程-需求分析作业-2013599-田佳业">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/53897/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="在线选课管理系统需求分析 2013599 田佳业 一、引言 编写目的  对要实现的软件功能做总体描述，帮助判断所规定的软件是否符合当前要求。 尽可能的除了在管理日常教学事务层面活动的同时考虑后续各种情况，使系统具有良好的可拓展性。 提高开发效率，为成本计划和编制计划进度提供基础。  项目背景 学校选课信息数据庞杂，且各种限制条件繁多，由教师及管理员手动进行选课信息处理负担较重，且效率极低，耽误正常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235202901387_783_image-20230227190111733.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235205419738_553_image-20230302191509591.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235207392543_716_image-20230307231017064.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235209631863_631_image-20230308091548193.png">
+<meta property="article:published_time" content="2023-04-09T15:52:12.032Z">
+<meta property="article:modified_time" content="2023-04-09T15:52:12.032Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="软件工程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235202901387_783_image-20230227190111733.png">
+    
+    
+    
+    <title>软件工程-需求分析作业-2013599-田佳业 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="软件工程-需求分析作业-2013599-田佳业"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-04-09 23:52" pubdate>
+              2023年4月9日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              4.9k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/软件工程-需求分析作业-2013599-田佳业/软件工程-需求分析作业-2013599-田佳业.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">软件工程-需求分析作业-2013599-田佳业</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="在线选课管理系统需求分析">在线选课管理系统需求分析</h1>
+<p>2013599 田佳业</p>
+<h2 id="一引言">一、引言</h2>
+<h3 id="编写目的">编写目的</h3>
+<ul>
+<li><p>对要实现的软件功能做总体描述，帮助判断所规定的软件是否符合当前要求。</p></li>
+<li><p>尽可能的除了在管理日常教学事务层面活动的同时考虑后续各种情况，使系统具有良好的可拓展性。</p></li>
+<li><p>提高开发效率，为成本计划和编制计划进度提供基础。</p></li>
+</ul>
+<h3 id="项目背景">项目背景</h3>
+<p>学校选课信息数据庞杂，且各种限制条件繁多，由教师及管理员手动进行选课信息处理负担较重，且效率极低，耽误正常教学工作的进行。而学生选课系统的应用将使选课管理工作规范化，系统化，程序化，避免选课管理的随意性，提高信息处理的速度和准确性，能够及时，准确，有效的查询和修改选课情况。系统的主要功能是为了方便学校对教师信息、学生基本信息、课程信息、学生成绩录入、修改、查询，提高学校的工作效率。</p>
+<h2 id="二任务概述">二、任务概述</h2>
+<h3 id="任务目标">任务目标</h3>
+<p>本项目所开发的学生选课系统完成学校对学生的选课信息的统计与管理，减少数据错漏的情况，同时也节约人力、物力和财力，告别以往的人工统计。学生在规定选课时间段内在校园网内(特殊时期可开放外网访问)登录选课系统完成选课的申请，而学校可以方便地对系统进行管理和控制，提高工作效率。方便学生、老师、教务处使用，学生可以在线查看可选课程信息、在线选课、补选、退选等，老师可以填写和修改自己的课程信息，查询自己的课程人数、课程信息（包括开课时间、地点、开课方式），教务处可以对整个系统进行管理（包括系统管理、用户管理、课程管理）。</p>
+<h3 id="用户特点">用户特点</h3>
+<ul>
+<li><p>管理员</p>
+<p>具备整个系统的所有权限，如可在选课前中后对课程信息进行调整，指定教师和学生的权限，调整筛选策略等。</p></li>
+<li><p>教师</p>
+<p>具备自己所教授的课程的管理权限。如录入课程信息等。</p></li>
+<li><p>学生</p>
+<p>学生需要在指定时间选课，通常情况下登录系统时间较为集中，可针对自己的课表进行安排。</p></li>
+</ul>
+<h3 id="假定和约束">假定和约束</h3>
+<h4 id="假定">假定</h4>
+<ul>
+<li><p>用户：假定该选课系统主要服务于学生和教师，其中学生可登录系统进行选课和查看课程表，教师可登录系统进行课程管理和成绩管理。其他外来人员能够通过通过验证码的方式进行屏蔽。</p></li>
+<li><p>性能：选课系统有较高性能要求，例如响应时间、并发处理能力、系统可用性等。</p></li>
+<li><p>数据完整性：假定该选课系统能够通过数据备份，定期检查等方式保证所处理的数据的完整性和准确性，以避免数据错误和损坏。</p></li>
+<li><p>用户交互：假定用户可能通过手机或电脑进入浏览器选课。</p></li>
+<li><p>拓展性：假定学校根据需要可对选课系统进行调整，如调整选课时间，二学位课和主修课对换等。</p></li>
+</ul>
+<h4 id="约束">约束</h4>
+<ul>
+<li><p>项目需要在学生选课前15天(8月16日前)开发完成，至少需满足本文档下述
+的全部需求。</p></li>
+<li><p>项目以chrome内核浏览器显示界面为UI标准，能够在PC端和移动端完整显示。不对IE浏览器UI显示做要求，但需要在IE浏览器能够正常使用所有功能。</p></li>
+<li><p>项目总预算xx万元，其他事宜详见项目合同。</p></li>
+</ul>
+<h2 id="三业务描述">三、业务描述</h2>
+<h3 id="系统总业务流程图及其描述">系统总业务流程图及其描述</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235202901387_783_image-20230227190111733.png" srcset="/img/loading.gif" lazyload alt="image-20230227190111733">
+<figcaption aria-hidden="true">image-20230227190111733</figcaption>
+</figure>
+<ul>
+<li><p>学生</p>
+<p>登录系统，查看课表或进行选课。选课分为预选、正选和补退选三个阶段。有辅修/双学位的学生还需要进行辅修选课。</p></li>
+<li><p>教师</p>
+<p>登录系统，录入课程信息，或查看自己所教授课程的选课情况。</p></li>
+<li><p>管理员</p>
+<p>查看或修改用户的信息或权限。以及处理选课过程中的数据，并负责处理教师修改信息相关的申请。</p></li>
+</ul>
+<h3 id="各个子业务流程图及其描述">各个子业务流程图及其描述</h3>
+<h4 id="学生选课">学生选课</h4>
+<p>下面以主修选课为例，说明选课子业务的流程：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235205419738_553_image-20230302191509591.png" srcset="/img/loading.gif" lazyload alt="image-20230302191509591">
+<figcaption aria-hidden="true">image-20230302191509591</figcaption>
+</figure>
+<p>选课需要在对应时间选课，并根据学生点击选课入口进行对应课程的子入口。学生课根据课程序号，课程名称等进行课程的搜索，点击“选课”按钮进行选课。若已选过，应当显示“退课”。然后进行条件初步判断，若满足条件选课成功，返回分入口。</p>
+<h4 id="其他子业务">其他子业务</h4>
+<p>其他子业务均为单流程，满足对应业务各自约束即可。</p>
+<h2 id="四数据需求">四、数据需求</h2>
+<h3 id="数据需求描述">数据需求描述</h3>
+<ol type="1">
+<li>学生信息：包括学生的个人基本信息：学号、姓名、性别、入学时间、学院。</li>
+<li>课程信息：包括课程的基本信息：课程编号（内部唯一ID)、课程代号（前端展示)、课程名称、课程学分、授课教师、上课时间、课程选课人数上限。</li>
+<li>选课信息：包括学生选课的信息：选课记录编号、学生学号、课程编号、选课时间。</li>
+<li>教师信息：包括教师的基本信息：教师编号、姓名、性别、职称。</li>
+</ol>
+<h3 id="数据流图">数据流图</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235207392543_716_image-20230307231017064.png" srcset="/img/loading.gif" lazyload alt="image-20230307231017064">
+<figcaption aria-hidden="true">image-20230307231017064</figcaption>
+</figure>
+<h3 id="数据字典">数据字典</h3>
+<p>下面采用数据库表的方式描述项目主要流程中使用的数据字典：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235209631863_631_image-20230308091548193.png" srcset="/img/loading.gif" lazyload alt="image-20230308091548193">
+<figcaption aria-hidden="true">image-20230308091548193</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oxcag4lg9l3zf0"></i><span>sql</span><div class="collapse show" id="collapse-oxcag4lg9l3zf0"><pre><code class="hljs sql"><span class="hljs-keyword">SET</span> NAMES utf8mb4;
+<span class="hljs-keyword">SET</span> FOREIGN_KEY_CHECKS <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-comment">-- Table structure for Course</span>
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `Course`;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `Course` (
+  `CourseID` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `CourseCode` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `CourseName` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Credits` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Teacher` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `MaxCapccity` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `StartWeek` tinyint <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `EndWeek` tinyint <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Place` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>
+) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_0900_ai_ci;
+
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-comment">-- Table structure for Select</span>
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `<span class="hljs-keyword">Select</span>`;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `<span class="hljs-keyword">Select</span>` (
+  `SelectID` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `StudentID` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `CourseID` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `SelectTime` datetime <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>
+) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_0900_ai_ci;
+
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-comment">-- Table structure for Student</span>
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `Student`;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `Student` (
+  `studentID` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Name` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Gender` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Age` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Institute` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>
+) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_0900_ai_ci;
+
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-comment">-- Table structure for Teacher</span>
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `Teacher`;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `Teacher` (
+  `TeacherID` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `TeacherName` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Gender` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `Title` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>
+) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_0900_ai_ci;
+
+<span class="hljs-keyword">SET</span> FOREIGN_KEY_CHECKS <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</code></pre></div></div>
+<p>注意:</p>
+<p>1.由于选课系统会频繁进行数据表的插入删除，设置外键会使数据库性能下降，故需将异常处理交由软件处理，以加快正常情况下的选课相应速度。</p>
+<p>2.数据表及数据表项可根据实际开发进行添加，但以上所列出为必需项。</p>
+<h2 id="五功能需求">五、功能需求</h2>
+<h3 id="功能划分">功能划分</h3>
+<h4 id="公共功能">公共功能</h4>
+<ul>
+<li><p>登录</p></li>
+<li><p>查看当前选课状态</p></li>
+<li><p>查看课程信息</p></li>
+</ul>
+<h4 id="学生">学生</h4>
+<ul>
+<li><p>选课</p></li>
+<li><p>退课</p></li>
+<li><p>查看可选和已选课程</p></li>
+</ul>
+<h3 id="教师">教师</h3>
+<ul>
+<li><p>发布课程信息</p></li>
+<li><p>请求修改课程信息</p></li>
+</ul>
+<h4 id="管理员">管理员</h4>
+<ul>
+<li><p>录入和修改用户信息</p></li>
+<li><p>选课结果汇总</p></li>
+<li><p>筛选选课结果</p></li>
+</ul>
+<h3 id="功能描述">功能描述</h3>
+<h4 id="登录">登录</h4>
+<p>用户输入用户名和密码登录选课系统，系统根据输入的信息验证用户身份，并进入相应的用户界面。</p>
+<h4 id="查看当前选课状态">查看当前选课状态</h4>
+<p>在选课系统中查看当前各个课程选课人数（<strong>不包含具体选课的学生信息</strong>)</p>
+<h4 id="查看课程信息">查看课程信息</h4>
+<p>在选课系统中查看课程的详细信息，包括课程名称、授课教师、上课时间、上课地点、学分等。</p>
+<h4 id="选课">选课</h4>
+<p>学生可以在选课系统中选择需要选修的课程，并提交选课请求。系统会根据当前选课人数进行相应，并在不同选课阶段之间根据筛选条件进行进行审核，审核通过后自动为学生添加选课记录。</p>
+<h4 id="退课">退课</h4>
+<p>学生可以在选课系统中查看已选课程，并选择需要退选的课程。提交退课请求后，系统会自动删除相应的选课记录。</p>
+<h4 id="查看可选和已选课程">查看可选和已选课程</h4>
+<p>学生可查看当前选课阶段可选和已选的课程，以列表方式呈现。</p>
+<h4 id="发布课程信息">发布课程信息</h4>
+<p>教师可以在选课系统中发布课程信息，包括课程名称、授课教师、上课时间、上课地点、学分等。发布后，学生可以在选课系统中进行选课操作。</p>
+<h4 id="请求修改课程信息">请求修改课程信息</h4>
+<p>当教师需要对已发布的内容进行修改，如修改上课地点，修改可容纳人数等。</p>
+<h4 id="录入和修改用户信息">录入和修改用户信息</h4>
+<p>管理员可以在选课系统中录入和修改学生和教师的个人信息，包括姓名、学号、联系方式、职称、专业等。</p>
+<h4 id="选课结果汇总">选课结果汇总</h4>
+<p>管理员可以在选课系统中查看所有学生的选课情况，并对选课结果进行汇总统计，包括已选课程、未选课程和已退课程。<strong>注意：需要按照课程和学生两种维度分别给出结果汇总。</strong></p>
+<h4 id="筛选选课结果">筛选选课结果</h4>
+<p>管理员可以在选课系统中对选课结果进行筛选和分析，根据不同的条件进行查询，包括学生学号、课程编号、成绩等级等。同时管理员可以对查询结果进行导出和打印。</p>
+<h2 id="六非功能需求">六、非功能需求</h2>
+<ol type="1">
+<li>性能：由于正选阶段学生选课时间集中，选课系统应具有高性能，能够支持大量的并发用户访问，并快速响应用户的请求，避免出现系统瓶颈或崩溃现象。即便确实出现了瓶颈，也应及时进行自发控制，避免系统崩溃。</li>
+<li>可靠性：系统应具有高可靠性，保证数据的完整性、安全性和可用性，有数据库日志及备份和恢复功能。</li>
+<li>安全性：系统应具有高安全性，对用户数据进行保护，包括用户个人信息和选课记录等敏感数据，确保数据不被窃取、篡改或损坏。</li>
+<li>易用性：系统应具有高易用性，界面友好、操作简单，学生可以快速地进行选课和退课等操作，避免学生使用过程中出现操作困难或错误，<strong>特别注意避免出现误容易出现误导操作的UI布局或文字描述</strong>。管理员页面由于需显示数据较多，需要采用较为简洁的界面，利于管理和维护。</li>
+<li>可扩展性：系统应具有高可扩展性，能够灵活地添加新的功能和模块，以适应不同阶段或特殊/紧急状态的需求。</li>
+<li>软件质量：系统应具有高软件质量，包括高代码质量、高稳定性、高可维护性、高可测试性和高可重用性等。同时，系统应具有高可靠性、高安全性和高可用性等。<strong>特别的，代码需要有明确的功能描述注释及负责人信息，确保可追溯</strong>。</li>
+<li>兼容性：系统应具有高兼容性，能够在不同的操作系统、设备上运行，在Chrome和Firefox上均需保证界面正确和功能完全可用，IE浏览器需保证界面可见和功能完全可用，确保用户能够方便地访问和使用系统。</li>
+</ol>
+<h2 id="七系统要求">七、系统要求</h2>
+<p>需部署在CentOS7.7（或基于此二次开发的兼容系统)，使用docker进行环境和打包，并提供需挂载的数据。</p>
+<p>服务器2核CPU，带宽4M，内存8GB。</p>
+<p>Docker使用LAMP环境，具体版本要求：</p>
+<blockquote>
+<p>PHP&gt;=7.4且&lt;9.0</p>
+<p>MySQL&gt;=8.0</p>
+<p><strong>务必不要使用5.x版本的Mysql</strong></p>
+<p>Apache&gt;=2.4.6</p>
+</blockquote>
+<p>使用PHP框架或JSP框架开发均可。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">#软件工程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>软件工程-需求分析作业-2013599-田佳业</div>
+      <div>http://lunaticsky-tql.github.io/posts/53897/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年4月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/48981/" title="软件工程-软件设计作业">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">软件工程-软件设计作业</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/37973/" title="Hybrid Image">
+                        <span class="hidden-mobile">Hybrid Image</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

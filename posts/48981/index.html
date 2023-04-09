@@ -1,0 +1,1273 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="机票预订系统软件设计 2013599 田佳业 系统概述 参考现实中机票预订系统的设计，结合实际本系统设计与题目所述有所优化：将付款放在预订机票环节而非取票环节，因为若预订机票后再付款，容易导致恶意抢占预订名额的现象，而付款后再占据预订名额能够增加成本，尽可能的避免这种情况发生。 用例图 下面通过用例图从总体上描述描述机票预订系统的功能性需求。  | 登录 | | -----------------">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件工程-软件设计作业">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/48981/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="机票预订系统软件设计 2013599 田佳业 系统概述 参考现实中机票预订系统的设计，结合实际本系统设计与题目所述有所优化：将付款放在预订机票环节而非取票环节，因为若预订机票后再付款，容易导致恶意抢占预订名额的现象，而付款后再占据预订名额能够增加成本，尽可能的避免这种情况发生。 用例图 下面通过用例图从总体上描述描述机票预订系统的功能性需求。  | 登录 | | -----------------">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235255868737_526_image-20230408230603393.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235259075956_784_image-20230409202727243.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235301223716_963_image-20230409231700319.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235303100664_328_image-20230409203220770.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235304935117_188_image-20230409214542211.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235306483524_888_image-20230409222120459.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235308064551_965_image-20230409225349414.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235310195363_408_image-20230409231814194.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235311789954_391_image-20230409234037704.png">
+<meta property="article:published_time" content="2023-04-09T15:53:13.341Z">
+<meta property="article:modified_time" content="2023-04-09T15:53:13.341Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="软件工程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235255868737_526_image-20230408230603393.png">
+    
+    
+    
+    <title>软件工程-软件设计作业 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="软件工程-软件设计作业"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-04-09 23:53" pubdate>
+              2023年4月9日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              6.7k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/软件工程-软件设计作业/软件工程-软件设计作业.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">软件工程-软件设计作业</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="机票预订系统软件设计">机票预订系统软件设计</h1>
+<p>2013599 田佳业</p>
+<h2 id="系统概述">系统概述</h2>
+<p>参考现实中机票预订系统的设计，结合实际本系统设计与题目所述有所优化：将付款放在预订机票环节而非取票环节，因为若预订机票后再付款，容易导致恶意抢占预订名额的现象，而付款后再占据预订名额能够增加成本，尽可能的避免这种情况发生。</p>
+<h2 id="用例图">用例图</h2>
+<p>下面通过用例图从总体上描述描述机票预订系统的功能性需求。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235255868737_526_image-20230408230603393.png" srcset="/img/loading.gif" lazyload alt="image-20230408230603393"> | <font color="green">登录</font> | |
+------------------------------- | | <strong>用例ID：</strong> 1 | |
+<strong>参与者：</strong> 旅客，工作人员 | | <strong>简要说明：</strong>
+用户登录航班预订系统 | | <strong>前置条件：</strong> 无 | |
+<strong>基本事件流：</strong><br>1.用户进入主界面点击“登录/注册”按钮<br>2.进入登录界面，用户填写登录信息(用户名，手机号，密码)<br>3.系统校验登录信息成功，用户登录成功
+| |
+<strong>其他事件流：</strong><br>1.用户进入主界面点击“登录/注册”按钮，跳转至登录界面<br>2.进入登录界面，用户填写登录信息(用户名，手机号，密码)<br>3.系统未检索到该手机号，提示用户进行注册，进入注册页面
+| |
+<strong>异常事件流：</strong><br>1.用户信息填写格式不正确-&gt;前端校验，给予提示<br>2.用户名或密码与手机号不匹配，提示用户重新进行输入<br>3.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面
+| | <strong>后置条件：</strong>登录成功，返回首页供用户选择其他操作 | |
+注释：实际生活中手机号唯一，往往登录和注册的功能进行合并，可减小用户操作成本。
+|</p>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">注册</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 2</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 未注册旅客，未注册工作人员</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 未注册用户进入注册页面进行注册</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 用户手机号未注册</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1.用户由登录界面跳转至注册界面<br>2.出现注册页面，默认用户名为登录时输入用户名，手机号为登录时输入手机号。用户完善个人信息。<br>3.系统发送手机验证码，用户填写验证码，校验正确后完成注册</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong><br>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.用户信息填写格式不正确-&gt;前端校验，给予提示<br>2.用户手机号已被注册-&gt;提示进入登录页面<br>3.用户验证码不正确-&gt;提示用户重新填写<br>3.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件：</strong>注册成功，系统添加完成用户信息，登录当前新注册账号</td>
+</tr>
+<tr class="odd">
+<td>注释：从登录部分拓展</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">查询航班信息</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 3</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 旅客，工作人员</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 用户进入航班查询页面进行航班查询</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 无</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1用户点击搜索框搜索航班<br>2.系统获取用户查询条件，执行查询，并进入新的页面展示查询结果</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong><br>1..用户点击查看当前航班页面<br>2。系统获取24小时内起飞的所有航班信息，进入新的页面展示查询结果</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.未输入查询条件-&gt;前端提示用户输入查询条件<br>2.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：无</td>
+</tr>
+<tr class="odd">
+<td>注释：航班信息管理包含查询航班信息，且查询航班信息不需要用户登录</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">预订机票</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 4</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册旅客</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 旅客进行机票预订</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 已登录并选择了希望预订的航班</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1用户点击座位充裕的航班<br>2.选择座位等次和位置，提交预订机票请求<br>3.预订机票成功，提示用户进行付款<br>4.用户支付机票金额，系统生成取票凭据及账单，并提示用户及时查看已订机票信息并打印取票凭据。</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong><br>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.用户选择航班时未登录-&gt;跳转至登录页面提示用户登录或注册<br>2.提交请求时由于优先级低，被其他旅客预订-&gt;提示机票已被预订，让旅客重新选择<br>3.预订机票后15分钟内未付款-&gt;系统收回用户预订机票<br>4.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：用户拥有在线机票，该航班信息更新</td>
+</tr>
+<tr class="odd">
+<td>注释：系统并不强制旅客必须在预订机票后查询已订机票，尽管系统建议旅客时查看已订机票信息并打印取票凭据。</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">查询已订机票</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 5</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册旅客</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 旅客进行已订机票的查看</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 已登录</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1用户点击“我”-&gt;已订机票<br>2.系统根据用户ID查询该用户已订购机票，并返回机票信息</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong><br>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：用户得知已订购机票，在该页面进行后续操作，如获取取票凭据，退票等</td>
+</tr>
+<tr class="odd">
+<td>注释：系统并不强制旅客必须在预订机票后查询已订机票，尽管系统建议旅客时查看已订机票信息并打印取票凭据。</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">退票</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 6</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册旅客</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 旅客在查询页面选择进行退票</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 已登录</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1用户在查询已订机票页面点击退票<br>2.系统提示用户确认后，取消用户航班。</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong><br>1.若用户已取票，更新票据状态为无效<br>2.若用户已付款，退回已付金额</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：用户已订机票信息和航班信息更新，该用户航班取消。</td>
+</tr>
+<tr class="odd">
+<td>注释：无</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">获取取票凭据</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 7</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册旅客</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 旅客保存或打印取票凭据</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 已预订成功机票</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1用户保存取票凭据页面选择保存电子版凭据或打印纸质版凭据<br>2.系统生成凭据二维码或打印取票通知</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面<br>2.无法打印-&gt;提示用户保存电子版凭据或等待</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：用户获得取票凭据</td>
+</tr>
+<tr class="odd">
+<td>注释：获取取票凭据为起飞前取票做准备</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">取票</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 8</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册旅客</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 旅客凭取票凭据取票</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 旅客已获得取票凭据</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1.用户输入个人信息(如手机号和验证码)，系统进行身份校验<br>2.系统读取用户电子版或纸质凭据，并进行校验<br>3.校验通过，打印票据给旅客</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.系统校验失败(如身份校验不通过，用户票据无效等)-&gt;根据情况提示用户错误信息<br>2.无法打印-&gt;提示用户等待，并向管理员报告错误<br>3.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：用户获得机票，准备乘机</td>
+</tr>
+<tr class="odd">
+<td>注释：即使取票依赖取票凭据，但取票并不与获取取票凭据有包含或拓展的关系，因为取票并不是获取取票凭据的特殊化，因此不是拓展关系；并不是取票时必须调用获取凭据操作，因此不是包含关系。</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">个人信息管理</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 9</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册旅客，已注册管理员</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong> 旅客和管理员个人信息管理</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 旅客或管理员已注册</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1.用户点击个人信息管理按钮，系统校验用户名和密码以及验证码<br>2.修改个人信息，并进行保存</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>1.系统校验失败(如身份校验不通过，用户票据无效等)-&gt;根据情况提示用户错误信息<br>2.用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：用户个人信息发生改变</td>
+</tr>
+<tr class="odd">
+<td>注释：无</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">航班信息管理</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 10</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册管理员</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong>
+管理员进行航班信息的管理，如增加航班，修改航班信息等</td>
+</tr>
+<tr class="even">
+<td>**前置条件：管理员已登录</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>管理员进入航班信息管理页面，进行航班信息的操作，如增加航班，修改航班信息等</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：航班信息被修改</td>
+</tr>
+<tr class="odd">
+<td>注释：航班信息管理包含查询航班信息，因为管理航班信息必定要先查看。同时在用例图中不分解出CURD操作，会造成冗余</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">账单管理</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 11</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册管理员</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong>
+管理员对账单进行手动管理，如调整旅客已订航班等</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件</strong>：管理员已登录</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1.管理员输入旅客ID(可通过旅客信息管理获取)，查看旅客账单信息<br>2.视情况对该旅客的账单进行调整</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong><br>管理员根据筛选条件对符合条件的账单进行批量调整</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：管理员查看到账单信息，可能对其有修改</td>
+</tr>
+<tr class="odd">
+<td>注释：该功能主要针对系统出现异常或应对航班出现的特殊情况，增加手动管理旅客账单的功能。</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th><font color="green">旅客信息管理</font></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>用例ID：</strong> 12</td>
+</tr>
+<tr class="even">
+<td><strong>参与者：</strong> 已注册管理员</td>
+</tr>
+<tr class="odd">
+<td><strong>简要说明：</strong>
+管理员进行旅客个人信息的查看，修改等</td>
+</tr>
+<tr class="even">
+<td><strong>前置条件：</strong> 管理员已登录</td>
+</tr>
+<tr class="odd">
+<td><strong>基本事件流：</strong><br>1.管理员根据筛选条件(如旅客姓名，航班信息等)，查询旅客信息<br>2.视情况对旅客信息进行调整</td>
+</tr>
+<tr class="even">
+<td><strong>其他事件流：</strong>无</td>
+</tr>
+<tr class="odd">
+<td><strong>异常事件流：</strong><br>用户或服务器网络异常/服务器内部数据错误-&gt;根据状态码跳转对应页面</td>
+</tr>
+<tr class="even">
+<td><strong>后置条件</strong>：管理员查看到旅客信息，可能对其有修改</td>
+</tr>
+<tr class="odd">
+<td>注释：针对旅客个人信息的管理模块，该部分不应包含旅客账单相关内容</td>
+</tr>
+</tbody>
+</table>
+<h2 id="活动图">活动图</h2>
+<p>活动图中的每个圆角矩形中为动作状态，描述原子性的行为。登录和注册部分的用例较为复杂，在这里用活动图来较为详细的描述登录和注册的流程。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235259075956_784_image-20230409202727243.png" srcset="/img/loading.gif" lazyload alt="image-20230409202727243" width="150%" height="150%"></p>
+<p>用户未登录或注册完成时，随时可以点击取消结束该用例流程。用户进入登录页面，输入用户名，手机号，密码。系统会查找该用户的手机号是否已完成注册。若用户未注册，系统会自动为用户进行注册，提示用户输入个人信息，通过验证码验证手机号可用后即可完成注册。由于注册时用户有可能改变手机号信息，因此注册阶段也需要验证手机号。确定用户使用手机号注册后系统生成手机验证码，并提示用户输入。用户正确输入验证码后系统接受注册信息，存储新用户信息并自动登录，前端通知用户并结束用例流程，供用户选择后续操作。</p>
+<h2 id="类图">类图</h2>
+<p>类图是系统的概念基础。下面将整个订票系统涉及的实体和控制类通过类图描述。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235301223716_963_image-20230409231700319.png" srcset="/img/loading.gif" lazyload alt="image-20230409231700319" width="150%" height="150%"></p>
+<p>类图部分事实上是在整个设计过程中考虑和修改次数最多的部分。</p>
+<p>由于管理员课执行操作较多，不同管理员除了权限等级差距外执行的具体操作并无差距，我们可以将管理员可以执行的操作提取为静态的方法类。实体类及其方法均需与用例描述对应。</p>
+<p>考虑到类图整体的简洁，图中省略了方法参数。</p>
+<h2 id="顺序图">顺序图</h2>
+<p>顺序图能够体现类与类之间的交互关系。最重要的是，顺序图能够实现某个功能的必要步骤。因此下面分别在细粒度和粗粒度上给出个人信息管理和旅客乘机全过程的顺序图。</p>
+<p>前面已经给出了注册登录部分的活动图，在下面的图示中默认提及到的用户均已登录。</p>
+<h3 id="个人信息管理">个人信息管理</h3>
+<p>下面展示了用户个人信息管理的顺序图。</p>
+<p>用户可查看个人信息，修改个人信息是可选的。同时用户选择结束个人信息管理时前端页面关闭，处理该事务的DAO关闭，数据库需要持续运行。这个过程中所有的消息都是同步消息。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235303100664_328_image-20230409203220770.png" srcset="/img/loading.gif" lazyload alt="image-20230409203220770">
+<figcaption aria-hidden="true">image-20230409203220770</figcaption>
+</figure>
+<blockquote>
+<p>→查询个人信息请求(用户→系统前端)</p>
+<p>→提交查询请求(系统前端→DAO)</p>
+<p>→根据用户ID查询用户信息(DAO→DB)</p>
+<p>→返回用户信息(DB→DAO)</p>
+<p>→传送用户信息(DAO→系统前端)</p>
+<p>→展示用户信息(系统前端→用户）</p>
+<p>→选择需修改的信息(用户→系统前端）</p>
+<p>→判断修改的信息，提交修改请求(系统前端→DAO)</p>
+<p>→执行修改信息计划(DAO→DB)</p>
+<p>→返回执行状态(DB→DAO)</p>
+<p>→ 判断是否修改成功，传送修改状态(DAO→系统前端)</p>
+<p>→展示修改状态(系统前端→用户）</p>
+<p>→结束个人信息管理(用户→系统前端)</p>
+<p>→销毁当前DAO(系统前端→DAO)</p>
+</blockquote>
+<h3 id="旅客乘机全过程">旅客乘机全过程</h3>
+<p>旅客乘机包含查询航班信息，预订机票，查看已订机票，获取取票凭据，取票几个阶段。为清晰的表示各阶段之间的关系，不再表示出具体前后端交互的过程，转而强调各个类之间的关系。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235304935117_188_image-20230409214542211.png" srcset="/img/loading.gif" lazyload alt="image-20230409214542211" width="150%" height="150%"></p>
+<blockquote>
+<p>查询航班信息(旅客→Flights类）</p>
+<p>→返回航班信息(ight类&gt;旅客)</p>
+<p>→ 订票请求(旅客→Bi类）</p>
+<p>→根据用户所选FlightlD获取用户所选机票价格(Bill类→Flight类)</p>
+<p>→ 返回航班价格(Flight类→Bill类)</p>
+<p>→生成账单(Bill类→Bill类)</p>
+<p>→ 要求用户付款(Bill类&gt;旅客)</p>
+<p>→[15分钟内]付款(旅客→Bill类）</p>
+<p>→[opt]销毁账单(Bill类→Bill类)</p>
+<p>→返回预订成功信息(Bl类→旅客)</p>
+<p>→ 获取取票凭据(旅客→CredentialGenerator类）</p>
+<p>→ 根据用户所选航班获取账单(CredentialGeneratora类→Bill类)</p>
+<p>→ 返回账单ID(Bill类→CredentialGenerator类)</p>
+<p>→要求用户选择凭据类型(CredentialGenerator类→旅客)</p>
+<p>→用户选择凭据类型(旅客→CredentialGenerator类）</p>
+<p>→ 生成凭据(CredentialGenerator类→CredentialGenerator类)</p>
+<p>→返回凭据给用户(CredentialGenerator类→旅客)</p>
+<p>→取票(旅客→TicketGenerator类）</p>
+<p>→ 获取账单信息(TicketGenerator类→Bill类)</p>
+<p>→获取航班信息(TicketGenerator类→Flight类)</p>
+<p>→等待账单信息和航班信息准备好(TicketGenerator类→TicketGenerator类</p>
+<p>→返回账单信息(Bil类→TicketGenerator类)</p>
+<p>→返回航班信息(Flight类→TicketGenerator类)</p>
+<p>→生成票据(TicketGenerator类→TicketGenerator类)</p>
+<p>→打印票据(TicketGenerator类→TicketGenerator类)</p>
+<p>→返回机票给旅客(TicketGenerator类→旅客)</p>
+</blockquote>
+<p>这个顺序图展示了旅客乘机所需要经历的完整流程，比较复杂。其中需要着重注意的过程是用户预定后生成的账单是未付款的状态，需要提醒用户进行付款。15分钟未付款账单被销毁。同时，产生机票的过程中需要同时获取账单信息和航班信息，这个过程是无依赖的，因此可以采用异步的方式并行执行。但取票机需要两个信息都获取后才能打印机票，因此需要等待。</p>
+<h2 id="协作图">协作图</h2>
+<p>协作图相比顺序图，更强调类与类之间在空间上的交互。事实上，协作图和顺序图是等价的，可以相互转化。</p>
+<p>下面给出用户退票用例的协作图。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235306483524_888_image-20230409222120459.png" srcset="/img/loading.gif" lazyload alt="image-20230409222120459">
+<figcaption aria-hidden="true">image-20230409222120459</figcaption>
+</figure>
+<blockquote>
+<p>→查询已订机票(旅客→系统前端)</p>
+<p>→提交查询请求(系统前端→DAO)</p>
+<p>→执行查询计划(DAO→DB)</p>
+<p>→返回已订机票列表(DB→DAO)</p>
+<p>→传送已订机票列表(DAO→系统前端</p>
+<p>→展示已订机票(系统前端→旅客)</p>
+<p>→选择欲退票对应账单(旅客→系统前端)</p>
+<p>→发起退票请求(系统前端→DAO)</p>
+<p>→查询是否付款及账单金额(DAO→DB)</p>
+<p>→返回账单信息(DB→DAO)</p>
+<p>→传送账单信息(系统前端→DAO)</p>
+<p>→[opt]发起退款(系统前端→支付系统)</p>
+<p>→[opt]退款给用户(支付系统→旅客）</p>
+<p>→[opt]返回退款结果(系统前端→支付系统)</p>
+<p>→展示退票成功消息(系统前端→旅客)</p>
+</blockquote>
+<p>这一部分与用户个人信息管理部分类似。额外的部分主要是账单有已付款和未付款两种状态，如果账单已付款，我们还需要将账单金额退还给用户。</p>
+<h2 id="状态图">状态图</h2>
+<p>状态图与活动图相似，只是顾名思义，状态图更多的强调一个对象在不同情形下的状态变化。</p>
+<p>下面给出管理员整个工作流程的状态图：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235308064551_965_image-20230409225349414.png" srcset="/img/loading.gif" lazyload alt="image-20230409225349414">
+<figcaption aria-hidden="true">image-20230409225349414</figcaption>
+</figure>
+<p>这一部分结合实际比较容易理解。管理员进入系统后可以选择进行个人信息管理，或进行系统其他部分的管理。当进行其他部分管理时均为工作状态。管理员对航班、旅客或账单进行常规的增删改查后，完成工作，注销账号。在已登录状态注销账号进入未登录状态。管理员不管完成工作与否随时可注销账号。</p>
+<h2 id="构件图">构件图</h2>
+<p>构件图通过模块和接口，能够很好的呈现和理清模块之间的依赖关系，有助于实现整个系统的高内聚低耦合。</p>
+<p>圆圈代表接口，连接圆圈的模块实现该接口，包围圆圈的模块依赖该接口。</p>
+<p>下面是整个预订系统的构件图。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235310195363_408_image-20230409231814194.png" srcset="/img/loading.gif" lazyload alt="image-20230409231814194">
+<figcaption aria-hidden="true">image-20230409231814194</figcaption>
+</figure>
+<p>可以看到整个系统的依赖关系还是较为复杂的。一定程度上构件图是对类图依赖关系的强化。</p>
+<h2 id="部署图">部署图</h2>
+<p>部署图描述了一个系统运行时的硬件特点和在这些节点上运行的软件构件。部署图贴近“落地”，关注物理的运行，以及它们之间如何彼此通信。</p>
+<p>下面是该预订系统的部署图。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%BD%9C%E4%B8%9A-2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A/20230409235311789954_391_image-20230409234037704.png" srcset="/img/loading.gif" lazyload alt="image-20230409234037704">
+<figcaption aria-hidden="true">image-20230409234037704</figcaption>
+</figure>
+<p>我们的系统是前后端分离的，通过TCP/IP协议进行信息交互。同时采用MariaDB作为数据库。软件开发商需要提供前端WebAPP，以及后端的实现，还要设计数据库模式。硬件上我们需要存储数据信息以及运行应用的服务器，应对高并发我们还要加设防火墙，并设置负载均衡节点。当然，为了让用户取票据和纸质凭据，我们还需要嵌入式系统和打印机。</p>
+<h2 id="总结">总结</h2>
+<p>不同的UML图示有不同的特点和适用场景。以上为各个场景根据不同种类的图示特点选取了不同的描述方式，总体上从各种粒度和各个角度覆盖了整个机票预订系统最需要我们关注的地方，对整个系统有了更加清晰的了解，为敏捷开发，DevOps等活动打下较好的基础。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">#软件工程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>软件工程-软件设计作业</div>
+      <div>http://lunaticsky-tql.github.io/posts/48981/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年4月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/53897/" title="软件工程-需求分析作业-2013599-田佳业">
+                        <span class="hidden-mobile">软件工程-需求分析作业-2013599-田佳业</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
