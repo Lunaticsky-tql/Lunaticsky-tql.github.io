@@ -1,0 +1,1051 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="高级语言程序设计实验报告 南开大学 计算机学院 田佳业 2013599 1013班 2023年5月15日 作业题目 代码编辑器QLion 开发软件 Qt 6.4.2 CLion 2023.1.2 Qt Designer 课题要求  采用C++语言编写 采用面向对象的设计理念  项目计划完成情况  CLion界面风格 文本编辑器基本功能 代码高亮 文件目录树 查找替换 快速注释 Cmake项目运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QLIon">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/38550/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="高级语言程序设计实验报告 南开大学 计算机学院 田佳业 2013599 1013班 2023年5月15日 作业题目 代码编辑器QLion 开发软件 Qt 6.4.2 CLion 2023.1.2 Qt Designer 课题要求  采用C++语言编写 采用面向对象的设计理念  项目计划完成情况  CLion界面风格 文本编辑器基本功能 代码高亮 文件目录树 查找替换 快速注释 Cmake项目运行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214325856307_437_image-20230514204456321.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214327370668_329_image-20230514201910114.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214328373693_177_image-20230514210950317.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214329527229_954_image-20230514230623432.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214330918451_552_image-20230514220624197.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214332155342_338_image-20230515153815269.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214333625979_193_image-20230514231847964.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214335038890_263_image-20230514234245615.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214336183959_219_image-20230514234354199.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214337928748_935_image-20230514234428154.png">
+<meta property="article:published_time" content="2023-05-15T13:43:39.362Z">
+<meta property="article:modified_time" content="2023-05-15T13:43:39.362Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214325856307_437_image-20230514204456321.png">
+    
+    
+    
+    <title>QLIon - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="QLIon"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-05-15 21:43" pubdate>
+              2023年5月15日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              11k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/QLIon/QLIon.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">QLIon</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="高级语言程序设计实验报告">高级语言程序设计实验报告</h1>
+<p>南开大学 计算机学院 田佳业 2013599 1013班</p>
+<p>2023年5月15日</p>
+<h2 id="作业题目">作业题目</h2>
+<p>代码编辑器QLion</p>
+<h2 id="开发软件">开发软件</h2>
+<p>Qt 6.4.2</p>
+<p>CLion 2023.1.2</p>
+<p>Qt Designer</p>
+<h2 id="课题要求">课题要求</h2>
+<ul>
+<li>采用C++语言编写</li>
+<li>采用面向对象的设计理念</li>
+</ul>
+<h2 id="项目计划完成情况">项目计划完成情况</h2>
+<ul class="task-list">
+<li><input type="checkbox" checked="">CLion界面风格</li>
+<li><input type="checkbox" checked="">文本编辑器基本功能</li>
+<li><input type="checkbox" checked="">代码高亮</li>
+<li><input type="checkbox" checked="">文件目录树</li>
+<li><input type="checkbox" checked="">查找替换</li>
+<li><input type="checkbox" checked="">快速注释</li>
+<li><input type="checkbox" checked="">Cmake项目运行</li>
+<li><input type="checkbox">主题及快捷键配置</li>
+<li><input type="checkbox">括号补全和自动缩进</li>
+</ul>
+<p>还有好多其他作业要做呜呜呜</p>
+<h2 id="项目结构">项目结构</h2>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214325856307_437_image-20230514204456321.png" srcset="/img/loading.gif" lazyload alt="image-20230514204456321">
+<figcaption aria-hidden="true">image-20230514204456321</figcaption>
+</figure>
+<h2 id="主要流程">主要流程</h2>
+<p>由于整个项目较为复杂，下面仅简要介绍重要部分的实现思路，有一些实现细节可能难免不能面面俱到。</p>
+<h3 id="界面风格">界面风格</h3>
+<p>使用QT提供<code>fusion</code>风格，并结合使用<code>platte</code>和<code>stylesheet</code>完成暗黑风格的绘制。在<a target="_blank" rel="noopener" href="https://gist.github.com/QuantumCD/6245215">此代码片段</a>基础上进行了微调。</p>
+<h3 id="文本编辑器">文本编辑器</h3>
+<p>文本编辑器部分主要的难点在于tab的有效管理。</p>
+<h4 id="添加标签页">添加标签页</h4>
+<p>添加标签页有两种情况，一种是新建的没有与文件关联的标签页，另一种是通过文件打开的标签页。</p>
+<p>这一部分的主要亮点:</p>
+<ul>
+<li><p>实现了类似VSCode中打开同名但不同路径的文件时，可以自动通过显示文件路径来区分来自不同路径的文件。</p></li>
+<li><p>注意到VSCode新建若干个未与文件关联的标签页时，会选取当前可用的最小标签页。如下图所示新建标签页会命名为<code>Untitled-2</code>。在这个项目中也复现了这样的设计。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214327370668_329_image-20230514201910114.png" srcset="/img/loading.gif" lazyload alt="image-20230514201910114">
+<figcaption aria-hidden="true">image-20230514201910114</figcaption>
+</figure></li>
+</ul>
+<p>第一点的实现可以逐个标签页进行遍历，也可以采用字典树等方式进行优化。在这个项目中采用了较容易实现的遍历方式。</p>
+<p>第二点的实现使用了<code>unordered_set</code>存储了当前存在的未命名标签页，逐ID比对。</p>
+<p>为了便于通过路径快速寻找到对应的标签页，可以将<code>&lt;filePath，tabINdex&gt;</code>的对应关系存到一个<code>unordered_map</code>中。哈希表可以实现近似<code>O(1)</code>的查找替换的复杂度。</p>
+<p>下面是添加标签页的部分代码，有两个重载函数，分别对应了是否关联文件的标签页。</p>
+<p>关联文件的标签页:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r034ldlhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-r034ldlhowdp17"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionTabWidget::addNewTab</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text, <span class="hljs-type">const</span> QString &amp;filePath)</span> </span>{
+    <span class="hljs-keyword">if</span> (mainWindow) {
+        <span class="hljs-type">bool</span> needToDistinguish = <span class="hljs-literal">false</span>;
+        QString fileName = <span class="hljs-built_in">QFileInfo</span>(filePath).<span class="hljs-built_in">fileName</span>();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">count</span>(); i++) {
+            QString filePathOfCurrentTab = <span class="hljs-built_in">getCodePage</span>(i)-&gt;<span class="hljs-built_in">getFilePath</span>();
+            <span class="hljs-keyword">if</span> (filePathOfCurrentTab == filePath) {
+                <span class="hljs-built_in">setCurrentIndex</span>(i);
+                <span class="hljs-keyword">return</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">QFileInfo</span>(filePathOfCurrentTab).<span class="hljs-built_in">fileName</span>() == fileName) {
+                <span class="hljs-built_in">setTabText</span>(i, filePathOfCurrentTab);
+                needToDistinguish = <span class="hljs-literal">true</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (needToDistinguish) {
+            fileName = filePath;
+        }
+        <span class="hljs-comment">// if the text is too long, do not init Highlighter</span>
+        <span class="hljs-keyword">if</span> (text.<span class="hljs-built_in">length</span>() &gt; <span class="hljs-number">10000</span>) {
+            <span class="hljs-built_in">addTab</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">QLionCodePage</span>(<span class="hljs-keyword">this</span>, <span class="hljs-literal">false</span>), fileName);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-built_in">addTab</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">QLionCodePage</span>(<span class="hljs-keyword">this</span>), fileName);
+        }
+        usingFilePath[filePath] = <span class="hljs-built_in">count</span>() - <span class="hljs-number">1</span>;
+        <span class="hljs-built_in">setCurrentIndex</span>(<span class="hljs-built_in">count</span>() - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">auto</span> *codePage = <span class="hljs-built_in">getCurrentCodePage</span>();
+        <span class="hljs-comment">// do not forget to set the parentTabWidget</span>
+        <span class="hljs-built_in">getCurrentCodePage</span>()-&gt;<span class="hljs-built_in">setParentTabWidget</span>(<span class="hljs-keyword">this</span>);
+        codePage-&gt;<span class="hljs-built_in">setFilePath</span>(filePath);
+        codePage-&gt;<span class="hljs-built_in">setPlainText</span>(text);
+    }
+}</code></pre></div></div>
+<p>由于文字较长时代码高亮会有卡顿，因此当大于一定长度的时候取消高亮。现在的编辑器如VSCode也是这么做的。</p>
+<p>新建的标签页</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-twgjm4lhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-twgjm4lhowdp17"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionTabWidget::addNewTab</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (mainWindow) {
+        <span class="hljs-comment">// get the minimum unused untitledID from the set</span>
+        <span class="hljs-type">int</span> newID = <span class="hljs-number">1</span>;
+        <span class="hljs-comment">// it will iterate at most size() times</span>
+        <span class="hljs-keyword">while</span> (usingUntitledID.<span class="hljs-built_in">count</span>(newID)) {
+            newID++;
+        }
+        usingUntitledID.<span class="hljs-built_in">insert</span>(newID);
+        QString title = <span class="hljs-string">"Untitled-"</span> + QString::<span class="hljs-built_in">number</span>(newID);
+        <span class="hljs-built_in">addTab</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">QLionCodePage</span>(<span class="hljs-keyword">this</span>), title);
+        <span class="hljs-built_in">setCurrentIndex</span>(<span class="hljs-built_in">count</span>() - <span class="hljs-number">1</span>);
+        QLionCodePage *currentCodePage = <span class="hljs-built_in">getCurrentCodePage</span>();
+        currentCodePage-&gt;<span class="hljs-built_in">setParentTabWidget</span>(<span class="hljs-keyword">this</span>);
+        currentCodePage-&gt;<span class="hljs-built_in">setUntitledID</span>(newID);
+    }
+}</code></pre></div></div>
+<h4 id="关闭标签页">关闭标签页</h4>
+<p>关闭标签页时，若标签页未保存，需要提示是否进行保存。同时如果没有标签页，应当把菜单栏上复制粘贴等按钮禁用掉，也不应当进行查找替换等。</p>
+<h4 id="行号事件响应">行号事件响应</h4>
+<h5 id="点击事件">点击事件</h5>
+<p>VSCode中点击行号可以跳转到对应行号，选中该行文本并将光标置于下一行。对此进行实现:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t7yw2blhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-t7yw2blhowdp17"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">mousePressEvent</span><span class="hljs-params">(QMouseEvent *event)</span> <span class="hljs-keyword">override</span></span>{
+    codeEditor-&gt;<span class="hljs-built_in">lineNumberAreaMousePressEvent</span>(event);
+}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bx6n0hlhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-bx6n0hlhowdp17"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::lineNumberAreaMousePressEvent</span><span class="hljs-params">(QMouseEvent *mEvent)</span> </span>{
+    <span class="hljs-comment">// select the current line and jump the cursor to the beginning of the next line</span>
+    <span class="hljs-type">int</span> clickedLineNumber=<span class="hljs-built_in">qRound</span>(mEvent-&gt;<span class="hljs-built_in">position</span>().<span class="hljs-built_in">y</span>())/<span class="hljs-built_in">fontMetrics</span>().<span class="hljs-built_in">height</span>()+<span class="hljs-built_in">verticalScrollBar</span>()-&gt;<span class="hljs-built_in">value</span>();
+<span class="hljs-comment">//    qDebug()&lt;&lt;clickedLineNumber;</span>
+    QTextBlock clickedBlock=<span class="hljs-built_in">document</span>()-&gt;<span class="hljs-built_in">findBlockByLineNumber</span>(clickedLineNumber);
+    <span class="hljs-function">QTextCursor <span class="hljs-title">cursor</span><span class="hljs-params">(clickedBlock)</span></span>;
+       cursor.<span class="hljs-built_in">movePosition</span>(QTextCursor::QTextCursor::NextBlock,QTextCursor::KeepAnchor);
+    <span class="hljs-built_in">setTextCursor</span>(cursor);
+}</code></pre></div></div>
+<h4 id="滚动事件">滚动事件</h4>
+<p>和TextEdit部分保持同步即可。</p>
+<h4 id="绘制事件">绘制事件</h4>
+<p>需要获取当前可见区域的第一个Block获取其行号。Block按照链表组织，一直next获取下一个Block直到看不见为止，绘制可见区域数字。绘制宽度和位置需要根据字体和数字位数动态调整。参见代码中<code>lineNumberAreaPaintEvent</code>部分。</p>
+<h3 id="代码高亮">代码高亮</h3>
+<p>代码高亮使用了QT提供的<code>QSyntaxHighlighter</code>利用正则表达式进行高亮。由于C++不是LR(1)
+文法，必然不能使用正则表达式进行准确的高亮。但是可以使用一些trick让高亮尽可能的准确。</p>
+<p>这一部分需要注意的主要是:</p>
+<ul>
+<li>后添加的规则的高亮会覆盖掉先添加的规则</li>
+<li>完全可以部分高亮匹配的文本，也可以为不同的部分添加不同的高亮颜色</li>
+</ul>
+<p>基于第一条，我们必须选择合理的顺序渲染；同时还可以弥补一些渲染上的缺陷。比如浮点数的渲染。搜索尝试了多种正则表达形式，最后采用了编译原理中编写了一条几乎适用所有浮点形式的正则表达式:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-56fr2jlhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-56fr2jlhowdp17"><pre><code class="hljs C++">((([<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*[.][<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*([eE][+-]?[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+)?)|([<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+[eE][+-]?[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+))[fLlL]?)</code></pre></div></div>
+<p>它可以匹配<code>.xxx</code>和<code>xxx.</code>形式的浮点数，且不与变量名冲突(这也是为什么编译原理词法分析选择用这个表达式)，还能匹配科学计数法和带显式浮点格式的浮点数。但是唯一的缺陷是会把单独的点高亮。而通常在作为类成员访问符时是不高亮的。类成员的高亮规则刚好解决了这个问题。我们认为点后面加变量名这种方式作为类成员的高亮定义。又根据第二条，我们可单独为此时的点设置不同的颜色。把这条规则放到浮点数后面，就能完美的解决点高亮的问题。</p>
+<p>第二条的其他应用比如我们可以将头文件定义作为一条规则来匹配。CLion中高亮是这样:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214328373693_177_image-20230514210950317.png" srcset="/img/loading.gif" lazyload alt="image-20230514210950317">
+<figcaption aria-hidden="true">image-20230514210950317</figcaption>
+</figure>
+<p>单独的尖括号包裹的字符串不会被高亮，只有与<code>#include</code>配合使用时才会高亮。这只有通过单一匹配规则和部分高亮实现:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tty3jplhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-tty3jplhowdp17"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Highlighter::addIncludeFormat</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text)</span> </span>{
+    HighlightRule rule;
+    rule.pattern = <span class="hljs-built_in">QRegularExpression</span>(<span class="hljs-string">R"(#include\s*[&lt;"][a-zA-Z0-9_./\\]*[&gt;"])"</span>);
+    <span class="hljs-function">QColor <span class="hljs-title">stringColor</span><span class="hljs-params">(<span class="hljs-number">106</span>, <span class="hljs-number">135</span>, <span class="hljs-number">89</span>)</span></span>;
+    <span class="hljs-function">QColor <span class="hljs-title">includeColor</span><span class="hljs-params">(<span class="hljs-number">255</span>, <span class="hljs-number">198</span>, <span class="hljs-number">109</span>)</span></span>;
+    rule.format.<span class="hljs-built_in">setForeground</span>(stringColor);
+    rule.format.<span class="hljs-built_in">setFont</span>(<span class="hljs-built_in">QFont</span>(mFontFamily, mFontSize));
+    QRegularExpressionMatchIterator matchIterator = rule.pattern.<span class="hljs-built_in">globalMatch</span>(text);
+    <span class="hljs-keyword">while</span> (matchIterator.<span class="hljs-built_in">hasNext</span>()) {
+        QRegularExpressionMatch match = matchIterator.<span class="hljs-built_in">next</span>();
+        <span class="hljs-comment">// set the "#include" to includeColor and others to stringColor</span>
+        <span class="hljs-built_in">setFormat</span>(match.<span class="hljs-built_in">capturedStart</span>(), <span class="hljs-number">8</span>, includeColor);
+        <span class="hljs-built_in">setFormat</span>(match.<span class="hljs-built_in">capturedStart</span>() + <span class="hljs-number">8</span>, match.<span class="hljs-built_in">capturedLength</span>() - <span class="hljs-number">8</span>, rule.format);
+    }
+}</code></pre></div></div>
+<p>由于时间原因没做主题配置功能，因此颜色暂时硬编码到了代码中。</p>
+<p>另外，不同于单行的高亮内容。若支持高亮注释，需要记录每一行的状态。QT提供了<code>setCurrentBlockState()</code>函数供我们记录行的信息。对每一行来说，如果上一行是注释，跳过检测前面的<code>/*</code>。代码实现如下:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-89faiflhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-89faiflhowdp17"><pre><code class="hljs C++"><span class="hljs-comment">//notice: it was called line by line</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Highlighter::addMultiLineCommentFormat</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text)</span> </span>{
+    <span class="hljs-comment">//mark the start of the comment</span>
+    <span class="hljs-built_in">setCurrentBlockState</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-function">QRegularExpression <span class="hljs-title">startExpression</span><span class="hljs-params">(<span class="hljs-string">R"(/\*)"</span>)</span></span>;
+    <span class="hljs-function">QRegularExpression <span class="hljs-title">endExpression</span><span class="hljs-params">(<span class="hljs-string">R"(\*/)"</span>)</span></span>;
+    <span class="hljs-function">QColor <span class="hljs-title">color</span><span class="hljs-params">(<span class="hljs-number">128</span>, <span class="hljs-number">128</span>, <span class="hljs-number">128</span>)</span></span>;
+    QTextCharFormat multiLineCommentFormat;
+    multiLineCommentFormat.<span class="hljs-built_in">setForeground</span>(color);
+    multiLineCommentFormat.<span class="hljs-built_in">setFont</span>(<span class="hljs-built_in">QFont</span>(mFontFamily, mFontSize));
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> startIndex = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// that is, if the previous line is not a comment</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">previousBlockState</span>() != <span class="hljs-number">1</span>)
+        startIndex = startExpression.<span class="hljs-built_in">match</span>(text).<span class="hljs-built_in">capturedStart</span>();
+    <span class="hljs-comment">//if the previous line is a comment, we should start from the beginning of the line (startIndex=0)</span>
+    <span class="hljs-keyword">while</span> (startIndex &gt;= <span class="hljs-number">0</span>) {
+        QRegularExpressionMatch endMatch = endExpression.<span class="hljs-built_in">match</span>(text, startIndex);
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> endIndex = endMatch.<span class="hljs-built_in">capturedStart</span>();
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> commentLength = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (endIndex == <span class="hljs-number">-1</span>) {
+            <span class="hljs-comment">// we still in a comment</span>
+            <span class="hljs-built_in">setCurrentBlockState</span>(<span class="hljs-number">1</span>);
+            commentLength = text.<span class="hljs-built_in">length</span>() - startIndex;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// we find the end of the comment</span>
+            commentLength = endIndex - startIndex + endMatch.<span class="hljs-built_in">capturedLength</span>();
+        }
+        <span class="hljs-built_in">setFormat</span>(startIndex, commentLength, multiLineCommentFormat);
+        startIndex = startExpression.<span class="hljs-built_in">match</span>(text, startIndex + commentLength).<span class="hljs-built_in">capturedStart</span>();
+    }
+}</code></pre></div></div>
+<p>可以看到几乎还原了在真实代码编辑器中的显示效果。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214329527229_954_image-20230514230623432.png" srcset="/img/loading.gif" lazyload alt="image-20230514230623432">
+<figcaption aria-hidden="true">image-20230514230623432</figcaption>
+</figure>
+<h3 id="菜单栏功能">菜单栏功能</h3>
+<h4 id="打开文件">打开文件</h4>
+<p>打开文件是文本编辑器的基本操作。需要判断文件是否有效，保存打开路径以便下次从这个目录再寻找文件，还要判断是否需要在标签栏上区分路径。得益于面向对象和封装的思想，<code>mainwindow</code>提供打开文件的接口后，除了通过菜单栏打开文件，后续通过文件目录树打开文件，通过拖拽打开文件等都可以直接调用接口，而不必再关心怎样区分标签栏路径这样的细节。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214330918451_552_image-20230514220624197.png" srcset="/img/loading.gif" lazyload alt="image-20230514220624197">
+<figcaption aria-hidden="true">image-20230514220624197</figcaption>
+</figure>
+<h4 id="保存文件">保存文件</h4>
+<p>在项目的设计中将保存文件交给了<code>QLionCodePage</code>，即让打开的标签页自己处理保存事件。当新建的文件保存时会产生文件路径，需要更新对应的数据结构，并区分标签页。同样的，后续运行项目，关闭标签页提示等需要用到保存操作时，不必关心实现的细节。</p>
+<h4 id="编辑操作">编辑操作</h4>
+<p>直接交由对应标签页处理即可。注意到若光标没有选中文本，复制会直接复制一行。</p>
+<h4 id="查找替换操作">查找替换操作</h4>
+<p>这一部分是查找替换功能实现后写的，获取选中文本，跳转到对应页面设置文本即可。</p>
+<h3 id="文件目录树">文件目录树</h3>
+<p>这一部分采用了QT中模型-视图结构。通过<code>QTreeView</code>和<code>QFileSystemModel</code>结合使用可以实现显示文件目录。<code>Treeview</code>上<code>mouseReleaseEvent</code>操作可以实现对文件的创建，重命名，删除操作。</p>
+<p>需要注意，如果点击的<code>idx</code>无效，说明点的是空白的地方，并不是什么都不做，而是在根目录进行操作。</p>
+<p>新建和重命名操作都是新弹出一个Widget，设置好出现的尺寸，相应回车操作。</p>
+<p>重命名操作是其中最复杂的操作，经过多次测试才确保无误。重命名后，需要根据文件路径查找是否该文件已经在tabWidget上显示，如果显示了需要更新其路径。当然也会出现名字冲突的现象，代码中已经将其抽象为<code>distinguishFileName</code>。</p>
+<p>拖拽操作需要重载三个<code>event</code>，其中<code>dropEvent</code>需要将文件添加到正确的位置，其他的只需要判断拖拽的是不是文件即可。</p>
+<p>上述操作目录相关的操作需要对其下的文件进行递归操作，一开始只看到有<code>rmdir</code>这个接口，自己造了轮子结果演示的时候发现<code>build</code>目录本身删不掉。后续测试发现其他目录都是可以的。为什么呢？阅读<a target="_blank" rel="noopener" href="https://doc.qt.io/qt-6/qdir.html#rmdir">文档</a>发现删除目录需要目录非空。<code>build</code>看上去是空的，但是获取文件列表的时候隐藏文件获取不到。实际上它就不是空的：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214332155342_338_image-20230515153815269.png" srcset="/img/loading.gif" lazyload alt="image-20230515153815269">
+<figcaption aria-hidden="true">image-20230515153815269</figcaption>
+</figure>
+<p>后来发现有<a target="_blank" rel="noopener" href="https://doc.qt.io/qt-6/qdir.html#removeRecursively">removeRecursively</a>，这个是可以正常工作的。还是得好好看文档。</p>
+<p>这一部分相对比较繁琐，花费时间也较长，但主要为API调用和操作逻辑为主，没有什么特别的技巧性的东西。</p>
+<h3 id="查找替换">查找替换</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214333625979_193_image-20230514231847964.png" srcset="/img/loading.gif" lazyload alt="image-20230514231847964">
+<figcaption aria-hidden="true">image-20230514231847964</figcaption>
+</figure>
+<p>首先比较坑的是需要处理好切换逻辑。可以使用<code>QActionLIst</code>完成互斥动作处理，不过由于只有两个动作，暂时直接在代码里写切换逻辑也不是不行。</p>
+<p>查找替换的高亮(和文本选中)操作也需要更新。切换标签页时需要在新的标签栏高亮，取消旧标签栏高亮，切换到文件目录树也是如此。这需要为标签页切换额外增加槽函数。但信号的index是切换后的index，我们需要增加一变量保存切换前的index。但这个切换前的index使用时需要判断其有效性，比如关闭标签页时可能会导致保存的这个index不可用，造成内存泄漏。</p>
+<p>高亮所有匹配目标仍旧是采用的HightLighter.为其动态额外增加高亮目标即可。不想高亮了将其设为空字符串。但是由于高亮器是按行高亮的，为关键字设置背景色时与<code>plaintextEdit</code>为当前行添加<code>extraSelection</code>可能有冲突。目前没找到好的解决方案，不过这个问题也不影响正常使用。</p>
+<p>注意到替换文本可能会为查找位置带来偏移，一开始保存的查找到的位置可能会失效。如果Highlighter提供某个正则表达式第n个匹配位置之类的接口，这就不需要我们太担心这个问题，只需要利用highlighter实时获取位置即可。理论上现在的编辑器支持查找过程中改变文本，也是采用的实时正则匹配。但是一开始没有考虑到偏移问题，采用的是第一次查询把所有位置保存下来，后面查找直接从向量中取位置出来即可。后面发现这是一种很蠢的方案。毕竟，这些位置是编辑敏感的，编辑或替换文本后位置就变了。因此后续引入了偏移，以在替换时根据查找词长度更新位置。但是这还是没解决编辑的问题。因此查找替换时冻结了编辑页面。这样可以经过简单的偏移计算保证位置准确性。不过由于每次替换都需要更新后续所有的位置，复杂度还是很高。后来意识到没有有效利用高亮器提供的匹配功能本身就带有长度和位置信息。但是由于时间有限，这一部分并没有进行比较优雅的设计。后续再去进行调整。比较合理的思路是高亮器获取当前查找的index，高亮的过程中记录位置和匹配个数，分别发送信号给codePage和mainWindow(再传给FindReplaceView,这样设计的原因是有较明确的主从关系，而非任何两个对象都能直接交流，造成较强的耦合)去改变选中文本和查找的情况。抛开底层算法(字符串和正则匹配)的复杂性，将这一部分的业务逻辑进行合理的设计也是需要费些心思的。这也是在这个项目上面投入时间有些后悔的原因:比起业务逻辑和API调用，算法和系统设计才是我们最应当关注的地方。除开智商的因素，尽可能有意识的培养这一方面的直觉还是给常重要的。</p>
+<h3 id="快速注释">快速注释</h3>
+<p>快速注释可以通过按<kbd>ctrl</kbd>+<kbd>/</kbd>来注释和取消注释。看上去只是在行首添加或去掉<code>/</code>的问题，但更重要的是需要将光标恢复到原来的位置。如果处理不好将导致光标恢复到错误的位置甚至有效范围之外，导致不可预知的行为。另外需要额外处理单个<code>/</code>的情况，虽然这种情况在实际编辑中并不常见。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mtynqvlhowdp17"></i><span>C++</span><div class="collapse show" id="collapse-mtynqvlhowdp17"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::denoteCurrentLine</span><span class="hljs-params">()</span> </span>{
+    QTextCursor cursor = <span class="hljs-built_in">textCursor</span>();
+    <span class="hljs-comment">// record the current position</span>
+    <span class="hljs-type">int</span> position = cursor.<span class="hljs-built_in">position</span>();
+    <span class="hljs-type">int</span> positionInBlock = cursor.<span class="hljs-built_in">positionInBlock</span>();
+<span class="hljs-comment">//    qDebug() &lt;&lt; position &lt;&lt; " " &lt;&lt; positionInBlock;</span>
+    cursor.<span class="hljs-built_in">movePosition</span>(QTextCursor::StartOfLine);
+    QString text = cursor.<span class="hljs-built_in">block</span>().<span class="hljs-built_in">text</span>();
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;text.<span class="hljs-built_in">length</span>();i++){
+        <span class="hljs-keyword">if</span>(text[i]==<span class="hljs-string">' '</span>||text[i]==<span class="hljs-string">'\t'</span>){
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(text[i]==<span class="hljs-string">'/'</span>){
+            <span class="hljs-keyword">if</span>(i&lt;text.<span class="hljs-built_in">length</span>()<span class="hljs-number">-1</span>){
+                <span class="hljs-keyword">if</span>(text[i+<span class="hljs-number">1</span>]==<span class="hljs-string">'/'</span>) {
+                    <span class="hljs-comment">//it is a line with spaces and a double '/', remove the denotation here</span>
+                    cursor.<span class="hljs-built_in">movePosition</span>(QTextCursor::Right, QTextCursor::MoveAnchor, i);
+                    cursor.<span class="hljs-built_in">movePosition</span>(QTextCursor::Right, QTextCursor::KeepAnchor, <span class="hljs-number">2</span>);
+                    cursor.<span class="hljs-built_in">removeSelectedText</span>();
+                    <span class="hljs-keyword">if</span>(positionInBlock&lt;=i){
+                        <span class="hljs-comment">// if the cursor is at the left of the denotation, move the cursor to the original position</span>
+                        cursor.<span class="hljs-built_in">setPosition</span>(position);
+                    }
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(positionInBlock==i+<span class="hljs-number">1</span>){
+                        <span class="hljs-comment">// if the cursor is at the middle of the denotation, move the cursor to the original position with a offset</span>
+                        cursor.<span class="hljs-built_in">setPosition</span>(position<span class="hljs-number">-1</span>);
+                    }
+                    <span class="hljs-keyword">else</span>{
+                        <span class="hljs-comment">// if the cursor is at the right of the denotation</span>
+                        cursor.<span class="hljs-built_in">setPosition</span>(position<span class="hljs-number">-2</span>);
+                    }
+                }
+                <span class="hljs-keyword">else</span>{
+                    <span class="hljs-comment">//it is a line with spaces and a single '/', add a single '/' here</span>
+                    cursor.<span class="hljs-built_in">movePosition</span>(QTextCursor::Right, QTextCursor::MoveAnchor, i+<span class="hljs-number">1</span>);
+                    cursor.<span class="hljs-built_in">insertText</span>(<span class="hljs-string">"/"</span>);
+                    <span class="hljs-keyword">if</span>(positionInBlock&lt;=i+<span class="hljs-number">1</span>){
+                        <span class="hljs-comment">// if the cursor is at the right of the denotation, move the cursor to the original position</span>
+                        cursor.<span class="hljs-built_in">setPosition</span>(position);
+                    }
+                    <span class="hljs-keyword">else</span>{
+                        <span class="hljs-comment">// if the cursor is at the left of the denotation, move the cursor to the original position with a offset</span>
+                        cursor.<span class="hljs-built_in">setPosition</span>(position+<span class="hljs-number">1</span>);
+                    }
+                }
+            }
+            <span class="hljs-keyword">else</span>{
+                <span class="hljs-comment">//it is a line with spaces and a single '/', add a single '/' to the end of the line</span>
+                cursor.<span class="hljs-built_in">movePosition</span>(QTextCursor::EndOfLine);
+                cursor.<span class="hljs-built_in">insertText</span>(<span class="hljs-string">"/"</span>);
+                cursor.<span class="hljs-built_in">setPosition</span>(position);
+            }
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">else</span>{
+            <span class="hljs-comment">// not start with spaces and '/', denote at the start of the line</span>
+            cursor.<span class="hljs-built_in">insertText</span>(<span class="hljs-string">R"(//)"</span>);
+            cursor.<span class="hljs-built_in">setPosition</span>(position+<span class="hljs-number">2</span>);
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-comment">// move the cursor to the original position</span>
+    <span class="hljs-built_in">setTextCursor</span>(cursor);
+}
+</code></pre></div></div>
+<h3 id="cmake项目运行">Cmake项目运行</h3>
+<p>众所周知，QT的强大之处在于跨平台。而CMake作为跨平台的构建工具，Clion为了支持跨平台也是用的CMake构建项目。我们的编辑器可以利用CMake完成平台和脚本无关的构建。我们只要设置好Cmake和构建器的路径，并交由用户自定义构建选项，CMake可以构建的项目，我们的编辑器也可以构建。</p>
+<p><code>Qprocess</code>可以实现跨平台的命令运行。代码中定义了<code>QLionTerminal</code>类，完成可视化终端的设计并对<code>QProcess</code>类的功能进行封装。</p>
+<p>一个Cmake项目的运行需要经历生成，构建，执行三个阶段。将这三个阶段以及空闲阶段作为状态构建枚举类，并作为<code>QLionTerminal</code>的状态机。同时在类中自定义了信号，当命令执行结束后<code>showFinished</code>槽函数被调用其功能是将命令执行状态打印到模拟终端UI上(使用PlaintextEdit实现)。并根据状态机的状态发射自定义信号给<code>mainWindow</code>，<code>mainWindow</code>根据状态判断是否要执行下一步命令，以及执行哪个命令。通过读取项目中的<code>CmakeList.txt</code>可以判断可执行对象(add_excuable)。一个项目中可能有多个可执行对象，由于时间有限只选取第一个可执行对象执行，多个对象执行的原理是一样的。若进行拓展，可读取所有可执行对象在右上角展示供用户选择(像Clion一样）。</p>
+<p>Helloworld程序执行:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214335038890_263_image-20230514234245615.png" srcset="/img/loading.gif" lazyload alt="image-20230514234245615">
+<figcaption aria-hidden="true">image-20230514234245615</figcaption>
+</figure>
+<p>同样的道理，我们甚至可以让它构建自己:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214336183959_219_image-20230514234354199.png" srcset="/img/loading.gif" lazyload alt="image-20230514234354199">
+<figcaption aria-hidden="true">image-20230514234354199</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/README/20230515214337928748_935_image-20230514234428154.png" srcset="/img/loading.gif" lazyload alt="image-20230514234428154">
+<figcaption aria-hidden="true">image-20230514234428154</figcaption>
+</figure>
+<h2 id="单元测试及收获">单元测试及收获</h2>
+<p>如<a target="_blank" rel="noopener" href="https://nju-projectn.github.io/ics-pa-gitbook/ics2019/1.5.html">PA</a>中所述，未经测试的代码永远是错的。尽管已经在编写代码中进行了大量单元测试，在此一一列举出成功的样例也没有意义。这一部分可以参见项目视频。而且我们只是体会文本编辑器的工作方式和原理，而非真的去造这么一个轮子出来，像PA中提到的<a target="_blank" rel="noopener" href="https://nju-projectn.github.io/ics-pa-gitbook/ics2019/1.5.html">KISS法则</a>样，只是实现了最基础的功能，更高级的设计，安全甚至性能都不是在一开始的实现过程需要考虑的，追求面面俱到只会增加代码维护的难度。即便如此，由于时间仓促，前面的分析可以看到，设计上仍旧有失误，也难免会出现这样那样未全面测试到的问题。当然，这个项目除了完成作业以外纯粹是兴趣驱动，没有功利性的目的，更没有任何实际价值(我们为什么不用VSCode呢)，因此暂时就容许这些失误出现吧(毕竟还有很多更重要的事情要做)，后续对bug的修复和对代码的重构在自己功力更深厚，思路更清晰的时候做，会更容易一些。</p>
+<h2 id="借物表">借物表</h2>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16M4y167tB/?spm_id_from=333.999.0.0">续加仪</a>的代码编辑器给了我灵感和启动项目的动力。基本的高亮部分和行号绘制部分参考了这个项目。</p>
+<p><a target="_blank" rel="noopener" href="https://jetbrains.design/intellij/resources/icons_list/">JetBrains
+Icons</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode-icons">VSCode
+Icons</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>QLIon</div>
+      <div>http://lunaticsky-tql.github.io/posts/38550/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/48981/" title="软件工程-软件设计作业">
+                        <span class="hidden-mobile">软件工程-软件设计作业</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
