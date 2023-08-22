@@ -16,24 +16,22 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="Go 语言入门指南：slice使用解析 在讲slice使用之前，先来看一下切片的结构, 理解slice的底层存储对得心应手的使用slice来说是必须的。切片的数据结构是一个结构体, 结构体内有三个参数, pointer指向底层数组中的某个元素, length表示长度, cap表示最大容量。 gotype slice struct {     array unsafe.Pointer  &#x2F;&#x2F;底层数组">
+        <meta name="description" content="Go编码规范 最近正在阅读Effective C++和&#96;Effective Modern C++，其中的很多条款都值得反复阅读并牢记，理解其中的原理对用好C++这把瑞士军刀受益匪浅。相应的，最近也发现了Effective go，就如何编写清晰、地道的 Go 代码提供了一些技巧。它是对 语言规范、 Go 语言之旅 以及 如何使用 Go 编程 的补充说明。得益于Go的简洁，其编程规范比C++要简洁清晰">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go 语言入门指南：slice使用解析">
-<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/29701/index.html">
+<meta property="og:title" content="golang高质量编程实践">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/2118/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="Go 语言入门指南：slice使用解析 在讲slice使用之前，先来看一下切片的结构, 理解slice的底层存储对得心应手的使用slice来说是必须的。切片的数据结构是一个结构体, 结构体内有三个参数, pointer指向底层数组中的某个元素, length表示长度, cap表示最大容量。 gotype slice struct {     array unsafe.Pointer  &#x2F;&#x2F;底层数组">
+<meta property="og:description" content="Go编码规范 最近正在阅读Effective C++和&#96;Effective Modern C++，其中的很多条款都值得反复阅读并牢记，理解其中的原理对用好C++这把瑞士军刀受益匪浅。相应的，最近也发现了Effective go，就如何编写清晰、地道的 Go 代码提供了一些技巧。它是对 语言规范、 Go 语言之旅 以及 如何使用 Go 编程 的补充说明。得益于Go的简洁，其编程规范比C++要简洁清晰">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/golang%E5%88%87%E7%89%87/20230821221521427663_524_slice.jpg">
-<meta property="article:published_time" content="2023-08-21T14:15:22.900Z">
-<meta property="article:modified_time" content="2023-08-21T14:15:22.900Z">
+<meta property="article:published_time" content="2023-08-22T13:55:39.477Z">
+<meta property="article:modified_time" content="2023-08-22T13:55:39.477Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/golang%E5%88%87%E7%89%87/20230821221521427663_524_slice.jpg">
     
     
     
-    <title>Go 语言入门指南：slice使用解析 - Lunaticsky&#39;s Blog</title>
+    <title>golang高质量编程实践 - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -225,7 +223,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Go 语言入门指南：slice使用解析"></span>
+            <span id="subtitle" data-typed-text="golang高质量编程实践"></span>
           
         </div>
 
@@ -236,8 +234,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2023-08-21 22:15" pubdate>
-              2023年8月21日 晚上
+            <time datetime="2023-08-22 21:55" pubdate>
+              2023年8月22日 晚上
             </time>
           </span>
           
@@ -248,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              3.6k 字
+              4.6k 字
                 
       </span>
       
@@ -274,7 +272,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Go 语言入门指南：slice使用解析/Go 语言入门指南：slice使用解析.md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/golang高质量编程实践/golang高质量编程实践.md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -306,161 +304,196 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Go 语言入门指南：slice使用解析</h1>
+            <h1 style="display: none">golang高质量编程实践</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="go-语言入门指南slice使用解析">Go
-语言入门指南：slice使用解析</h1>
-<p>在讲slice使用之前，先来看一下切片的结构,
-理解slice的底层存储对得心应手的使用slice来说是必须的。切片的数据结构是一个结构体,
-结构体内有三个参数, pointer指向底层数组中的某个元素, length表示长度,
-cap表示最大容量。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ov7ol9llmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-ov7ol9llmdfsx0"><pre><code class="hljs go"><span class="hljs-keyword">type</span> slice <span class="hljs-keyword">struct</span> {
-    array unsafe.Pointer  <span class="hljs-comment">//底层数组</span>
-    <span class="hljs-built_in">len</span>   <span class="hljs-type">int</span>   <span class="hljs-comment">//长度</span>
-    <span class="hljs-built_in">cap</span>   <span class="hljs-type">int</span>   <span class="hljs-comment">//容量</span>
-}</code></pre></div></div>
-<p>此部分源码位于<a target="_blank" rel="noopener" href="https://go.dev/src/runtime/slice.go"><code>src/runtime/slice.go</code></a>。</p>
-<h3 id="空切片和nil切片">空切片和nil切片</h3>
-<p>在开发中我们会经常遇到这种情况, 我们想返回长度为零的切片时,
-有时返回的是nil, 有时返回的是空切片, 这两者有什么区别呢,
-我们到底应该使用哪一种呢。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3barxullmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-3barxullmdfsx0"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
-    <span class="hljs-comment">// 定义nil切片</span>
-    <span class="hljs-keyword">var</span> s1 []<span class="hljs-type">string</span>
-    <span class="hljs-comment">//定义空切片</span>
-    s2 := <span class="hljs-built_in">make</span>([]<span class="hljs-type">string</span>, <span class="hljs-number">0</span>)
-    s3 := []<span class="hljs-type">string</span>{}
-    fmt.Printf(<span class="hljs-string">"%#v,Len:%d,cap:%d,ptr:%p,nil=%t\n"</span>, s1, <span class="hljs-built_in">len</span>(s1), <span class="hljs-built_in">cap</span>(s1), s1, <span class="hljs-literal">nil</span> == s1)
-    fmt.Printf(<span class="hljs-string">"%#v,Len:%d,cap:%d,ptr:%p,nil=%t\n"</span>, s2, <span class="hljs-built_in">len</span>(s2), <span class="hljs-built_in">cap</span>(s2), s2, <span class="hljs-literal">nil</span> == s2)
-    fmt.Printf(<span class="hljs-string">"%#v,Len:%d,cap:%d,ptr:%p,nil=%t\n"</span>, s3, <span class="hljs-built_in">len</span>(s3), <span class="hljs-built_in">cap</span>(s3), s3, <span class="hljs-literal">nil</span> == s3)
-}</code></pre></div></div>
-<p>打印结果：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5z9gytllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-5z9gytllmdfsx0"><pre><code class="hljs go">[]<span class="hljs-type">string</span>(<span class="hljs-literal">nil</span>),Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x0</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">true</span>
-[]<span class="hljs-type">string</span>{},Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x10438c108</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">false</span>
-[]<span class="hljs-type">string</span>{},Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x10438c108</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">false</span></code></pre></div></div>
-<p>现在分别打印这三个切片, 可以发现长度容量相同且都为零,
-那两者有什么不同呢。</p>
-<p>第一点切片的指针指向不同。<code>nil</code>切片通过<code>var</code>关键词定义,
-仅声明未初始化<code>pointer</code>指针为<code>nil</code>空指针,
-空切片通过<code>make</code>关键词定义声明并初始化了空间,
-由于初始化的长度为零, <code>pointer</code>指针指向了空结构体的地址,
-还未指向底层数组。</p>
-<p>第二点是否等于<code>nil</code>。这个是显然的。但这也说明判断一个切片是否为空时,
-我们应该通过长度是否为零来判断, 而不是通过是否为nil而来判断。</p>
-<p>第三点, 转码<code>json</code>后不同。对切片进行<code>json</code>编码,
-<code>nil</code>切片会被编码成当空,
-切片会被编码成空数组。这一点在前后端交互时值得注意。</p>
-<p><code>make</code>参数第一个是数据类型，第二个是 len ，第三个是 cap
-。如果不传入第三个参数，则 <code>cap=len</code>。</p>
-<h3 id="slice传递">slice传递</h3>
-<p>下面看一段代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-37y9q3llmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-37y9q3llmdfsx0"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
-	<span class="hljs-keyword">var</span> s []<span class="hljs-type">int</span>
-	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ {
-		s = <span class="hljs-built_in">append</span>(s, i)
-	}
-	modifySlice(s)
-	fmt.Println(s)
-}</code></pre></div></div>
-<p>一眼就能看出来，肯定是打印[1024,1,2,2048]吧。其实不是，运行这段代码后只会打印出
-[1024,1,2]。原因就是slice
-是按值传递的，这里传递的是s底层的数组的指针。</p>
-<p>但是仅仅是共享了slice底层的数组，slice底层的<code>len</code>和<code>cap</code>都是被复制了一份，所以在<code>modifySlice</code>里面的<code>len+1</code>在外层是看不到的。外层的<code>len</code>还是3。</p>
-<p>更进一步，如果我们再append一条数据会怎么样呢？</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6ijpnqllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-6ijpnqllmdfsx0"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">modifySlice</span><span class="hljs-params">(s []<span class="hljs-type">int</span>)</span></span> {
-	s = <span class="hljs-built_in">append</span>(s, <span class="hljs-number">2048</span>)
-	s = <span class="hljs-built_in">append</span>(s, <span class="hljs-number">4096</span>)
-	s[<span class="hljs-number">0</span>] = <span class="hljs-number">1024</span>
-}</code></pre></div></div>
-<p>我们可以看到外层打印的slice变成了
-<strong>[0,1,2]</strong>。因为modifySlice函数内的slice底层的数组发生了扩容，变成了另一个扩容后的结构体，但是外层的slice还是引用的老的结构体。</p>
-<p>由此我们得出： slice 还有array 都按值传递的
-(传递的时候会复制内存)，golang里所有数据都是按值传递的，指针也是值的一种</p>
-<p>如果没有发生扩容，修改在原来的底层数组内存中</p>
-<p>如果发生了扩容，修改会在新的内存中</p>
-<p>显然，这会发生我们意料之外的行为。因此我们应当使用指针传递作为函数的参数，这与C语言类似。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u6x4d8llmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-u6x4d8llmdfsx0"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">modifySlice2</span><span class="hljs-params">(s *[]<span class="hljs-type">int</span>)</span></span> {
-	*s = <span class="hljs-built_in">append</span>(*s, <span class="hljs-number">2048</span>)
-	(*s)[<span class="hljs-number">0</span>] = <span class="hljs-number">1024</span>
-}</code></pre></div></div>
-<p>相应的，调用方式为<code>modifySlice(&amp;s)</code>。</p>
-<h3 id="扩容策略">扩容策略</h3>
-<p>当一次向slice中添加大于原slice容量两倍的元素时，直接将新长度作为容量。否则，</p>
-<p>1.当cap &lt; 256 的时候 slice 每次扩容 * 2。</p>
-<p>2.当cap &gt;= 256 的时候， slice每次扩容 * 1.25。</p>
-<p>我们可以查看<a target="_blank" rel="noopener" href="https://go.dev/src/runtime/slice.go">源码</a>中<code>growslice</code>的实现具体分析，这里摘录其核心部分：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j5fo1zllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-j5fo1zllmdfsx0"><pre><code class="hljs go"><span class="hljs-comment">//num = number of elements being added</span>
-<span class="hljs-comment">//newLen = current length (= oldLen + num)</span>
-oldLen := newLen - num	
-newcap := oldCap
-doublecap := newcap + newcap
-<span class="hljs-keyword">if</span> newLen &gt; doublecap {
-	newcap = newLen
-} <span class="hljs-keyword">else</span> {
-	<span class="hljs-keyword">const</span> threshold = <span class="hljs-number">256</span>
-	<span class="hljs-keyword">if</span> oldCap &lt; threshold {
-		newcap = doublecap
-	} <span class="hljs-keyword">else</span> {
-		<span class="hljs-comment">// Check 0 &lt; newcap to detect overflow</span>
-		<span class="hljs-comment">// and prevent an infinite loop.</span>
-		<span class="hljs-keyword">for</span> <span class="hljs-number">0</span> &lt; newcap &amp;&amp; newcap &lt; newLen {
-			<span class="hljs-comment">// Transition from growing 2x for small slices</span>
-			<span class="hljs-comment">// to growing 1.25x for large slices. This formula</span>
-			<span class="hljs-comment">// gives a smooth-ish transition between the two.</span>
-			newcap += (newcap + <span class="hljs-number">3</span>*threshold) / <span class="hljs-number">4</span>
-		}
-		<span class="hljs-comment">// Set newcap to the requested cap when</span>
-		<span class="hljs-comment">// the newcap calculation overflowed.</span>
-		<span class="hljs-keyword">if</span> newcap &lt;= <span class="hljs-number">0</span> {
-			newcap = newLen
-		}
-	}
-}</code></pre></div></div>
-<p>在<code>make</code>slice时预先分配内存可以提升性能，避免重复的扩容导致性能损失。</p>
-<h3 id="切片操作">切片操作</h3>
-<h4 id="原理">原理</h4>
-<p>切片操作并不复制切片指向的元素，创建一个新的切片会复用原来切片的底层数组，因此切片操作是非常高效的。</p>
-<p>看下面的例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pxx7x6llmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-pxx7x6llmdfsx0"><pre><code class="hljs go">nums := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>)
-nums = <span class="hljs-built_in">append</span>(nums, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)
-nums2 := nums[<span class="hljs-number">2</span>:<span class="hljs-number">4</span>]
-printLenCap(nums)  <span class="hljs-comment">// len: 5, cap: 8 [1 2 3 4 5]</span>
-printLenCap(nums2) <span class="hljs-comment">// len: 2, cap: 6 [3 4]</span>
-
-nums2 = <span class="hljs-built_in">append</span>(nums2, <span class="hljs-number">50</span>, <span class="hljs-number">60</span>)
-printLenCap(nums)  <span class="hljs-comment">// len: 5, cap: 8 [1 2 3 4 50]</span>
-printLenCap(nums2) <span class="hljs-comment">// len: 4, cap: 6 [3 4 50 60]</span></code></pre></div></div>
-<figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/golang%E5%88%87%E7%89%87/20230821221521427663_524_slice.jpg" srcset="/img/loading.gif" lazyload alt="slice">
-<figcaption aria-hidden="true">slice</figcaption>
-</figure>
+                <h1 id="go编码规范">Go编码规范</h1>
+<p>最近正在阅读<code>Effective C++</code>和`<code>Effective Modern C++</code>，其中的很多条款都值得反复阅读并牢记，理解其中的原理对用好C++这把瑞士军刀受益匪浅。相应的，最近也发现了<a target="_blank" rel="noopener" href="https://go.dev/doc/effective_go"><code>Effective go</code></a>，就如何编写清晰、地道的
+Go 代码提供了一些技巧。它是对 <a target="_blank" rel="noopener" href="https://go-zh.org/ref/spec">语言规范</a>、 <a target="_blank" rel="noopener" href="https://tour.golang.org/">Go 语言之旅</a> 以及 <a target="_blank" rel="noopener" href="https://go-zh.org/doc/code.html">如何使用 Go 编程</a>
+的补充说明。得益于Go的简洁，其编程规范比C++要简洁清晰很多。结合Go的官方指导以及实践，对高质量编程的一些方面进行了总结。</p>
+<h2 id="高质量编程简介">高质量编程简介</h2>
+<p>实现同样的功能，可能大到编程范式，小到实现细节，有很多种编码的风格和方式供我们选择。编写的代码能够达到正确可靠、简洁清晰的目标需要我们不断的在实践中修炼。不管是面试还是在实际的项目开发中，都需要我们对高质量的代码有所追求。</p>
+<p>在课件中提到的三个主要的判断维度：</p>
 <ul>
-<li>nums2 执行了一个切片操作 <code>[2, 4)</code>，此时 nums 和 nums2
-指向的是同一个数组。</li>
-<li>nums2 增加 2 个元素 50 和 60 后，将底层数组下标 [4] 的值改为了
-50，下标[5] 的值置为 60。</li>
-<li>因为 nums 和 nums2 指向的是同一个数组，因此 nums 被修改为 [1, 2, 3,
-4, 50]。</li>
+<li>各种边界条件是否考虑完备</li>
+<li>异常情况处理，稳定性保证</li>
+<li>易读易维护</li>
 </ul>
-<h4 id="性能陷阱">性能陷阱</h4>
-<p>切片的底层是数组，因此在某处插入元素或删除元素意味着后面的元素需要逐个向后或向前移位。每次删除的复杂度为
-O(N)，因此切片不合适大量随机删除的场景，这种场景下适合使用链表。</p>
-<p>另外在<code>slice传递</code>一节中提到，在已有切片的基础上进行切片，不会创建新的底层数组。因为原来的底层数组没有发生变化，内存会一直占用，直到没有变量引用该数组。因此很可能出现这么一种情况，原切片由大量的元素构成，但是我们在原切片的基础上切片，虽然只使用了很小一段，但底层数组在内存中仍然占据了大量空间，得不到释放。比较推荐的做法是使用
-<code>copy</code> 替代 <code>re-slice</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x8v7v7llmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-x8v7v7llmdfsx0"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">lastNumsBySlice</span><span class="hljs-params">(origin []<span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
-	<span class="hljs-keyword">return</span> origin[<span class="hljs-built_in">len</span>(origin)<span class="hljs-number">-2</span>:]
-}
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">lastNumsByCopy</span><span class="hljs-params">(origin []<span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
-	result := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-number">2</span>)
-	<span class="hljs-built_in">copy</span>(result, origin[<span class="hljs-built_in">len</span>(origin)<span class="hljs-number">-2</span>:])
-	<span class="hljs-keyword">return</span> result
+<p>编程原则：</p>
+<ul>
+<li>简单性</li>
+<li>可读性</li>
+<li>团队生产力</li>
+</ul>
+<p>前面两点原则容易理解，关于最后一点，因为我们编程其实更重要的是一个团队合作的一个过程，团队的整体工作效率也是非常重要的。比如字节内部采用Go语言，其实最有特点的一点就是Go语言的简洁性对于降低这个新成员上手项目代码成本很有帮助。在实际的这个工程项目当中，如果有一些复杂的一些程序逻辑，其他人基本上就不太敢动，尤其是有一些历史的一些逻辑的话，写得比较复杂，可能又难以理解，新接手的人就没办法明确的知道我们这些调整会造成的这个影响的一些范围，可能会产生什么样的问题。这样的话就会难以让这个代码难以维护。而且我们这些难以维护的这些逻辑在排查问题的时候也会带来不少麻烦。而如果我们的代码比较清晰的话，那么就算出现了一些问题，然后我们也能通过现象，或者代码逻辑，快速分析排查定位到这个问题。能够提升整体的整个项目开发环节的效率。所以说这也是非常重要的一点。</p>
+<h2 id="编码规范">编码规范</h2>
+<p>如何编写高质量 Go 代码</p>
+<h3 id="代码格式">代码格式</h3>
+<p>格式化问题总是充满了争议，但却始终没有形成统一的定论。虽说人们可以适应不同的编码风格，但抛弃这种适应过程岂不更好？<strong>若所有人都遵循相同的编码风格，在这类问题上浪费的时间将会更少</strong>。问题就在于如何实现这种设想，而无需冗长的语言风格规范。</p>
+<p>在 Go
+中我们另辟蹊径，<strong>让机器来处理大部分的格式化问题</strong>。<code>gofmt</code>
+程序（也可用 <code>go fmt</code>，它以包为处理对象而非源文件）将 Go
+程序按照标准风格缩进、 对齐，保留注释并在需要时重新格式化。</p>
+<h3 id="注释">注释</h3>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rt4rwbllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-rt4rwbllmdfsx0"><pre><code class="hljs go">Good code has lots of comments, bad code requires lots of comments
+好的代码有很多注释，坏代码需要很多注释 
+         ---Dave Thomas and Andrew Hunt</code></pre></div></div>
+<ul>
+<li><p>注释需要解释代码实现的原因。</p>
+<p>适合解释代码的外部因素</p>
+<p>提供额外上下文</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s5lkzellmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-s5lkzellmdfsx0"><pre><code class="hljs go"><span class="hljs-keyword">switch</span> resp.StatusCode {
+<span class="hljs-comment">// ...</span>
+<span class="hljs-keyword">case</span> <span class="hljs-number">307</span>, <span class="hljs-number">308</span>:
+redirectMethod = reqMethod
+ shouldRedirect = <span class="hljs-literal">true</span>
+ includeBody = <span class="hljs-literal">true</span>
+ <span class="hljs-keyword">if</span> ireq.GetBody == <span class="hljs-literal">nil</span> &amp;&amp; ireq.outgoingLength() != <span class="hljs-number">0</span> {
+  <span class="hljs-comment">// We had a request body, and 307/308 require</span>
+  <span class="hljs-comment">// re-sending it, but GetBody is not defined. So just</span>
+  <span class="hljs-comment">// return this response to the user instead of an</span>
+  <span class="hljs-comment">// error, like we did in Go 1.7 and earlier.</span>
+  shouldRedirect = <span class="hljs-literal">false</span>
+ }
+}</code></pre></div></div></li>
+<li><p><strong>注释应该解释代码什么情况会出错</strong></p>
+<p>在调用方在使用这个方法的时候，可能它不需要实际的去特别细究里面的代码，d但是注释有必要提供需要注意的点，在用户或者自己使用的时候，如果是注意到相关这些点的话，它就能够更正确的来处理相关的一些结果。</p></li>
+<li><p>公共符号始终要注释。对于公共符号都需要有注释说明</p></li>
+<li><p>注释最好是<strong>完整的句子</strong>，这样它才能适应各种自动化的展示。</p>
+<p>第一句应当以<strong>被声明的东西开头</strong>，并且是<strong>单句的摘要</strong>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tavxxjllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-tavxxjllmdfsx0"><pre><code class="hljs go"><span class="hljs-comment">// Compile parses a regular expression and returns, if successful,</span>
+<span class="hljs-comment">// a Regexp that can be used to match against text.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Compile</span><span class="hljs-params">(str <span class="hljs-type">string</span>)</span></span> (*Regexp, <span class="hljs-type">error</span>) {</code></pre></div></div>
+<p>若注释总是以名称开头，<code>go doc</code> 命令的输出就能通过
+<strong>grep</strong> 变得更加有用。假如你记不住 Compile
+这个名称，而又在找正则表达式的解析函数（”解析”意味着关键词为
+parse），那就可以运行</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s7fpgellmdfsx0"></i><span>shell</span><div class="collapse show" id="collapse-s7fpgellmdfsx0"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">go doc -all regexp | grep -i parse</span></code></pre></div></div>
+<p>快速查找。</p></li>
+</ul>
+<h3 id="命名">命名</h3>
+<h4 id="变量">变量</h4>
+<p>Go约定使用驼峰命名，而不是下划线。其他一些通用的命名原则：</p>
+<ul>
+<li>简洁胜于冗长</li>
+<li>缩略词全大写，但当其位于变量开头且不需要导出时，使用全小写
+<ul>
+<li>例如使用 <code>ServeHTTP</code> 而不是 <code>ServeHttp</code></li>
+<li>使用 <code>XMLHTTPRequest</code> 或者
+<code>xmlHTTPRequest</code></li>
+</ul></li>
+<li>变量距离其被使用的地方越远，则需要携带越多的上下文信息。全局变量在其名字中需要更多的上下文信息，使得在不同地方可以轻易辨认出其含义</li>
+</ul>
+<h4 id="接口">接口</h4>
+<p>按照约定，<strong>只包含一个方法的接口</strong>应当以该方法的名称加上
+<code>-er</code> 后缀来命名，如
+<code>Reader</code>、<code>Writer</code>、<code>Formatter</code>、<code>CloseNotifier</code>
+等。</p>
+<p>诸如此类的命名有很多，遵循它们及其代表的函数名会让事情变得简单。Read、Write、Close、Flush、
+String
+等都具有典型的签名和意义。为避免冲突，请不要用这些名称为你的方法命名，除非你明确知道它们的签名和意义相同。反之，若你的类型实现了的方法，<strong>与一个众所周知的类型的方法拥有相同的含义，那就使用相同的命名</strong>。请将字符串转换方法命名为
+<code>String</code> 而非 <code>ToString</code>。</p>
+<h4 id="函数">函数</h4>
+<ul>
+<li>函数名不携带包名的上下文信息，因为包名和函数名总是成对出现的</li>
+<li>函数名尽量简短</li>
+<li>当名为 foo 的包某个函数返回类型 Foo
+时，可以省略类型信息而不导致歧义</li>
+<li>当名为 foo 的包某个函数返回类型 T 时（T 并不是
+Foo），可以在函数名中加入类型信息</li>
+</ul>
+<h4 id="包名">包名</h4>
+<ul>
+<li>只由小写字母组成。不包含大写字母和下划线等字符</li>
+<li>简短并包含一定的上下文信息。例如 schema、task 等</li>
+<li>不要与标准库同名。例如不要使用 sync 或者 strings</li>
+</ul>
+<p>一个约定就是<strong>包名应为其源码目录的基本名称</strong>。在
+<code>src/pkg/encoding/base64</code> 中的包应作为
+<code>"encoding/base64"</code> 导入，其包名应为
+<code>base64</code>，而非 <code>encoding_base64</code> 或
+<code>encodingBase64</code>。</p>
+<p>包的导入者可通过包名来引用其内容，因此包中的可导出名称可以此来避免冲突。（请勿使用
+<code>import .</code>
+记法，它可以简化必须在被测试包外运行的测试，除此之外应尽量避免使用。这个原则在其他语言中也是通用的。）例如，<code>bufio</code>
+包中的缓存读取器类型叫做 <code>Reader</code> 而非
+<code>BufReader</code>，因为用户将它看做
+<code>bufio.Reader</code>，这是个清楚而简洁的名称。此外，由于被导入的项总是通过它们的包名来确定，因此
+<code>bufio.Reader</code> 不会与 <code>io.Reader</code>
+发生冲突。同样，用于创建 <code>ring.Ring</code> 的新实例的函数（这就是
+Go 中的构造函数）一般会称之为 <code>NewRing</code>，但由于 Ring
+是该包所导出的唯一类型，且该包也叫 ring，因此它可以只叫做
+<code>New</code>，它跟在包的后面，就像
+<code>ring.New</code>。使用包结构可以帮助你选择好的名称。</p>
+<p>另一个简短的例子是 <code>once.Do</code>，<code>once.Do(setup)</code>
+表述足够清晰，使用 <code>once.DoOrWaitUntilDone(setup)</code>
+完全就是画蛇添足。<strong>长命名并不会使其更具可读性。一份有用的说明文档通常比额外的长名更有价值</strong>。</p>
+<h3 id="控制流程">控制流程</h3>
+<p>关于控制流程，和其他语言类似，避免嵌套，保持正常流程清晰。遵循线性原理，处理逻辑尽量走直线，
+避免复杂的嵌套分支。正常流程代码沿着屏幕向下移动先处理异常情况并return掉是个好习惯，可以减少嵌套的同时提高对异常处理的意识，后续产生可能出现的新的异常时也便于修改。</p>
+<h3 id="错误与异常处理">错误与异常处理</h3>
+<p>在工程实践中，错误和异常处理大概是最重要的部分。Go语言的异常处理和其他主流编程语言风格相差较大，既有<code>defer</code>这种优雅的压栈处理回调行为，以便正确管理资源的支持，也有喜闻乐见的<code>if err!=nil</code>。下面对Golang的错误处理进行更深入的认识。</p>
+<h4 id="简单错误">简单错误</h4>
+<p>简单错误指仅出现一次的错误，且在其他地方不需要捕获该错误</p>
+<p>优先使用 errors.New 创建匿名变量来直接表示简单错误</p>
+<p>如果有格式化的需求，使用<code>fmt.Error</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-081a5yllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-081a5yllmdfsx0"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultCheckRedirect</span><span class="hljs-params">(req *Request, via []*Request)</span></span> <span class="hljs-type">error</span> {
+	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(via) &gt;= <span class="hljs-number">10</span> {
+		<span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">"stopped after 10 redirects"</span>)
+	}
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
 }</code></pre></div></div>
+<h4 id="错误的-wrap-和-unwrap">错误的 Wrap 和 Unwrap</h4>
+<p>将一个 error 嵌套进另一个 error 中，从而生成一个 error 的跟踪链</p>
+<p>从 Go1.13 后，可以在 <code>fmt.Errorf</code> 中使用 <code>%w</code>
+关键字来将一个错误 wrap 至其错误链中</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bco32zllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-bco32zllmdfsx0"><pre><code class="hljs go">list, _, err := c.GetBytes(cache.Subkey(a.actionID, <span class="hljs-string">"srcfiles"</span>))
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+	<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">"reading srcfiles list: %w"</span>, err)
+}</code></pre></div></div>
+<h4 id="错误判定">错误判定</h4>
+<ul>
+<li>使用 <code>errors.Is</code>
+可以判定错误链上的所有错误是否含有特定的错误</li>
+</ul>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fokjhxllmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-fokjhxllmdfsx0"><pre><code class="hljs go">data, err = lockedfile.Read(targ)
+<span class="hljs-keyword">if</span> errors.Is(err, fs.ErrNotExist) {
+<span class="hljs-comment">// Treat non-existent as empty, to bootstrap the "latest" file</span>
+<span class="hljs-comment">// the first time we connect to a given database.</span>
+<span class="hljs-keyword">return</span> []<span class="hljs-type">byte</span>{}, <span class="hljs-literal">nil</span>
+}</code></pre></div></div>
+<ul>
+<li>在错误链上获取特定种类的错误，使用 <code>errors.As</code></li>
+</ul>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mou4bellmdfsx0"></i><span>go</span><div class="collapse show" id="collapse-mou4bellmdfsx0"><pre><code class="hljs go"><span class="hljs-keyword">if</span> _, err := os.Open(<span class="hljs-string">"non-existing"</span>); err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">var</span> pathError *fs.PathError
+		<span class="hljs-keyword">if</span> errors.As(err, &amp;pathError) {
+			fmt.Println(<span class="hljs-string">"Failed at path:"</span>, pathError.Path)
+		} <span class="hljs-keyword">else</span> {
+			fmt.Println(err)
+		}
+	}</code></pre></div></div>
+<h4 id="panic">panic</h4>
+<ul>
+<li>不建议在业务代码中使用
+panic，若问题可以被屏蔽或解决，最好就是让程序继续运行而不是终止整个程序。</li>
+<li>如果当前 goroutine 中所有 deferred 函数都不包含 recover
+就会造成整个程序崩溃</li>
+<li>当程序启动阶段发生不可逆转的错误时，可以在 init 或 main 函数中使用
+panic</li>
+</ul>
+<h4 id="recover">recover</h4>
+<ul>
+<li>recover 只能在被 defer 的函数中使用，嵌套无法生效，只在当前
+goroutine 生效</li>
+<li>如果需要更多的上下文信息，可以 recover 后在 log
+中记录当前的调用栈。</li>
+</ul>
 <h3 id="总结">总结</h3>
-<p>相比C++和Java中的线性容器，golang的切片使用起来更加灵活，但使用时也有更多需要注意的地方。同时，很多常见的数据结构需要我们自己去定义封装，而不像其他语言一样语法层面或标准库层面做了很多实现和封装。关于这一方面的知识会在后续的文章中继续分享。</p>
+<p>上述内容仅是个人结合实践和Effective
+Go总结出的自己认为较重要的部分记录，以便回顾和提醒。深入掌握一门语言还是要靠阅读第一手材料和动手实践。</p>
 
                 
               </div>
@@ -506,8 +539,8 @@ O(N)，因此切片不合适大量随机删除的场景，这种场景下适合�
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Go 语言入门指南：slice使用解析</div>
-      <div>http://lunaticsky-tql.github.io/posts/29701/</div>
+      <div>golang高质量编程实践</div>
+      <div>http://lunaticsky-tql.github.io/posts/2118/</div>
     </div>
     <div class="license-meta">
       
@@ -519,7 +552,7 @@ O(N)，因此切片不合适大量随机删除的场景，这种场景下适合�
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年8月21日</div>
+          <div>2023年8月22日</div>
         </div>
       
       
@@ -551,18 +584,12 @@ O(N)，因此切片不合适大量随机删除的场景，这种场景下适合�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/2118/" title="golang高质量编程实践">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">golang高质量编程实践</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/53807/" title="C++运算符重载">
-                        <span class="hidden-mobile">C++运算符重载</span>
+                      <a href="/posts/29701/" title="Go 语言入门指南：slice使用解析">
+                        <span class="hidden-mobile">Go 语言入门指南：slice使用解析</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
