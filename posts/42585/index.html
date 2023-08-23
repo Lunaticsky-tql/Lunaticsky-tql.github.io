@@ -368,7 +368,7 @@
 </blockquote></li>
 </ul>
 <p>体现在代码中，整个网络的结构定义如下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cjw6w5lftoynt9"></i><span>python</span><div class="collapse show" id="collapse-cjw6w5lftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLeNet5</span>:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wyad5plln8zueq"></i><span>python</span><div class="collapse show" id="collapse-wyad5plln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLeNet5</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         self.conv1 = layers.Conv2d(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>)
         self.relu1 = layers.ReLu()
@@ -385,7 +385,7 @@
 <h4 id="准备工作">准备工作</h4>
 <p>代码整体仿照Pytorch的形式进行编写，但由于没有Pytorch的自动求导机制，反向传播与参数更新方面必然与其有所差距。</p>
 <p>首先进行数据获取和处理，定义模型和优化器：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b41gyslftoynt9"></i><span>python</span><div class="collapse show" id="collapse-b41gyslftoynt9"><pre><code class="hljs python">model = MyLeNet5()
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9c7ishlln8zueq"></i><span>python</span><div class="collapse show" id="collapse-9c7ishlln8zueq"><pre><code class="hljs python">model = MyLeNet5()
 mnist_train = datasets.MNIST(<span class="hljs-string">'./data/MNIST/raw'</span>, train=<span class="hljs-literal">True</span>)
 mnist_test = datasets.MNIST(<span class="hljs-string">'./data/MNIST/raw'</span>, train=<span class="hljs-literal">False</span>)
 mnist_train, mnist_val = split(mnist_train, [<span class="hljs-number">54000</span>, <span class="hljs-number">6000</span>])
@@ -395,14 +395,14 @@ test_loader = DataLoader(mnist_test, batch_size=<span class="hljs-number">1</spa
 loss_fn = loss.CrossEntropyLoss()
 optimizer = optim.Adam(lr=<span class="hljs-number">1e-3</span>)</code></pre></div></div>
 <p>与Pytorch类似，DataLoader实现了迭代器，如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vglw4flftoynt9"></i><span>python</span><div class="collapse show" id="collapse-vglw4flftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">__iter__</span>(<span class="hljs-params">self</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xbbhxllln8zueq"></i><span>python</span><div class="collapse show" id="collapse-xbbhxllln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">__iter__</span>(<span class="hljs-params">self</span>):
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(self.num_batches):
         batch_indices = self.indices[i * self.batch_size:(i + <span class="hljs-number">1</span>) * self.batch_size]
         batch_data = self.data[batch_indices]
         batch_labels = self.labels[batch_indices]
         <span class="hljs-keyword">yield</span> batch_data, batch_labels</code></pre></div></div>
 <p>交叉熵损失函数如下所示。为避免取对数时数据过小除0，将预测数据过一遍softmax进行归一化：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ahg8i1lftoynt9"></i><span>python</span><div class="collapse show" id="collapse-ahg8i1lftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CrossEntropyLoss</span>(<span class="hljs-title class_ inherited__">object</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j8i2h9lln8zueq"></i><span>python</span><div class="collapse show" id="collapse-j8i2h9lln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CrossEntropyLoss</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         self.<span class="hljs-built_in">input</span> = <span class="hljs-literal">None</span>
         self.output = <span class="hljs-literal">None</span>
@@ -444,7 +444,7 @@ v_t=\beta_2^t v_{t-1}+\left(1-\beta_2^t\right) g^2
 \theta=\theta_{t-1}-\frac{\alpha \hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}
 \]</span> Adam会设置 3个超参数。一个是学习率（论文中以α出现），另外两
 个是一次momentum系数β1和二次momentum系数<span class="math inline">\(β2\)</span>。根据论文， 标准的设定值是<span class="math inline">\(β1\)</span>为 0.9，<span class="math inline">\(β2\)</span> 为 0.999。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mkrmvylftoynt9"></i><span>python</span><div class="collapse show" id="collapse-mkrmvylftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">step</span>(<span class="hljs-params">self, params</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y1kcczlln8zueq"></i><span>python</span><div class="collapse show" id="collapse-y1kcczlln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">step</span>(<span class="hljs-params">self, params</span>):
     vals = params[<span class="hljs-number">0</span>]
     grads = params[<span class="hljs-number">1</span>]
     <span class="hljs-keyword">if</span> self.m <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
@@ -478,7 +478,7 @@ O W &amp; =\frac{W+2 P-F W}{S}+1
 \end{aligned}
 \]</span> 本实验中$O H =H-FH+1 <span class="math inline">\(，\)</span>O
 W =W-FW+1 $。代码实现可如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7081njlftoynt9"></i><span>python</span><div class="collapse show" id="collapse-7081njlftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">im2col</span>(<span class="hljs-params">img, filter_h, filter_w, out_H, out_W</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ps1c3klln8zueq"></i><span>python</span><div class="collapse show" id="collapse-ps1c3klln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">im2col</span>(<span class="hljs-params">img, filter_h, filter_w, out_H, out_W</span>):
     N, C, H, W = img.shape
     col = np.zeros((N * out_H * out_W, C * filter_h * filter_w))
     <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(out_H):
@@ -488,7 +488,7 @@ W =W-FW+1 $。代码实现可如下：</p>
     <span class="hljs-keyword">return</span> col</code></pre></div></div>
 <p>内层循环执行一次，滤波器覆盖的区域被展成“长条”，放到<code>col</code>的对应位置，比如第一次执行内层循环，上图的红黄蓝三条<code>l0 l1 l3 l4</code>均就位。</p>
 <p>另外《深度学习入门：基于Python的理论与实现》中有另外一种实现，避免了步长的切片，数据访问局部性更好。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ztwxzqlftoynt9"></i><span>python</span><div class="collapse show" id="collapse-ztwxzqlftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">im2col</span>(<span class="hljs-params">img, filter_h, filter_w, out_H, out_W</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e86chklln8zueq"></i><span>python</span><div class="collapse show" id="collapse-e86chklln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">im2col</span>(<span class="hljs-params">img, filter_h, filter_w, out_H, out_W</span>):
     N, C, H, W = img.shape
     col = np.zeros((N, C, filter_h, filter_w, out_H, out_W))
     <span class="hljs-keyword">for</span> h <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(filter_h):
@@ -497,7 +497,7 @@ W =W-FW+1 $。代码实现可如下：</p>
     col = col.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>).reshape(N * out_H * out_W, -<span class="hljs-number">1</span>)
     <span class="hljs-keyword">return</span> col</code></pre></div></div>
 <p>整个前向传播的实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-416gktlftoynt9"></i><span>python</span><div class="collapse show" id="collapse-416gktlftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, X</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9dtt4jlln8zueq"></i><span>python</span><div class="collapse show" id="collapse-9dtt4jlln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, X</span>):
     N, C, H, W = X.shape
     out_H = H - self.filter_size + <span class="hljs-number">1</span>
     out_W = W - self.filter_size + <span class="hljs-number">1</span>
@@ -569,7 +569,7 @@ w_{21}+\delta_{z 21} \cdot w_{12}+\delta_{z 22} \cdot w_{11}
 \]</span> 代码中用<code>back_grad</code>指代<span class="math inline">\(\delta_{\text {in
 }}\)</span>,表示从后面的层反向传播过来的梯度。</p>
 <p>同时结合<code>im2col</code>的逆操作，代码可如下实现：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wobdv2lftoynt9"></i><span>python</span><div class="collapse show" id="collapse-wobdv2lftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jnvggclln8zueq"></i><span>python</span><div class="collapse show" id="collapse-jnvggclln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
     FN, C, FH, FW = self.W.shape
     back_grad = back_grad.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>).reshape(-<span class="hljs-number">1</span>, FN)
     self.db = np.<span class="hljs-built_in">sum</span>(back_grad, axis=<span class="hljs-number">0</span>)
@@ -579,7 +579,7 @@ w_{21}+\delta_{z 21} \cdot w_{12}+\delta_{z 22} \cdot w_{11}
     dx = col2im(dcol, self.X.shape, FH, FW)
     <span class="hljs-keyword">return</span> dx</code></pre></div></div>
 <p>其中<code>col2im</code>作如下实现，道理和<code>im2col</code>类似，不再赘述。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bn6wvhlftoynt9"></i><span>python</span><div class="collapse show" id="collapse-bn6wvhlftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">col2im</span>(<span class="hljs-params">col, input_shape, filter_h, filter_w</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9jwi00lln8zueq"></i><span>python</span><div class="collapse show" id="collapse-9jwi00lln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">col2im</span>(<span class="hljs-params">col, input_shape, filter_h, filter_w</span>):
     N, C, H, W = input_shape
     out_H = H - filter_h + <span class="hljs-number">1</span>
     out_W = W - filter_w + <span class="hljs-number">1</span>
@@ -594,7 +594,7 @@ w_{21}+\delta_{z 21} \cdot w_{12}+\delta_{z 22} \cdot w_{11}
 <p>在本次实验中，池化层采用了最大池化的方式，即通过滤波器筛选出最大的元素作为池化结果。反向传播时只有被选择为最大值的元素位置对应会被梯度反向传播，其余的位置都赋值为0。</p>
 <p>反向传播也可以通过<code>im2col</code>实现，不过可以利用掩码达到类似的加速效果，且比<code>col2im</code>快。</p>
 <p><code>col2im</code>方法：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o4ac7olftoynt9"></i><span>python</span><div class="collapse show" id="collapse-o4ac7olftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i69wmolln8zueq"></i><span>python</span><div class="collapse show" id="collapse-i69wmolln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
     back_grad = back_grad.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
     pool_size = self.pool_H * self.pool_W
     dmax = np.zeros((back_grad.size, pool_size))
@@ -604,7 +604,7 @@ w_{21}+\delta_{z 21} \cdot w_{12}+\delta_{z 22} \cdot w_{11}
     dx = col2im(dcol, self.X.shape, self.pool_H, self.pool_W)
     <span class="hljs-keyword">return</span> dx</code></pre></div></div>
 <p><code>mask</code>方法：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-csm4f5lftoynt9"></i><span>python</span><div class="collapse show" id="collapse-csm4f5lftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sjie0hlln8zueq"></i><span>python</span><div class="collapse show" id="collapse-sjie0hlln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backward</span>(<span class="hljs-params">self, back_grad</span>):
     h_size = self.pool_H
     w_size = self.pool_W
     N, C, H, W = self.X.shape
@@ -625,7 +625,7 @@ w_{21}+\delta_{z 21} \cdot w_{12}+\delta_{z 22} \cdot w_{11}
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Lenet5%20%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%88%86%E7%B1%BB/20230305200451954546_926_image-20230108232916872.png" srcset="/img/loading.gif" lazyload alt="image-20230108232916872">
 <figcaption aria-hidden="true">image-20230108232916872</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5v1l23lftoynt9"></i><span>python</span><div class="collapse show" id="collapse-5v1l23lftoynt9"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Linear</span>(<span class="hljs-title class_ inherited__">Layer</span>):
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-srsbs1lln8zueq"></i><span>python</span><div class="collapse show" id="collapse-srsbs1lln8zueq"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Linear</span>(<span class="hljs-title class_ inherited__">Layer</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, input_size, output_size</span>):
         <span class="hljs-built_in">super</span>().__init__()
         self.<span class="hljs-built_in">input</span> = <span class="hljs-literal">None</span>

@@ -1,0 +1,1690 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="PA4实验报告 2013599 田佳业 阶段一 实现上下文切换  CTE的_kcontext()函数  已经做了3个PA了，对“你需要“这样的字眼已经很敏感了.根据讲义:  在kstack的底部创建一个以entry为返回地址的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针. Nanos-lite会调用_kcontext()来创建上下文, 并把返回的指针记录到PCB的cp中.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="南京大学ics2019_PA4">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/44109/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="PA4实验报告 2013599 田佳业 阶段一 实现上下文切换  CTE的_kcontext()函数  已经做了3个PA了，对“你需要“这样的字眼已经很敏感了.根据讲义:  在kstack的底部创建一个以entry为返回地址的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针. Nanos-lite会调用_kcontext()来创建上下文, 并把返回的指针记录到PCB的cp中.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235455853128_651_image-20230524103308566.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235457992775_260_image-20230529100302757.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235500203470_105_image-20230529104434579.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235504869760_814_image-20230529100930844.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235508361359_580_image-20230531210624959.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235512642869_760_image-20230531212149363.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235517932149_981_image-20230529222248388.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235521194013_589_image-20230529223520788.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235523234821_360_image-20230529224445299.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235527208599_859_image-20230530150819865.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235531573391_617_image-20230530193239098.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235535787076_209_image-20230530215433304.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235540421541_424_image-20230530221047921.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235542835305_606_image-20230531155347228.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235547658121_402_image-20230531164538774.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235551684634_469_image-20230531172613664.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235555185137_348_image-20230531192942805.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235557711505_227_image-20230531192547493.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA4/20230602001029829434_199_trap1.png">
+<meta property="article:published_time" content="2023-08-23T04:39:38.974Z">
+<meta property="article:modified_time" content="2023-08-23T04:39:38.974Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="系统设计">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235455853128_651_image-20230524103308566.png">
+    
+    
+    
+    <title>南京大学ics2019_PA4 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="南京大学ics2019_PA4"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-08-23 12:39" pubdate>
+              2023年8月23日 下午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              21k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/南京大学ics2019_PA4/南京大学ics2019_PA4.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">南京大学ics2019_PA4</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="pa4实验报告">PA4实验报告</h1>
+<p>2013599 田佳业</p>
+<h2 id="阶段一">阶段一</h2>
+<h3 id="实现上下文切换">实现上下文切换</h3>
+<ul>
+<li>CTE的<code>_kcontext()</code>函数</li>
+</ul>
+<p>已经做了3个PA了，对“你需要“这样的字眼已经很敏感了.根据讲义:</p>
+<blockquote>
+<p>在<code>kstack</code>的底部创建一个以<code>entry</code>为返回地址的上下文结构(目前你可以先忽略<code>arg</code>参数),
+然后返回这一结构的指针.
+Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
+并把返回的指针记录到PCB的<code>cp</code>中.</p>
+</blockquote>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-in5wu9lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-in5wu9lln8zueq"><pre><code class="hljs C++">_Context *_kcontext(_Area stack, <span class="hljs-built_in">void</span> (*entry)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg) {
+	_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context));
+	new_p-&gt;eip=(<span class="hljs-type">uintptr_t</span>)entry;
+	new_p-&gt;eflags=<span class="hljs-number">0x2</span>;
+	new_p-&gt;cs=<span class="hljs-number">8</span>;
+	<span class="hljs-keyword">return</span> new_p;
+}</code></pre></div></div>
+<ul>
+<li>Nanos-lite的<code>schedule()</code>函数</li>
+</ul>
+<p>如指导书所述</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0c0p7qlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-0c0p7qlln8zueq"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">// save the context pointer</span>
+  current-&gt;cp = prev;
+
+  <span class="hljs-comment">// always select pcb[0] as the new process</span>
+  current = &amp;pcb[<span class="hljs-number">0</span>];
+
+  <span class="hljs-comment">// then return the new context</span>
+  <span class="hljs-keyword">return</span> current-&gt;cp;
+}</code></pre></div></div>
+<ul>
+<li>在Nanos-lite收到<code>_EVENT_YIELD</code>事件后,
+调用<code>schedule()</code>并返回新的上下文</li>
+</ul>
+<p><code>nanos-lite/src/irq.c</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-myjotelln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-myjotelln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _EVENT_YIELD:
+  <span class="hljs-built_in">Log</span>(<span class="hljs-string">"_EVENT_YIELD recognized"</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">schedule</span>(c);</code></pre></div></div>
+<ul>
+<li>修改CTE中<code>__am_asm_trap()</code>的实现,
+使得从<code>__am_irq_handle()</code>返回后,
+先将栈顶指针切换到新进程的上下文结构, 然后才恢复上下文,
+从而完成上下文切换的本质操作</li>
+</ul>
+<p>这一部分是最核心的。</p>
+<p><code>nexus-am/am/src/x86/nemu/trap.S</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-np95u0lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-np95u0lln8zueq"><pre><code class="hljs C++">__am_asm_trap:
+  pushal
+
+  pushl $<span class="hljs-number">0</span>
+
+  pushl %esp
+  call __am_irq_handle
+
+  addl $<span class="hljs-number">4</span>, %esp
+  movl %eax,%esp
+  addl $<span class="hljs-number">4</span>, %esp
+  popal
+  addl $<span class="hljs-number">4</span>, %esp
+
+  iret</code></pre></div></div>
+<p>加的是<code>movl %eax,%esp</code>。为什么呢？<code>__am_irq_handle</code>在<code>cte.c</code>中返回的正是<code>_Context</code>结构体的指针，保存在<code>eax</code>寄存器中。原来的时候我们直接跳过这个返回值，恢复中断调用前的上下文。现在我们将栈顶指针指到这个上下文地址，我们后面就可以继续<code>pop</code>新的上下文信息，从而实现乾坤挪移。</p>
+<p>另外这样之后<code>movl %eax,%esp</code>前面那句其实也并不起什么作用了。原来的目的是跳过压栈的<code>esp</code>，现在<code>move</code>指令既然都能直接跳转到另外一个进程的<code>_Context</code>结构体的位置了(虽然也有可能还是自身)，减不减已经无所谓了。</p>
+<p>最后进行测试:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tl53inlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-tl53inlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">0</span>], hello_fun);
+  switch_boot_pcb();
+
+  <span class="hljs-built_in">Log</span>(<span class="hljs-string">"Initializing processes..."</span>);
+  <span class="hljs-comment">// char filename[] = "/bin/init";</span>
+
+  <span class="hljs-comment">// // load program here</span>
+  <span class="hljs-comment">// naive_uload(NULL, filename);</span>
+}</code></pre></div></div>
+<p>注意按照指导书，我们就不需要使用原来的<code>naive_uload()</code>了。<code>context_kload</code>会调用CTE的<code>kcontext()</code>来创建一个上下文。调用<code>switch_boot_pcb()</code>则是为了初始化<code>current</code>指针.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235455853128_651_image-20230524103308566.png" srcset="/img/loading.gif" lazyload alt="image-20230524103308566">
+<figcaption aria-hidden="true">image-20230524103308566</figcaption>
+</figure>
+<h3 id="实现上下文切换2">实现上下文切换(2)</h3>
+<ul>
+<li>修改CTE的<code>_kcontext()</code>函数,
+使其支持参数<code>arg</code>的传递</li>
+</ul>
+<p>这个地方就涉及到x86的函数调用约定了。讲义中提到“mips32和riscv32的调用约定”需要查阅相应的ABI手册，默认我们知道x86的调用约定(捂脸)。借此问题也回顾模拟了PA3中中断调用的过程。感谢某舍友的帮助，非常有耐心的让我把模糊的细节弄清楚了。详细见必答题部分。</p>
+<p>现在增加了参数，就不再是这样了。因此原来的</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p1nnqglln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-p1nnqglln8zueq"><pre><code class="hljs C++">_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context));</code></pre></div></div>
+<p>现在还要多减一些，因为end不再紧跟context了，而是依次多了返回值和函数参数。</p>
+<p>当然我们还要把参数放到正确的位置。显然这个位置是<code>(stack.end-4，stack.end]</code>，按照函数调用约定。距离上下文结构体(切换的栈帧底部）需要留出返回地址所在的4字节位置。</p>
+<p>原来这个函数是没有<code>arg</code>参数的，现在我们需要手动加上。参数所指向的地址(4字节)。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hsi9o7lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-hsi9o7lln8zueq"><pre><code class="hljs C++">_Context *_kcontext(_Area stack, <span class="hljs-built_in">void</span> (*entry)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg) {
+	_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context)<span class="hljs-number">-8</span>);
+  <span class="hljs-type">void</span> ** temp=(<span class="hljs-type">void</span>**)(stack.end<span class="hljs-number">-4</span>);
+  *temp=arg;
+	new_p-&gt;eip=(<span class="hljs-type">uintptr_t</span>)entry;
+	new_p-&gt;eflags=<span class="hljs-number">0x2</span>;
+	new_p-&gt;cs=<span class="hljs-number">8</span>;
+	<span class="hljs-keyword">return</span> new_p;
+}</code></pre></div></div>
+<p>根据上面的解释为什么减8也比较清楚了，还是需要注意<code>arg</code>是个指针，不管它的内容具体是多少都是占4字节。</p>
+<ul>
+<li>修改<code>hello_fun()</code>函数, 使其输出参数.
+你可以自行约定参数<code>arg</code>的类型, 包括整数, 字符, 字符串,
+指针等皆可, 然后按照你的约定来解析<code>arg</code>.</li>
+</ul>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vm7ozslln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-vm7ozslln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">hello_fun</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)
+  {
+    <span class="hljs-comment">// Log("Hello World from Nanos-lite for the %dth time!", j);</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%x"</span>,arg);
+    j++;
+    _yield();
+  }
+}</code></pre></div></div>
+<ul>
+<li>通过<code>_kcontext()</code>创建第二个以<code>hello_fun()</code>为入口的内核线程,
+并传递不同的参数</li>
+</ul>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3xcxxmlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-3xcxxmlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">0</span>], hello_fun,<span class="hljs-number">1</span>);
+  <span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">1</span>], hello_fun,<span class="hljs-number">2</span>);
+  switch_boot_pcb();
+
+  <span class="hljs-built_in">Log</span>(<span class="hljs-string">"Initializing processes..."</span>);
+}</code></pre></div></div>
+<ul>
+<li>修改Nanos-lite的<code>schedule()</code>函数,
+使其轮流返回两个上下文</li>
+</ul>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-blgk58lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-blgk58lln8zueq"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">// save the context pointer</span>
+  current-&gt;cp = prev;
+
+  current = ((current == &amp;pcb[<span class="hljs-number">0</span>]) ? &amp;pcb[<span class="hljs-number">1</span>] : &amp;pcb[<span class="hljs-number">0</span>]);
+
+  <span class="hljs-comment">// then return the new context</span>
+  <span class="hljs-keyword">return</span> current-&gt;cp;
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235457992775_260_image-20230529100302757.png" srcset="/img/loading.gif" lazyload alt="image-20230529100302757">
+<figcaption aria-hidden="true">image-20230529100302757</figcaption>
+</figure>
+<h3 id="实现多道程序系统">实现多道程序系统</h3>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-runepqlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-runepqlln8zueq"><pre><code class="hljs C++">_Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, <span class="hljs-type">void</span> *entry, <span class="hljs-type">void</span> *args) {
+	_Context *new_p=(_Context*)(ustack.end<span class="hljs-number">-16</span>-<span class="hljs-built_in">sizeof</span>(_Context));
+	new_p-&gt;eip=(<span class="hljs-type">uintptr_t</span>)entry;
+	new_p-&gt;cs=<span class="hljs-number">8</span>;
+	new_p-&gt;eflags=<span class="hljs-number">0x00000202</span>;
+	new_p-&gt;as=as;
+	<span class="hljs-keyword">return</span> new_p;
+}</code></pre></div></div>
+<p>为什么减16呢？同样的道理，讲义中提到:</p>
+<blockquote>
+<p>操作系统在加载用户进程的时候,
+还需要负责把<code>argc/argv/envp</code>以及相应的字符串放在用户栈中,
+并把它们的存放方式和位置作为和用户进程的约定之一,
+这样用户进程在<code>_start</code>中就可以访问它们了.</p>
+</blockquote>
+<p><code>argc/argv/envp</code>加上返回地址，就是4个4字节的指针，按照调用约定放到栈底。不过这个是在讲义后面提到的，也是阅读了这一部分才明白原理。</p>
+<p>形象点说就是这样:<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235500203470_105_image-20230529104434579.png" srcset="/img/loading.gif" lazyload alt="image-20230529104434579" width="67%" height="67%"></p>
+<p>图来自于袁老师《计算机系统基础》课本第七章</p>
+<p>还ics2021讲义里面是有这个图的，2019就没有，可能也是因为很多外校学生做实验的时候不知道这事(捂脸)</p>
+<p>至于讲义中</p>
+<blockquote>
+<p>需要在<code>serial_write()</code>, <code>events_read()</code>
+和<code>fb_write()</code>的开头调用<code>_yield()</code>,
+来模拟设备访问缓慢的情况. 添加之后, 访问设备时就要进行上下文切换,
+从而实现多道程序系统的功能.</p>
+</blockquote>
+<p>并不是完成这个任务所必须的，只是为了更符合“实际情况”。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-86eyhplln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-86eyhplln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">1</span>], hello_fun,<span class="hljs-number">2</span>);
+<span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">0</span>], <span class="hljs-string">"/bin/pal"</span>);</code></pre></div></div>
+<p>注意至少得有一个内核进程。一开始我写成了这样:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-09kme2lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-09kme2lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">0</span>], <span class="hljs-string">"/bin/hello"</span>);
+<span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">1</span>], <span class="hljs-string">"/bin/pal"</span>);</code></pre></div></div>
+<p>内核便会不断的重启。</p>
+<p>读到后面发现这就是讲义中的<code>一山不能藏二虎?</code>问题。</p>
+<p>解答:编译Navy-apps中的程序时, 我们都把它们链接到0x83000000的内存位置,
+如果我们正在运行仙剑奇侠传, 同时也想运行hello程序,
+它们的内容就会被相互覆盖。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235504869760_814_image-20230529100930844.png" srcset="/img/loading.gif" lazyload alt="image-20230529100930844">
+<figcaption aria-hidden="true">image-20230529100930844</figcaption>
+</figure>
+<h3 id="给用户进程传递参数">给用户进程传递参数</h3>
+<p>这一部分耗费的时间大概几乎是其他所有部分的总和(捂脸)，但是做完所有实验还是没有解决这个问题。</p>
+<p>这一部分讲义就讲的和实际不一致。</p>
+<blockquote>
+<p>根据这一约定, 你还需要修改Navy-apps中<code>_start</code>的代码,
+在其调用<code>call_main()</code>之前把它的参数设置成<code>argc</code>的地址.
+然后修改<code>navy-apps/libs/libc/src/plaform/crt0.c</code>中<code>call_main()</code>的代码,
+让它解析出真正的<code>argc/argv/envp</code>, 并调用<code>main()</code>.
+这样以后, 用户进程就可以接收到属于它的参数了.</p>
+</blockquote>
+<p>Navy-apps中根本就没有<code>_start</code>函数，也没有什么<code>call_main</code>。但是<code>call_main</code>应当是指的<code>crt_0</code>中这个部分:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-69cb08lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-69cb08lln8zueq"><pre><code class="hljs C++"><span class="hljs-type">void</span> _start(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[], <span class="hljs-type">char</span> *envp[]) {
+  <span class="hljs-type">char</span> *env[] = {<span class="hljs-literal">NULL</span>};
+  environ = env;
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"argc:%d\n"</span>,argc);
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;argc;i++){
+    <span class="hljs-type">char</span> *str=(<span class="hljs-type">char</span>**)(argv[i]);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"argv[%d]:%s\n"</span>,i,str);
+  }
+  <span class="hljs-built_in">exit</span>(<span class="hljs-built_in">main</span>(argc, argv, env));
+  <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+}</code></pre></div></div>
+<p>正常的想法应该是这样，按照函数调用约定把字符数组首地址放到正确的位置:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-agxxv9lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-agxxv9lln8zueq"><pre><code class="hljs C++">  _Context *new_p = (_Context *)(ustack.end - <span class="hljs-number">16</span> - <span class="hljs-built_in">sizeof</span>(_Context));
+  <span class="hljs-type">uintptr_t</span> pos = ustack.end - <span class="hljs-number">8</span>;
+  <span class="hljs-type">void</span> **argv_temp = (<span class="hljs-type">void</span> **)(pos);
+  *argv_temp = (<span class="hljs-type">void</span> *)(argv);
+  <span class="hljs-type">void</span> **argc_temp = (<span class="hljs-type">void</span> **)(ustack.end - <span class="hljs-number">12</span>);
+  *argc_temp = (<span class="hljs-type">void</span> *)(argc);
+  <span class="hljs-comment">// correct</span>
+  <span class="hljs-comment">// char* first_str=argv[0];</span>
+  <span class="hljs-comment">// printf("%s\n",first_str);</span>
+  <span class="hljs-type">char</span> *first_str = ((<span class="hljs-type">char</span> **)(*argv_temp))[<span class="hljs-number">0</span>];
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%s\n"</span>, first_str);
+  new_p-&gt;eip = (<span class="hljs-type">uintptr_t</span>)entry;
+  new_p-&gt;cs = <span class="hljs-number">8</span>;
+  new_p-&gt;eflags = <span class="hljs-number">0x00000202</span>;
+  new_p-&gt;esp = (<span class="hljs-type">uintptr_t</span>)(&amp;new_p-&gt;irq);
+  new_p-&gt;as = as;
+  <span class="hljs-keyword">return</span> new_p;
+}</code></pre></div></div>
+<p>但是这样<code>argc</code>没问题，<code>argv</code>却无法正常读取。和其他做2019的同学交流得知他们这样做是没有问题的。</p>
+<p>甚至后面尝试了直接在栈上吧字符串数组放进去，当然虽然指导书是这么说的，但常量字符串应当在堆区，显然也是有些荒谬的。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ocwn5plln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-ocwn5plln8zueq"><pre><code class="hljs C++"><span class="hljs-type">int</span> space_count=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span>(argv){
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;argc;i++){
+    space_count+=(<span class="hljs-built_in">strlen</span>(argv[i])+<span class="hljs-number">1</span>);
+  }
+}
+space_count+=argc;
+space_count+=<span class="hljs-number">4</span>; <span class="hljs-comment">//return address,argc,argv,envp</span>
+space_count*=<span class="hljs-number">4</span>; <span class="hljs-comment">//4 bytes for each</span>
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">"space_count:%d\n"</span>,space_count);
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">"end of stack addr:%x\n"</span>,ustack.end);
+_Context *new_p=(_Context*)(ustack.end-space_count-<span class="hljs-built_in">sizeof</span>(_Context));
+<span class="hljs-type">void</span>** argc_stack=(<span class="hljs-type">void</span>**)(ustack.end-space_count+<span class="hljs-number">4</span>);
+*argc_stack=(<span class="hljs-type">void</span>*)(argc);
+<span class="hljs-comment">// printf("argc:%d\n",(int)(*argc_stack));</span>
+<span class="hljs-comment">//ignore the envp</span>
+<span class="hljs-comment">// the pos to store strings</span>
+<span class="hljs-type">uintptr_t</span> pos=ustack.end-space_count+<span class="hljs-number">16</span>+argc*<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">char</span>*);
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">"string storeing start addr:%x\n"</span>,pos);
+<span class="hljs-type">char</span>* argv_strs[argc];
+<span class="hljs-type">uintptr_t</span> argv_stack_addr=ustack.end-space_count+<span class="hljs-number">8</span>;
+<span class="hljs-type">void</span>** argv_stack=(<span class="hljs-type">void</span>**)(argv_stack_addr);
+*argv_stack=(<span class="hljs-type">void</span>*)(ustack.end-space_count+<span class="hljs-number">16</span>);
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">"argv_stack addr:%x\n"</span>,(<span class="hljs-type">uintptr_t</span>)(argv_stack));
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">"argv_stack value:%x\n"</span>,(<span class="hljs-type">uintptr_t</span>)(*argv_stack));
+<span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-title">memcpy</span><span class="hljs-params">(<span class="hljs-type">void</span>* dst,<span class="hljs-type">void</span>* src,<span class="hljs-type">size_t</span> n)</span></span>;
+<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;argc;i++){
+  <span class="hljs-type">void</span>** str_stack=(<span class="hljs-type">void</span>**)(pos);
+  <span class="hljs-comment">//copy the string</span>
+  <span class="hljs-comment">// memcpy(*str_stack,argv[i],strlen(argv[i])+1);</span>
+  <span class="hljs-built_in">strcpy</span>(*str_stack,argv[i]);
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"str %s stored at addr:%x\n"</span>,(<span class="hljs-type">char</span>*)(*str_stack),(<span class="hljs-type">uintptr_t</span>)(str_stack));
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"the val of the str addr is %x\n"</span>,(<span class="hljs-type">uintptr_t</span>)(*str_stack));
+  argv_strs[i]=(<span class="hljs-type">char</span>*)(*str_stack);
+  pos+=<span class="hljs-built_in">strlen</span>(argv[i])+<span class="hljs-number">1</span>;
+}
+<span class="hljs-comment">//copy the argv</span>
+<span class="hljs-comment">// memcpy(*argv_stack,argv_strs,argc*sizeof(char*));</span>
+<span class="hljs-built_in">strcpy</span>(*argv_stack,argv_strs);
+<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;argc;i++){
+  <span class="hljs-type">void</span> ** temp=(<span class="hljs-type">void</span>**)(*argv_stack);
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"argv %x stored at addr:%x\n"</span>,(<span class="hljs-type">uintptr_t</span>)(temp[i]),(<span class="hljs-type">uintptr_t</span>)(temp+i));
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"it points to %s\n"</span>,(<span class="hljs-type">char</span>*)(temp[i]));
+}</code></pre></div></div>
+<p>而且这种方法在开启分页之后也没跑成功。</p>
+<p>后来发现有个<a target="_blank" rel="noopener" href="https://vgalaxy.work/2022/01/01/icspa4/#%E7%94%A8%E6%88%B7%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8F%82%E6%95%B0">博客</a>的问题和我类似:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235508361359_580_image-20230531210624959.png" srcset="/img/loading.gif" lazyload alt="image-20230531210624959">
+<figcaption aria-hidden="true">image-20230531210624959</figcaption>
+</figure>
+<p>但是我尝试了传完整路径，还是不行(哭)</p>
+<p>把PA其他部分做完回过头来尝试解决这个问题未果。不过既然<code>argc</code>能正常传递，想跳过商标页面还是能实现的。我们就用<code>argc</code>判断。</p>
+<p><code>pal-main.c</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ggqbxclln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-ggqbxclln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span></span>
+<span class="hljs-function"></span>{
+	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"game start!"</span>);
+	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"here show the args:"</span>);
+	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"argc: %d"</span>, argc);
+	<span class="hljs-comment">//log the address of argv</span>
+	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"argv: %x"</span>, argv);
+	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; argc; i++)
+	{
+		<span class="hljs-type">char</span>* arg = argv[i];
+		<span class="hljs-built_in">Log</span>(<span class="hljs-string">"argv[%d]: %s"</span>, i, arg);
+	}
+	<span class="hljs-built_in">hal_init</span>();
+	<span class="hljs-built_in">main_loop</span>(argc);
+	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p><code>main.c</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fe879slln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-fe879slln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (argc!=<span class="hljs-number">2</span>)
+{
+   <span class="hljs-built_in">PAL_TrademarkScreen</span>();
+   <span class="hljs-built_in">PAL_SplashScreen</span>();
+}</code></pre></div></div>
+<p>可以看到直接跳过了加载动画。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235512642869_760_image-20230531212149363.png" srcset="/img/loading.gif" lazyload alt="image-20230531212149363">
+<figcaption aria-hidden="true">image-20230531212149363</figcaption>
+</figure>
+<h2 id="阶段二">阶段二</h2>
+<h3 id="理解分页机制">理解分页机制</h3>
+<h4 id="理解分页细节">理解分页细节</h4>
+<ul>
+<li>内存分页一页大小时 <span class="math inline">\(4
+\mathrm{~KB}\)</span> ，那么 <span class="math inline">\(4
+\mathrm{~GB}\)</span> 内存被分成 <span class="math inline">\(\frac{4
+\mathrm{~GB}}{4 \mathrm{~KB}}=2^{20}\)</span> 页，因此只需要 20 位寻址
+<span class="math inline">\(2^{20}\)</span> 页即可</li>
+<li>因为虚拟地址到物理地址需要翻译，在访问CR3是并不知道映射规则（保存在页目录中，毕竟访
+问CR3就是为了得到页目录) 那就肯定只能按照物理地址访问</li>
+<li>页目录中会存储页表项 (用来寻址 <span class="math inline">\(2^{20}\)</span> 页理论上只需要 <span class="math inline">\(3 \text B\)</span> 但是为了方便一般页表项大小为
+<span class="math inline">\(4 \mathrm{~B}\)</span>
+)，那么每个进程都全部存储空间 (每一个页面)
+都需要的页标项记录。于是需要空间存$4B × 2^{20} = 4
+$存储，太大了，如果分级可以利用局部性原理有效减小页表项空间。</li>
+</ul>
+<p>这三个问题其实在操作系统课上宫老师都讲过，<span class="math inline">\(4KB\)</span>的页面大小设计也有巧合在里面。</p>
+<h4 id="空指针真的是空的吗">空指针真的是空的吗</h4>
+<p>NULL
+是一个标准规定的宏定义，用来表示空指针常量。在C中和早期的C++中它就是0</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c8edt0lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-c8edt0lln8zueq"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NULL (void*)0</span></code></pre></div></div>
+<p>后来C++有了<code>nullptr</code>这个东西，不过与这个问题没啥关系。</p>
+<p>下面的部分引自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/fly1988happy/archive/2012/04/16/2452021.html#">博客园</a></p>
+<blockquote>
+<p>程序在使用的是系统给定的一个段，程序中的<strong>零值指针指向这个段的开端</strong>，为了保证NULL概念，系统为我们<strong>这个段的开头64K内存做了苛刻的规定</strong>，根据虚拟内存访问权限控制，我们程序中（低访问权限）访问要求<strong>高访问权限的这64K内存</strong>被视作是不容许的，所以会必然引发<strong>Access
+Volitation</strong>
+错误，而这高权限的64K内存是一块<strong>保留内存</strong>（即<strong>不能被程序动态内存分配器分配，不能被访问，也不能被使用</strong>），就是简单的保留，不作任何使用。</p>
+</blockquote>
+<p>因此空指针不是真的"空"。但NULL确实是0地址，它在虚拟地址空间中没有映射/有较高的访问权限。所以访问空指针的内容会爆段错误。</p>
+<h3 id="实现分页机制">实现分页机制</h3>
+<p>先看一下加上<code>HAS_VME</code>是什么情况:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235517932149_981_image-20230529222248388.png" srcset="/img/loading.gif" lazyload alt="image-20230529222248388">
+<figcaption aria-hidden="true">image-20230529222248388</figcaption>
+</figure>
+<p>是这条指令:</p>
+<p><code>1010b0:  0f 22 d8                mov    %eax,%cr3</code></p>
+<p>显然<code>cr3</code>的出现应当意识到与分页有关。而且是<code>invalid opcode</code>，那么就先要吧这个指令补上。这是一个两比特操作码的指令，在表的下面一部分</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xsfm96lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-xsfm96lln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x20 */</span>	<span class="hljs-built_in">IDEXW</span>(G2E,mov_cr2r,<span class="hljs-number">4</span>), EMPTY, <span class="hljs-built_in">IDEXW</span>(E2G,mov_r2cr,<span class="hljs-number">4</span>), EMPTY,</code></pre></div></div>
+<p>查阅手册<code>0x21</code>也是与<code>cr</code>寄存器有关，一起补上。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235521194013_589_image-20230529223520788.png" srcset="/img/loading.gif" lazyload alt="image-20230529223520788">
+<figcaption aria-hidden="true">image-20230529223520788</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kuniaglln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-kuniaglln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(mov_r2cr) {
+  <span class="hljs-comment">//TODO();</span>
+  <span class="hljs-keyword">if</span> (id_dest-&gt;reg==<span class="hljs-number">0</span>) cpu.cr0.val=id_src-&gt;val;
+  <span class="hljs-keyword">else</span> cpu.cr3.val=id_src-&gt;val;
+  <span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"movl %%%s,%%cr%d"</span>, <span class="hljs-built_in">reg_name</span>(id_src-&gt;reg, <span class="hljs-number">4</span>), id_dest-&gt;reg);
+}
+
+<span class="hljs-built_in">make_EHelper</span>(mov_cr2r) {
+  <span class="hljs-comment">//TODO();</span>
+  <span class="hljs-keyword">if</span> (id_src-&gt;reg==<span class="hljs-number">0</span>) cpu.gpr[id_dest-&gt;reg]._32=cpu.cr0.val;
+  <span class="hljs-keyword">else</span> cpu.gpr[id_dest-&gt;reg]._32=cpu.cr3.val;
+  <span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"movl %%cr%d,%%%s"</span>, id_src-&gt;reg, <span class="hljs-built_in">reg_name</span>(id_dest-&gt;reg, <span class="hljs-number">4</span>));
+
+  <span class="hljs-built_in">difftest_skip_ref</span>();
+}</code></pre></div></div>
+<p>指令实现很简单，反正我们需要考虑的要么是<code>cr0</code>要么是<code>cr3</code>。</p>
+<p><code>CPU_state</code>也要补上这两个寄存器。寄存器的结构需<code>#include "mmu.h"</code>，在<code>nemu/src/isa/x86/include/isa/mmu.h</code>里定义。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235523234821_360_image-20230529224445299.png" srcset="/img/loading.gif" lazyload alt="image-20230529224445299">
+<figcaption aria-hidden="true">image-20230529224445299</figcaption>
+</figure>
+<p>看上去好像能跑了？但还不是在虚拟地址上跑的嘛。因为目前<code>isa_vaddr_read()</code>,
+<code>isa_vaddr_write()</code>并没有进行改动。这个就合并到下一节完成。</p>
+<h3 id="在分页机制上运行用户进程">在分页机制上运行用户进程</h3>
+<blockquote>
+<p>我们先单独运行dummy(别忘记修改调度代码),
+并先在<code>exit</code>的实现中调用<code>_halt()</code>结束系统的运行。</p>
+</blockquote>
+<p>先修改调度代码，省的后面忘了:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hjhioilln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-hjhioilln8zueq"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">// save the context pointer</span>
+  current-&gt;cp = prev;
+
+  <span class="hljs-comment">// current = ((current == &amp;pcb[0]) ? &amp;pcb[1] : &amp;pcb[0]);</span>
+  current = &amp;pcb[<span class="hljs-number">0</span>];
+  <span class="hljs-comment">// then return the new context</span>
+  <span class="hljs-keyword">return</span> current-&gt;cp;
+}</code></pre></div></div>
+<p><code>_Context *do_syscall(_Context *c)</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l4oxmhlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-l4oxmhlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_exit:
+  _halt(a[<span class="hljs-number">1</span>]);</code></pre></div></div>
+<p>需要按讲义中所讲取消原来进入开机菜单的选项，直接运行dummy。现在还没实现分页，可以看到也是能正常运行的。因为它只是调用了一下系统调用。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235527208599_859_image-20230530150819865.png" srcset="/img/loading.gif" lazyload alt="image-20230530150819865">
+<figcaption aria-hidden="true">image-20230530150819865</figcaption>
+</figure>
+<p>然后打开<code>makefile.compile</code>里的<code>VME=enable</code>之后，就发现寄喽。</p>
+<blockquote>
+<p>我们首先需要在加载用户进程之前为其创建地址空间.
+由于地址空间是进程相关的,
+我们将<code>_AddressSpace</code>结构体作为PCB的一部分. 这样以后,
+我们只需要在<code>context_uload()</code>的开头调用<code>_protect()</code>,
+就可以实现地址空间的创建。</p>
+</blockquote>
+<p>目前这个地址空间除了内核映射之外就没有其它内容了。看代码确实如此。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eufmp7lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-eufmp7lln8zueq"><pre><code class="hljs C++"><span class="hljs-type">int</span> _protect(_AddressSpace *as) {
+  PDE *updir = (PDE*)(<span class="hljs-built_in">pgalloc_usr</span>(<span class="hljs-number">1</span>));
+  as-&gt;ptr = updir;
+  <span class="hljs-comment">// map kernel space</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NR_PDE; i ++) {
+    updir[i] = kpdirs[i];
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<blockquote>
+<p><code>loader()</code>要做的事情是, 获取程序的大小之后,
+以页为单位进行加载:</p>
+<ul>
+<li>申请一页空闲的物理页</li>
+<li>通过<code>_map()</code>把这一物理页映射到用户进程的虚拟地址空间中</li>
+<li>从文件中读入一页的内容到这一物理页上</li>
+</ul>
+</blockquote>
+<p>这一部分实现需要谨慎一些，注意细节,写起来也让人挺抓狂的。不过还好没在这里卡住，反而下面犯了一个很蠢的错误。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mpv6rslln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-mpv6rslln8zueq"><pre><code class="hljs C++">Elf_Ehdr elf_header;
+<span class="hljs-type">int</span> fd = <span class="hljs-built_in">fs_open</span>(filename, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+<span class="hljs-built_in">Log</span>(<span class="hljs-string">"filename: %s, fd: %d"</span>, filename, fd);
+<span class="hljs-type">size_t</span> read_len = <span class="hljs-built_in">fs_read</span>(fd, &amp;elf_header, <span class="hljs-built_in">sizeof</span>(Elf_Ehdr));
+<span class="hljs-built_in">assert</span>(read_len == <span class="hljs-built_in">sizeof</span>(Elf_Ehdr));
+Elf_Phdr elf_program_header[elf_header.e_phnum];
+<span class="hljs-built_in">fs_lseek</span>(fd, elf_header.e_phoff, SEEK_SET);
+read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <span class="hljs-built_in">sizeof</span>(Elf_Phdr) * elf_header.e_phnum);
+<span class="hljs-built_in">assert</span>(read_len == <span class="hljs-built_in">sizeof</span>(Elf_Phdr) * elf_header.e_phnum);
+<span class="hljs-type">uintptr_t</span> vaddr = <span class="hljs-number">0</span>;
+<span class="hljs-type">size_t</span> page_num;
+<span class="hljs-type">void</span> *pa;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; elf_header.e_phnum; i++)
+{
+    <span class="hljs-comment">// only load PT_LOAD type</span>
+    <span class="hljs-keyword">if</span> (elf_program_header[i].p_type != PT_LOAD)
+    {
+        <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-built_in">fs_lseek</span>(fd, elf_program_header[i].p_offset, SEEK_SET);
+    vaddr = elf_program_header[i].p_vaddr;
+    page_num = (elf_program_header[i].p_filesz - <span class="hljs-number">1</span>) / PGSIZE + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; page_num; j++)
+    {
+        pa = <span class="hljs-built_in">new_page</span>(<span class="hljs-number">1</span>);
+        <span class="hljs-comment">// check if the page is 4kb aligned</span>
+        <span class="hljs-built_in">assert</span>((vaddr &amp; <span class="hljs-number">0xfff</span>) == <span class="hljs-number">0</span>);
+        _map(&amp;pcb-&gt;as, (<span class="hljs-type">void</span> *)vaddr, pa, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (j &lt; page_num - <span class="hljs-number">1</span>)
+        {
+            <span class="hljs-built_in">fs_read</span>(fd, pa, PGSIZE);
+        }
+        <span class="hljs-keyword">else</span>
+        {
+            <span class="hljs-built_in">fs_read</span>(fd, pa, elf_program_header[i].p_filesz % PGSIZE);
+        }
+        vaddr += PGSIZE;
+    }
+    <span class="hljs-built_in">assert</span>(vaddr = page_num * PGSIZE + elf_program_header[i].p_vaddr);
+    <span class="hljs-comment">// set the rest [Virtual Address + File Size, Virtual Address + Memory Size) to 0 turns to be a little complex</span>
+    <span class="hljs-keyword">if</span> (elf_program_header[i].p_filesz == elf_program_header[i].p_memsz)
+    {
+        pcb-&gt;max_brk = vaddr;
+        <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-type">int</span> zero_len = elf_program_header[i].p_memsz - elf_program_header[i].p_filesz;
+    <span class="hljs-keyword">if</span> (zero_len &lt; page_num * PGSIZE - elf_program_header[i].p_filesz)
+    {
+        <span class="hljs-built_in">memset</span>((<span class="hljs-type">void</span> *)(((<span class="hljs-type">uintptr_t</span>)pa) + (elf_program_header[i].p_filesz - PGSIZE * (page_num - <span class="hljs-number">1</span>))), <span class="hljs-number">0</span>, zero_len);
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-comment">// set the current page to 0</span>
+        <span class="hljs-built_in">memset</span>((<span class="hljs-type">void</span> *)(((<span class="hljs-type">uintptr_t</span>)pa) + (elf_program_header[i].p_filesz - PGSIZE * (page_num - <span class="hljs-number">1</span>))), <span class="hljs-number">0</span>, PGSIZE - elf_program_header[i].p_filesz % PGSIZE);
+        zero_len -= (PGSIZE - elf_program_header[i].p_filesz % PGSIZE);
+        <span class="hljs-comment">// set the rest pages to 0 (we need to allocate new pages)</span>
+        page_num = (zero_len - <span class="hljs-number">1</span>) / PGSIZE + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; page_num; j++)
+        {
+            pa = <span class="hljs-built_in">new_page</span>(<span class="hljs-number">1</span>);
+            <span class="hljs-built_in">assert</span>((vaddr &amp; <span class="hljs-number">0xfff</span>) == <span class="hljs-number">0</span>);
+            _map(&amp;pcb-&gt;as, (<span class="hljs-type">void</span> *)vaddr, pa, <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (j &lt; page_num - <span class="hljs-number">1</span>)
+            {
+                <span class="hljs-built_in">memset</span>(pa, <span class="hljs-number">0</span>, PGSIZE);
+            }
+            <span class="hljs-keyword">else</span>
+            {
+                <span class="hljs-built_in">memset</span>(pa, <span class="hljs-number">0</span>, zero_len % PGSIZE);
+            }
+            vaddr += PGSIZE;
+        }
+    }
+    pcb-&gt;max_brk = vaddr;
+}
+<span class="hljs-built_in">fs_close</span>(fd);
+<span class="hljs-keyword">return</span> elf_header.e_entry;</code></pre></div></div>
+<blockquote>
+<p>你需要在AM中实现<code>_map()</code>函数(在<code>nexus-am/am/src/$ISA/nemu/src/vme.c</code>中定义),
+你可以通过<code>as-&gt;ptr</code>获取页目录的基地址.
+若在映射过程中发现需要申请新的页表,
+可以通过回调函数<code>pgalloc_usr()</code>向Nanos-lite获取一页空闲的物理页.</p>
+</blockquote>
+<p><code>x86.h</code>中有一些宏可以帮我们完成页面相关的地址转换，不用自己造轮子。</p>
+<p>判断页面存在需要看最后一位是不是1，手册里说的很清楚。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235531573391_617_image-20230530193239098.png" srcset="/img/loading.gif" lazyload alt="image-20230530193239098">
+<figcaption aria-hidden="true">image-20230530193239098</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-33oofdlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-33oofdlln8zueq"><pre><code class="hljs C++"><span class="hljs-type">int</span> _map(_AddressSpace *as, <span class="hljs-type">void</span> *va, <span class="hljs-type">void</span> *pa, <span class="hljs-type">int</span> prot)
+{
+  <span class="hljs-comment">// 来自讲义:将地址空间as中虚拟地址va所在的虚拟页, 以prot的权限映射到pa所在的物理页. 当prot中的present位为0时, 表示让va的映射无效</span>
+  PDE *pdir = (PDE *)as-&gt;ptr;
+  PTE *ptab;
+  <span class="hljs-type">uint32_t</span> pdir_idx = <span class="hljs-built_in">PDX</span>(va);
+  <span class="hljs-type">uint32_t</span> ptab_idx = <span class="hljs-built_in">PTX</span>(va);
+  <span class="hljs-keyword">if</span> (pdir[pdir_idx] &amp;PTE_P)
+  {
+    <span class="hljs-comment">// the page table is already exist</span>
+    ptab = (PTE *)(<span class="hljs-built_in">PTE_ADDR</span>(pdir[pdir_idx]));
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-comment">// the page table is not exist</span>
+    ptab = (PTE *)(<span class="hljs-built_in">PTE_ADDR</span>(<span class="hljs-built_in">pgalloc_usr</span>(<span class="hljs-number">1</span>)));
+    <span class="hljs-comment">// map the new-allocted page table to the pdir</span>
+    pdir[pdir_idx] = (<span class="hljs-type">uintptr_t</span>)ptab | PTE_P;
+  }
+  <span class="hljs-comment">// map the page</span>
+  ptab[ptab_idx] = <span class="hljs-built_in">PTE_ADDR</span>(pa) |PTE_P;
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<blockquote>
+<p>为了让这一地址空间生效, 我们还需要将它落实到MMU中. 具体地,
+我们希望在CTE恢复进程上下文的时候来切换地址空间. 为此,
+我们需要将进程的地址空间描述符指针加入到上下文中.
+框架代码已经实现了这一功能(见<code>nexus-am/am/include/arch/$ISA-nemu.h</code>),</p>
+</blockquote>
+<p>确实。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-57e1ttlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-57e1ttlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">_Context</span> {
+  <span class="hljs-keyword">struct</span> <span class="hljs-title class_">_AddressSpace</span> *as;
+  <span class="hljs-type">uintptr_t</span> edi,esi, ebp, esp, ebx,edx,ecx,eax;
+  <span class="hljs-type">int</span> irq;
+  <span class="hljs-type">uintptr_t</span> eip, cs,eflags;
+};</code></pre></div></div>
+<blockquote>
+<p>但你还需要</p>
+<ul>
+<li>修改<code>_ucontext()</code>的实现,
+在创建的用户进程上下文中设置地址空间相关的指针<code>as</code></li>
+<li>在<code>__am_irq_handle()</code>的开头调用<code>__am_get_cur_as()</code>(在<code>nexus-am/am/src/$ISA/nemu/vme.c</code>中定义),
+来将当前的地址空间描述符指针保存到上下文中</li>
+<li>在<code>__am_irq_handle()</code>返回前调用<code>__am_switch()</code>(<code>nexus-am/am/src/$ISA/nemu/vme.c</code>中定义)
+来切换地址空间, 将调度目标进程的地址空间落实到MMU中</li>
+</ul>
+</blockquote>
+<p>第一步，前面已经加过了。剩下的两步，照着做就好。</p>
+<p>问题驱动。现在把<code>isa_vaddr_read()</code>和<code>isa_vaddr_write()</code>按照分页地址转换进行修改。写完<code>loader</code>和<code>_map</code>后已经算是对分页机制有较清晰的理解了，即便没有任何提示也基本完成的比较顺畅。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dt8fvvlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-dt8fvvlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">page_translate</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> addr)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">// printf("addr:%x\n",addr);</span>
+  <span class="hljs-type">uint32_t</span> pdir = <span class="hljs-built_in">PDX</span>(addr);
+  <span class="hljs-type">uint32_t</span> ptab = <span class="hljs-built_in">PTX</span>(addr);
+  <span class="hljs-type">uint32_t</span> offset = <span class="hljs-built_in">OFF</span>(addr);
+  <span class="hljs-comment">// note that PDE is a struct, rather than a uint32_t in the nexus-am</span>
+  PDE pde;
+  pde.val = <span class="hljs-built_in">paddr_read</span>(<span class="hljs-built_in">PTE_ADDR</span>(cpu.cr3.val) | (pdir &lt;&lt; <span class="hljs-number">2</span>), <span class="hljs-number">4</span>);
+  <span class="hljs-comment">// guarantee that the page table is present</span>
+  <span class="hljs-built_in">assert</span>(pde.present == <span class="hljs-number">1</span>);
+  PTE pte;
+  pte.val = <span class="hljs-built_in">paddr_read</span>(<span class="hljs-built_in">PTE_ADDR</span>(pde.val) | (ptab &lt;&lt; <span class="hljs-number">2</span>), <span class="hljs-number">4</span>);
+  <span class="hljs-comment">// guarantee that the page is present</span>
+  <span class="hljs-keyword">if</span> (pte.present == <span class="hljs-number">0</span>)
+  {
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"addr:%x\n"</span>, addr);
+  }
+  <span class="hljs-built_in">assert</span>(pte.present == <span class="hljs-number">1</span>);
+  <span class="hljs-type">uint32_t</span> paddr = (<span class="hljs-built_in">PTE_ADDR</span>(pte.val) | offset);
+  <span class="hljs-comment">// printf("paddr:%x\n",paddr);</span>
+  <span class="hljs-keyword">return</span> paddr;
+}
+<span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">isa_vaddr_read</span><span class="hljs-params">(<span class="hljs-type">vaddr_t</span> addr, <span class="hljs-type">int</span> len)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">// return paddr_read(addr, len);</span>
+  <span class="hljs-comment">// now we need to handle the page mapping</span>
+  <span class="hljs-keyword">if</span> (cpu.cr0.paging == <span class="hljs-number">0</span>)
+  {
+    <span class="hljs-comment">// no paging</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">paddr_read</span>(addr, len);
+  }
+  <span class="hljs-type">int</span> start_page_num = addr / PAGE_SIZE;
+  <span class="hljs-type">int</span> end_page_num = (addr + len - <span class="hljs-number">1</span>) / PAGE_SIZE;
+  <span class="hljs-keyword">if</span> (start_page_num == end_page_num)
+  {
+    <span class="hljs-comment">// the data is in one page</span>
+    <span class="hljs-type">paddr_t</span> paddr = <span class="hljs-built_in">page_translate</span>(addr);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">paddr_read</span>(paddr, len);
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"the data is in two pages\n"</span>);
+    <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">isa_vaddr_write</span><span class="hljs-params">(<span class="hljs-type">vaddr_t</span> addr, <span class="hljs-type">uint32_t</span> data, <span class="hljs-type">int</span> len)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-keyword">if</span> (cpu.cr0.paging == <span class="hljs-number">0</span>)
+  {
+    <span class="hljs-comment">// no paging</span>
+    <span class="hljs-built_in">paddr_write</span>(addr, data, len);
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-type">int</span> start_page_num = addr / PAGE_SIZE;
+  <span class="hljs-type">int</span> end_page_num = (addr + len - <span class="hljs-number">1</span>) / PAGE_SIZE;
+  <span class="hljs-keyword">if</span> (start_page_num == end_page_num)
+  {
+    <span class="hljs-comment">// the data is in one page</span>
+    <span class="hljs-type">paddr_t</span> paddr = <span class="hljs-built_in">page_translate</span>(addr);
+    <span class="hljs-built_in">paddr_write</span>(paddr, data, len);
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"the data is in two pages\n"</span>);
+    <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+  }
+}
+</code></pre></div></div>
+<p>改正之后能够在分页机制上Hit good trap。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235535787076_209_image-20230530215433304.png" srcset="/img/loading.gif" lazyload alt="image-20230530215433304">
+<figcaption aria-hidden="true">image-20230530215433304</figcaption>
+</figure>
+<h3 id="在分页机制上运行仙剑奇侠传">在分页机制上运行仙剑奇侠传</h3>
+<blockquote>
+<p>现在用户进程运行在分页机制之上,
+我们还需要在<code>mm_brk()</code>中把新申请的堆区映射到虚拟地址空间中,
+这样才能保证运行在分页机制上的用户进程可以正确地访问新申请的堆区.</p>
+</blockquote>
+<p>如文中所述:</p>
+<blockquote>
+<p>我们可以不实现堆区的回收功能, 而是只为当前新program
+break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
+</blockquote>
+<p>据此实现:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j0xvcilln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-j0xvcilln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">mm_brk</span><span class="hljs-params">(<span class="hljs-type">uintptr_t</span> brk, <span class="hljs-type">intptr_t</span> increment)</span> </span>{
+	<span class="hljs-keyword">if</span> (brk+increment&gt;current-&gt;max_brk)
+	{
+		<span class="hljs-type">int</span> new_pgnum=((brk+increment-current-&gt;max_brk)+<span class="hljs-number">0xfff</span>)/PGSIZE;
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=new_pgnum<span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">0</span>;--i)
+		{
+			<span class="hljs-type">void</span> *pa=<span class="hljs-built_in">new_page</span>(<span class="hljs-number">1</span>);
+			_map(&amp;(current-&gt;as),(<span class="hljs-type">void</span>*)(current-&gt;max_brk),pa,<span class="hljs-number">1</span>);
+			current-&gt;max_brk+=PGSIZE;
+		}
+	}
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p><code>new_pgnum</code>计算了需要分配的页面个数。看上去很简单粗暴。为什么不用考虑页面对齐问题？因为我实现的<code>loader</code>加载的时候分配的<code>max_brk</code>值是页面对齐的，这里更新的时候<code>current-&gt;max_brk+=PGSIZE;</code>也是页面对齐的，因此就不需要考虑<code>brk+increment</code>
+与 <code>max_brk</code>在同一页面上的问题。</p>
+<p>我们这是在<code>mm</code>中，要想访问当前进程的<code>max_brk</code>需要从进程控制块中获取。因此需要</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c878ztlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-c878ztlln8zueq"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"proc.h"</span></span>
+<span class="hljs-keyword">extern</span> PCB *current;</code></pre></div></div>
+<p>别忘了在系统调用里注册新实现的<code>max_brk</code>，一开始实现完了忘了注册，缺一堆页，排查了一个多小时发现是忘了在系统调用更新。</p>
+<p><code>_Context *do_syscall(_Context *c)</code>:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bndgb9lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-bndgb9lln8zueq"><pre><code class="hljs C++"> <span class="hljs-keyword">case</span> SYS_brk:
+{
+	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"brk syscall"</span>);
+	<span class="hljs-comment">//_end=*((char*)c-&gt;GPR2);</span>
+	<span class="hljs-built_in">mm_brk</span>((<span class="hljs-type">uintptr_t</span>)a[<span class="hljs-number">1</span>],(<span class="hljs-type">intptr_t</span>)a[<span class="hljs-number">2</span>]);
+	c-&gt;GPRx=<span class="hljs-number">0</span>;
+	<span class="hljs-keyword">break</span>;
+}</code></pre></div></div>
+<p>好了，我们跑一下仙剑奇侠传看看:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235540421541_424_image-20230530221047921.png" srcset="/img/loading.gif" lazyload alt="image-20230530221047921">
+<figcaption aria-hidden="true">image-20230530221047921</figcaption>
+</figure>
+<p>emm。确实如讲义所说。我们现在不得不处理数据跨页的问题了。</p>
+<p>跨页的思路也不难，在
+<code>vaddr_read</code>中将两次读取的字节进行整合，在
+<code>vaddr_write</code> 中将需要写入
+的字节进行拆分并分别写入两个页面即可。</p>
+<p><code>read</code>的处理如下:write是完全类似的。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v4ufxwlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-v4ufxwlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">else</span>
+{
+  <span class="hljs-comment">// printf("the data is in two pages\n");</span>
+  <span class="hljs-comment">// assert(0);</span>
+  <span class="hljs-comment">// the data is in two pages</span>
+  <span class="hljs-type">int</span> first_page_len = PAGE_SIZE - <span class="hljs-built_in">OFF</span>(addr);
+  <span class="hljs-comment">// printf("crossong page data addr:%x\n", addr);</span>
+  <span class="hljs-type">paddr_t</span> paddr = <span class="hljs-built_in">page_translate</span>(addr);
+  <span class="hljs-type">uint32_t</span> first_page_data = <span class="hljs-built_in">paddr_read</span>(paddr, first_page_len);
+  paddr = <span class="hljs-built_in">page_translate</span>(addr + first_page_len);
+  <span class="hljs-type">uint32_t</span> second_page_data = <span class="hljs-built_in">paddr_read</span>(paddr, len - first_page_len);
+  <span class="hljs-keyword">return</span> (second_page_data &lt;&lt; (first_page_len * <span class="hljs-number">8</span>)) + first_page_data;
+}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rd70qxlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-rd70qxlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">else</span>
+{
+  <span class="hljs-comment">// printf("the data is in two pages\n");</span>
+  <span class="hljs-comment">// assert(0);</span>
+  <span class="hljs-comment">// the data is in two pages</span>
+  <span class="hljs-type">int</span> first_page_len = PAGE_SIZE - <span class="hljs-built_in">OFF</span>(addr);
+  <span class="hljs-comment">// printf("crossong page data addr:%x\n", addr);</span>
+  <span class="hljs-type">paddr_t</span> paddr = <span class="hljs-built_in">page_translate</span>(addr);
+  <span class="hljs-built_in">paddr_write</span>(paddr, data &amp; ((<span class="hljs-number">1</span> &lt;&lt; (first_page_len * <span class="hljs-number">8</span>)) - <span class="hljs-number">1</span>), first_page_len);
+  paddr = <span class="hljs-built_in">page_translate</span>(addr + first_page_len);
+  <span class="hljs-built_in">paddr_write</span>(paddr, data &gt;&gt; (first_page_len * <span class="hljs-number">8</span>), len - first_page_len);
+}</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235542835305_606_image-20230531155347228.png" srcset="/img/loading.gif" lazyload alt="image-20230531155347228" width="67%" height="67%"></p>
+<h3 id="支持虚存管理的多道程序">支持虚存管理的多道程序</h3>
+<p>这次只需要把调度代码改回去就可以了，不需要做额外的事情。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235547658121_402_image-20230531164538774.png" srcset="/img/loading.gif" lazyload alt="image-20230531164538774">
+<figcaption aria-hidden="true">image-20230531164538774</figcaption>
+</figure>
+<h2 id="阶段三">阶段三</h2>
+<h3 id="实现抢占多任务">实现抢占多任务</h3>
+<blockquote>
+<p>时钟中断通过<code>nemu/src/device/timer.c</code>中的<code>timer_intr()</code>触发,
+每10ms触发一次. 触发后,
+会调用<code>dev_raise_intr()</code>函数(在<code>nemu/src/device/intr.c</code>中定义).
+你需要:</p>
+<ul>
+<li>在<code>cpu</code>结构体中添加一个<code>bool</code>成员<code>INTR</code>.</li>
+<li>在<code>dev_raise_intr()</code>中将INTR引脚设置为高电平.</li>
+<li>在<code>exec_once()</code>的末尾添加轮询INTR引脚的代码,
+每次执行完一条指令就查看是否有硬件中断到来:</li>
+</ul>
+</blockquote>
+<p>这三步照着做即可。</p>
+<blockquote>
+<ul>
+<li>实现<code>isa_query_intr()</code>函数(在<code>nemu/src/isa/$ISA/intr.c</code>中定义):</li>
+</ul>
+</blockquote>
+<p>注意Interrupt Enable Flag ，等于1接收中断响应。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pvitjulln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-pvitjulln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isa_query_intr</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> </span>{
+	<span class="hljs-keyword">if</span> (cpu.INTR==<span class="hljs-literal">true</span>&amp;&amp;cpu.eflags.IF==<span class="hljs-number">1</span>)
+	{
+		cpu.INTR=<span class="hljs-literal">false</span>;
+		<span class="hljs-built_in">raise_intr</span>(IRQ_TIMER,cpu.pc);
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}</code></pre></div></div>
+<blockquote>
+<ul>
+<li>修改<code>raise_intr()</code>中的代码, 让处理器进入关中断状态:</li>
+</ul>
+</blockquote>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d8eaj7lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-d8eaj7lln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">/* <span class="hljs-doctag">TODO:</span> Trigger an interrupt/exception with ``NO''.</span>
+<span class="hljs-comment">   * That is, use ``NO'' to index the IDT.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// step1</span>
+  <span class="hljs-built_in">rtl_push</span>(&amp;cpu.eflags.val);
+  <span class="hljs-built_in">rtl_push</span>(&amp;cpu.cs);
+  <span class="hljs-built_in">rtl_push</span>(&amp;ret_addr);
+  cpu.eflags.IF = <span class="hljs-number">0</span>;
+  <span class="hljs-comment">// step2</span>
+  <span class="hljs-type">uint32_t</span> gate_addr = cpu.idtr.base, len = cpu.idtr.limit;
+  <span class="hljs-keyword">if</span> (len &lt;= NO)
+  {
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"the number is larger than the length of IDT!\n"</span>);
+    <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+  }
+  <span class="hljs-comment">//step3</span>
+  <span class="hljs-type">uint32_t</span> val_l, val_h, p;
+  val_l = <span class="hljs-built_in">vaddr_read</span>(gate_addr + NO * <span class="hljs-number">8</span>, <span class="hljs-number">2</span>);
+  val_h = <span class="hljs-built_in">vaddr_read</span>(gate_addr + NO * <span class="hljs-number">8</span> + <span class="hljs-number">6</span>, <span class="hljs-number">2</span>);
+  p = <span class="hljs-built_in">vaddr_read</span>(gate_addr + NO * <span class="hljs-number">8</span> + <span class="hljs-number">5</span>, <span class="hljs-number">1</span>) &gt;&gt; <span class="hljs-number">7</span>;
+  <span class="hljs-comment">//actually no need to check p for NEMU, but we can do it.</span>
+  <span class="hljs-keyword">if</span> (!p)
+  {
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"The gatedesc is not allowed!"</span>);
+    <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+  }
+  <span class="hljs-comment">//step4</span>
+  <span class="hljs-comment">//using rtl api</span>
+  <span class="hljs-type">vaddr_t</span> goal = (val_h &lt;&lt; <span class="hljs-number">16</span>) + val_l;
+  <span class="hljs-built_in">rtl_j</span>(goal);
+}</code></pre></div></div>
+<blockquote>
+<p>在软件上, 你还需要:</p>
+<ul>
+<li>在CTE中添加时钟中断的支持,
+将时钟中断打包成<code>_EVENT_IRQ_TIMER</code>事件.</li>
+<li>Nanos-lite收到<code>_EVENT_IRQ_TIMER</code>事件之后,
+调用<code>_yield()</code>来强制当前进程让出CPU,
+同时也可以去掉我们之前在设备访问中插入的<code>_yield()</code>了.</li>
+<li>为了可以让处理器在运行用户进程的时候响应时钟中断,
+你还需要修改<code>_ucontext()</code>的代码, 在构造上下文的时候,
+设置正确中断状态, 使得将来返回到用户进程后CPU处于开中断状态.</li>
+</ul>
+</blockquote>
+<p>这三条也是照着做即可。</p>
+<p>最后讲义中没提到的，是在<code>__am_irq_handle</code>中注册<code>_EVENT_IRQ_TIMER</code>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pq9mm4lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-pq9mm4lln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> <span class="hljs-number">32</span>:
+  ev.event = _EVENT_IRQ_TIMER;
+  <span class="hljs-keyword">break</span>;</code></pre></div></div>
+<p>可以看到每隔一段时间都触发一次时钟中断事件。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235551684634_469_image-20230531172613664.png" srcset="/img/loading.gif" lazyload alt="image-20230531172613664">
+<figcaption aria-hidden="true">image-20230531172613664</figcaption>
+</figure>
+<h3 id="展示你的计算机系统">展示你的计算机系统</h3>
+<blockquote>
+<p>我们可以在Nanos-lite的<code>events_read()</code>函数中让<code>F1</code>,
+<code>F2</code>, <code>F3</code>这3个按键来和3个前台程序绑定, 例如,
+一开始是仙剑奇侠传和hello程序分时运行, 按下<code>F3</code>之后,
+就变成slider和hello程序分时运行. 如果你没有实现Navy-apps之上的AM,
+可以加载3份仙剑奇侠传, 让它们分别读取不同的存档进行游戏.</p>
+</blockquote>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jzzi3rlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-jzzi3rlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (key &amp; <span class="hljs-number">0x8000</span>)
+{
+  <span class="hljs-comment">//0x8002 to 0x8004 are F1 to F3</span>
+  <span class="hljs-keyword">if</span> (key&gt;=<span class="hljs-number">0x8002</span>&amp;&amp;key&lt;=<span class="hljs-number">0x8004</span>) <span class="hljs-built_in">change_gcb</span>(key<span class="hljs-number">-0x8001</span>);
+  <span class="hljs-built_in">sprintf</span>((<span class="hljs-type">char</span> *)buf, <span class="hljs-string">"kd %s\n"</span>, keyname[key &amp; <span class="hljs-number">0x7fff</span>]);
+}</code></pre></div></div>
+<p><code>amdev.h</code>里有张键位表，可以参考。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235555185137_348_image-20230531192942805.png" srcset="/img/loading.gif" lazyload alt="image-20230531192942805">
+<figcaption aria-hidden="true">image-20230531192942805</figcaption>
+</figure>
+<p><code>change_gcb</code>需要添加外部引用。在<code>proc.c</code>定义:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hdfeuwlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-hdfeuwlln8zueq"><pre><code class="hljs C++"><span class="hljs-type">uint32_t</span> fg_pcb;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">change_gcb</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> id)</span> </span>{ fg_pcb = id; }</code></pre></div></div>
+<p>修改<code>schedule</code>:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ug8e8alln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-ug8e8alln8zueq"><pre><code class="hljs C++"><span class="hljs-type">uint32_t</span> now_id = <span class="hljs-number">0</span>;
+<span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-comment">// save the context pointer</span>
+  current-&gt;cp = prev;
+  <span class="hljs-keyword">if</span> (now_id != fg_pcb)
+  {
+    now_id = fg_pcb;
+    current = &amp;pcb[fg_pcb];
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    now_id = <span class="hljs-number">0</span>;
+    current = &amp;pcb[<span class="hljs-number">0</span>];
+  }
+
+  <span class="hljs-comment">// current = ((current == &amp;pcb[0]) ? &amp;pcb[1] : &amp;pcb[0]);</span>
+  <span class="hljs-comment">// current = &amp;pcb[0];</span>
+  <span class="hljs-comment">// then return the new context</span>
+  <span class="hljs-keyword">return</span> current-&gt;cp;
+}</code></pre></div></div>
+<p>为了更清晰的验证实现的效果，我将hello的输出注释掉了，并添加了键盘事件的Log。可以看到按F1-F3键的时候游戏会重新进入，hello也在一直运行。当然如果一直按的和上一次相同的按键不会有变化。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/PA4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/20230601235557711505_227_image-20230531192547493.png" srcset="/img/loading.gif" lazyload alt="image-20230531192547493">
+<figcaption aria-hidden="true">image-20230531192547493</figcaption>
+</figure>
+<h2 id="必答题">必答题</h2>
+<h6 id="hello程序是什么-它从而何来-要到哪里去">hello程序是什么,
+它从而何来, 要到哪里去</h6>
+<p>hello 程序在磁盘上，hello.c 被编译成 ELF 文件后，位于 ramdisk
+中。当用户运行该程序时，通过 naive_uload
+函数读入指定的内存并放在正确的位置。加载完成后，操作系统从其 ELF
+信息中获取到程序入口地址，通过上下文切换从入口地址处继续执行，hello
+程序便获取到 CPU 的控制权开始执行指令。</p>
+<p>对于字符串在终端的显示，首先调用<code>printf</code>
+等库函数，然后通过 <code>SYS_write</code>
+系统调用来输出字符，系统调用通过调用外设的驱动程序最终将内容在外设中表现出来，程序执行完毕后操作系统会回收其内存空间。</p>
+<p>上述只是大致的流程，展开来讲的话每一句话都可以拓展很多。由于时间有限这里就不展开了。</p>
+<h6 id="上下文切换的具体过程">上下文切换的具体过程</h6>
+<p>首先回顾PA3的选做题</p>
+<blockquote>
+<p>AM究竟给程序提供了多大的栈空间呢?</p>
+</blockquote>
+<p>观察<code>nexus-am/am/src/x86/nemu/boot/loader.ld</code>这个链接脚本可以发现，其中定义了一个符号<code>_stack_pointer</code></p>
+<p>而根据AM启动客户程序的流程可知，在<code>nexus-am/am/src/x86/nemu/boot/start.S</code>中的<code>_start:</code>中将会执行<code>mov $_stack_pointer, %esp</code>，以此初始化栈指针。又注意到<code>_stack_top</code>符号的地址与之相差<code>0x8000</code>，因此可以回答AM中程序的栈空间大小为<code>0x8000</code>字节。</p>
+<p>当然在在本次实验中也可以查看PCB的结构:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3xmsz2lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-3xmsz2lln8zueq"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> STACK_SIZE (8 * PGSIZE)</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">union</span> {
+  <span class="hljs-type">uint8_t</span> stack[STACK_SIZE] PG_ALIGN;
+  <span class="hljs-keyword">struct</span> {
+    _Context *cp;
+    _AddressSpace as;
+    <span class="hljs-comment">// we do not free memory, so use `max_brk' to determine when to call _map()</span>
+    <span class="hljs-type">uintptr_t</span> max_brk;
+  };
+} PCB;</code></pre></div></div>
+<p><code>STACK_SIZE (8 * PGSIZE)=8*4096=32768=0x8000</code>,和从汇编中的得到的结果是一致的。</p>
+<p>在这次实验指导书中也有说明:</p>
+<blockquote>
+<p>代码为每一个进程分配了一个32KB的堆栈, 已经足够使用了,
+不会出现栈溢出导致UB.</p>
+</blockquote>
+<p>结合PA3的前两个必答题，在此以内核进程<code>hello</code>为例，将上下文切换的整个细节总结如下:</p>
+<p><a target="_blank" rel="noopener" href="https://excalidraw.com/#json=5d-KBtTMJBi6eNu4fkmrg,jm4Dt4nkNF8tgd7ix_B7ng">excalidraw</a></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA4/20230602001029829434_199_trap1.png" srcset="/img/loading.gif" lazyload alt="trap1">
+<figcaption aria-hidden="true">trap1</figcaption>
+</figure>
+<h6 id="分时多任务的具体过程">分时多任务的具体过程</h6>
+<blockquote>
+<p>请结合代码,
+解释分页机制和硬件中断是如何支撑仙剑奇侠传和hello程序在我们的计算机系统(Nanos-lite,
+AM, NEMU)中分时运行的.</p>
+</blockquote>
+<p>分页机制由 Nanos-lite、AM 和 NEMU 配合实现。</p>
+<ul>
+<li><p>首先，NEMU 提供 CR0 与 CR3
+寄存器来辅助实现分页机制，CR0用于开启分页，CR3 记录页表基地址。随后，MMU
+进行分页地址的转换，在代码中表现为 NEMU 的
+<code>vaddr_read()</code>与<code>vaddr_write()</code>。</p></li>
+<li><p>当启动一个用户进程后，Nanos-lite会在开头调用<code>_protect()</code>,
+它是AM中的功能，可以实现地址空间的创建，并且将内核空间映射到用户空间。之后进行
+<code>loader()</code>
+，在loader函数中与之前不同是，操作系统使用分页机制对其进行存储和加载，通过
+new_page 获得新的物理页，并用到AM中 <code>_map</code>
+以建立虚拟地址与物理地址的映射关系，退出后调用am中的
+<code>_ucontext</code>
+，在栈上创建必要的上下文信息和参数信息，而分页机制则保证了进程在对应虚拟地址存取信息时，
+在NEMU中能够通过
+<code>page_translate()</code>函数等完成到物理地址的转换，从而获得正确的信息。</p></li>
+<li><p>之后在NEMU中运行时，每10ms在 <code>timer_intr()</code>
+触发一次时钟中断，此时NEMU检测到 <code>isa_query_intr()</code>
+为true，同时也会在该函数中调用<code>raise_intr</code>，为中断事件做准备并产生异常号。而操作系统接受到
+<code>_EVENT_IRQ_TIMER</code> 后调用 <code>_yield()</code>
+强行暂停该进程，最后在<code>schedule</code>中更换当前进程，通过AM
+的<code>_switch()</code>切换进程的虚拟内存空间， 并将进程的上下文传递给
+AM，AM 的 <code>asm_trap()</code>恢复这一现场。NEMU 执行下
+一条指令时，便开始新进程的运行。完成进程转换，如此反复形成分时运行。</p></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">#系统设计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>南京大学ics2019_PA4</div>
+      <div>http://lunaticsky-tql.github.io/posts/44109/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/29701/" title="Go 语言入门指南：slice使用解析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Go 语言入门指南：slice使用解析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/53807/" title="C++运算符重载">
+                        <span class="hidden-mobile">C++运算符重载</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

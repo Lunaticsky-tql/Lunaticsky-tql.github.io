@@ -370,7 +370,7 @@
 <p>首先由于拥塞控制算法中窗口大小计算是以字节为单位的，因此本次实验中计算和展示窗口大小时也改为字节计数（而不是按分组计数），如下图所示：</p>
 <p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152040038538_334_image-20221230094338108.png" srcset="/img/loading.gif" lazyload alt="image-20221230094338108" width="80%" height="80%"></p>
 <p>在发送时，只需要添加“实际发送窗口取决于接收通告窗口和拥塞控制窗口中较小值”对应的代码即可，对应于第一行：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5qevomlftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-5qevomlftoynt9"><pre><code class="hljs C++"><span class="hljs-comment">//send packets</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bkzpajlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-bkzpajlln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//send packets</span>
 window_size = <span class="hljs-built_in">min</span>(cwnd, advertised_window_size);
 <span class="hljs-keyword">if</span> ((LastByteSent - LastByteAcked &lt; window_size) &amp;&amp; (LastByteSent &lt; file_len)) {
     pkt_data_size = <span class="hljs-built_in">min</span>(MAX_SIZE, file_len - nextseqnum * MAX_SIZE);
@@ -388,14 +388,14 @@ window_size = <span class="hljs-built_in">min</span>(cwnd, advertised_window_siz
 <h5 id="接收ack">接收ACK</h5>
 <p>首先我们先来看处理正常收到ACK的情况：</p>
 <p>上一个实验中提到，实际网络环境中<code>ACK</code>未必是按序到达的，因此将<code>base</code>的移动改为判断按照按序接收到ACK为标准进行滑动，如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pyr866lftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-pyr866lftoynt9"><pre><code class="hljs C++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-31pfcolln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-31pfcolln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
         acked[<span class="hljs-built_in">get_ack_num</span>(rcvpkt)] = <span class="hljs-literal">true</span>;
         <span class="hljs-keyword">while</span> (acked[base]) {
             base++;
         }</code></pre></div></div>
 <p>但是，实际上注意到，当接收方发出一个更大的ACK，说明之前的ACK事实上已经按序收到。当发送方收到一个更大的ACK时，不管之前的ACK有没有返回到发送方，发送方仅通过这个信息就已经可以确信接收方按序收到了之前的ACK了。因此其实是可以放心的进行<code>base = get_ack_num(rcvpkt) + 1</code>的。</p>
 <p>之后，我们据此更新<code>LastByteAcked</code>，然后根据状态机对RENO算法的状态进行更新，最后更新窗口大小。据此，代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p0u8t5lftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-p0u8t5lftoynt9"><pre><code class="hljs C++">      u_int ack_num = <span class="hljs-built_in">get_ack_num</span>(rcvpkt);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6gh03elln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-6gh03elln8zueq"><pre><code class="hljs C++">      u_int ack_num = <span class="hljs-built_in">get_ack_num</span>(rcvpkt);
 <span class="hljs-keyword">if</span> (ack_num &gt;= base) {
           u_int gap = ack_num - base + <span class="hljs-number">1</span>;
           <span class="hljs-comment">//update the base and LastByteAcked</span>
@@ -427,7 +427,7 @@ window_size = <span class="hljs-built_in">min</span>(cwnd, advertised_window_siz
       }</code></pre></div></div>
 <p>处于慢启动阶段时，窗口大小增大1MSS。每过一个RTT，cwnd翻倍，窗口大小呈指数增长；而处于拥塞避阶段时，免<code>cwnd = cwnd + MSS*(MSS/cwnd)</code>。相当于每过一个RTT，cwnd加1。</p>
 <p>当收到冗余ACK时，我们需要进行快速重传，并进行窗口大小更新。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sznti7lftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-sznti7lftoynt9"><pre><code class="hljs c++"><span class="hljs-comment">//duplicate ACK</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bqh6filln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-bqh6filln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">//duplicate ACK</span>
 dupACKcount++;
 <span class="hljs-keyword">if</span> (RENO_STATE == SLOW_START || RENO_STATE == CONGESTION_AVOIDANCE) {
     <span class="hljs-keyword">if</span> (dupACKcount == <span class="hljs-number">3</span>) {
@@ -445,7 +445,7 @@ dupACKcount++;
 }</code></pre></div></div>
 <h5 id="超时处理">超时处理</h5>
 <p>注意到，不管什么状态下，超时后都需要恢复到慢启动状态，因此直接在超时事件上进行改动即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yyw29flftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-yyw29flftoynt9"><pre><code class="hljs C++"><span class="hljs-comment">//handle timeout</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cf2pj6lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-cf2pj6lln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//handle timeout</span>
 <span class="hljs-keyword">if</span> (timer.<span class="hljs-built_in">timeout</span>()) {
     <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Timeout, resend packets from "</span> + <span class="hljs-built_in">to_string</span>(base) + <span class="hljs-string">" to "</span> + <span class="hljs-built_in">to_string</span>(nextseqnum - <span class="hljs-number">1</span>),
                   WARNING);
@@ -468,7 +468,7 @@ dupACKcount++;
 <p>因此基于此可以对接收端的逻辑进行改进：</p>
 <p>在前面提到，接收端必须是累计确认的（确认按序收到的最大序号），发送端才有理由在移动窗口时移动到当前<code>ack+1</code>的位置。同时我们还想让接收端缓存失序的包，以避免发送端进行已收到的包的重传而加剧拥塞。</p>
 <p>因此我在上一次实验的<code>SR</code>的基础上修改发送ACK行为，使其从选择确认转变成累计确认，同时保留其缓存失序包行为即可解决这个问题。代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oyjuqslftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-oyjuqslftoynt9"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (pkt_seq &gt;= rcv_base &amp;&amp; pkt_seq &lt;= rcv_base + N - <span class="hljs-number">1</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2g6yqhlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-2g6yqhlln8zueq"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (pkt_seq &gt;= rcv_base &amp;&amp; pkt_seq &lt;= rcv_base + N - <span class="hljs-number">1</span>) {
      <span class="hljs-comment">//in the window</span>
      <span class="hljs-keyword">if</span> (!acked[pkt_seq]) {
          <span class="hljs-keyword">if</span> (pkt_seq == rcv_base) {

@@ -16,31 +16,30 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="Ucore Lab0 on Apple Silicon Mac 介绍 M1芯片是2020年之后推出的全新适配于Macbook的Arm64芯片。因为底层的指令集与x86_64不同，因此面临着很多兼容性的问题。在ucore的编译，运行和调试的环境配置中也因此踩了一些坑。当然最终得以能够优雅的在这台具有独特架构的PC上探索实现操作系统的魅力。 现在将其记录下来，以供参考。 qemu安装 qemu是非常成">
+        <meta name="description" content="PA5实验报告 2013599 田佳业 实现浮点指令 先看一下目前进入战斗场面是什么情况。这里有一个问题是怎么进入战斗场面。因为现在仙剑奇侠传跑的比较慢，这一步都费了挺长时间(笑) 首先进入主界面选旧的回忆，读最后一个档(倒数第二个档试过没有怪)，进去走迷宫，上下左右移动，走一会儿遇到怪物，自动进入战斗场景。往右下角走会快一些。怪物画的好涩   image-20230601104023742  按">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ucore Lab0 on Apple Silicon Mac">
-<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/23191/index.html">
+<meta property="og:title" content="南京大学ics2019_PA5">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/27788/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="Ucore Lab0 on Apple Silicon Mac 介绍 M1芯片是2020年之后推出的全新适配于Macbook的Arm64芯片。因为底层的指令集与x86_64不同，因此面临着很多兼容性的问题。在ucore的编译，运行和调试的环境配置中也因此踩了一些坑。当然最终得以能够优雅的在这台具有独特架构的PC上探索实现操作系统的魅力。 现在将其记录下来，以供参考。 qemu安装 qemu是非常成">
+<meta property="og:description" content="PA5实验报告 2013599 田佳业 实现浮点指令 先看一下目前进入战斗场面是什么情况。这里有一个问题是怎么进入战斗场面。因为现在仙剑奇侠传跑的比较慢，这一步都费了挺长时间(笑) 首先进入主界面选旧的回忆，读最后一个档(倒数第二个档试过没有怪)，进去走迷宫，上下左右移动，走一会儿遇到怪物，自动进入战斗场景。往右下角走会快一些。怪物画的好涩   image-20230601104023742  按">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231400206876_223_image-20221003224714488.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231401953713_177_image-20221003224809467.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231403860364_202_image-20221003225239013.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231405125684_549_image-20221003225245971.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231407841829_266_image-20221003230427926.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222055575294_180_image-20221130221829874.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222057952350_733_image-20221130221851517.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222100838376_161_image-20221130222030887.png">
-<meta property="article:published_time" content="2022-09-30T09:17:37.000Z">
-<meta property="article:modified_time" content="2022-09-30T09:17:37.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235912474020_401_image-20230601104023742.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235917144417_751_image-20230601111018328.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235920917333_702_image-20230601112028613.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235924396067_218_image-20230601153308456.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235927896331_956_image-20230601111624447.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235930759689_235_image-20230601112713746.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235934898992_647_image-20230601113933501.png">
+<meta property="article:published_time" content="2023-06-01T15:59:38.000Z">
+<meta property="article:modified_time" content="2023-06-01T15:59:38.000Z">
 <meta property="article:author" content="Lunatic sky">
-<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="系统设计">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231400206876_223_image-20221003224714488.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235912474020_401_image-20230601104023742.png">
     
     
     
-    <title>Ucore Lab0 on Apple Silicon Mac - Lunaticsky&#39;s Blog</title>
+    <title>南京大学ics2019_PA5 - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -232,7 +231,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Ucore Lab0 on Apple Silicon Mac"></span>
+            <span id="subtitle" data-typed-text="南京大学ics2019_PA5"></span>
           
         </div>
 
@@ -243,8 +242,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2022-09-30 17:17" pubdate>
-              2022年9月30日 下午
+            <time datetime="2023-06-01 23:59" pubdate>
+              2023年6月1日 晚上
             </time>
           </span>
           
@@ -255,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              2.9k 字
+              2.8k 字
                 
       </span>
       
@@ -281,7 +280,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Ucore Lab0 on Apple Silicon Mac/Ucore Lab0 on Apple Silicon Mac.md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/南京大学ics2019_PA5/南京大学ics2019_PA5.md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -313,131 +312,196 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Ucore Lab0 on Apple Silicon Mac</h1>
+            <h1 style="display: none">南京大学ics2019_PA5</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="ucore-lab0-on-apple-silicon-mac">Ucore Lab0 on Apple Silicon
-Mac</h2>
-<h3 id="介绍">介绍</h3>
-<p>M1芯片是2020年之后推出的全新适配于Macbook的Arm64芯片。因为底层的指令集与x86_64不同，因此面临着很多兼容性的问题。在ucore的编译，运行和调试的环境配置中也因此踩了一些坑。当然最终得以能够优雅的在这台具有独特架构的PC上探索实现操作系统的魅力。</p>
-<p>现在将其记录下来，以供参考。</p>
-<h3 id="qemu安装">qemu安装</h3>
-<p>qemu是非常成熟的虚拟化解决方案，通过软件的方式逐条将目标文件的二进制指令翻译成目标架构支持的二进制指令，虽然效率不高，但是使用方便，对M1芯片支持也比较完善，足够用来调试ucore了。</p>
-<p>指导书中针对linux给出了使用包管理工具的安装方案。在mac上这个过程也同样比较简单。安装<code>homebrew</code>包管理工具后只需要</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a25at8lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-a25at8lln8zueq"><pre><code class="hljs shell">brew install qemu</code></pre></div></div>
-<p>即可。当然为了保证是最新版本，安装之前可以更新一下homebrew：<code>brew update</code>。</p>
-<h3 id="i386-elf-gcc和i386-elf-gdb安装">i386-elf-gcc和i386-elf-gdb安装</h3>
-<p>按照网上的解决方案，我安装了<code>macport</code>，并</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f7ac5ylln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-f7ac5ylln8zueq"><pre><code class="hljs shell">sudo port -v selfupdate
-sudo port install i386-elf-gcc</code></pre></div></div>
-<p>但是发现它安装过程中构建失败了。</p>
+                <h1 id="pa5实验报告">PA5实验报告</h1>
+<p>2013599 田佳业</p>
+<h2 id="实现浮点指令">实现浮点指令</h2>
+<p>先看一下目前进入战斗场面是什么情况。这里有一个问题是怎么进入战斗场面。因为现在仙剑奇侠传跑的比较慢，这一步都费了挺长时间(笑)</p>
+<p>首先进入主界面选旧的回忆，读最后一个档(倒数第二个档试过没有怪)，进去走迷宫，上下左右移动，走一会儿遇到怪物，自动进入战斗场景。往右下角走会快一些。<del>怪物画的好涩</del></p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231400206876_223_image-20221003224714488.png" srcset="/img/loading.gif" lazyload alt="image-20221003224714488">
-<figcaption aria-hidden="true">image-20221003224714488</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235912474020_401_image-20230601104023742.png" srcset="/img/loading.gif" lazyload alt="image-20230601104023742">
+<figcaption aria-hidden="true">image-20230601104023742</figcaption>
 </figure>
-<p>查看发现果然是架构问题：</p>
+<p>按照指导书，修改
+<code>navy-apps/apps/pal/src/FLOAT/FLOAT.c</code>和对应的头文件。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231401953713_177_image-20221003224809467.png" srcset="/img/loading.gif" lazyload alt="image-20221003224809467">
-<figcaption aria-hidden="true">image-20221003224809467</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235917144417_751_image-20230601111018328.png" srcset="/img/loading.gif" lazyload alt="image-20230601111018328">
+<figcaption aria-hidden="true">image-20230601111018328</figcaption>
 </figure>
-<p>查看报错信息。谷歌后从<a target="_blank" rel="noopener" href="https://github.com/riscv-collab/riscv-gnu-toolchain/issues/800">github
-issue</a>中得知是有支持apple silicon版本的最新i386-elf-gcc的。</p>
+<p>根据讲义:</p>
+<blockquote>
+<p>我们先来说明如何用一个32位整数来表示一个实数. 为了方便叙述,
+我们称用binary scaling方法表示的实数的类型为<code>FLOAT</code>.
+我们约定最高位为符号位, 接下来的15位表示整数部分, 低16位表示小数部分,
+即约定小数点在第15和第16位之间(从第0位开始). 从这个约定可以看到,
+<code>FLOAT</code>类型其实是实数的一种定点表示.</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gcxxdglln8zueq"></i><span>asciidoc</span><div class="collapse show" id="collapse-gcxxdglln8zueq"><pre><code class="hljs asciidoc"><span class="hljs-section">31  30                  16                    0</span>
+<span class="hljs-section">+----+-------------------+--------------------+</span>
+<span class="hljs-section">|sign|      integer      |      fraction      |</span>
+<span class="hljs-section">+----+-------------------+--------------------+</span></code></pre></div></div>
+</blockquote>
+<p>相应的，IEEE754的标准，<a target="_blank" rel="noopener" href="https://blog.csdn.net/gao_zhennan/article/details/120717424">图源</a></p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231403860364_202_image-20221003225239013.png" srcset="/img/loading.gif" lazyload alt="image-20221003225239013">
-<figcaption aria-hidden="true">image-20221003225239013</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235920917333_702_image-20230601112028613.png" srcset="/img/loading.gif" lazyload alt="image-20230601112028613">
+<figcaption aria-hidden="true">image-20230601112028613</figcaption>
 </figure>
+<p>这一部分有点像CSAPP的DataLab，但是由于使用定点表示实数的场景越来越少，这一部分实际价值也并不大。可以看到后面版本的PA已经将这一部分去除。</p>
+<h3 id="浮点转定点">浮点转定点</h3>
+<p>先考虑浮点转定点。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231405125684_549_image-20221003225245971.png" srcset="/img/loading.gif" lazyload alt="image-20221003225245971">
-<figcaption aria-hidden="true">image-20221003225245971</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235924396067_218_image-20230601153308456.png" srcset="/img/loading.gif" lazyload alt="image-20230601153308456">
+<figcaption aria-hidden="true">image-20230601153308456</figcaption>
 </figure>
-<p>有希望！但是按官网命令安装问题也没有解决，所谓补丁也不起效。后来尝试用homebrew安装：<code>brew install i386-elf-gdb</code>，但没有安装成功。提示</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y5awvklln8zueq"></i><span>awk</span><div class="collapse show" id="collapse-y5awvklln8zueq"><pre><code class="hljs awk">fatal: not <span class="hljs-keyword">in</span> a git directory Error: Command failed with <span class="hljs-keyword">exit</span> <span class="hljs-number">128</span>: git</code></pre></div></div>
-<p>又经过一番谷歌找到了<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/07243d214abd">解决方法</a>。执行</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qzg9falln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-qzg9falln8zueq"><pre><code class="hljs shell">git config --global --add safe.directory 报错信息中homebrew-core路径
-git config --global --add safe.directory 报错信息中homebrew-cask路径</code></pre></div></div>
-<p>即可。</p>
-<p>然后需要添加一下环境变量。</p>
-<p>这时尝试qemu生成ucore的dmg，发现提示<code>i386-elf-gcc</code>找不到。这才注意到通过homebrew下载的是<code>x86_64-elf-gcc</code>。</p>
-<p>经过搜索，得知在make时需要添加<code>make GCCPREFIX=x86_64-elf-</code>指定交叉编译工具。这时可以高兴的看到控制台闪烁，执行也很顺利。</p>
-<h3 id="执行">执行</h3>
-<p>然后<code>make qemu</code>执行的过程也比较顺利。</p>
-<figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221003231407841829_266_image-20221003230427926.png" srcset="/img/loading.gif" lazyload alt="image-20221003230427926">
-<figcaption aria-hidden="true">image-20221003230427926</figcaption>
-</figure>
-<h3 id="调试">调试</h3>
-<p>首先，ARM
-架构的Mac目前是不能使用<code>gdb</code>进行程序的调试的，默认的调试工具是<code>lldb</code>。然而经过查阅，对于交叉编译反而可以使用实验中对应的<code>gdb</code>工具：运行<code>brew install i386-elf-gdb</code>安装即可。</p>
-<p>以调试lab1中的BIOS的执行为例。</p>
-<p>下面的过程与指导书中“使用远程调试”部分类似。除此之外，额外将运行的汇编指令保存在q.log中。</p>
-<p>在一个终端先执行：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7zkr91lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-7zkr91lln8zueq"><pre><code class="hljs shell">qemu-system-i386 -S -s -d in_asm -D bin/q.log -monitor stdio -hda bin/ucore.img</code></pre></div></div>
-<p>后在另一个终端执行:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e9tvnnlln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-e9tvnnlln8zueq"><pre><code class="hljs shell">i386-elf-gdb</code></pre></div></div>
-<p>进入gdb调试界面。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-21j258lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-21j258lln8zueq"><pre><code class="hljs shell">(gdb) file bin/kernel
-Reading symbols from bin/kernel...
-(gdb) target remote :1234
-Remote debugging using :1234
-0x0000fff0 in ?? ()</code></pre></div></div>
-<p>上述的过程相比原来<code>makrfile</code>中提供的<code>make debug</code>主要有两个好处：一是能够重定向到<code>q.log</code>方便进行对比；二是可以绕开<code>make</code>中的<code>TERMINAL:=gnome-terminal</code>(<code>gnome-terminal</code>仅在linux下可使用)</p>
-<p>查看 CS:EIP 由于此时在实际模式下 CPU 在加电后执行的第一条指令的地址为
-0xf000:0xfff0 =&gt; 0xffff0</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wpg7tclln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-wpg7tclln8zueq"><pre><code class="hljs shell">(gdb) x/i $cs
-	0xf000:	add    %al,(%eax)
-(gdb) x/i $eip
-	0xfff0:	add    %al,(%eax)</code></pre></div></div>
-<p>再来看看这个地址的指令是什么 </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ks0h31lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-ks0h31lln8zueq"><pre><code class="hljs shell">(gdb) x/2i 0xffff0
-   0xffff0:	ljmp   $0x3630,$0xf000e05b
-   0xffff7:	das</code></pre></div></div><p></p>
-<p>可以看到 第一条指令执行完以后 会跳转到<code>0xf000e05b</code>也就是说
-BIOS 开始的地址是 <code>0xfe05b</code>。</p>
-<p>打上断点</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ijam74lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-ijam74lln8zueq"><pre><code class="hljs shell">(gdb) b *0x7c00
-Breakpoint 1 at 0x7c00
-(gdb) c
-Continuing.
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j6z7b8lln8zueq"></i><span>C</span><div class="collapse show" id="collapse-j6z7b8lln8zueq"><pre><code class="hljs C"><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> FLOAT;
+FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<span class="hljs-type">float</span> a)</span> {
+  <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">float_</span> {</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> {</span>
+      <span class="hljs-type">uint32_t</span> m : <span class="hljs-number">23</span>;
+      <span class="hljs-type">uint32_t</span> e : <span class="hljs-number">8</span>;
+      <span class="hljs-type">uint32_t</span> signal : <span class="hljs-number">1</span>;
+    };
+    <span class="hljs-type">uint32_t</span> value;
+  };
+  <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">float_</span> <span class="hljs-title">f</span>;</span>
+  f.value = *((<span class="hljs-type">uint32_t</span>*)(<span class="hljs-type">void</span>*)&amp;a);
 
-Breakpoint 1, 0x00007c00 in ?? ()</code></pre></div></div>
-<p>一开始为了方便后续在终端中配置了永久别名：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w4azzulln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-w4azzulln8zueq"><pre><code class="hljs shell">alias makeq="make GCCPREFIX=x86_64-elf-"</code></pre></div></div>
-<p>当然更优雅的方法其实是修改make中的宏：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pxsf4dlln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-pxsf4dlln8zueq"><pre><code class="hljs makefile"><span class="hljs-comment"># try to infer the correct GCCPREFX</span>
-<span class="hljs-keyword">ifndef</span> GCCPREFIX
-<span class="hljs-comment"># GCCPREFIX := $(shell if i386-elf-objdump -i 2&gt;&amp;1 | </span>
-<span class="hljs-comment">#...comment the original shell function</span>
-<span class="hljs-comment"># 	echo "***" 1&gt;&amp;2; exit 1; fi)</span>
-GCCPREFIX := x86_64-elf-
-<span class="hljs-keyword">endif</span></code></pre></div></div>
-<p>但是，由于<code>makefile</code>里默认认为调试工具一定叫<code>gdb</code>，且mac里没有gdb对应的command，因此这时候用永久别名是比较合适的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4g20t7lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-4g20t7lln8zueq"><pre><code class="hljs shell">alias gdb="i386-elf-gdb"</code></pre></div></div>
-<p>这时候也可以修改make来达到自动化调试的目的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vabl9slln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-vabl9slln8zueq"><pre><code class="hljs makefile">WORKING_DIR=<span class="hljs-variable">$(<span class="hljs-built_in">shell</span> pwd)</span>
-<span class="hljs-section">debug: <span class="hljs-variable">$(UCOREIMG)</span></span>
-	<span class="hljs-variable">$(V)</span><span class="hljs-variable">$(QEMU)</span> -S -s -parallel stdio -hda <span class="hljs-variable">$&lt;</span> -serial null &amp;
-	<span class="hljs-variable">$(V)</span>sleep 2
-	<span class="hljs-variable">$(V)</span> osascript -e 'tell application <span class="hljs-string">"Terminal"</span> to do script <span class="hljs-string">"cd <span class="hljs-variable">$(WORKING_DIR)</span>; gdb -q -x tools/gdbinit"</span>'</code></pre></div></div>
-<p>其中最后一句是为了产生一个在当前工作目录的新终端。</p>
-<h3 id="总结">总结</h3>
-<p>前前后后也花了相当长的时间来应对环境的不同。后续的内容其实更吸引着我们去深入探索。</p>
-<h3 id="后续">后续</h3>
-<p>已知问题: lab1
-的<code>chellenge</code>无法正常切换<code>user_mode</code>，初步排查发现是出现了操作数异常，可能是<code>%esp</code>未正确赋值，但目前还没有找到方案。如果对此部分有较深研究，也欢迎交流。</p>
+  <span class="hljs-type">int</span> e = f.e - <span class="hljs-number">127</span>;
+
+  FLOAT result;
+  <span class="hljs-keyword">if</span> (e &lt;= <span class="hljs-number">7</span>) {
+    result = (f.m | (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">23</span>)) &gt;&gt; <span class="hljs-number">7</span> - e;
+  }
+  <span class="hljs-keyword">else</span> {
+    result = (f.m | (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">23</span>)) &lt;&lt; (e - <span class="hljs-number">7</span>);
+  }
+  <span class="hljs-keyword">return</span> f.signal == <span class="hljs-number">0</span> ? result : (result|(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">31</span>));
+}</code></pre></div></div>
+<h3 id="浮点乘除">浮点乘除</h3>
+<h4 id="乘法">乘法</h4>
+<p>整数部分和小数部分分别相乘，进位。关于舍入处理，这里是采用的“0舍1入”的模式。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qiebirlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-qiebirlln8zueq"><pre><code class="hljs C++"><span class="hljs-function">FLOAT <span class="hljs-title">F_mul_F</span><span class="hljs-params">(FLOAT a, FLOAT b)</span> </span>{
+  <span class="hljs-type">int</span> sign = (a ^ b) &gt;&gt; <span class="hljs-number">31</span>;  <span class="hljs-comment">// 计算符号位</span>
+
+  <span class="hljs-comment">// 将a和b的符号位清零</span>
+  a = a &amp; <span class="hljs-number">0x7FFFFFFF</span>;
+  b = b &amp; <span class="hljs-number">0x7FFFFFFF</span>;
+
+  <span class="hljs-comment">// 执行乘法运算</span>
+  <span class="hljs-type">int</span> product_hi = (a &gt;&gt; <span class="hljs-number">16</span>) * (b &gt;&gt; <span class="hljs-number">16</span>);  <span class="hljs-comment">// 高16位的乘积</span>
+  <span class="hljs-type">int</span> product_lo = (a &amp; <span class="hljs-number">0xFFFF</span>) * (b &amp; <span class="hljs-number">0xFFFF</span>);  <span class="hljs-comment">// 低16位的乘积</span>
+
+  <span class="hljs-comment">// 处理溢出</span>
+  <span class="hljs-type">int</span> carry = product_lo &gt;&gt; <span class="hljs-number">16</span>;  <span class="hljs-comment">// 检查低16位乘积是否产生进位</span>
+  product_hi += carry;  <span class="hljs-comment">// 加上进位</span>
+
+  <span class="hljs-comment">// 舍入处理</span>
+  <span class="hljs-type">int</span> rounding = <span class="hljs-number">0x8000</span>;  <span class="hljs-comment">// 用于舍入的值</span>
+  <span class="hljs-type">int</span> result = (product_hi &lt;&lt; <span class="hljs-number">16</span>) + ((product_lo + rounding) &gt;&gt; <span class="hljs-number">16</span>);
+
+  <span class="hljs-comment">// 恢复符号位</span>
+  result = (result ^ sign) - sign;
+
+  <span class="hljs-keyword">return</span> result;
+}</code></pre></div></div>
+<h4 id="除法">除法</h4>
+<p>和乘法类似，也是采用列竖式的思路。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-617h4elln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-617h4elln8zueq"><pre><code class="hljs C++"><span class="hljs-function">FLOAT <span class="hljs-title">F_div_F</span><span class="hljs-params">(FLOAT a, FLOAT b)</span> </span>{
+  FLOAT result = <span class="hljs-built_in">Fabs</span>(a) / <span class="hljs-built_in">Fabs</span>(b);
+  FLOAT m = <span class="hljs-built_in">Fabs</span>(a);
+  FLOAT n = <span class="hljs-built_in">Fabs</span>(b);
+  m = m % n;
+    <span class="hljs-comment">//竖式除法</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">16</span>; i++) {
+    m &lt;&lt;= <span class="hljs-number">1</span>;
+    result &lt;&lt;= <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span> (m &gt;= n) {
+      m -= n;
+      result++;
+    }
+  }
+  <span class="hljs-comment">//恢复符号位</span>
+  <span class="hljs-keyword">if</span> (((a ^ b) &amp; <span class="hljs-number">0x80000000</span>) == <span class="hljs-number">0x80000000</span>) {
+    result = -result;
+  }
+  <span class="hljs-keyword">return</span> result;
+}</code></pre></div></div>
+<h3 id="float和int转换">FLOAT和int转换</h3>
+<p>直接取整数部分即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vmyw5mlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-vmyw5mlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">int</span> <span class="hljs-title">F2int</span><span class="hljs-params">(FLOAT a)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-keyword">if</span> ((a &amp; <span class="hljs-number">0x80000000</span>) == <span class="hljs-number">0</span>)
+  {
+    <span class="hljs-keyword">return</span> a &gt;&gt; <span class="hljs-number">16</span>;
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-keyword">return</span> -((-a) &gt;&gt; <span class="hljs-number">16</span>);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> FLOAT <span class="hljs-title">int2F</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span></span>
+<span class="hljs-function"></span>{
+  <span class="hljs-keyword">if</span> ((a &amp; <span class="hljs-number">0x80000000</span>) == <span class="hljs-number">0</span>)
+  {
+    <span class="hljs-keyword">return</span> a &lt;&lt; <span class="hljs-number">16</span>;
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-keyword">return</span> -((-a) &lt;&lt; <span class="hljs-number">16</span>);
+  }
+}</code></pre></div></div>
+<h3 id="float和int乘除">FLOAT和int乘除</h3>
+<p>直观的思路是都把他们转成FLOAT类型。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wumap2lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-wumap2lln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> FLOAT <span class="hljs-title">F_mul_int</span><span class="hljs-params">(FLOAT a, <span class="hljs-type">int</span> b)</span></span>
+<span class="hljs-function"></span>{
+    <span class="hljs-comment">// assert(0);</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">F_mul_F</span>(a, <span class="hljs-built_in">int2F</span>(b));
+}
+
+<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> FLOAT <span class="hljs-title">F_div_int</span><span class="hljs-params">(FLOAT a, <span class="hljs-type">int</span> b)</span></span>
+<span class="hljs-function"></span>{
+    <span class="hljs-comment">// assert(0);</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">F_div_F</span>(a, <span class="hljs-built_in">int2F</span>(b));
+}</code></pre></div></div>
+<p>成功运行战斗场景。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222055575294_180_image-20221130221829874.png" srcset="/img/loading.gif" lazyload alt="image-20221130221829874">
-<figcaption aria-hidden="true">image-20221130221829874</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235927896331_956_image-20230601111624447.png" srcset="/img/loading.gif" lazyload alt="image-20230601111624447">
+<figcaption aria-hidden="true">image-20230601111624447</figcaption>
 </figure>
+<h2 id="通往高速的次元">通往高速的次元</h2>
+<p>如果用VMware的话需要开这两个选项:</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222057952350_733_image-20221130221851517.png" srcset="/img/loading.gif" lazyload alt="image-20221130221851517">
-<figcaption aria-hidden="true">image-20221130221851517</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235930759689_235_image-20230601112713746.png" srcset="/img/loading.gif" lazyload alt="image-20230601112713746">
+<figcaption aria-hidden="true">image-20230601112713746</figcaption>
 </figure>
-<p>chellenge以外的部分以及后两个实验均可正确得到结果。</p>
+<p>报这种错误:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6gx6hylln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-6gx6hylln8zueq"><pre><code class="hljs shell">Error:
+You may not have permission to collect stats.
+Consider tweaking /proc/sys/kernel/perf_event_paranoid:
+ -1 - Not paranoid at all
+  0 - Disallow raw tracepoint access for unpriv
+  1 - Disallow cpu events for unpriv
+  2 - Disallow kernel profiling for unpriv</code></pre></div></div>
+<p>可以临时提权:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r3miaylln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-r3miaylln8zueq"><pre><code class="hljs shell">sudo sh -c "echo -1 &gt; /proc/sys/kernel/perf_event_paranoid"</code></pre></div></div>
+<p>运行: </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sw8drklln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-sw8drklln8zueq"><pre><code class="hljs shell">perf record nemu/build/x86-nemu nanos-lite/build/nanos-lite-x86-nemu.bin</code></pre></div></div><p></p>
+<p>我感觉也不太好看出什么。。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/Ucore%20Lab0%20on%20Apple%20Silicon%20Mac/20221130222100838376_161_image-20221130222030887.png" srcset="/img/loading.gif" lazyload alt="image-20221130222030887">
-<figcaption aria-hidden="true">image-20221130222030887</figcaption>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230601235934898992_647_image-20230601113933501.png" srcset="/img/loading.gif" lazyload alt="image-20230601113933501">
+<figcaption aria-hidden="true">image-20230601113933501</figcaption>
 </figure>
+<p>好吧，下一章第一句话就是</p>
+<blockquote>
+<p>相信你也已经在NEMU中运行过<code>microbench</code>,
+发现NEMU的性能连真机的1%都不到.
+使用<code>perf</code>也没有发现能突破性能瓶颈的地方.</p>
+</blockquote>
+<h3 id="性能瓶颈的来源">性能瓶颈的来源</h3>
+<p>略</p>
 
                 
               </div>
@@ -456,7 +520,7 @@ GCCPREFIX := x86_64-elf-
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%B0%8F%E5%AF%84%E5%B7%A7/" class="category-chain-item">小寄巧</a>
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
   
   
 
@@ -471,7 +535,7 @@ GCCPREFIX := x86_64-elf-
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+        <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">#系统设计</a>
       
     </div>
   
@@ -483,8 +547,8 @@ GCCPREFIX := x86_64-elf-
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Ucore Lab0 on Apple Silicon Mac</div>
-      <div>http://lunaticsky-tql.github.io/posts/23191/</div>
+      <div>南京大学ics2019_PA5</div>
+      <div>http://lunaticsky-tql.github.io/posts/27788/</div>
     </div>
     <div class="license-meta">
       
@@ -496,7 +560,7 @@ GCCPREFIX := x86_64-elf-
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年9月30日</div>
+          <div>2023年6月1日</div>
         </div>
       
       
@@ -528,9 +592,9 @@ GCCPREFIX := x86_64-elf-
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/4810/" title="机器学习-模型评估与选择">
+                      <a href="/posts/31769/" title="寄网-应用层">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">机器学习-模型评估与选择</span>
+                        <span class="hidden-mobile">寄网-应用层</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -538,8 +602,8 @@ GCCPREFIX := x86_64-elf-
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/51388/" title="如何在mac上编写运行c++程序">
-                        <span class="hidden-mobile">如何在mac上编写运行c++程序</span>
+                      <a href="/posts/28172/" title="南京大学ics2019_PA3">
+                        <span class="hidden-mobile">南京大学ics2019_PA3</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

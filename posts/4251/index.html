@@ -18,7 +18,7 @@
     
         <meta name="description" content="PA1实验报告 田佳业 2013599 为了方便VSCode远程连接，采用64位Ubuntu系统完成ics2019对应的PA。因此报告中一部分代码可能会与2018版本不一致。 PA1.1 任务：实现单步执行, 打印寄存器状态, 扫描内存 开天辟地的篇章 任务 这一部分介绍了“最简单的计算机”应当具有哪些特征和功能。 思考题 计算机可以没有寄存器吗？  存储层次的产生是顺应规律的，我们会自然的把经常">
 <meta property="og:type" content="article">
-<meta property="og:title" content="南京大学ics2019_PA1报告">
+<meta property="og:title" content="南京大学ics2019_PA1">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/4251/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="PA1实验报告 田佳业 2013599 为了方便VSCode远程连接，采用64位Ubuntu系统完成ics2019对应的PA。因此报告中一部分代码可能会与2018版本不一致。 PA1.1 任务：实现单步执行, 打印寄存器状态, 扫描内存 开天辟地的篇章 任务 这一部分介绍了“最简单的计算机”应当具有哪些特征和功能。 思考题 计算机可以没有寄存器吗？  存储层次的产生是顺应规律的，我们会自然的把经常">
@@ -41,7 +41,7 @@
     
     
     
-    <title>南京大学ics2019_PA1报告 - Lunaticsky&#39;s Blog</title>
+    <title>南京大学ics2019_PA1 - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -233,7 +233,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="南京大学ics2019_PA1报告"></span>
+            <span id="subtitle" data-typed-text="南京大学ics2019_PA1"></span>
           
         </div>
 
@@ -282,7 +282,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/南京大学ics2019_PA1报告/南京大学ics2019_PA1报告.md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/南京大学ics2019_PA1/南京大学ics2019_PA1.md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -314,7 +314,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">南京大学ics2019_PA1报告</h1>
+            <h1 style="display: none">南京大学ics2019_PA1</h1>
             
             
               <div class="markdown-body">
@@ -350,7 +350,7 @@
 <p>代码中的<code>assert()</code>条件是根据什么写出来的:
 产生随机值到<code>sample</code>数组，让<code>cpu</code>获取，检查是否cpu能够正确获取这些值。ps:通过与1与可以取低位。</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k0x4iblftoynt9"></i><span>c</span><div class="collapse show" id="collapse-k0x4iblftoynt9"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">reg_test</span><span class="hljs-params">()</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a8ozbwlln8zueq"></i><span>c</span><div class="collapse show" id="collapse-a8ozbwlln8zueq"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">reg_test</span><span class="hljs-params">()</span> {
   <span class="hljs-comment">//init random seed</span>
   srand(time(<span class="hljs-number">0</span>));
   <span class="hljs-type">uint32_t</span> sample[<span class="hljs-number">8</span>];
@@ -406,7 +406,7 @@
 <blockquote>
 <p><code>OpcodeEntry</code>类型。定义如下：</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mm845xlftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-mm845xlftoynt9"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vdmnjalln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-vdmnjalln8zueq"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
   DHelper decode;
   EHelper execute;
   <span class="hljs-type">int</span> width;
@@ -433,7 +433,7 @@
 <p>这一部分主要是需要实现一个简易调试器，在<code>nemu/src/monitor/debug/ui.c</code>中仿照给出的命令可以比较容易的完成，并没有遇到比较大的困难。</p>
 <h5 id="单步执行">单步执行</h5>
 <p>如果给出参数，执行指定步数，没有，执行一步。读取<code>si</code>后面的数字可以用<code>*args</code>参数，当然根据文档提示也可以用<code>strtok</code>。下面两种实现方式都是可以的。注意用<code>strtok</code>时由于在<code>ui_mainloop</code>中已经传入的<code>str</code>，根据<code>strtok</code>是使用方式后续第一和参数应当使用<code>NULL</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eyphp5lftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-eyphp5lftoynt9"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">cmd_si</span><span class="hljs-params">(<span class="hljs-type">char</span> *args)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-59oi78lln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-59oi78lln8zueq"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">cmd_si</span><span class="hljs-params">(<span class="hljs-type">char</span> *args)</span> </span>{
   <span class="hljs-type">int</span> step = <span class="hljs-number">1</span>;
   <span class="hljs-keyword">if</span> (args != <span class="hljs-literal">NULL</span>) {
     <span class="hljs-built_in">sscanf</span>(args, <span class="hljs-string">"%d"</span>, &amp;step);
@@ -441,7 +441,7 @@
   <span class="hljs-built_in">cpu_exec</span>(step);
   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4bundmlftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-4bundmlftoynt9"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">cmd_si</span><span class="hljs-params">(<span class="hljs-type">char</span> *args)</span></span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gb1k06lln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-gb1k06lln8zueq"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">cmd_si</span><span class="hljs-params">(<span class="hljs-type">char</span> *args)</span></span>{
   <span class="hljs-type">char</span> * step_c= <span class="hljs-built_in">strtok</span>(<span class="hljs-literal">NULL</span>, <span class="hljs-string">" "</span>);
   <span class="hljs-keyword">if</span>(step_c == <span class="hljs-literal">NULL</span>){
     <span class="hljs-built_in">cpu_exec</span>(<span class="hljs-number">1</span>);
@@ -459,7 +459,7 @@
 <h5 id="打印寄存器">打印寄存器</h5>
 <p>201版本的PA针对不同体系结构的寄存器读取做了抽象，因此在<code>cmd_info</code>中调用<code>isa_reg_display</code>，具体工作在这个函数中进行。</p>
 <p>对于x86实现如下，仿照了gdb的格式，输出寄存器，二进制和十进制值。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h3rsaulftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-h3rsaulftoynt9"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">isa_reg_display</span><span class="hljs-params">()</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0byocplln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-0byocplln8zueq"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">isa_reg_display</span><span class="hljs-params">()</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">// it works like the gdb command "info reg"</span>
   <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = R_EAX; i &lt;= R_EDI; i++)
@@ -504,14 +504,14 @@ PA,一学期下来,你仅仅花在键入编译命令上的时间有多少?</p>
 <p>在写这一周目部分代码之前先做的是测试部分(==后面发现2018的PA并没有要求实现这一部分(捂脸))。测试部分如文档所述非常巧妙，生成随机的数字和操作符，然后写了一个模版c程序把表达式通过<code>sprintf</code>”嵌入“到代码中最后使用系统命令编译运行这个C程序。这一部分可以详见<code>nemu/tools/gen-expr/gen-expr.c</code>部分。不过递归的实现还有些小问题，比如连续生成数字或运算结果过大导致结果溢出int范围等。最后还是从里面找了一些正常的表达式手动输入进行测试的。</p>
 <h5 id="添加正则">添加正则</h5>
 <p>编译原理课这一块已经很熟悉了。其中寄存器可以采用宽松验证和准确验证。对于debugger来说准确验证更好，还是尽量避免未知行为的发生。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ldn8m1lftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-ldn8m1lftoynt9"><pre><code class="hljs c++"><span class="hljs-comment">// {"\\$[a-zA-Z]+",TK_REG}, //register</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mor71dlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-mor71dlln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">// {"\\$[a-zA-Z]+",TK_REG}, //register</span>
 <span class="hljs-comment">// more specific</span>
 {<span class="hljs-string">"\\$(e[abcd]x|e[sbi]p|e[ds]i|[abcd]x|[sb]p|[ds]i)"</span>, TK_REG}};</code></pre></div></div>
 <h5 id="make_token">make_token</h5>
 <p>添加完规则后，框架中已经给出了<code>match</code>的过程，我们只需要把匹配到的<code>token</code>信息保存下来即可。</p>
 <h5 id="预处理">预处理</h5>
 <p>在进入求值部分之前，为了区分负数和减号以及解引用和乘号，按照讲义的思路先过一遍预处理。一个坑是判断是数字的时候不要忘了有十六进制数的存在。这个小问题是写<code>eval</code>函数处理十六进制数的时候想起来的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m9cx9olftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-m9cx9olftoynt9"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">expr</span><span class="hljs-params">(<span class="hljs-type">char</span> *e, <span class="hljs-type">bool</span> *success)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hftz3flln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-hftz3flln8zueq"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">expr</span><span class="hljs-params">(<span class="hljs-type">char</span> *e, <span class="hljs-type">bool</span> *success)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">make_token</span>(e))
   {
@@ -555,7 +555,7 @@ PA,一学期下来,你仅仅花在键入编译命令上的时间有多少?</p>
 }</code></pre></div></div>
 <h5 id="eval递归求值">eval递归求值</h5>
 <p>这一部分是这个任务的核心，讲义中也给出了实现的思路。我的实现代码如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q6ituylftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-q6ituylftoynt9"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">eval</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q4bbd2lln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-q4bbd2lln8zueq"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">eval</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-keyword">if</span> (p &gt; q)
   {
@@ -656,7 +656,7 @@ PA,一学期下来,你仅仅花在键入编译命令上的时间有多少?</p>
 <p>最后求值的时候，<code>if (op_pos == p)</code>条件可以使单目运算优先被处理，这一点也是参照了网上的代码才想到。</p>
 <p>其中<code>check_parentheses(p, q)</code>部分的实现不复杂，扫一遍就可以了。先判断左右两端是否被括号包围，再判断里面的括号是否匹配。这一部分代码较简单，不再赘述。</p>
 <p>获取优先级部分比较复杂，又回到了被编译原理支配的痛苦。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dmzp5elftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-dmzp5elftoynt9"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">get_domin_op_pos</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m2bok1lln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-m2bok1lln8zueq"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">get_domin_op_pos</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-type">int</span> bracket_cnt = <span class="hljs-number">0</span>;
   <span class="hljs-comment">// level 0: * - !</span>
@@ -711,7 +711,7 @@ PA,一学期下来,你仅仅花在键入编译命令上的时间有多少?</p>
   }</code></pre></div></div>
 <p>一个坑是注意到讲义中提到<strong>出现在一对括号中的token不是主运算符</strong>，因此一定要确保只对括号外的运算符判断优先级即可。优先级参照C++的优先级表分成了六个等级，依次扫描即可。</p>
 <p>接下来for循环遍历的过程自然地返回了存在的最高优先级运算符的位置。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5qjiaplftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-5qjiaplftoynt9"><pre><code class="hljs c++">  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">6</span>; i++)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z5j8n1lln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-z5j8n1lln8zueq"><pre><code class="hljs c++">  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">6</span>; i++)
   {
     <span class="hljs-keyword">if</span> (levels[i] != <span class="hljs-number">-1</span>)
     {
@@ -740,7 +740,7 @@ PA,一学期下来,你仅仅花在键入编译命令上的时间有多少?</p>
 <p>这一部分相比前两部分要简单很多。主要是链表的基本操作，操作系统，编译原理中也经过多次练习。主要是需要考虑清楚清楚是“头插法”还是“尾插法”。</p>
 <p>先在nemu/include/monitor/watchpoint.h中完成对结构体
 的补充和函数的定义。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3ddhhplftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-3ddhhplftoynt9"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">watchpoint</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-apgmh0lln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-apgmh0lln8zueq"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">watchpoint</span>
 {
   <span class="hljs-type">int</span> NO;
   <span class="hljs-keyword">struct</span> <span class="hljs-title class_">watchpoint</span> *next;
@@ -771,7 +771,7 @@ byte instructions, without over-writing other code</p>
 </blockquote>
 <p>第二个问题的答案是不能。</p>
 <p>文章中还给出了这个例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2sa6mdlftoynt9"></i><span>assembly</span><div class="collapse show" id="collapse-2sa6mdlftoynt9"><pre><code class="hljs assembly">   .. some code ..
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-025nhtlln8zueq"></i><span>assembly</span><div class="collapse show" id="collapse-025nhtlln8zueq"><pre><code class="hljs assembly">   .. some code ..
    jz    foo
    dec   eax
 &gt;foo:
@@ -810,9 +810,9 @@ byte instructions, without over-writing other code</p>
 充;R/M为最后三位，与Mod结合起来可以得到8个寄存器和24个内存寻址。</p>
 <p>3、mov 指令的具体格式是怎么样的? 格式是DEST ← SRC。</p>
 <p>二、</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-exmqk2lftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-exmqk2lftoynt9"><pre><code class="hljs shell">find . -name "*[.h/.c]" | xargs wc -l</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yb8hj1lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-yb8hj1lln8zueq"><pre><code class="hljs shell">find . -name "*[.h/.c]" | xargs wc -l</code></pre></div></div>
 <p>利用正则表达式，可以如下方式获取非空行代码行数</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ahvc6mlftoynt9"></i><span>shell</span><div class="collapse show" id="collapse-ahvc6mlftoynt9"><pre><code class="hljs shell">find . -name "*[.h/.c]" | xargs grep "^." | wc -l</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a35ps3lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-a35ps3lln8zueq"><pre><code class="hljs shell">find . -name "*[.h/.c]" | xargs grep "^." | wc -l</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599-%E7%94%B0%E4%BD%B3%E4%B8%9A-PA1%E6%8A%A5%E5%91%8A/20230322090905518782_851_image-20230321202840329.png" srcset="/img/loading.gif" lazyload alt="image-20230321202840329">
 <figcaption aria-hidden="true">image-20230321202840329</figcaption>
@@ -879,7 +879,7 @@ byte instructions, without over-writing other code</p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>南京大学ics2019_PA1报告</div>
+      <div>南京大学ics2019_PA1</div>
       <div>http://lunaticsky-tql.github.io/posts/4251/</div>
     </div>
     <div class="license-meta">

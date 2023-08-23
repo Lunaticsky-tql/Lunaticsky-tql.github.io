@@ -359,7 +359,7 @@
 <p><code>option</code>为可选字段，在本次实验中暂时用于存放文件长度。</p>
 <p><code>data</code>的最大长度可以调节，本次实验定义为1024字节。</p>
 <p>此部分定义代码段如下;</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sjeokolftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-sjeokolftoynt9"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-60efjnlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-60efjnlln8zueq"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> DATA 0x0</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> FIN 0x1</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> SYN 0x2</span>
@@ -422,7 +422,7 @@
 </figure>
 <p>课件中讲述也很直观，对照伪代码实现即可。</p>
 <h6 id="发送进程主进程">发送进程（主进程）</h6>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6s0am0lftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-6s0am0lftoynt9"><pre><code class="hljs c++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n5lpmrlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-n5lpmrlln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
 <span class="hljs-keyword">auto</span> *sndpkt = <span class="hljs-keyword">new</span> packet[pkt_total + <span class="hljs-number">1</span>];
 <span class="hljs-keyword">while</span> (base &lt; pkt_total) {
     <span class="hljs-comment">//send packets</span>
@@ -450,7 +450,7 @@
 <p>这一部分逻辑与状态机中右上角两个部分完全一致。其中<code>timer</code>是一个全局的计时器，为自己编写的类。用法可以顾名思义。<code>print_window();</code>按照<code>[base|nexeseqnum|base+n]</code>的格式将当前窗口状态打印出来。</p>
 <h6 id="接收进程">接收进程</h6>
 <p>接收进程在发送之前创建。实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f1h2sulftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-f1h2sulftoynt9"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_ACK</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-51rz8tlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-51rz8tlln8zueq"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_ACK</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
     packet rcvpkt;
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
         <span class="hljs-comment">//non-blocking rdt_rcv (if not rcv any packet it, it will return 0)</span>
@@ -477,7 +477,7 @@
 }</code></pre></div></div>
 <p>这一部分助教思考的也非常深入：虽然实验环境下ACK不会丢失且能按序到达，但真实的网络环境下ACK也会丢失，且由于传输速度可能不一样快，ACK未必是按序到达的。这一点在上一次实验的握手建连部分考虑到了且有所叙述（接收方在确认握手成功后也有可能因为ACK丢失而收到发送方重发的握手包），但这一次实验囿于伪代码的惯性思维没有考虑周全，感谢助教提醒指正。</p>
 <p>因此此处可参考后续SR的实现，移动时不能简单的移动到当前收到的序号+1，而是从base开始移动到按序收到的包序号之后，即：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fubuwelftoynt9"></i><span>c++</span><div class="collapse show" id="collapse-fubuwelftoynt9"><pre><code class="hljs c++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lee9qglln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-lee9qglln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
         acked[<span class="hljs-built_in">get_ack_num</span>(rcvpkt)] = <span class="hljs-literal">true</span>;
         <span class="hljs-keyword">while</span> (acked[base]) {
             base++;
@@ -491,7 +491,7 @@
 <figcaption aria-hidden="true">image-20221210123705619</figcaption>
 </figure>
 <p>代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ya6hf2lftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-ya6hf2lftoynt9"><pre><code class="hljs C++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wis5frlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-wis5frlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">hasseqnum</span>(rcvpkt, expectedseqnum)) {
             pkt_data_size = rcvpkt.head.data_size;
@@ -528,7 +528,7 @@
 </figure>
 <h5 id="发送端-1">发送端</h5>
 <p>发送端相比GBN，需要为每一个分组都加入定时器。一开始是希望每一个包发出后都创建一个相同进程用于监听ACK并处理超时事件，但实践中发现由于，传入的<code>packet</code>地址会在发送过程中被修改，在线程中无法正确每个线程获取需要等待的分组的序号和内容。因此转而采用线程池的方式进行实现，每个线程维护自己的定时器和需要重发的分组。代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uh49czlftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-uh49czlftoynt9"><pre><code class="hljs C++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tx6ihalln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-tx6ihalln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
 <span class="hljs-type">clock_t</span> single_file_timer = <span class="hljs-built_in">clock</span>();
 <span class="hljs-keyword">while</span> (base &lt; pkt_total) {
     <span class="hljs-comment">//send packets</span>
@@ -546,7 +546,7 @@
 <p>其中<code>SR</code>线程的实现思路如下：</p>
 <p><code>acked</code>数组中保存了当前分组确认的状态，和GBN中所叙述的类似。这个数组的内容由接收线程（与GBN相同，但只标记<code>acked</code>数组状态，不进行窗口滑动）进行修改。当第<code>wait_seq</code>个包对应的SR线程发现监听到了对应<code>acked</code>数组变化（即<code>接收ACK(n)</code>）判断是否进行窗口滑动。若超时，则重发对应的包，重启定时器。</p>
 <p>下面是对应的代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wlwdojlftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-wlwdojlftoynt9"><pre><code class="hljs C++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">SR</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c829j5lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-c829j5lln8zueq"><pre><code class="hljs C++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">SR</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
     packet sndpkt = *<span class="hljs-built_in">reinterpret_cast</span>&lt;packet *&gt;(lpParam);
     u_int wait_seq = sndpkt.head.seq;
     <span class="hljs-type">int</span> resend_times = <span class="hljs-number">0</span>;
@@ -577,7 +577,7 @@
 }</code></pre></div></div>
 <h5 id="接收端-1">接收端</h5>
 <p>接收端比GBN的情况要复杂一些，因为需要缓存失序的包。实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0s50s0lftoynt9"></i><span>C++</span><div class="collapse show" id="collapse-0s50s0lftoynt9"><pre><code class="hljs C++"><span class="hljs-comment">//"blocking receive" here</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uj63rblln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-uj63rblln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//"blocking receive" here</span>
 <span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
         u_int pkt_seq = rcvpkt.head.seq;
@@ -770,9 +770,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/31769/" title="寄网-应用层">
+                      <a href="/posts/63534/" title="Hexo 多设备同步">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">寄网-应用层</span>
+                        <span class="hidden-mobile">Hexo 多设备同步</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

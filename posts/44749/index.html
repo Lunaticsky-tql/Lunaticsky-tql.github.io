@@ -1,0 +1,1820 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="PA2实验报告 2013599 田佳业 关于PA究竟整了个什么的问题   image-20230417214640107  一阶段 任务 熟悉添加指令的流程，完成dummy程序运行。并且真正学会RTFM。 遇到的问题 1.运行make ARCH&#x3D;x86-nemu ALL&#x3D;dummy run出现如图所示错误: shellfatal error: bits&#x2F;libc-header-start.h: N">
+<meta property="og:type" content="article">
+<meta property="og:title" content="南京大学ics2019_PA2">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/44749/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="PA2实验报告 2013599 田佳业 关于PA究竟整了个什么的问题   image-20230417214640107  一阶段 任务 熟悉添加指令的流程，完成dummy程序运行。并且真正学会RTFM。 遇到的问题 1.运行make ARCH&#x3D;x86-nemu ALL&#x3D;dummy run出现如图所示错误: shellfatal error: bits&#x2F;libc-header-start.h: N">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225355617758_115_image-20230417214640107.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225359236876_857_image-20230416202629539.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225403430212_787_image-20230416203550556.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225407881850_360_image-20230416230556955.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225409905724_209_image-20230416215526140.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225414254273_952_image-20230416213829809.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225417105196_820_image-20230416233834598.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225419412587_384_image-20230416233012943.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225422546936_285_image-20230416233317635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225426665320_827_image-20230416233126823.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225429817644_186_image-20230417211556676.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225433985560_176_image-20230417193049419.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225437555540_310_image-20230417195212809.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225440170402_511_image-20230417212128063.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225442415385_539_image-20230417212351555.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225446946199_759_image-20230417212512264.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225449300327_530_image-20230417213124076.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225452474954_811_image-20230417215053287.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225455484191_658_image-20230417221653277.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225457657194_609_image-20230417221609462.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225500684153_287_image-20230417222933927.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225502914875_765_image-20230417223533752.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225508150223_875_image-20230417224319863.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225511539214_937_image-20230417224352754.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225514028827_543_image-20230417224949597.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225518351098_207_image-20230417230808371.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225520582515_551_image-20230418013425827.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225522647884_770_image-20230418013811138.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225525580415_996_image-20230418014447181.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225528634250_287_image-20230418014935039.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225532714858_663_image-20230418015752384.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225537226215_675_image-20230418015919938.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225541621025_331_image-20230418020130781.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225545270182_921_image-20230418023433434.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225547548141_708_image-20230418024006777.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225552798478_263_image-20230418024335643.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225556392323_529_image-20230418024515008.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225600429965_544_image-20230418030440421.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225605558034_150_image-20230418031209236.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225610807036_934_image-20230418032107060.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225613870020_798_image-20230418032213094.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225618043780_280_image-20230418033030503.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225621183658_884_image-20230418033009533.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225625599245_402_image-20230418034230992.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225630693991_523_image-20230418034312229.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225633722246_665_image-20230418034508931.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225635958260_687_image-20230418034759314.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225639988445_167_image-20230418180917748.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225645128900_949_image-20230418182437373.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225647440928_407_image-20230418182631614.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225651167723_797_image-20230417234512940.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225653391160_373_image-20230417235814052.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225657431948_677_image-20230417234630438.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225701591453_145_image-20230417232210081.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225703718139_454_image-20230418190251286.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225706985852_641_image-20230418190440852.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225709250708_350_image-20230418192239874.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225713545364_139_image-20230418194525024.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225716611404_456_image-20230418194930929.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225720787415_925_image-20230418201037377.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225723117288_548_image-20230418202105754.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225733159116_222_image-20230418224522431.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225737654532_187_image-20230418224713003.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225741529190_435_image-20230418165948224.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230801541908_353_image-20230418171100319.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230807076612_975_image-20230418172006341.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230813184695_469_image-20230418180715096.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230818475318_173_image-20230418215016739.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230824465256_348_image-20230418221720529.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230831361885_388_image-20230418221942591.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230835450240_415_image-20230418163951487.png">
+<meta property="article:published_time" content="2023-05-23T15:08:42.000Z">
+<meta property="article:modified_time" content="2023-05-23T15:08:42.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="系统设计">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225355617758_115_image-20230417214640107.png">
+    
+    
+    
+    <title>南京大学ics2019_PA2 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="南京大学ics2019_PA2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-05-23 23:08" pubdate>
+              2023年5月23日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              21k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/南京大学ics2019_PA2/南京大学ics2019_PA2.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">南京大学ics2019_PA2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="pa2实验报告">PA2实验报告</h1>
+<p>2013599 田佳业</p>
+<h2 id="关于pa究竟整了个什么的问题">关于PA究竟整了个什么的问题</h2>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225355617758_115_image-20230417214640107.png" srcset="/img/loading.gif" lazyload alt="image-20230417214640107">
+<figcaption aria-hidden="true">image-20230417214640107</figcaption>
+</figure>
+<h2 id="一阶段">一阶段</h2>
+<h3 id="任务">任务</h3>
+<p>熟悉添加指令的流程，完成<code>dummy</code>程序运行。并且真正学会RTFM。</p>
+<h4 id="遇到的问题">遇到的问题</h4>
+<p>1.运行<code>make ARCH=x86-nemu ALL=dummy run</code>出现如图所示错误:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y99xcolln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-y99xcolln8zueq"><pre><code class="hljs shell">fatal error: bits/libc-header-start.h: No such file or directory</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225359236876_857_image-20230416202629539.png" srcset="/img/loading.gif" lazyload alt="image-20230416202629539">
+<figcaption aria-hidden="true">image-20230416202629539</figcaption>
+</figure>
+<p>解决方法:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-alzwaxlln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-alzwaxlln8zueq"><pre><code class="hljs shell">sudo apt-get install gcc-multilib</code></pre></div></div>
+<p>因为我们是要模拟一个i386的isa，它是32位的。</p>
+<p>之后又遇到下述错误:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u02v9olln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-u02v9olln8zueq"><pre><code class="hljs C++">/home/lunaticsky/ics2019/nexus-am/am/src/nemu-common/trm.c: In function ‘_trm_init’:
+/home/lunaticsky/ics2019/nexus-am/am/src/nemu-common/trm.c:<span class="hljs-number">26</span>:<span class="hljs-number">15</span>: error: array subscript <span class="hljs-number">-1048576</span> is outside array bounds of ‘<span class="hljs-type">const</span> <span class="hljs-type">char</span>[<span class="hljs-number">1</span>]’ [-Werror=array-bounds]
+   <span class="hljs-number">26</span> |   <span class="hljs-type">const</span> <span class="hljs-type">char</span> *mainargs = &amp;_start - <span class="hljs-number">0x100000</span>;
+      |               ^~~~~~~~
+/home/lunaticsky/ics2019/nexus-am/am/src/nemu-common/trm.c:<span class="hljs-number">25</span>:<span class="hljs-number">21</span>: note: <span class="hljs-keyword">while</span> referencing ‘_start’
+   <span class="hljs-number">25</span> |   <span class="hljs-keyword">extern</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> _start;
+      |                     ^~~~~~</code></pre></div></div>
+<p>这个错误并没有找到理想的解决方法。为了能够继续完成实验，只好把<code>Makefile.compile</code>的<code>Werror</code>编译选项去掉了。这不是一个优雅的解决方案。</p>
+<p>2.按照问题汇总<code>trm_init 和 main 函数的开头出现 endbr32 指令</code>部分</p>
+<p>在 AM_HOME/makefile.compile 文件中，在和 nemu 有关的 CFLAGS
+后面添加-fcf-protection=none
+和-mmanual-endbr的方法修改后makefile报错</p>
+<p>加了换行没加反斜杠。。</p>
+<h4 id="实现新指令">实现新指令</h4>
+<p>可以看到第一个我们需要实现的指令是<code>call</code>指令。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225403430212_787_image-20230416203550556.png" srcset="/img/loading.gif" lazyload alt="image-20230416203550556">
+<figcaption aria-hidden="true">image-20230416203550556</figcaption>
+</figure>
+<p>首先在<code>nemu/src/isa/x86/exec/all-instr.h</code>把需要实现的指令声明。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225407881850_360_image-20230416230556955.png" srcset="/img/loading.gif" lazyload alt="image-20230416230556955">
+<figcaption aria-hidden="true">image-20230416230556955</figcaption>
+</figure>
+<h5 id="call_prepare">call_prepare</h5>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225409905724_209_image-20230416215526140.png" srcset="/img/loading.gif" lazyload alt="image-20230416215526140">
+<figcaption aria-hidden="true">image-20230416215526140</figcaption>
+</figure>
+<p>这里顺带把后面几个可能用到的也填了:</p>
+<p>可以这些<code>opcode</code>都是单字节的，填<code>opcode_table</code>的时候千万不要错填到2字节部分！</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-744biglln8zueq"></i><span>c</span><div class="collapse show" id="collapse-744biglln8zueq"><pre><code class="hljs c"><span class="hljs-comment">/* 0xe8 */</span>	IDEX(I,call), IDEX(J,jmp), EMPTY, IDEXW(J,jmp,<span class="hljs-number">1</span>),</code></pre></div></div>
+<p>显然call 指令的实现中需要使用压栈操作，因此先去实现push指令。</p>
+<h5 id="push_prepare">push_prepare</h5>
+<p>这个指令学长贴心的给出了勘误:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225414254273_952_image-20230416213829809.png" srcset="/img/loading.gif" lazyload alt="image-20230416213829809">
+<figcaption aria-hidden="true">image-20230416213829809</figcaption>
+</figure>
+<p>填<code>opcode_table</code></p>
+<p><code>nemu/src/isa/x86/exec/exec.c</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x6h4lwlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-x6h4lwlln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x50 */</span>	<span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push),
+<span class="hljs-comment">/* 0x54 */</span>	<span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push),</code></pre></div></div>
+<p>ics2019把ISA相关的RTL伪指令放到了<code>nemu/src/isa/$ISA/include/isa/rtl.h</code>中定义，一开始去<code>nemu/include</code>没找到，后来发现指导手册里有说明，还是没仔细看。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z8pabrlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-z8pabrlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_push</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1)</span> </span>{
+  <span class="hljs-comment">// esp &lt;- esp - 4</span>
+  <span class="hljs-comment">// M[esp] &lt;- src1</span>
+  <span class="hljs-comment">//TODO();</span>
+  <span class="hljs-built_in">rtl_subi</span>(&amp;cpu.esp, &amp;cpu.esp, <span class="hljs-number">4</span>);
+  <span class="hljs-built_in">rtl_sm</span>(&amp;cpu.esp, src1, <span class="hljs-number">4</span>);
+}</code></pre></div></div>
+<p>而且一个坑是它的api和2018的是不一样的:</p>
+<p>错误代码:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225417105196_820_image-20230416233834598.png" srcset="/img/loading.gif" lazyload alt="image-20230416233834598">
+<figcaption aria-hidden="true">image-20230416233834598</figcaption>
+</figure>
+<p>于是开始寻找这个函数的原型。</p>
+<p>这是2018版</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225419412587_384_image-20230416233012943.png" srcset="/img/loading.gif" lazyload alt="image-20230416233012943">
+<figcaption aria-hidden="true">image-20230416233012943</figcaption>
+</figure>
+<p>2019版在Vsocde找了半天没找到，看到唯一一个框架代码给出的示例，发现含义确实和预想的不一样，最后一个参数才是长度。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225422546936_285_image-20230416233317635.png" srcset="/img/loading.gif" lazyload alt="image-20230416233317635">
+<figcaption aria-hidden="true">image-20230416233317635</figcaption>
+</figure>
+<p>当然这个函数原型也是能找到的，只是因为<code>rtl-wrapper.h</code>做了包装，Vscode没法直接跳转而已。这个因为是体系结构抽象层的接口，在<code>nemu/include/rtl/rtl.h</code>里面。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225426665320_827_image-20230416233126823.png" srcset="/img/loading.gif" lazyload alt="image-20230416233126823">
+<figcaption aria-hidden="true">image-20230416233126823</figcaption>
+</figure>
+<h5 id="sub">sub</h5>
+<p>然后这时候发现，我们想实现push，sub都没实现哩。开始折磨起来了。</p>
+<p>sub本身的实现不难。因为实验代码中给了更复杂的<code>sbb</code>指令的实现，仿照即可。代码如下:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vfayf5lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-vfayf5lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(sub) {
+  <span class="hljs-comment">//TODO();</span>
+	<span class="hljs-built_in">rtl_sub</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val);
+	<span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
+	<span class="hljs-built_in">rtl_is_sub_carry</span>(&amp;s1,&amp;s0,&amp;id_dest-&gt;val);
+	<span class="hljs-built_in">rtl_set_CF</span>(&amp;s1);
+	<span class="hljs-built_in">rtl_is_sub_overflow</span>(&amp;s1,&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val,id_dest-&gt;width);
+        <span class="hljs-comment">//printf("%d %d\n",id_dest-&gt;val,id_src-&gt;val);assert(0);</span>
+	<span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
+	<span class="hljs-built_in">operand_write</span>(id_dest,&amp;s0);
+	<span class="hljs-built_in">print_asm_template2</span>(sub);
+}</code></pre></div></div>
+<p>还要注意一点，在文档的附录里面说了，x86使用<code>ModR/M</code>字节中的扩展opcode域来对<code>opcode</code>的长度进行扩充.
+有些时候, 读入一个字节也还不能完全确定具体的指令形式,
+这时候需要读入紧跟在<code>opcode</code>后面的<code>ModR/M</code>字节,
+把其中的<code>reg/opcode</code>域当做<code>opcode</code>的一部分来解释,
+才能决定具体的指令形式. x86把这些指令划分成不同的指令组(instruction
+group)。</p>
+<p>框架代码的<code>make_group</code>就是干这事的，不加跑不起来，因为译码的时候要用。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225429817644_186_image-20230417211556676.png" srcset="/img/loading.gif" lazyload alt="image-20230417211556676">
+<figcaption aria-hidden="true">image-20230417211556676</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g6ttlrlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-g6ttlrlln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x80, 0x81, 0x83 */</span>
+<span class="hljs-built_in">make_group</span>(gp1,
+    <span class="hljs-built_in">EX</span>(add), <span class="hljs-built_in">EX</span>(<span class="hljs-keyword">or</span>), <span class="hljs-built_in">EX</span>(adc), <span class="hljs-built_in">EX</span>(sbb),
+    <span class="hljs-built_in">EX</span>(<span class="hljs-keyword">and</span>), <span class="hljs-built_in">EX</span>(sub), <span class="hljs-built_in">EX</span>(<span class="hljs-keyword">xor</span>), <span class="hljs-built_in">EX</span>(cmp))</code></pre></div></div>
+<p>这几个位置涉及到<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b7c968baecaf">变长指令</a>，比如</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-215l25lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-215l25lln8zueq"><pre><code class="hljs C++"><span class="hljs-number">100017</span>:	<span class="hljs-number">83</span> ec <span class="hljs-number">14</span>             	sub    $<span class="hljs-number">0x14</span>,%esp</code></pre></div></div>
+<p>就是这一类的。</p>
+<p>实现<code>sub</code>的主要问题是还需要实现<code>eflags</code>。</p>
+<h5 id="eflags">eflags</h5>
+<p>eflags各位的含义</p>
+<blockquote>
+<p>CF(bit 0) [Carry flag]
+若算术操作产生的结果在最高有效位(most-significant bit)发生进位或借位则
+将其置 1，反之清零。这个标志指示无符号整型运算的溢出状态，这个标志同样
+在多倍精度运算(multiple-precision arithmetic)中使用。</p>
+<p>ZF(bit 6) [Zero flag] 若结果为 0 则将其置 1，反之清零。</p>
+<p>SF(bit 7) [Sign flag] 该标志被设置为有符号整型的最高有效位。(0
+指示结果为正，反之则为负)</p>
+<p>IF(bit 9) [Interrupt enable flag]
+该标志用于控制处理器对可屏蔽中断请求(maskable interrupt requests)的响
+应。置 1 以响应可屏蔽中断，反之则禁止可屏蔽中断。</p>
+<p>OF(bit 11) [Overflow flag]
+如果整型结果是较大的正数或较小的负数，并且无法匹配目的操作数时将该 位置
+1，反之清零。这个标志为带符号整型运算指示溢出状态。</p>
+</blockquote>
+<p>我们可以用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E4%BD%8D%E6%AE%B5">位域</a>实现<code>eflag</code>结构，它本质上就是一个结构体。把它放到<code>CPU_state</code>结构体里面。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jfw7ndlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-jfw7ndlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">union</span>{
+    <span class="hljs-keyword">struct</span>{
+        <span class="hljs-type">uint32_t</span> CF:<span class="hljs-number">1</span>;
+        <span class="hljs-type">unsigned</span> :<span class="hljs-number">5</span>;
+        <span class="hljs-type">uint32_t</span> ZF:<span class="hljs-number">1</span>;
+        <span class="hljs-type">uint32_t</span> SF:<span class="hljs-number">1</span>;
+        <span class="hljs-type">unsigned</span> :<span class="hljs-number">1</span>;
+        <span class="hljs-type">uint32_t</span> IF:<span class="hljs-number">1</span>;
+        <span class="hljs-type">unsigned</span> :<span class="hljs-number">1</span>;
+        <span class="hljs-type">uint32_t</span> OF:<span class="hljs-number">1</span>;
+        <span class="hljs-type">signed</span> :<span class="hljs-number">20</span>;
+    };
+    <span class="hljs-type">uint32_t</span> val;
+}eflags;</code></pre></div></div>
+<p>不要忘了eflags 的初始化。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sd2wsxlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-sd2wsxlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">restart</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">/* Set the initial program counter. */</span>
+  cpu.pc = PC_START;
+  cpu.eflags.val = <span class="hljs-number">0x2</span>;
+  }</code></pre></div></div>
+<p>这时候再运行，发现eflag更新相关的rtl方法还没实现。</p>
+<p>下面是更新ZF标志的方法，根据不同长度判断相与是否为0.或许可以有更好的方法或者可以调用接口实现，不过如文档所说，先完成再完美。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2ab7s6lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-2ab7s6lln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (width)
+{
+<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+{
+  t0 = (*result == <span class="hljs-number">0</span>);
+  <span class="hljs-built_in">rtl_set_ZF</span>(&amp;t0);
+  <span class="hljs-keyword">break</span>;
+}
+<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+{
+  t0 = ((*result &amp; <span class="hljs-number">0xffff</span>) == <span class="hljs-number">0</span>);
+  <span class="hljs-built_in">rtl_set_ZF</span>(&amp;t0);
+  <span class="hljs-keyword">break</span>;
+}
+<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+{
+  t0 = ((*result &amp; <span class="hljs-number">0xff</span>) == <span class="hljs-number">0</span>);
+  <span class="hljs-built_in">rtl_set_ZF</span>(&amp;t0);
+  <span class="hljs-keyword">break</span>;
+}
+<span class="hljs-keyword">default</span>:
+  <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+}</code></pre></div></div>
+<p>框架还要求我们去实现一个设置标志位的宏。就连这么小的一个功能都要抽象成一个宏，而不是复制黏贴设置<code>src</code>和<code>dest</code>，相较文档中的哲学确实做到了言行一致。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nrvvcylln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-nrvvcylln8zueq"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> make_rtl_setget_eflags(f) \</span>
+<span class="hljs-meta">  static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \</span>
+<span class="hljs-meta">    cpu.eflags.f=*src; \</span>
+<span class="hljs-meta">  } \</span>
+<span class="hljs-meta">  static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \</span>
+<span class="hljs-meta">    *dest=cpu.eflags.f; \</span>
+<span class="hljs-meta">  }</span></code></pre></div></div>
+<p>中间还涉及要要求判断何时“溢出”和“借位”以及判断有效最高位。虽然计算机使用补码运算，没有“借位”这一概念，但减法变成补码加法运算的时候没进位，其实就是借位了。这一部分的实现是真·小学知识，但确实很琐碎，具体代码不在报告展示了。</p>
+<h5 id="push">push</h5>
+<p><code>nemu/src/isa/x86/exec/data-mov.c</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bcdrxdlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-bcdrxdlln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(push) {
+  <span class="hljs-comment">//TODO();</span>
+  <span class="hljs-built_in">rtl_push</span>(&amp;id_dest -&gt; val);
+  <span class="hljs-built_in">print_asm_template1</span>(push); 
+}</code></pre></div></div>
+<h5 id="call">call</h5>
+<p>下面就可以把<code>call</code>的<code>make_EHelper</code>补充完整了。ics2019为了照顾不同的ISA，相比2018改了一些变量名。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-79ek25lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-79ek25lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(call) {
+  <span class="hljs-comment">// the target address is calculated at the decode stage</span>
+ <span class="hljs-comment">// TODO();</span>
+	<span class="hljs-built_in">rtl_push</span>(pc); <span class="hljs-comment">//push pc</span>
+  <span class="hljs-built_in">rtl_j</span>(decinfo.jmp_pc);
+ 	<span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"call %x"</span>, decinfo.jmp_pc);
+}</code></pre></div></div>
+<p>call指令是先将当前的pc压入栈中，再转移
+eip。转移eip这一步需要J指令。</p>
+<p>J指令看上去已经实现好了，但是运行还是不正确。仔细想了一下指令的执行步骤，找了代码，发现连J的译码用到了<code>make_DopHelper(SI)</code>。连这个都得要求自己实现。</p>
+<p>可以看到现在<code>call</code>指令已经能够运行了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225433985560_176_image-20230417193049419.png" srcset="/img/loading.gif" lazyload alt="image-20230417193049419">
+<figcaption aria-hidden="true">image-20230417193049419</figcaption>
+</figure>
+<p>可以看到<code>push</code>的实现并不完善，它没有识别到后面的立即数。通过操作码定位到发现是<code>make_DopHelper(SI)</code>函数实现出现了问题，改正即可。</p>
+<p>整体来看，实现<code>call</code>的过程像是栈工作的过程:随着问题的发现任务栈逐渐加深，步步为营解决了细节问题之后，带领我们来到细节问题的，初看上去很吓人的问题也随之解决了(pop）。不管是做高中压轴题，做PA，还是学习新知识，做项目，经历了上山的过程才有下山的愉悦。</p>
+<p>回到PA。这一阶段还没完呢矮油喂。。</p>
+<h5 id="pop">pop</h5>
+<p>pop的实现和push类似，虽然在一阶段用不到，反正迟早要做，就一起写了。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hlkrqolln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-hlkrqolln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x58 */</span>	<span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop),
+<span class="hljs-comment">/* 0x5c */</span>	EMPTY, <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop),</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vd7pbflln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-vd7pbflln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_pop</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest)</span> </span>{
+  <span class="hljs-comment">// dest &lt;- M[esp]</span>
+  <span class="hljs-comment">// esp &lt;- esp + 4</span>
+  <span class="hljs-comment">// TODO();</span>
+  <span class="hljs-built_in">rtl_lm</span>(dest, &amp;cpu.esp, <span class="hljs-number">4</span>);
+  <span class="hljs-built_in">rtl_addi</span>(&amp;cpu.esp, &amp;cpu.esp, <span class="hljs-number">4</span>);
+}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qo2rlglln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-qo2rlglln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(pop)
+{
+  <span class="hljs-comment">// TODO();</span>
+  <span class="hljs-built_in">rtl_pop</span>(&amp;t0);                     <span class="hljs-comment">// register t0 is used according to the convention</span>
+  <span class="hljs-keyword">if</span> (id_dest-&gt;type == OP_TYPE_REG) <span class="hljs-comment">// dest is register, write to register</span>
+  {
+    <span class="hljs-built_in">rtl_sr</span>(id_dest-&gt;reg, id_dest-&gt;width, &amp;t0);
+  }
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (id_dest-&gt;type == OP_TYPE_MEM) <span class="hljs-comment">// dest is memory, write to memory</span>
+  {
+    <span class="hljs-built_in">rtl_sm</span>(&amp;id_dest-&gt;addr, id_dest-&gt;width, &amp;t0);
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-comment">//should not reach here</span>
+    <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+  }
+  <span class="hljs-built_in">print_asm_template1</span>(pop);
+}</code></pre></div></div>
+<h5 id="xor">xor</h5>
+<p>现在来到了<code>xor</code>。经历了实现<code>call</code>指令的折磨，对实现<code>xor</code>也更有信心了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225437555540_310_image-20230417195212809.png" srcset="/img/loading.gif" lazyload alt="image-20230417195212809">
+<figcaption aria-hidden="true">image-20230417195212809</figcaption>
+</figure>
+<p><code>xor</code>的执行函数在<code>logic.c</code>里面。</p>
+<p>仿照着写，并不难。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h3m0a0lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-h3m0a0lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-keyword">xor</span>)
+{
+	<span class="hljs-built_in">rtl_li</span>(&amp;s1,<span class="hljs-number">0</span>);
+	<span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
+	<span class="hljs-built_in">rtl_set_CF</span>(&amp;s1);
+	<span class="hljs-built_in">rtl_xor</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val);
+	<span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
+	<span class="hljs-built_in">operand_write</span>(id_dest,&amp;s0);
+	<span class="hljs-built_in">print_asm_template2</span>(<span class="hljs-keyword">xor</span>);
+}</code></pre></div></div>
+<p>对照手册，我们需要关心的<code>opcode</code>是<code>0x30-0x35</code>。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225440170402_511_image-20230417212128063.png" srcset="/img/loading.gif" lazyload alt="image-20230417212128063">
+<figcaption aria-hidden="true">image-20230417212128063</figcaption>
+</figure>
+<h5 id="ret">ret</h5>
+<p><code>dummy</code>跑通的临门一脚。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225442415385_539_image-20230417212351555.png" srcset="/img/loading.gif" lazyload alt="image-20230417212351555">
+<figcaption aria-hidden="true">image-20230417212351555</figcaption>
+</figure>
+<p>先去附录找到c3对应的内容，定位到<code>ret</code>的页面:</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225446946199_759_image-20230417212512264.png" srcset="/img/loading.gif" lazyload alt="image-20230417212512264" width="50%" height="50%"></p>
+<p>可以看到<code>ret</code>有好几种形式。但是我们显然只需要实现<code>c3</code>就可以满足需要。</p>
+<p>根据描述，C3 ret是用栈的数据修改IP的内容，实现近转移。</p>
+<p>我们在操作系统课上学过，<code>ret</code>弹出栈中保存的<code>eip</code>，跳到对应地址就可以返回调用它的位置。注意设置跳转标志。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8iqod6lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-8iqod6lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(ret)
+{
+	<span class="hljs-built_in">rtl_pop</span>(&amp;decinfo.jmp_pc);
+	<span class="hljs-built_in">rtl_j</span>(decinfo.jmp_pc);
+	<span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"ret"</span>);
+}</code></pre></div></div>
+<p><strong><font color="green">HIT GOOD TRAP!</font></strong></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225449300327_530_image-20230417213124076.png" srcset="/img/loading.gif" lazyload alt="image-20230417213124076">
+<figcaption aria-hidden="true">image-20230417213124076</figcaption>
+</figure>
+<h3 id="问题">问题</h3>
+<h6 id="立即数背后的故事">立即数背后的故事</h6>
+<p>放到大端机上运行的时候内存布局，NEMU读取方式是一样的，但CPU的解释方式不一样了，因此会出问题。</p>
+<p>怎么解决，既然NEMU是一个模拟器，就看QEMU是怎么解决的。模拟器确实需要<a target="_blank" rel="noopener" href="https://github.com/coreos/qemu/blob/master/include/qemu/bswap.h">解决</a>这个问题</p>
+<p>mips32和riscv32的指令长度只有32位, 因此它们不能像x86那样,
+把C代码中的32位常数直接编码到一条指令中.
+mips32和riscv32应该如何解决这个问题?</p>
+<p>我们在机组课上学过MIPS指令。MIPS是通过<code>lui</code>和<code>ori</code>用两条指令分别加载高16位和低16位立即数。</p>
+<p>riscv虽然不甚了解，但查阅资料<a target="_blank" rel="noopener" href="https://blog.csdn.net/zoomdy/article/details/83067689">可知</a>也是通过类似的思虑进行的。</p>
+<h6 id="拦截客户程序访存越界的非法行为">拦截客户程序访存越界的非法行为</h6>
+<p>你将来很可能会遇到客户程序访存越界的错误,
+NEMU的框架代码一旦检测到这一行为就会直接panic.
+这一行为的检测已经极大地帮助你发现代码的问题了, 想象一下,
+如果NEMU并未拦截这一error, 你可能会看到怎么样的failure?</p>
+<p>事实上访问到无法控制的内存，得到错误的结果甚至core dump。</p>
+<h6 id="神秘的host内存访问-建议二周目思考">神秘的host内存访问
+(建议二周目思考)</h6>
+<p>为什么需要有host内存访问的RTL指令呢?</p>
+<p>阅读源码发现，用到host内存访问指令的是</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3dvxmzlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-3dvxmzlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_lr</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> width)</span> </span>{
+
+ <span class="hljs-keyword">switch</span> (width) {
+  <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>: <span class="hljs-built_in">rtl_mv</span>(dest, &amp;<span class="hljs-built_in">reg_l</span>(r)); <span class="hljs-keyword">return</span>;
+  <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>: <span class="hljs-built_in">rtl_host_lm</span>(dest, &amp;<span class="hljs-built_in">reg_b</span>(r), <span class="hljs-number">1</span>); <span class="hljs-keyword">return</span>;
+  <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>: <span class="hljs-built_in">rtl_host_lm</span>(dest, &amp;<span class="hljs-built_in">reg_w</span>(r), <span class="hljs-number">2</span>); <span class="hljs-keyword">return</span>;
+  <span class="hljs-keyword">default</span>: <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+ }
+}</code></pre></div></div>
+<p>lr或sr的时候宽度小于4</p>
+<p>而<code>guest</code>内存访问和<code>host</code>内存访问指令的区别在于一个是直接赋值，另一个是经过了<code>vaddr</code>转换。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eqhui0lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-eqhui0lln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">interpret_rtl_lm</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span> *dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* addr, <span class="hljs-type">int</span> len)</span> </span>{
+  *dest = <span class="hljs-built_in">vaddr_read</span>(*addr, len);
+}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1jckeflln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-1jckeflln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">interpret_rtl_host_lm</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">const</span> <span class="hljs-type">void</span> *addr, <span class="hljs-type">int</span> len)</span> </span>{
+  <span class="hljs-keyword">switch</span> (len) {
+    <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>: *dest = *(<span class="hljs-type">uint32_t</span> *)addr; <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>: *dest = *( <span class="hljs-type">uint8_t</span> *)addr; <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>: *dest = *(<span class="hljs-type">uint16_t</span> *)addr; <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">default</span>: <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+  }
+}</code></pre></div></div>
+<p><code>vaddr_read</code>是由MMU来完成的。目前不是很明白调用不同宽度的lr会导致读的内存类型不一样，对这个问题也不太能做出满意的回答。</p>
+<h2 id="二阶段">二阶段</h2>
+<p>关于AM做了什么的事情，学校手册特意标了红色:</p>
+<p>AM 在概念上定义了一台抽象计算机,它从运行程序的视角刻画了一台计算机
+应该具备的功能,而真机和
+NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存在的数字电路来实现,NEMU
+是通过程序来实现。</p>
+<h3 id="更多指令实现">更多指令实现</h3>
+<h4 id="任务-1">任务</h4>
+<p><code>nemu</code>目录运行</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x8xs3ylln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-x8xs3ylln8zueq"><pre><code class="hljs shell">bash runall.sh ISA=x86</code></pre></div></div>
+<p>可以看到第一个需要实现的是<code>add_longlong</code>。</p>
+<p>这里面第一个需要实现的指令是<code>lea</code></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225452474954_811_image-20230417215053287.png" srcset="/img/loading.gif" lazyload alt="image-20230417215053287">
+<figcaption aria-hidden="true">image-20230417215053287</figcaption>
+</figure>
+<p>查表加上<code>opcode_table</code>之后提示我<code>exec_and</code>没实现。其实这不是<code>lea</code>的锅。因为框架把<code>make_EHelper(lea)</code>已经实现了，<code>lea</code>就这样完成了。实际上是因为<code>10060</code>的<code>and</code>指令导致的。</p>
+<p>下一个是<code>pushl</code>。</p>
+<p>在手册附录的Opcode Map发现这个位置是一个指令组:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225455484191_658_image-20230417221653277.png" srcset="/img/loading.gif" lazyload alt="image-20230417221653277">
+<figcaption aria-hidden="true">image-20230417221653277</figcaption>
+</figure>
+<p>在Push页面能够看到对应的说明:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225457657194_609_image-20230417221609462.png" srcset="/img/loading.gif" lazyload alt="image-20230417221609462">
+<figcaption aria-hidden="true">image-20230417221609462</figcaption>
+</figure>
+<p>上网查阅，反汇编码 <code>pushl</code> 相当于
+<code>push dword</code>。</p>
+<p>这个<code>pushl</code>也是把指令组写了，把操作码写了，就完成了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225500684153_287_image-20230417222933927.png" srcset="/img/loading.gif" lazyload alt="image-20230417222933927">
+<figcaption aria-hidden="true">image-20230417222933927</figcaption>
+</figure>
+<p><code>nop</code>也得专门整个<code>opcode</code></p>
+<p>下面是add</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225502914875_765_image-20230417223533752.png" srcset="/img/loading.gif" lazyload alt="image-20230417223533752">
+<figcaption aria-hidden="true">image-20230417223533752</figcaption>
+</figure>
+<p>看手册，正好一起把同类型的<code>add</code>都填了。</p>
+<p>下面是<code>adc</code>。<code>adc</code>是带进位加法。其实开头的几个算术和逻辑指令格式都很像，参照着手册填下来就好了。</p>
+<p>已经感受到这一部分更多的是体力活了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225508150223_875_image-20230417224319863.png" srcset="/img/loading.gif" lazyload alt="image-20230417224319863">
+<figcaption aria-hidden="true">image-20230417224319863</figcaption>
+</figure>
+<p>可以看到0f是<code>2byte-escape</code>，这是我们遇到的第一个两字节操作码指令。查2字节的opcode，是这个</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225511539214_937_image-20230417224352754.png" srcset="/img/loading.gif" lazyload alt="image-20230417224352754">
+<figcaption aria-hidden="true">image-20230417224352754</figcaption>
+</figure>
+<p>这一堆setx指令都很像，属于条件置位指令。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225514028827_543_image-20230417224949597.png" srcset="/img/loading.gif" lazyload alt="image-20230417224949597">
+<figcaption aria-hidden="true">image-20230417224949597</figcaption>
+</figure>
+<p>emm有一个手册里没有必须要看源码才知道的事情，就是<code>nemu</code>将这一类指令抽象成了<code>setcc</code></p>
+<p>执行阶段给出了实现:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4oika3lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-4oika3lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(setcc) {
+  <span class="hljs-type">uint32_t</span> cc = decinfo.opcode &amp; <span class="hljs-number">0xf</span>;
+
+  <span class="hljs-built_in">rtl_setcc</span>(&amp;s0, cc);
+  <span class="hljs-built_in">operand_write</span>(id_dest, &amp;s0);
+
+  <span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"set%s %s"</span>, <span class="hljs-built_in">get_cc_name</span>(cc), id_dest-&gt;str);</code></pre></div></div>
+<p><code>rtl_setcc</code>需要我们自己实现:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v8uv91lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-v8uv91lln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rtl_setcc</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">uint8_t</span> subcode)</span> </span>{
+  <span class="hljs-type">bool</span> invert = subcode &amp; <span class="hljs-number">0x1</span>;
+  <span class="hljs-keyword">enum</span> {
+    CC_O, CC_NO, CC_B,  CC_NB,
+    CC_E, CC_NE, CC_BE, CC_NBE,
+    CC_S, CC_NS, CC_P,  CC_NP,
+    CC_L, CC_NL, CC_LE, CC_NLE
+  };
+
+  <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> Query EFLAGS to determine whether the condition code is satisfied.</span>
+  <span class="hljs-comment">// dest &lt;- ( cc is satisfied ? 1 : 0)</span>
+  <span class="hljs-keyword">switch</span> (subcode &amp; <span class="hljs-number">0xe</span>) {
+    <span class="hljs-keyword">case</span> CC_O:{<span class="hljs-built_in">rtl_get_OF</span>(dest);<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">case</span> CC_B:{<span class="hljs-built_in">rtl_get_CF</span>(dest);<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">case</span> CC_E:{<span class="hljs-built_in">rtl_get_ZF</span>(dest);<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">case</span> CC_BE:{<span class="hljs-built_in">rtl_get_CF</span>(&amp;t0);<span class="hljs-built_in">rtl_get_ZF</span>(&amp;t1);<span class="hljs-built_in">rtl_or</span>(dest,&amp;t0,&amp;t1);<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">case</span> CC_S:{<span class="hljs-built_in">rtl_get_SF</span>(dest);<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">case</span> CC_L:{<span class="hljs-built_in">rtl_get_SF</span>(&amp;t0);<span class="hljs-built_in">rtl_get_OF</span>(&amp;t1);<span class="hljs-built_in">rtl_xor</span>(dest,&amp;t0,&amp;t1);<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">case</span> CC_LE:{<span class="hljs-built_in">rtl_get_SF</span>(&amp;t0);<span class="hljs-built_in">rtl_get_OF</span>(&amp;t1);<span class="hljs-built_in">rtl_xor</span>(dest,&amp;t0,&amp;t1);<span class="hljs-built_in">rtl_get_ZF</span>(&amp;t0);<span class="hljs-built_in">rtl_or</span>(dest,dest,&amp;t0);<span class="hljs-keyword">break</span>;}
+      <span class="hljs-comment">//TODO();</span>
+    <span class="hljs-keyword">default</span>: <span class="hljs-built_in">panic</span>(<span class="hljs-string">"should not reach here"</span>);
+    <span class="hljs-keyword">case</span> CC_P: <span class="hljs-built_in">panic</span>(<span class="hljs-string">"n86 does not have PF"</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (invert) {
+    <span class="hljs-built_in">rtl_xori</span>(dest, dest, <span class="hljs-number">0x1</span>);
+  }
+  <span class="hljs-built_in">assert</span>(*dest == <span class="hljs-number">0</span> || *dest == <span class="hljs-number">1</span>);
+}</code></pre></div></div>
+<p>这一部分主要根据指令含义和文档完成。</p>
+<p>至于填<code>opcode_table</code>，理解了之后自然就知道要填到下面一组了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225518351098_207_image-20230417230808371.png" srcset="/img/loading.gif" lazyload alt="image-20230417230808371">
+<figcaption aria-hidden="true">image-20230417230808371</figcaption>
+</figure>
+<p>0f是2字节opcode，找第二个mapb对应的那一行</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225520582515_551_image-20230418013425827.png" srcset="/img/loading.gif" lazyload alt="image-20230418013425827">
+<figcaption aria-hidden="true">image-20230418013425827</figcaption>
+</figure>
+<p>可以看到movvsx和movvzx。这两个指令都是在mov的基础上加了符号拓展功能。</p>
+<p>可以看到框架里已经实现了，填表即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-um5uw5lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-um5uw5lln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">/* 0xb4 */</span>	EMPTY, EMPTY, <span class="hljs-built_in">IDEXW</span>(mov_E2G,movzx,<span class="hljs-number">1</span>), <span class="hljs-built_in">IDEXW</span>(mov_E2G,movzx,<span class="hljs-number">2</span>),
+<span class="hljs-comment">/* 0xb8 */</span>	EMPTY, EMPTY, EMPTY, EMPTY,
+<span class="hljs-comment">/* 0xbc */</span>	EMPTY, EMPTY, <span class="hljs-built_in">IDEXW</span>(mov_E2G,movsx,<span class="hljs-number">1</span>), <span class="hljs-built_in">IDEXW</span>(mov_E2G,movsx,<span class="hljs-number">2</span>),</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225522647884_770_image-20230418013811138.png" srcset="/img/loading.gif" lazyload alt="image-20230418013811138">
+<figcaption aria-hidden="true">image-20230418013811138</figcaption>
+</figure>
+<p>test</p>
+<p>根据手册，TEST 计算其两个操作数的按位逻辑与。
+每一位如果操作数的对应位均为 1，则结果为
+1，否则为0.运算结果被丢弃，只改变标志寄存器。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225525580415_996_image-20230418014447181.png" srcset="/img/loading.gif" lazyload alt="image-20230418014447181">
+<figcaption aria-hidden="true">image-20230418014447181</figcaption>
+</figure>
+<p>据此实现即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-svg5cllln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-svg5cllln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(test) {
+  <span class="hljs-built_in">rtl_li</span>(&amp;s1,<span class="hljs-number">0</span>);
+  <span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
+  <span class="hljs-built_in">rtl_set_CF</span>(&amp;s1);
+  <span class="hljs-built_in">rtl_and</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val);
+  <span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
+  <span class="hljs-built_in">print_asm_template2</span>(test);
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225528634250_287_image-20230418014935039.png" srcset="/img/loading.gif" lazyload alt="image-20230418014935039">
+<figcaption aria-hidden="true">image-20230418014935039</figcaption>
+</figure>
+<p>框架将这一类型的执行抽象成了<code>jcc</code>，调用了之前提到的<code>setcc</code>。因此可以这样填:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ge1vkklln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-ge1vkklln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x70 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
+<span class="hljs-comment">/* 0x74 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
+<span class="hljs-comment">/* 0x78 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
+<span class="hljs-comment">/* 0x7c */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225532714858_663_image-20230418015752384.png" srcset="/img/loading.gif" lazyload alt="image-20230418015752384">
+<figcaption aria-hidden="true">image-20230418015752384</figcaption>
+</figure>
+<p>leave</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225537226215_675_image-20230418015919938.png" srcset="/img/loading.gif" lazyload alt="image-20230418015919938">
+<figcaption aria-hidden="true">image-20230418015919938</figcaption>
+</figure>
+<p>填表，补充执行逻辑:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2f9eomlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-2f9eomlln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(leave) {
+<span class="hljs-comment">//  TODO();</span>
+  <span class="hljs-built_in">rtl_mv</span>(&amp;cpu.esp,&amp;cpu.ebp);
+  <span class="hljs-built_in">rtl_pop</span>(&amp;cpu.ebp);
+  <span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"leave"</span>);
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225541621025_331_image-20230418020130781.png" srcset="/img/loading.gif" lazyload alt="image-20230418020130781">
+<figcaption aria-hidden="true">image-20230418020130781</figcaption>
+</figure>
+<p>dec，inc，cmp</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-csvxqolln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-csvxqolln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(cmp) {
+<span class="hljs-comment">//  TODO();</span>
+	<span class="hljs-built_in">rtl_sub</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val);
+	<span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
+	<span class="hljs-built_in">rtl_is_sub_carry</span>(&amp;s1,&amp;s0,&amp;id_dest-&gt;val);
+	<span class="hljs-comment">//printf("%d %d %d %d\n",s1,s0,id_dest-&gt;val,id_dest-&gt;width);</span>
+	<span class="hljs-built_in">rtl_set_CF</span>(&amp;s1);
+	<span class="hljs-built_in">rtl_is_sub_overflow</span>(&amp;s1,&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val,id_dest-&gt;width);
+	<span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
+	<span class="hljs-comment">//if (id_src-&gt;val==0x40) printf("bian=%d\n",id_dest-&gt;val);</span>
+	<span class="hljs-built_in">print_asm_template2</span>(cmp);
+}
+
+<span class="hljs-built_in">make_EHelper</span>(inc) {
+<span class="hljs-comment">//  TODO();</span>
+	<span class="hljs-built_in">rtl_li</span>(&amp;s1,<span class="hljs-number">1</span>);
+  	<span class="hljs-built_in">rtl_add</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;s1);
+	<span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
+	<span class="hljs-built_in">rtl_is_add_overflow</span>(&amp;s1,&amp;s0,&amp;id_dest-&gt;val,&amp;s1,id_dest-&gt;width);
+	<span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
+	<span class="hljs-built_in">operand_write</span>(id_dest,&amp;s0);
+	<span class="hljs-built_in">print_asm_template1</span>(inc);
+}</code></pre></div></div>
+<p><code>dec</code>一样的道理，就不放了。</p>
+<p>终于迎来了二阶段的第一个<strong><font color="green">HIT GOOD
+TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225545270182_921_image-20230418023433434.png" srcset="/img/loading.gif" lazyload alt="image-20230418023433434"></p>
+<p>加上中间填<code>op_table</code>习惯性的把旁边的也填了，其实现在就已经过的不少了。而且也发现名称排列和难度并不是对应的。。。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225547548141_708_image-20230418024006777.png" srcset="/img/loading.gif" lazyload alt="image-20230418024006777">
+<figcaption aria-hidden="true">image-20230418024006777</figcaption>
+</figure>
+<p>比如<code>add</code>里面有一个0x6a打头的push，中间做的时候也把它写了。</p>
+<p>bit里面这个指令还过不去</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225552798478_263_image-20230418024335643.png" srcset="/img/loading.gif" lazyload alt="image-20230418024335643">
+<figcaption aria-hidden="true">image-20230418024335643</figcaption>
+</figure>
+<p>看手册是<code>Shift Grp2</code>的指令，看源码是<code>sar</code>指令。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225556392323_529_image-20230418024515008.png" srcset="/img/loading.gif" lazyload alt="image-20230418024515008">
+<figcaption aria-hidden="true">image-20230418024515008</figcaption>
+</figure>
+<p>这一组带S指令都有移位功能，源码里的TODO也挨着，就对着手册一起做了。</p>
+<p>框架中没有<code>exec_rol</code>，现在<code>make_group</code>的时候加上会报错。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225600429965_544_image-20230418030440421.png" srcset="/img/loading.gif" lazyload alt="image-20230418030440421">
+<figcaption aria-hidden="true">image-20230418030440421</figcaption>
+</figure>
+<p>这个是<code>not</code>，对应第三个指令组，开填。</p>
+<p>至于实现，这应该是最简单的一个。。。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3q2p8slln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-3q2p8slln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-keyword">not</span>) {
+<span class="hljs-comment">//  TODO();</span>
+  <span class="hljs-built_in">rtl_not</span>(&amp;s0,&amp;id_dest-&gt;val);
+  <span class="hljs-built_in">operand_write</span>(id_dest,&amp;s0);
+  <span class="hljs-built_in">print_asm_template1</span>(<span class="hljs-keyword">not</span>);
+}</code></pre></div></div>
+<p>还有一个<code>rtl_not</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-khlnxplln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-khlnxplln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_not</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span> *dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1)</span> </span>{
+  <span class="hljs-comment">// dest &lt;- ~src1</span>
+<span class="hljs-comment">//  TODO();</span>
+	*dest=~(*src1);
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225605558034_150_image-20230418031209236.png" srcset="/img/loading.gif" lazyload alt="image-20230418031209236">
+<figcaption aria-hidden="true">image-20230418031209236</figcaption>
+</figure>
+<p>到div了。</p>
+<p>imul</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225610807036_934_image-20230418032107060.png" srcset="/img/loading.gif" lazyload alt="image-20230418032107060">
+<figcaption aria-hidden="true">image-20230418032107060</figcaption>
+</figure>
+<p>填表即可。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225613870020_798_image-20230418032213094.png" srcset="/img/loading.gif" lazyload alt="image-20230418032213094">
+<figcaption aria-hidden="true">image-20230418032213094</figcaption>
+</figure>
+<p>符号拓展</p>
+<p>这个要填rtl。利用好抽象层的东西。不就是把低位搬到高位么。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x3ul1alln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-x3ul1alln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_sext</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1, <span class="hljs-type">int</span> width)</span> </span>{
+  <span class="hljs-comment">// dest &lt;- signext(src1[(width * 8 - 1) .. 0])</span>
+<span class="hljs-comment">//  TODO();</span>
+	<span class="hljs-built_in">rtl_shli</span>(&amp;t0,src1,<span class="hljs-number">32</span>-width*<span class="hljs-number">8</span>);
+	<span class="hljs-built_in">rtl_sari</span>(dest,&amp;t0,<span class="hljs-number">32</span>-width*<span class="hljs-number">8</span>);
+}</code></pre></div></div>
+<p>下面指令果然涉及到了符号拓展。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225618043780_280_image-20230418033030503.png" srcset="/img/loading.gif" lazyload alt="image-20230418033030503">
+<figcaption aria-hidden="true">image-20230418033030503</figcaption>
+</figure>
+<p>手册里说这个位置是cwd，但</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225621183658_884_image-20230418033009533.png" srcset="/img/loading.gif" lazyload alt="image-20230418033009533">
+<figcaption aria-hidden="true">image-20230418033009533</figcaption>
+</figure>
+<p>框架中给的是cltd和cwtl，cltd就是CWD/CDQ，而cwtl对应CBW/CWDE。</p>
+<p>按理说可以调抽象层的接口，但我总是调不对。。只好重新造轮子了。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gp6ze3lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-gp6ze3lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(cltd) {
+  <span class="hljs-keyword">if</span> (decinfo.isa.is_operand_size_16) {
+    <span class="hljs-comment">//TODO();</span>
+    <span class="hljs-keyword">if</span> ((cpu.eax&gt;&gt;<span class="hljs-number">15</span>)&amp;<span class="hljs-number">1</span>) cpu.edx|=<span class="hljs-number">0x0000ffff</span>;
+    <span class="hljs-keyword">else</span> cpu.edx&amp;=<span class="hljs-number">0xffff0000</span>;
+  }
+  <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">//TODO();</span>
+    <span class="hljs-keyword">if</span> ((cpu.eax&gt;&gt;<span class="hljs-number">31</span>)&amp;<span class="hljs-number">1</span>) cpu.edx|=<span class="hljs-number">0xffffffff</span>;
+    <span class="hljs-keyword">else</span> cpu.edx&amp;=<span class="hljs-number">0</span>;
+  }
+  <span class="hljs-built_in">print_asm</span>(decinfo.isa.is_operand_size_16 ? <span class="hljs-string">"cwtl"</span> : <span class="hljs-string">"cltd"</span>);
+}
+
+<span class="hljs-built_in">make_EHelper</span>(cwtl) {
+  <span class="hljs-keyword">if</span> (decinfo.isa.is_operand_size_16) {
+    <span class="hljs-comment">//TODO();</span>
+    <span class="hljs-keyword">if</span> ((cpu.eax&gt;&gt;<span class="hljs-number">7</span>)&amp;<span class="hljs-number">1</span>) cpu.eax|=<span class="hljs-number">0x0000ff00</span>;
+    <span class="hljs-keyword">else</span> cpu.eax&amp;=<span class="hljs-number">0xffff00ff</span>;
+  }
+  <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">if</span> ((cpu.eax&gt;&gt;<span class="hljs-number">15</span>)&amp;<span class="hljs-number">1</span>) cpu.eax|=<span class="hljs-number">0xffff0000</span>;
+    <span class="hljs-keyword">else</span> cpu.eax&amp;=<span class="hljs-number">0x0000ffff</span>;
+  }
+  <span class="hljs-built_in">print_asm</span>(decinfo.isa.is_operand_size_16 ? <span class="hljs-string">"cbtw"</span> : <span class="hljs-string">"cwtl"</span>);
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225625599245_402_image-20230418034230992.png" srcset="/img/loading.gif" lazyload alt="image-20230418034230992">
+<figcaption aria-hidden="true">image-20230418034230992</figcaption>
+</figure>
+<p>还差两个</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225630693991_523_image-20230418034312229.png" srcset="/img/loading.gif" lazyload alt="image-20230418034312229">
+<figcaption aria-hidden="true">image-20230418034312229</figcaption>
+</figure>
+<p>recursion，call_rm没实现。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225633722246_665_image-20230418034508931.png" srcset="/img/loading.gif" lazyload alt="image-20230418034508931">
+<figcaption aria-hidden="true">image-20230418034508931</figcaption>
+</figure>
+<p>手册上call写的很长，只需要关注r/m部分就可以了</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225635958260_687_image-20230418034759314.png" srcset="/img/loading.gif" lazyload alt="image-20230418034759314">
+<figcaption aria-hidden="true">image-20230418034759314</figcaption>
+</figure>
+<p>对应实现:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8bawtvlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-8bawtvlln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(call_rm) {
+  <span class="hljs-comment">//TODO();</span>
+  <span class="hljs-built_in">rtl_li</span>(&amp;s0,id_dest-&gt;val);
+  <span class="hljs-built_in">rtl_mv</span>(&amp;decinfo.jmp_pc,&amp;s0);
+  <span class="hljs-comment">//decinfo.is_jmp=1;</span>
+  <span class="hljs-built_in">rtl_push</span>(pc);
+  <span class="hljs-built_in">rtl_j</span>(decinfo.jmp_pc);
+  <span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"call *%s"</span>, id_dest-&gt;str);
+}</code></pre></div></div>
+<p>这时候发现只有<code>string</code>过不了了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225639988445_167_image-20230418180917748.png" srcset="/img/loading.gif" lazyload alt="image-20230418180917748">
+<figcaption aria-hidden="true">image-20230418180917748</figcaption>
+</figure>
+<p>一开始看到运行到了bad指令以为是自己跳转指令实现的有问题，回去检查了一遍没发现毛病，看指导书才发现是自己少做了东西。然后2020版的文档这个位置就挨着不要以为有TDDO才需要实现的免责声明。多少有点挑衅了。但又不能说什么，谁让我没好好看文档。。。</p>
+<p>按照指导书提示，要完成<code>string.c</code>中列出的字符串处理函数才能通过这个样例。看源代码实现下面三个函数就可以了。我们只需要通过直接操作字符来完成库函数本应有的功能即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nokdsslln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-nokdsslln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">char</span>* <span class="hljs-title">strncpy</span><span class="hljs-params">(<span class="hljs-type">char</span>* dst, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* src, <span class="hljs-type">size_t</span> n)</span> </span>{
+	<span class="hljs-type">char</span>* pd=dst;
+	<span class="hljs-keyword">while</span> (n&gt;<span class="hljs-number">0</span>&amp;&amp;*src!=<span class="hljs-string">'\0'</span>) --n,*pd=*src,++pd,++src;
+	<span class="hljs-keyword">while</span> (n&gt;<span class="hljs-number">0</span>) --n,*pd=<span class="hljs-string">'\0'</span>,++pd;
+	<span class="hljs-keyword">return</span> dst;
+}
+
+<span class="hljs-function"><span class="hljs-type">char</span>* <span class="hljs-title">strcat</span><span class="hljs-params">(<span class="hljs-type">char</span>* dst, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* src)</span> </span>{
+	<span class="hljs-type">char</span>* pd=dst;
+	<span class="hljs-keyword">while</span> (*pd!=<span class="hljs-string">'\0'</span>) ++pd;
+	<span class="hljs-keyword">while</span> (*src!=<span class="hljs-string">'\0'</span>) *pd=*src,++pd,++src;
+	*pd=<span class="hljs-string">'\0'</span>;
+	<span class="hljs-keyword">return</span> dst;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">strcmp</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* s1, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* s2)</span> </span>{
+	<span class="hljs-keyword">while</span> (*s1!=<span class="hljs-string">'\0'</span>&amp;&amp;*s2!=<span class="hljs-string">'\0'</span>&amp;&amp;*s1==*s2) ++s1,++s2;
+	<span class="hljs-keyword">if</span> (*s1&gt;*s2) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (*s1&lt;*s2) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+	<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p>另外<code>sprintf</code>也是一样的单例。网上有很多参考，如<a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-29073321-id-5557641.html">这个</a>。就不展开了。</p>
+<p>然后发现neg没实现。实现了就好。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225645128900_949_image-20230418182437373.png" srcset="/img/loading.gif" lazyload alt="image-20230418182437373">
+<figcaption aria-hidden="true">image-20230418182437373</figcaption>
+</figure>
+<p>顺利AP。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225647440928_407_image-20230418182631614.png" srcset="/img/loading.gif" lazyload alt="image-20230418182631614" style="zoom: 50%;"></p>
+<h4 id="问题-1">问题</h4>
+<h6 id="为什么要有am">为什么要有AM？</h6>
+<p>AM的主要目的是程序和架构解耦，也就是屏蔽底层指令集架构的差异，让程序不必关心底层的架构。而操作系存在的目的主要是控制多道程序运行调度，，并提供文件访问，网络，输入输出等方便调用的接口。从功能上AM和OS有所重叠，但在抽象层次上AM是处于操作系统下层的。</p>
+<h6 id="堆和栈在哪里">堆和栈在哪里？</h6>
+<p>这个问题2019没有，看了学校手册才知道。</p>
+<p>堆和栈在内存里。</p>
+<p>为什么堆和栈的内容没有放入可执行文件里面?那程序运行时刻用到的堆和栈又是怎么来的？</p>
+<p>因为堆和栈的大小是在运行时确定的，它们的内容无法在编译时被包含在可执行文件中。相反，它们的大小和位置由操作系统根据程序的需要在运行时进行动态分配和管理。</p>
+<h6 id="指令名对照">指令名对照</h6>
+<p>对于x86手册附录有opcode-map，直接根据指令的opcode查询即可，不必非得通过名称查询。这建立在指令名本身只是方便记忆的助记符，二手册对opcode的指令功能和解码方式进行的约定。</p>
+<h3 id="difftest">difftest</h3>
+<h4 id="任务-2">任务</h4>
+<p><code>difftest</code>的实现我们只需要实现检查寄存器的环节即可。</p>
+<p><code>nemu/src/isa/mips32/diff-test.c</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rzgdahlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-rzgdahlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isa_difftest_checkregs</span><span class="hljs-params">(CPU_state *ref_r, <span class="hljs-type">vaddr_t</span> pc)</span> </span>{
+  <span class="hljs-keyword">if</span> ((*ref_r).eax!=cpu.eax||(*ref_r).ecx!=cpu.ecx
+	||(*ref_r).edx!=cpu.edx||(*ref_r).ebx!=cpu.ebx
+	||(*ref_r).esp!=cpu.esp||(*ref_r).ebp!=cpu.ebp
+	||(*ref_r).esi!=cpu.esi||(*ref_r).edi!=cpu.edi
+	||(*ref_r).pc!=cpu.pc) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+}<span class="hljs-function">xxxxxxxxxx&nbsp;<span class="hljs-type">bool</span> <span class="hljs-title">isa_difftest_checkregs</span><span class="hljs-params">(CPU_state *ref_r, <span class="hljs-type">vaddr_t</span> pc)</span> </span>{ &nbsp;<span class="hljs-keyword">if</span> ((*ref_r).eax!=cpu.eax||(*ref_r).ecx!=cpu.ecx    ||(*ref_r).edx!=cpu.edx||(*ref_r).ebx!=cpu.ebx    ||(*ref_r).esp!=cpu.esp||(*ref_r).ebp!=cpu.ebp    ||(*ref_r).esi!=cpu.esi||(*ref_r).edi!=cpu.edi    ||(*ref_r).pc!=cpu.pc) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; &nbsp;<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;}nemu/src/isa/mips32/diff-test.c</code></pre></div></div>
+<h4 id="问题-2">问题</h4>
+<h6 id="api约定">API约定</h6>
+<p>实验指导书中提到，在介绍API约定的时候,
+提到了寄存器状态<code>r</code>需要把寄存器按照某种顺序排列.
+<code>qemu-diff</code>作为REF, 已经满足API的这一约束. 让我们RTFSC,
+从中找出这一顺序, 并检查你的NEMU实现是否已经满足约束.</p>
+<p>我们从宏定义入手，看开启<code>difftest</code>时<code>nemu</code>执行了哪些步骤，指导书其实也有阐述。</p>
+<p>调用<code>init_difftest()</code>，初始化，其中包括从动态库中读取API的符号</p>
+<p><code>nemu/src/monitor/diff-test/diff-test.c</code>-<code>void init_difftest</code></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225651167723_797_image-20230417234512940.png" srcset="/img/loading.gif" lazyload alt="image-20230417234512940">
+<figcaption aria-hidden="true">image-20230417234512940</figcaption>
+</figure>
+<p>给<code>ref_difftest_setregs</code>传入的参数是cpu。在PA1中我们完成了这个结构体，寄存器顺序如下:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225653391160_373_image-20230417235814052.png" srcset="/img/loading.gif" lazyload alt="image-20230417235814052">
+<figcaption aria-hidden="true">image-20230417235814052</figcaption>
+</figure>
+<p>再看调用的API:</p>
+<p><code>nemu/tools/qemu-diff/src/diff-test.c</code></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225657431948_677_image-20230417234630438.png" srcset="/img/loading.gif" lazyload alt="image-20230417234630438">
+<figcaption aria-hidden="true">image-20230417234630438</figcaption>
+</figure>
+<p><code>nemu/tools/qemu-diff/src/isa/x86/include/isa.h</code></p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225701591453_145_image-20230417232210081.png" srcset="/img/loading.gif" lazyload alt="image-20230417232210081">
+<figcaption aria-hidden="true">image-20230417232210081</figcaption>
+</figure>
+<p>可以看到顺序是符合约定的。其中<code>array</code>是存<code>gdb</code>通信的字符串消息的。</p>
+<h6 id="匪夷所思的qemu行为">匪夷所思的QEMU行为</h6>
+<p>这个确实不了解，不过根据指导书，x86也没有这种行为。</p>
+<h6 id="捕捉死循环">捕捉死循环</h6>
+<p>如果我们是像Difftest一样在实现的过程检验实现是否正确(在这次实验中死循环和bad
+instruction引起的问题确实不好定位，difftest也无能为力，定位到的指令离实际出现的指令十万八千里。只能根据git记录依次检查自己实现的指令可能存在的问题。)，可以采用在naive上记录动态指令执行的指令数，然后执行的时候如果超过了这个指令数就终止。而作为模拟器去检查死循环，可以采用静态代码分析的方式进行。执行起来的时候检查比较难，因为比如设置阈值，其实不知道是程序死循环了还是真的想执行这么多次。</p>
+<h2 id="三阶段">三阶段</h2>
+<h3 id="任务-3">任务</h3>
+<p>别忘了把HAS_IOE打开。</p>
+<h3 id="串口">串口</h3>
+<p>选x86有福了。还要实现<code>in</code>,
+<code>out</code>指令。还好这个也不难，在它们的执行辅助函数中分别调用
+<code>pio_read_[l|w|b]()</code>和<code>pio_write_[l|w|b]()</code>函数即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ucyv60lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-ucyv60lln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(in) {
+<span class="hljs-comment">//  TODO();</span>
+  <span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">4</span>) s0=<span class="hljs-built_in">pio_read_l</span>(id_src-&gt;val);
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">2</span>) s0=<span class="hljs-built_in">pio_read_w</span>(id_src-&gt;val);
+  <span class="hljs-keyword">else</span> s0=<span class="hljs-built_in">pio_read_b</span>(id_src-&gt;val);
+  <span class="hljs-built_in">operand_write</span>(id_dest,&amp;s0);
+  <span class="hljs-built_in">print_asm_template2</span>(in);
+}
+
+<span class="hljs-built_in">make_EHelper</span>(out) {
+<span class="hljs-comment">//  TODO();</span>
+	<span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">4</span>)  <span class="hljs-built_in">pio_write_l</span>(id_dest-&gt;val,id_src-&gt;val);
+	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">2</span>)  <span class="hljs-built_in">pio_write_w</span>(id_dest-&gt;val,id_src-&gt;val);
+	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">1</span>) <span class="hljs-built_in">pio_write_b</span>(id_dest-&gt;val,id_src-&gt;val);
+	<span class="hljs-keyword">else</span> <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
+	<span class="hljs-built_in">print_asm_template2</span>(out);
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225703718139_454_image-20230418190251286.png" srcset="/img/loading.gif" lazyload alt="image-20230418190251286">
+<figcaption aria-hidden="true">image-20230418190251286</figcaption>
+</figure>
+<p>看手册，果然是IN，OUT指令。在opcode_table里面补上即可。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225706985852_641_image-20230418190440852.png" srcset="/img/loading.gif" lazyload alt="image-20230418190440852">
+<figcaption aria-hidden="true">image-20230418190440852</figcaption>
+</figure>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225709250708_350_image-20230418192239874.png" srcset="/img/loading.gif" lazyload alt="image-20230418192239874" width="67%" height="67%"></p>
+<h3 id="时钟">时钟</h3>
+<p>这个部分看了半天没看明白要干什么，查阅网上资料才知道怎么做:</p>
+<p>初始化时通过inl(RTC_ADDR)获取初始时间boot_time，随后uptime时同样读取时间，相减作为uptime-&gt;lo。</p>
+<p>在<code>_DEVREG_TIMER_UPTIME</code>case里面:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vpy87klln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-vpy87klln8zueq"><pre><code class="hljs C++">      <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> tt=(<span class="hljs-built_in">inl</span>(RTC_ADDR)-init_tim);
+<span class="hljs-comment">//      printf("%d\n",tt);</span>
+      uptime-&gt;hi = <span class="hljs-number">0</span>;
+      uptime-&gt;lo = tt;</code></pre></div></div>
+<p>后面没实现的初始化函数:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u9rqbolln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-u9rqbolln8zueq"><pre><code class="hljs C++"><span class="hljs-type">void</span> __am_timer_init() {
+	init_tim=<span class="hljs-built_in">inl</span>(RTC_ADDR);
+}</code></pre></div></div>
+<p>当然要增加一个静态全局变量<code>init_tim</code>把初始时间记下来。</p>
+<p>至于怎么跑，<code>make ARCH=native mainargs=H run</code>可以看到:</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225713545364_139_image-20230418194525024.png" srcset="/img/loading.gif" lazyload alt="image-20230418194525024">
+<figcaption aria-hidden="true">image-20230418194525024</figcaption>
+</figure>
+<p>因此可以<code>make ARCH=x86-nemu mainargs=t run</code>，当然<code>naive</code>也是可以对照着看的。</p>
+<p>一开始发现进入之后不打印，一直死循环，发现是没有实现<code>printf</code>。补上就可以了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225716611404_456_image-20230418194930929.png" srcset="/img/loading.gif" lazyload alt="image-20230418194930929">
+<figcaption aria-hidden="true">image-20230418194930929</figcaption>
+</figure>
+<p>跑分，随便跑了一个，现在性能还是比较拉胯。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225720787415_925_image-20230418201037377.png" srcset="/img/loading.gif" lazyload alt="image-20230418201037377">
+<figcaption aria-hidden="true">image-20230418201037377</figcaption>
+</figure>
+<h4 id="键盘">键盘</h4>
+<p>和时钟相似。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-huuhbnlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-huuhbnlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _DEVREG_INPUT_KBD:
+{
+  _DEV_INPUT_KBD_t *kbd = (_DEV_INPUT_KBD_t *)buf;
+  <span class="hljs-type">uint32_t</span> code_key = <span class="hljs-built_in">inl</span>(KBD_ADDR);
+  <span class="hljs-keyword">if</span> (code_key == _KEY_NONE)
+  {
+    kbd-&gt;keydown = <span class="hljs-number">0</span>;
+    kbd-&gt;keycode = _KEY_NONE;
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    <span class="hljs-keyword">if</span> (code_key &amp; <span class="hljs-number">0x8000</span>)
+      kbd-&gt;keydown = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">else</span>
+      kbd-&gt;keydown = <span class="hljs-number">0</span>;
+    kbd-&gt;keycode = (code_key);
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">sizeof</span>(_DEV_INPUT_KBD_t);
+}</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225723117288_548_image-20230418202105754.png" srcset="/img/loading.gif" lazyload alt="image-20230418202105754">
+<figcaption aria-hidden="true">image-20230418202105754</figcaption>
+</figure>
+<h3 id="vga">VGA</h3>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0bud8vlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-0bud8vlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">vga_io_handler</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> offset, <span class="hljs-type">int</span> len, <span class="hljs-type">bool</span> is_write)</span> </span>{
+  <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> call `update_screen()` when writing to the sync register</span>
+  <span class="hljs-comment">//TODO();</span>
+  <span class="hljs-keyword">if</span> (is_write)
+  {
+    <span class="hljs-built_in">update_screen</span>();
+  }
+}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f8dbkxlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-f8dbkxlln8zueq"><pre><code class="hljs C++"><span class="hljs-type">size_t</span> __am_video_write(<span class="hljs-type">uintptr_t</span> reg, <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> size)
+{
+  <span class="hljs-keyword">switch</span> (reg)
+  {
+  <span class="hljs-keyword">case</span> _DEVREG_VIDEO_FBCTL:
+  {
+    _DEV_VIDEO_FBCTL_t *ctl = (_DEV_VIDEO_FBCTL_t *)buf;
+
+    <span class="hljs-type">uint32_t</span> p = <span class="hljs-number">0</span>;
+    <span class="hljs-type">uint32_t</span> *ff;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = ctl-&gt;y; j &lt; ctl-&gt;y + ctl-&gt;h; ++j)
+      <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = ctl-&gt;x; i &lt; ctl-&gt;x + ctl-&gt;w; ++i)
+      {
+        ff = (<span class="hljs-type">uint32_t</span> *)(<span class="hljs-type">uintptr_t</span>)(FB_ADDR) + (j * <span class="hljs-number">400</span>);
+        ff[i] = ctl-&gt;pixels[p];
+        ++p;
+      }
+    <span class="hljs-keyword">if</span> (ctl-&gt;sync)
+    {
+      <span class="hljs-built_in">outl</span>(SYNC_ADDR, <span class="hljs-number">0</span>);
+    }
+    <span class="hljs-keyword">return</span> size;
+  }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-type">void</span> __am_vga_init()
+{
+  <span class="hljs-type">int</span> i;
+  <span class="hljs-type">int</span> size = <span class="hljs-built_in">screen_width</span>() * <span class="hljs-built_in">screen_height</span>();
+  <span class="hljs-type">uint32_t</span> *fb = (<span class="hljs-type">uint32_t</span> *)(<span class="hljs-type">uintptr_t</span>)FB_ADDR;
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; size; i++)
+    fb[i] = i;
+  <span class="hljs-built_in">draw_sync</span>();
+}
+![image<span class="hljs-number">-20230418210820936</span>](https:<span class="hljs-comment">//raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225728354796_263_image-20230418210820936.png)</span></code></pre></div></div>
+<h4 id="问题-3">问题</h4>
+<h6 id="volitle关键字">volitle关键字</h6>
+<p>volitle关键字的基本含义是编译后的程序每次需要存储或读取这个变量的时候，告诉编译器对该变量不做优化，都会直接从变量内存地址中读取数据，从而可以提供对特殊地址的稳定访问。</p>
+<p>参见<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343688629">这里</a></p>
+<p>文中的例子便是手册中提及到的情形:</p>
+<p>假设要对一个设备进行初始化，此设备的某一个寄存器为0x8049000</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yjcorjlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-yjcorjlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fun</span><span class="hljs-params">()</span></span>{
+<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *p=(<span class="hljs-type">void</span> *)<span class="hljs-number">0x8049000</span>; 
+*p=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">while</span>(*p !=<span class="hljs-number">0xff</span>);
+*p=<span class="hljs-number">0x33</span>;
+*p=<span class="hljs-number">0x34</span>;
+*p=<span class="hljs-number">0x86</span>;
+}</code></pre></div></div>
+<p>正常先循环读后写，一切正常。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225733159116_222_image-20230418224522431.png" srcset="/img/loading.gif" lazyload alt="image-20230418224522431">
+<figcaption aria-hidden="true">image-20230418224522431</figcaption>
+</figure>
+<p>去掉volatile:</p>
+<p>经过编译器优化后，编译器认为指针指向的内容都是0了，下面while肯定是一个死循环，就自己jmp自己了。表现在设备上，就是一直在读，写不进去，就出问题了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225737654532_187_image-20230418224713003.png" srcset="/img/loading.gif" lazyload alt="image-20230418224713003">
+<figcaption aria-hidden="true">image-20230418224713003</figcaption>
+</figure>
+<h6 id="如何检测多个键同时被按下">如何检测多个键同时被按下？</h6>
+<p>键码相或即可。</p>
+<h3 id="必答题">必答题</h3>
+<h6 id="整理一条指令的运行过程">整理一条指令的运行过程</h6>
+<p>这个问题2018版没有，事实上PA2第一部分指令系统的课件说的也非常详细。</p>
+<h6 id="编译与链接">编译与链接</h6>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/huanghui167/article/details/41346663">参考</a></p>
+<p>inline
+关键字实际上表示建议内联，gcc中O0优化时是不内联的。所以在头文件中用inline时务必加入static。
+为了确保内联，头文件中用 inline 时务必加入 static，否则当 inline
+不内联时就和普通函数在头文件中定义一样，当多个 c
+文件包含时就会重定义。加入 static 后代码健壮性高，如果只是用 inline
+时编译器都内联了，那两者的实际效果是一样的。</p>
+<p>在我的环境下，去掉<code>static</code>和去掉<code>inline</code>是没有影响的。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523225741529190_435_image-20230418165948224.png" srcset="/img/loading.gif" lazyload alt="image-20230418165948224">
+<figcaption aria-hidden="true">image-20230418165948224</figcaption>
+</figure>
+<p>但是都去掉，就报错了：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230801541908_353_image-20230418171100319.png" srcset="/img/loading.gif" lazyload alt="image-20230418171100319">
+<figcaption aria-hidden="true">image-20230418171100319</figcaption>
+</figure>
+<p>因为头文件会被许多文件引用所以如果去掉static
+inline,这个函数就会被多次定义，在链接的时候会报错。</p>
+<p>重新编译NEMU.
+请问重新编译后的NEMU含有38个<code>dummy</code>变量的实体(统计得到的加上<code>common.h</code>里的)</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230807076612_975_image-20230418172006341.png" srcset="/img/loading.gif" lazyload alt="image-20230418172006341">
+<figcaption aria-hidden="true">image-20230418172006341</figcaption>
+</figure>
+<p><code>nemu/include/debug.h</code>加了之后没变化(虽然理论上会多)</p>
+<p>加上等于0，报错。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230813184695_469_image-20230418180715096.png" srcset="/img/loading.gif" lazyload alt="image-20230418180715096">
+<figcaption aria-hidden="true">image-20230418180715096</figcaption>
+</figure>
+<p>课上讲过，在C语言中只声明不初始化是一种弱定义，当声明多个同名同类型的变量时，编译不会报错，但是到了链接阶段，由于全是弱符号，链接器会随便选择一个。但是，有了初始化之后之后就不一样了，这变成了强定义，编译器无法忽略。</p>
+<h6 id="makefile执行过程">makefile执行过程</h6>
+<p>之前操作系统折磨过的一次makefile又回来折磨人了。 即便当时写了<a href="https://lunaticsky-tql.github.io/posts/23557/">makefile急速入门</a>，makefile这个东西不得不说和shell脚本一样，语法独具其风格，简练强大但可读性也不敢恭维。</p>
+<p>我们输入make默认生成NEMU的二进制文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f8kouxlln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-f8kouxlln8zueq"><pre><code class="hljs makefile"><span class="hljs-section">app: <span class="hljs-variable">$(BINARY)</span></span></code></pre></div></div>
+<p>再去看<code>$(BINARY)</code>的依赖:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-taehb2lln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-taehb2lln8zueq"><pre><code class="hljs makefile"><span class="hljs-variable">$(BINARY)</span>: <span class="hljs-variable">$(OBJS)</span>
+	<span class="hljs-variable">$(<span class="hljs-built_in">call</span> git_commit, "compile")</span>
+	@echo + LD <span class="hljs-variable">$@</span>
+	@<span class="hljs-variable">$(LD)</span> -O2 -rdynamic <span class="hljs-variable">$(SO_LDLAGS)</span> -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$^</span> -lSDL2 -lreadline -ldl</code></pre></div></div>
+<p>BINARY 依赖于 OBJS</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yd9s0flln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-yd9s0flln8zueq"><pre><code class="hljs C++">OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)</code></pre></div></div>
+<p>(var:a=b)，是将 var 变量中每一个单词后面的 a 替换为
+b。所以OBJS其实就是build 文件夹下的所有.o 文件</p>
+<p>OBJ_DIR是前面定义了的构建路径目标</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z0rt2vlln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-z0rt2vlln8zueq"><pre><code class="hljs makefile">OBJ_DIR ?= <span class="hljs-variable">$(BUILD_DIR)</span>/obj-<span class="hljs-variable">$(ISA)</span><span class="hljs-variable">$(SO)</span>
+BINARY ?= <span class="hljs-variable">$(BUILD_DIR)</span>/<span class="hljs-variable">$(ISA)</span>-<span class="hljs-variable">$(NAME)</span><span class="hljs-variable">$(SO)</span></code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230818475318_173_image-20230418215016739.png" srcset="/img/loading.gif" lazyload alt="image-20230418215016739">
+<figcaption aria-hidden="true">image-20230418215016739</figcaption>
+</figure>
+<p>关于SRC:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g558krlln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-g558krlln8zueq"><pre><code class="hljs makefile">SRCS = <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> find src/ -name "*.c" | grep -v "isa")</span>
+SRCS += <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> find src/isa/<span class="hljs-variable">$(ISA)</span> -name "*.c")</span></code></pre></div></div>
+<p>-v
+表示不匹配“isa"，先把isa文件夹排除掉，再根据选择的指令集去isa文件夹里面找。SRC包括构建NEMU用到的所有.c文件。</p>
+<p>build 的各.o 文件依赖于 src 文件夹下的所有.c 文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fsfcvqlln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-fsfcvqlln8zueq"><pre><code class="hljs makefile"><span class="hljs-variable">$(OBJ_DIR)</span>/%.o: src/%.c
+	@echo + CC <span class="hljs-variable">$&lt;</span>
+	@mkdir -p <span class="hljs-variable">$(<span class="hljs-built_in">dir</span> <span class="hljs-variable">$@</span>)</span>
+	@<span class="hljs-variable">$(CC)</span> <span class="hljs-variable">$(CFLAGS)</span> <span class="hljs-variable">$(SO_CFLAGS)</span> -c -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$&lt;</span>
+</code></pre></div></div>
+<p>各.c 文件依赖于其中定义的.h 文件（隐含规则）</p>
+<p>依赖关系终于分析完了。下面看到底执行了哪些操作。</p>
+<p><code>$(BINARY)</code>生成第一步，通知tracer去git
+commit一下，commit信息是“compile”。这个函数是在Makefile.git里的，前面通过include引入。</p>
+<p>第二步只是打印一下我现在要链接生成目标了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230824465256_348_image-20230418221720529.png" srcset="/img/loading.gif" lazyload alt="image-20230418221720529">
+<figcaption aria-hidden="true">image-20230418221720529</figcaption>
+</figure>
+<p>最后一行便是生成NEMU的临门一脚。</p>
+<p>顺便说一下执行make run 的过程。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mrf5p5lln8zueq"></i><span>makefile</span><div class="collapse show" id="collapse-mrf5p5lln8zueq"><pre><code class="hljs makefile">NEMU_EXEC := <span class="hljs-variable">$(BINARY)</span> <span class="hljs-variable">$(ARGS)</span> <span class="hljs-variable">$(IMG)</span></code></pre></div></div>
+<p>定义参数:</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-usx55dlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-usx55dlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">override</span> ARGS ?= -l $(BUILD_DIR)/nemu-log.txt
+<span class="hljs-keyword">override</span> ARGS += -d $(QEMU_SO)</code></pre></div></div>
+<p>override的意思是不允许通过命令行指定的方式替代在Makefile中的变量定义。</p>
+<p>执行出来就是这一句。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230831361885_388_image-20230418221942591.png" srcset="/img/loading.gif" lazyload alt="image-20230418221942591">
+<figcaption aria-hidden="true">image-20230418221942591</figcaption>
+</figure>
+<h3 id="课后题">课后题</h3>
+<p>1.指令使用条件问题</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230523230835450240_415_image-20230418163951487.png" srcset="/img/loading.gif" lazyload alt="image-20230418163951487">
+<figcaption aria-hidden="true">image-20230418163951487</figcaption>
+</figure>
+<p>为什么用jbe而不是jle？</p>
+<p>jbe用于比较无符号数，jle用于比较有符号数。在 x86
+中，内存地址被视为无符号整数，所以要用jbe。</p>
+<p>至于为什么源代码里是大于，却用了小于等于，从各种角度看好像两种用法是等价的，不是很清楚CPU为什么要做这种转换。</p>
+<p>下面是用jbe</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-njxttwlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-njxttwlln8zueq"><pre><code class="hljs c++">get_cont:
+  movl <span class="hljs-number">8</span>(%ebp), %eax 
+  movl <span class="hljs-number">12</span>(%ebp), %edx 
+  cmpl %eax, %edx
+  ja .<span class="hljs-function">L1</span>
+<span class="hljs-function">  <span class="hljs-title">movl</span> <span class="hljs-params">(%eax)</span>, %eax</span>
+<span class="hljs-function">  jmp .L2</span>
+<span class="hljs-function">.L1:</span>
+<span class="hljs-function">  movl (%edx), %eax</span>
+<span class="hljs-function">.L2:</span></code></pre></div></div>
+<p>2.nemu输出的helloworld和程序中输出的helloworld有什么区别</p>
+<p>指导书在输入输出部分给出了这个问题的答案:</p>
+<p>nemu的helloworld程序是可以说是直接运行在裸机上，可以在AM的抽象下直接输出到设备(串口)；而我们在程序设计课上写的helloworld程序位于操作系统之上，不能直接操作设备，只能通过操作系统提供的服务进行输出，输出的数据要经过很多层抽象才能到达设备层。这个问题问的和<code>为什么要有AM？</code>这个问题很类似。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BD%9C%E4%B8%9A/" class="category-chain-item">作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">#系统设计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>南京大学ics2019_PA2</div>
+      <div>http://lunaticsky-tql.github.io/posts/44749/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/45065/" title="QLion代码编辑器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">QLion代码编辑器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/48981/" title="软件工程-软件设计作业">
+                        <span class="hidden-mobile">软件工程-软件设计作业</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
