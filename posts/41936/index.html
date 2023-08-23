@@ -1,0 +1,1022 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="Go 刷题快速入门 这篇文章讲述使用Golang刷题时遇到的关于输入输出和数据结构的常见问题，并在必要时进行相关知识点的讲解，方便刚入门Go进行刷题实践时进行查阅和学习理解。 输入输出 如果是在力扣这类核心代码模式的平台，就和写其他语言一样，不需要去关心输入输出的模式。但当下大部分公司的笔试算法题都是采用的ACM模式。因此若希望在笔试中展现自己的Golang编程能力，还是需要熟悉常见的输入输出格式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 刷题快速入门">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/41936/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="Go 刷题快速入门 这篇文章讲述使用Golang刷题时遇到的关于输入输出和数据结构的常见问题，并在必要时进行相关知识点的讲解，方便刚入门Go进行刷题实践时进行查阅和学习理解。 输入输出 如果是在力扣这类核心代码模式的平台，就和写其他语言一样，不需要去关心输入输出的模式。但当下大部分公司的笔试算法题都是采用的ACM模式。因此若希望在笔试中展现自己的Golang编程能力，还是需要熟悉常见的输入输出格式">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-23T15:16:22.383Z">
+<meta property="article:modified_time" content="2023-08-23T15:16:22.383Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary_large_image">
+    
+    
+    
+    <title>Go 刷题快速入门 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Go 刷题快速入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-08-23 23:16" pubdate>
+              2023年8月23日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              5.4k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Go 刷题快速入门/Go 刷题快速入门.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go 刷题快速入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="go-刷题快速入门">Go 刷题快速入门</h1>
+<p>这篇文章讲述使用Golang刷题时遇到的关于输入输出和数据结构的常见问题，并在必要时进行相关知识点的讲解，方便刚入门Go进行刷题实践时进行查阅和学习理解。</p>
+<h2 id="输入输出">输入输出</h2>
+<p>如果是在力扣这类核心代码模式的平台，就和写其他语言一样，不需要去关心输入输出的模式。但当下大部分公司的笔试算法题都是采用的ACM模式。因此若希望在笔试中展现自己的Golang编程能力，还是需要熟悉常见的输入输出格式。</p>
+<h3 id="读整数">读整数</h3>
+<p>这里我们以<code>a+b</code>为例说明。</p>
+<h4 id="每行数字固定">每行数字固定</h4>
+<blockquote>
+<p>输入描述: 输入包括两个正整数 a,b(1 &lt;= a, b &lt;=
+1000),输入数据包括多组。</p>
+<p>输出描述: 输出a+b的结果</p>
+<p>输入例子1: 1 5 10 20</p>
+<p>输出例子1: 6 30</p>
+</blockquote>
+<p>最简单的情况。<code>fmt.Scan</code>返回成功读取的item数以及<code>err</code>。这里由于仅仅是算法示例题目，为了方便忽略了错误处理。当然用<code>fmt.Scanln</code>也是可以的。</p>
+<p>Scan
+从标准输入扫描文本，读取由空白符分隔的值保存到传递给本函数的参数中，换行符视为空白符。本函数返回成功扫描的数据个数和遇到的任何错误。如果读取的数据个数比提供的参数少，会返回一个错误报告原因。</p>
+<p>而Scanln遇到换行才停止扫描。最后一个数据后面必须有换行或者到达结束位置。返回值和Scan含义一样。</p>
+<p>下面给出示例代码：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-izmcnbllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-izmcnbllnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">"fmt"</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+    a := <span class="hljs-number">0</span>
+    b := <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> {
+        n, _ := fmt.Scan(&amp;a, &amp;b)
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> {
+            <span class="hljs-keyword">break</span>
+        } <span class="hljs-keyword">else</span> {
+            fmt.Printf(<span class="hljs-string">"%d\n"</span>, a + b)
+        }
+    }
+}</code></pre></div></div>
+<h4 id="每行数字不固定但知道数量">每行数字不固定，但知道数量</h4>
+<blockquote>
+<p>输入描述: 输入数据有多组, 每行表示一组输入数据。
+每行的第一个整数为整数的个数n(1 &lt;= n &lt;= 100)。 接下来n个正整数,
+即需要求和的每个正整数。</p>
+<p>输出描述: 每组数据输出求和的结果</p>
+<p>输入例子1: 4 1 2 3 4 5 1 2 3 4 5</p>
+<p>输出例子1: 10 15</p>
+</blockquote>
+<p>同样的道理，不赘述。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bobgb8llnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-bobgb8llnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span>(
+    <span class="hljs-string">"fmt"</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">var</span> t,crr,sum <span class="hljs-type">int</span>
+    <span class="hljs-keyword">for</span> {
+        n,_ := fmt.Scan(&amp;t)
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>{
+            <span class="hljs-keyword">break</span>
+        }<span class="hljs-keyword">else</span>{
+            sum = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> i:=<span class="hljs-number">0</span>;i&lt;t;i++{
+                fmt.Scan(&amp;crr)
+                sum += crr
+            }
+            fmt.Println(sum)
+        }
+    }
+    
+}</code></pre></div></div>
+<h4 id="每行数字不固定也不知道数量">每行数字不固定，也不知道数量</h4>
+<p>这个时候我们需要一整行一整行地读，这时需要用到bufio包，还是需要格外记忆一下。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pm9jksllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-pm9jksllnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">"bufio"</span>
+    <span class="hljs-string">"fmt"</span>
+    <span class="hljs-string">"os"</span>
+    <span class="hljs-string">"strconv"</span>
+    <span class="hljs-string">"strings"</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+    inputs := bufio.NewScanner(os.Stdin)
+    <span class="hljs-keyword">for</span> inputs.Scan() {  <span class="hljs-comment">//每次读入一行</span>
+        data := strings.Split(inputs.Text(), <span class="hljs-string">" "</span>)  <span class="hljs-comment">//通过空格将他们分割，并存入一个字符串切片</span>
+        <span class="hljs-keyword">var</span> sum <span class="hljs-type">int</span>
+        <span class="hljs-keyword">for</span> i := <span class="hljs-keyword">range</span> data {
+            num, _ := strconv.Atoi(data[i])   <span class="hljs-comment">//将字符串转换为int</span>
+            sum += num
+        }
+        fmt.Println(sum)
+    }
+}</code></pre></div></div>
+<p>补充一个C++的实现，用到了<code>stringstream</code>。</p>
+<p>另外需要提醒的是，<code>stringstream</code>构造函数会特别消耗内存，似乎不打算主动释放内存(或许是为了提高效率)，但如果你要在程序中用同一个流，反复读写大量的数据，将会造成大量的内存消耗，因些这时候，需要适时地清除一下缓冲
+(用 stream.str("") ，需要注意clear()仅仅清空标志位，并没有释放内存)</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f6pi91llnvo7bh"></i><span>C++</span><div class="collapse show" id="collapse-f6pi91llnvo7bh"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sstream&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    std::string line;
+    <span class="hljs-keyword">while</span> (std::<span class="hljs-built_in">getline</span>(std::cin, line)) {
+        <span class="hljs-function">std::istringstream <span class="hljs-title">iss</span><span class="hljs-params">(line)</span></span>;
+        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> num;
+
+        <span class="hljs-keyword">while</span> (iss &gt;&gt; num) {
+            sum += num;
+        }
+        std::cout &lt;&lt; sum &lt;&lt; std::endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<h3 id="读字符串">读字符串</h3>
+<blockquote>
+<p>输入描述: 多个测试用例，每个测试用例一行。</p>
+<p>每行通过空格隔开，有n个字符，n＜100</p>
+<p>输出描述:
+对于每组测试用例，输出一行排序过的字符串，每个字符串通过空格隔开</p>
+<p>输入例子1: a c bb f dddd nowcoder</p>
+<p>输出例子1: a bb c dddd f nowcoder</p>
+</blockquote>
+<p>排序是我们算法设计中频繁使用的操作，因此在这里也捎带进行讲解和记录。</p>
+<p>Go语言的 sort.Sort
+函数不会对具体的序列和它的元素做任何假设。相反，它使用了一个接口类型
+sort.Interface
+来指定通用的排序算法和可能被排序到的序列类型之间的约定。这个接口的实现由序列的具体表示和它希望排序的元素决定，序列的表示经常是一个切片。</p>
+<p>根据直觉，排序算法需要知道三个东西：序列的长度，表示两个元素比较的结果，一种交换两个元素的方式。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fi3hbqllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-fi3hbqllnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">package</span> sort
+<span class="hljs-keyword">type</span> Interface <span class="hljs-keyword">interface</span> {
+    Len() <span class="hljs-type">int</span>            <span class="hljs-comment">// 获取元素数量</span>
+    Less(i, j <span class="hljs-type">int</span>) <span class="hljs-type">bool</span> <span class="hljs-comment">// i，j是序列元素的指数。</span>
+    Swap(i, j <span class="hljs-type">int</span>)        <span class="hljs-comment">// 交换元素</span>
+}</code></pre></div></div>
+<p>为了对序列进行排序，我们需要定义一个实现了这三个方法的类型，然后对这个类型的一个实例应用
+sort.Sort 函数。</p>
+<p>我们可以像任何其他语言一样灵活的自定义排序规则。但大部分情况中，只需要对字符串、整型等进行快速排序。根据优化热点行为的原则，Golang对Go语言中提供了一些固定模式的封装以方便开发者迅速对内容进行排序。因此在这个题目中我们可以简单的调用<code>sort.Strings</code>按字典序进行排序。同时，像C++一样，我们可以自定义排序函数，使其倒序排列：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0bml79llnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-0bml79llnvo7bh"><pre><code class="hljs go">sort.Slice(a,<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i,j <span class="hljs-type">int</span>)</span></span><span class="hljs-type">bool</span>{<span class="hljs-keyword">return</span> a[i]&gt;a[j] })</code></pre></div></div>
+<p><code>strings.Join</code>将切片连接成字符串。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fnt651llnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-fnt651llnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">"fmt"</span>
+    <span class="hljs-string">"bufio"</span>
+    <span class="hljs-string">"os"</span>
+    <span class="hljs-string">"strings"</span>
+    <span class="hljs-string">"sort"</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    input := bufio.NewScanner(os.Stdin)
+    <span class="hljs-keyword">for</span> input.Scan(){
+        data := strings.Split(input.Text(),<span class="hljs-string">" "</span>)
+        sort.Strings(data)
+        fmt.Println(strings.Join(data, <span class="hljs-string">" "</span>))
+	}
+}</code></pre></div></div>
+<h2 id="数据结构">数据结构</h2>
+<h3 id="线性容器">线性容器</h3>
+<p>Golang内置的切片以及其方便的操作，可以满足我们使用向量，栈和队列等需求。比如以经典的考察栈的运用的<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-parentheses/">有效的括号</a>为例：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jaoymqllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-jaoymqllnvo7bh"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isValid</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">bool</span> {
+    n := <span class="hljs-built_in">len</span>(s)
+    <span class="hljs-keyword">if</span> n % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    }
+    pairs := <span class="hljs-keyword">map</span>[<span class="hljs-type">byte</span>]<span class="hljs-type">byte</span>{
+        <span class="hljs-string">')'</span>: <span class="hljs-string">'('</span>,
+        <span class="hljs-string">']'</span>: <span class="hljs-string">'['</span>,
+        <span class="hljs-string">'}'</span>: <span class="hljs-string">'{'</span>,
+    }
+    stack := []<span class="hljs-type">byte</span>{}
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+        <span class="hljs-keyword">if</span> pairs[s[i]] &gt; <span class="hljs-number">0</span> {
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(stack) == <span class="hljs-number">0</span> || stack[<span class="hljs-built_in">len</span>(stack)<span class="hljs-number">-1</span>] != pairs[s[i]] {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+            }
+            stack = stack[:<span class="hljs-built_in">len</span>(stack)<span class="hljs-number">-1</span>]
+        } <span class="hljs-keyword">else</span> {
+            stack = <span class="hljs-built_in">append</span>(stack, s[i])
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stack) == <span class="hljs-number">0</span>
+}</code></pre></div></div>
+<h3 id="映射">映射</h3>
+<p>Golang中的<code>map</code>
+对应于C++中的<code>unordered_map</code>。下面主要讲述怎么使用<code>map</code>实现<code>set</code>和可排序的<code>map</code>。</p>
+<p><code>map</code>的 key 肯定是唯一的，而这恰好与 set
+的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现
+set，在检查是否存在某个元素时可直接使用
+<code>_, ok := m[key]</code>的语法，效率高。</p>
+<p>先来看一个简单的实现，如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ia0gilllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-ia0gilllnvo7bh"><pre><code class="hljs go">set := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">bool</span>) <span class="hljs-comment">// New empty set</span>
+set[<span class="hljs-string">"Foo"</span>] = <span class="hljs-literal">true</span>            <span class="hljs-comment">// Add</span>
+<span class="hljs-keyword">for</span> k := <span class="hljs-keyword">range</span> set {         <span class="hljs-comment">// Loop</span>
+    fmt.Println(k)
+}
+<span class="hljs-built_in">delete</span>(set, <span class="hljs-string">"Foo"</span>)    <span class="hljs-comment">// Delete</span>
+size := <span class="hljs-built_in">len</span>(set)      <span class="hljs-comment">// Size</span>
+exists := set[<span class="hljs-string">"Foo"</span>]  <span class="hljs-comment">// Membership</span></code></pre></div></div>
+<p>通过创建
+<code>map[string]bool</code>来存储<code>string</code>的集合，比较容易理解。而且判断元素是否存在可以很简单的写成<code>if set["foo"]</code>，一般做算法题的时候已经足够了，简单快捷。</p>
+<p>但这里还有个问题，<code>map</code> 的 <code>value</code>
+是布尔类型，这会导致 set 多占一定内存空间，而 <code>set</code>
+不该有这个问题。如果我们对占用空间有要求，可以考虑利用空结构体。</p>
+<p>在 Go 中，空结构体不占任何内存。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y6vplyllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-y6vplyllnvo7bh"><pre><code class="hljs go">unsafe.Sizeof(<span class="hljs-keyword">struct</span>{}{}) <span class="hljs-comment">// 结果为 0</span></code></pre></div></div>
+<p>因此可以实现如下例所示：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z1rjv8llnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-z1rjv8llnvo7bh"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+	set := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-keyword">struct</span>{}{
+		<span class="hljs-string">"pm"</span>: {},
+		<span class="hljs-string">"fe"</span>: {},
+		<span class="hljs-string">"rd"</span>: {},
+	}
+	<span class="hljs-keyword">if</span> v, ok := set[<span class="hljs-string">"rd"</span>]; ok {
+		fmt.Println(<span class="hljs-string">"exist"</span>)
+		fmt.Println(<span class="hljs-string">"size:"</span>, unsafe.Sizeof(v))
+	} <span class="hljs-keyword">else</span> {
+		fmt.Println(<span class="hljs-string">"not exist"</span>)
+	}
+}</code></pre></div></div>
+<h3 id="堆">堆</h3>
+<p>Go的标准包<code>Container</code>中包含了常用的容器类型,包括<code>conatiner/List</code>,<code>container/heap</code>,<code>container/ring</code>。关于双向链表和环形链表，虽然在实际工作中也会经常用到，但在力扣中通常会给出链表的结构体，其他链表的操作和功能需要我们自己去实现；而ACM题目为了方便程序调试常常使用向量模拟链表，鉴于篇幅有限不在此详细讲解，也可以参阅<a target="_blank" rel="noopener" href="https://juejin.cn/post/7042729165400834056">这篇文章</a>进行更深入的了解。在此主要总结一下堆的实现和使用。</p>
+<p>首先若是ACM模式，需要导包：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-08epp7llnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-08epp7llnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"container/heap"</span>
+	<span class="hljs-string">"fmt"</span>
+)</code></pre></div></div>
+<p>我们要使用go标准库给我们提供的heap，那么必须自己实现这些接口定义的方法，需要实现的方法如下：</p>
+<ul>
+<li>Len() int</li>
+<li>Less(i, j int) bool</li>
+<li>Swap(i, j int)</li>
+<li>Push(x interface{})</li>
+<li>Pop() interface{}</li>
+</ul>
+<p>实现了这五个方法的数据类型才能使用go标准库给我们提供的heap，下面简单示例为定义一个IntHeap类型，并实现上面五个方法。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4ixyqxllnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-4ixyqxllnvo7bh"><pre><code class="hljs go"><span class="hljs-keyword">type</span> IntHeap []<span class="hljs-type">int</span>  <span class="hljs-comment">// 定义一个类型</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IntHeap)</span></span> Len() <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(h) }  <span class="hljs-comment">// 绑定len方法,返回长度</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IntHeap)</span></span> Less(i, j <span class="hljs-type">int</span>) <span class="hljs-type">bool</span> {  <span class="hljs-comment">// 绑定less方法</span>
+	<span class="hljs-keyword">return</span> h[i] &lt; h[j]  <span class="hljs-comment">// 如果h[i]&lt;h[j]生成的就是小根堆，如果h[i]&gt;h[j]生成的就是大根堆</span>
+}
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IntHeap)</span></span> Swap(i, j <span class="hljs-type">int</span>) {  <span class="hljs-comment">// 绑定swap方法，交换两个元素位置</span>
+	h[i], h[j] = h[j], h[i]
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h *IntHeap)</span></span> Pop() <span class="hljs-keyword">interface</span>{} {  <span class="hljs-comment">// 绑定pop方法，从最后拿出一个元素并返回</span>
+	old := *h
+	n := <span class="hljs-built_in">len</span>(old)
+	x := old[n<span class="hljs-number">-1</span>]
+	*h = old[<span class="hljs-number">0</span> : n<span class="hljs-number">-1</span>]
+	<span class="hljs-keyword">return</span> x
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h *IntHeap)</span></span> Push(x <span class="hljs-keyword">interface</span>{}) {  <span class="hljs-comment">// 绑定push方法，插入新元素</span>
+	*h = <span class="hljs-built_in">append</span>(*h, x.(<span class="hljs-type">int</span>))
+}</code></pre></div></div>
+<p>我们可以借此通过<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-elements/description">前k个高频元素</a>进行练习。当然这道题目更好的方法是采用快速划分的思想。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z3pskullnvo7bh"></i><span>go</span><div class="collapse show" id="collapse-z3pskullnvo7bh"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">topKFrequent</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, k <span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
+    occ:=<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">int</span>{}
+    <span class="hljs-keyword">for</span> _,num:=<span class="hljs-keyword">range</span> nums{
+        occ[num]++
+    }
+    h:=&amp;IHeap{}
+    heap.Init(h)
+    <span class="hljs-keyword">for</span> key, value := <span class="hljs-keyword">range</span> occ{
+        heap.Push(h, [<span class="hljs-number">2</span>]<span class="hljs-type">int</span>{key, value})
+        <span class="hljs-keyword">if</span> h.Len() &gt; k {
+            heap.Pop(h)
+        }
+    }
+    ret := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, k)
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; k; i++ {
+        ret[k - i - <span class="hljs-number">1</span>] = heap.Pop(h).([<span class="hljs-number">2</span>]<span class="hljs-type">int</span>)[<span class="hljs-number">0</span>]
+    }
+    <span class="hljs-keyword">return</span> ret
+}
+
+<span class="hljs-keyword">type</span> IHeap[][<span class="hljs-number">2</span>]<span class="hljs-type">int</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IHeap)</span></span> Len() <span class="hljs-type">int</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(h)
+}
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IHeap)</span></span> Less(i,j <span class="hljs-type">int</span>) <span class="hljs-type">bool</span>{
+    <span class="hljs-keyword">return</span> h[i][<span class="hljs-number">1</span>]&lt;h[j][<span class="hljs-number">1</span>]
+}
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IHeap)</span></span> Swap(i, j <span class="hljs-type">int</span>){ 
+    h[i], h[j] = h[j], h[i] 
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h *IHeap)</span></span> Push(x <span class="hljs-keyword">interface</span>{}) {
+    *h = <span class="hljs-built_in">append</span>(*h, x.([<span class="hljs-number">2</span>]<span class="hljs-type">int</span>))
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h *IHeap)</span></span> Pop() <span class="hljs-keyword">interface</span>{} {
+    old := *h
+    n := <span class="hljs-built_in">len</span>(old)
+    x := old[n<span class="hljs-number">-1</span>]
+    *h = old[<span class="hljs-number">0</span> : n<span class="hljs-number">-1</span>]
+    <span class="hljs-keyword">return</span> x
+}</code></pre></div></div>
+<h3 id="总结">总结</h3>
+<p>这篇文章仅仅是非常浅的总结了Go在算法题目中常用的接口和数据结构，很多地方总结的还不到位，更多知识点还是需要多刷题多实践。当然，从最常用的数据结构和接口中也能体会出很多Go语言的设计思想。尽管有喜闻乐见的手写<code>max</code>函数，但作为一门结合了Python的简洁与C++的严谨和性能的语言，还是很值得我们去学习的，也希望能够渐入佳境，成为训练有素的Gopher。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Go/">#Go</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Go 刷题快速入门</div>
+      <div>http://lunaticsky-tql.github.io/posts/41936/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/2118/" title="Go 高质量编程实践">
+                        <span class="hidden-mobile">Go 高质量编程实践</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
