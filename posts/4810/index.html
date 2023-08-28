@@ -23,28 +23,28 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="模型评估与选择 模型评估方法 书后习题   image-20220930231043281  经验误差和泛化误差 定义   image-20220930140833923    image-20220930141041690  解决过拟合现象：正则化   image-20220930141142762  性能度量 基本概念   image-20220930163038120  P-R曲线和ROC曲">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234157710423_473_image-20220930231043281.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234159328307_660_image-20220930140833923.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234200690193_368_image-20220930141041690.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234202870906_724_image-20220930141142762.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234204833875_372_image-20220930163038120.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234208101296_478_image-20220930194835021.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234209475943_307_image-20220930194858579.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234211807031_249_norm.gif">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234215190380_315_norm2.gif">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234218188978_486_F1.gif">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234219845677_195_image-20220930224302678.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234221742723_477_image-20220930222355725.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234223625316_668_image-20220930222637642.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234224685263_266_image-20220930142416369.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234226080145_532_image-20220930233428713.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234228241789_843_image-20220930230353084.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205809208213_235_20220930234157710423_473_image-20220930231043281.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205812256325_334_20220930234159328307_660_image-20220930140833923.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205813431862_658_20220930234200690193_368_image-20220930141041690.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205815454555_696_20220930234202870906_724_image-20220930141142762.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205818125789_846_20220930234204833875_372_image-20220930163038120.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205819444654_648_20220930234208101296_478_image-20220930194835021.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205820611781_176_20220930234209475943_307_image-20220930194858579.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205821765720_481_20220930234211807031_249_norm.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205824598151_175_20220930234215190380_315_norm2.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205826410667_477_20220930234218188978_486_F1.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205828242463_385_20220930234219845677_195_image-20220930224302678.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205830154968_899_20220930234221742723_477_image-20220930222355725.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205831728167_536_20220930234223625316_668_image-20220930222637642.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205832760860_905_20220930234224685263_266_image-20220930142416369.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205834083424_981_20220930234226080145_532_image-20220930233428713.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205835267931_997_20220930234228241789_843_image-20220930230353084.png">
 <meta property="article:published_time" content="2022-10-13T10:00:00.000Z">
 <meta property="article:modified_time" content="2022-10-13T10:00:00.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234157710423_473_image-20220930231043281.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205809208213_235_20220930234157710423_473_image-20220930231043281.png">
     
     
     
@@ -330,58 +330,58 @@
 <h3 id="模型评估方法">模型评估方法</h3>
 <p>书后习题</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234157710423_473_image-20220930231043281.png" srcset="/img/loading.gif" lazyload alt="image-20220930231043281">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205809208213_235_20220930234157710423_473_image-20220930231043281.png" srcset="/img/loading.gif" lazyload alt="image-20220930231043281">
 <figcaption aria-hidden="true">image-20220930231043281</figcaption>
 </figure>
 <h3 id="经验误差和泛化误差">经验误差和泛化误差</h3>
 <h4 id="定义">定义</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234159328307_660_image-20220930140833923.png" srcset="/img/loading.gif" lazyload alt="image-20220930140833923">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205812256325_334_20220930234159328307_660_image-20220930140833923.png" srcset="/img/loading.gif" lazyload alt="image-20220930140833923">
 <figcaption aria-hidden="true">image-20220930140833923</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234200690193_368_image-20220930141041690.png" srcset="/img/loading.gif" lazyload alt="image-20220930141041690">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205813431862_658_20220930234200690193_368_image-20220930141041690.png" srcset="/img/loading.gif" lazyload alt="image-20220930141041690">
 <figcaption aria-hidden="true">image-20220930141041690</figcaption>
 </figure>
 <h4 id="解决过拟合现象正则化">解决过拟合现象：正则化</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234202870906_724_image-20220930141142762.png" srcset="/img/loading.gif" lazyload alt="image-20220930141142762">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205815454555_696_20220930234202870906_724_image-20220930141142762.png" srcset="/img/loading.gif" lazyload alt="image-20220930141142762">
 <figcaption aria-hidden="true">image-20220930141142762</figcaption>
 </figure>
 <h3 id="性能度量">性能度量</h3>
 <h4 id="基本概念">基本概念</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234204833875_372_image-20220930163038120.png" srcset="/img/loading.gif" lazyload alt="image-20220930163038120">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205818125789_846_20220930234204833875_372_image-20220930163038120.png" srcset="/img/loading.gif" lazyload alt="image-20220930163038120">
 <figcaption aria-hidden="true">image-20220930163038120</figcaption>
 </figure>
 <h4 id="p-r曲线和roc曲线">P-R曲线和ROC曲线</h4>
 <h5 id="实例">实例</h5>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/92218196">知乎</a>上有一个案例对这些曲线描述的比较形象。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234208101296_478_image-20220930194835021.png" srcset="/img/loading.gif" lazyload alt="image-20220930194835021">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205819444654_648_20220930234208101296_478_image-20220930194835021.png" srcset="/img/loading.gif" lazyload alt="image-20220930194835021">
 <figcaption aria-hidden="true">image-20220930194835021</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234209475943_307_image-20220930194858579.png" srcset="/img/loading.gif" lazyload alt="image-20220930194858579">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205820611781_176_20220930234209475943_307_image-20220930194858579.png" srcset="/img/loading.gif" lazyload alt="image-20220930194858579">
 <figcaption aria-hidden="true">image-20220930194858579</figcaption>
 </figure>
 <p>TPR真阳性，FPR假阳性</p>
 <p>一个表现平平的分类器(表现是指分类标准能否将两种样本有效的分开，而threshold是指划分标准更倾向于查全率或准确率)</p>
 <p align="center">
-<img alt="image-20220927211547461" height="" src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234211807031_249_norm.gif" srcset="/img/loading.gif" lazyload width="">
+<img alt="image-20220927211547461" height="" src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205821765720_481_20220930234211807031_249_norm.gif" srcset="/img/loading.gif" lazyload width="">
 </p>
 一个更好一些的分类器
 <p align="center">
-<img alt="image-20220927211547461" height="" src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234215190380_315_norm2.gif" srcset="/img/loading.gif" lazyload width="">
+<img alt="image-20220927211547461" height="" src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205824598151_175_20220930234215190380_315_norm2.gif" srcset="/img/loading.gif" lazyload width="">
 </p>
 <p>F1计算</p>
 <p align="center">
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234218188978_486_F1.gif" srcset="/img/loading.gif" lazyload width="" hight="">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205826410667_477_20220930234218188978_486_F1.gif" srcset="/img/loading.gif" lazyload width="" hight="">
 </p>
 <h5 id="用途">用途</h5>
 <p>基于P-R曲线可以大致评判机器学习模型的好坏</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234219845677_195_image-20220930224302678.png" srcset="/img/loading.gif" lazyload alt="image-20220930224302678">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205828242463_385_20220930234219845677_195_image-20220930224302678.png" srcset="/img/loading.gif" lazyload alt="image-20220930224302678">
 <figcaption aria-hidden="true">image-20220930224302678</figcaption>
 </figure>
 <p>ROC也是如此。</p>
@@ -405,11 +405,11 @@ m}=\mathrm{FNR}_{\circ}\)</span> 直白含义：
 的取值就会同时受到FPR和FNR的影响。</p>
 <p>很像高中化学读图题的定性分析：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234221742723_477_image-20220930222355725.png" srcset="/img/loading.gif" lazyload alt="image-20220930222355725">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205830154968_899_20220930234221742723_477_image-20220930222355725.png" srcset="/img/loading.gif" lazyload alt="image-20220930222355725">
 <figcaption aria-hidden="true">image-20220930222355725</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234223625316_668_image-20220930222637642.png" srcset="/img/loading.gif" lazyload alt="image-20220930222637642">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205831728167_536_20220930234223625316_668_image-20220930222637642.png" srcset="/img/loading.gif" lazyload alt="image-20220930222637642">
 <figcaption aria-hidden="true">image-20220930222637642</figcaption>
 </figure>
 <p>就像做核酸”粉饰太平“一样( <span class="math display">\[
@@ -425,7 +425,7 @@ t_{0 \mid 1}\)</span>, 带入正例代价公式 得 <span class="math inline">\(
 正例概率 <span class="math inline">\(P(+)\)</span> 就会往左移动,
 对应的阈值就会减小, 模型对负类的判断就会更谨慎(比如下调CT值)。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234224685263_266_image-20220930142416369.png" srcset="/img/loading.gif" lazyload alt="image-20220930142416369">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205832760860_905_20220930234224685263_266_image-20220930142416369.png" srcset="/img/loading.gif" lazyload alt="image-20220930142416369">
 <figcaption aria-hidden="true">image-20220930142416369</figcaption>
 </figure>
 <p><span class="math inline">\(\beta\)</span>&gt;1时查全率有更大影响；<span class="math inline">\(\beta\)</span>&lt;1时查准率有更大影响。</p>
@@ -436,7 +436,7 @@ t_{0 \mid 1}\)</span>, 带入正例代价公式 得 <span class="math inline">\(
 的测试错误率，还可获得两学习器分类结果的差别，使用McNemar
 检验可以做到。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234226080145_532_image-20220930233428713.png" srcset="/img/loading.gif" lazyload alt="image-20220930233428713">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205834083424_981_20220930234226080145_532_image-20220930233428713.png" srcset="/img/loading.gif" lazyload alt="image-20220930233428713">
 <figcaption aria-hidden="true">image-20220930233428713</figcaption>
 </figure>
 <p>$Min-max
@@ -456,7 +456,7 @@ D)=\operatorname{bias}^2(\boldsymbol{x})+\operatorname{var}(\boldsymbol{x})+\var
 </ul>
 <p>偏差一方差分解说明，泛化性能是由<strong>「学习算法的能力」</strong>、<strong>「数据的充分性」</strong>以及<strong>「学习任务本身的难度所共同决定」</strong>的。</p>
 <p align="center">
-<img alt="image-20220930230353084" height="50%" src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20220930234228241789_843_image-20220930230353084.png" srcset="/img/loading.gif" lazyload width="50%">
+<img alt="image-20220930230353084" height="50%" src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9/20230828205835267931_997_20220930234228241789_843_image-20220930230353084.png" srcset="/img/loading.gif" lazyload width="50%">
 </p>
 <p>随训练强度，偏差减小，方差增大，即学习的越充分，但受数据影响越大，可能出现过拟合现象。</p>
 
@@ -549,9 +549,9 @@ D)=\operatorname{bias}^2(\boldsymbol{x})+\operatorname{var}(\boldsymbol{x})+\var
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/16720/" title="信息检索_索引构建、压缩及查询支持">
+                      <a href="/posts/37973/" title="Hybrid Image">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">信息检索_索引构建、压缩及查询支持</span>
+                        <span class="hidden-mobile">Hybrid Image</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

@@ -23,27 +23,27 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)  写在前面：这次由于突然发烧隔离（虽然不是阳，也是挺重的一次感冒）导致没能及时检查作业，比较可惜。也借此提醒自己：一定要注意身体。另外也得接受教训。如金哥所言，提高应急处突能力还是非常重要的。  实验要求 在实验3-1的基础上，将停等机制改成基于滑动窗口的流量控制机制，采用固定窗口大小，支持累积确认，完成给定测试文件的传输。  多个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213512464145_894_image-20221210213415264.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213259977349_103_image-20221119154308774.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213515660596_123_image-20221210115848469.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213517155143_340_image-20221210115903632.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213518957536_859_image-20221210123705619.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213520764848_548_image-20221210200312667.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213542209437_469_image-20221210201321172.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213544187165_779_image-20221119185527966.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213545630220_743_image-20221210212155885.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213547529597_432_image-20221210212321733.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213549149283_237_image-20221210211645995.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213550895116_592_image-20221210211627874.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213552672768_860_image-20221210211424408.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213554281337_662_image-20221210211449133.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213555912889_771_image-20221210212403935.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210446856605_235_20221210213512464145_894_image-20221210213415264.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210448681529_442_20221210213259977349_103_image-20221119154308774.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210450479476_331_20221210213515660596_123_image-20221210115848469.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210451463902_386_20221210213517155143_340_image-20221210115903632.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210452765370_923_20221210213518957536_859_image-20221210123705619.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210454088467_865_20221210213520764848_548_image-20221210200312667.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210455168753_804_20221210213542209437_469_image-20221210201321172.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210456392083_724_20221210213544187165_779_image-20221119185527966.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210457628384_330_20221210213545630220_743_image-20221210212155885.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210458802437_390_20221210213547529597_432_image-20221210212321733.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210500124097_756_20221210213549149283_237_image-20221210211645995.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210501145708_569_20221210213550895116_592_image-20221210211627874.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210502268709_563_20221210213552672768_860_image-20221210211424408.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210503315103_408_20221210213554281337_662_image-20221210211449133.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210504699432_552_20221210213555912889_771_image-20221210212403935.png">
 <meta property="article:published_time" content="2022-12-24T02:00:00.000Z">
 <meta property="article:modified_time" content="2022-12-24T02:00:00.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="寄网">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213512464145_894_image-20221210213415264.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210446856605_235_20221210213512464145_894_image-20221210213415264.png">
     
     
     
@@ -343,7 +343,7 @@
 <p>基于rdt3.0,本次实验实现了GBN和SR两种流水线协议，并采用多线程编程。</p>
 <h4 id="报文结构">报文结构</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213512464145_894_image-20221210213415264.png" srcset="/img/loading.gif" lazyload alt="image-20221210213415264">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210446856605_235_20221210213512464145_894_image-20221210213415264.png" srcset="/img/loading.gif" lazyload alt="image-20221210213415264">
 <figcaption aria-hidden="true">image-20221210213415264</figcaption>
 </figure>
 <p>如图所示，报文头长度共<code>128Bits</code>。下面介绍报文结构如下所示：</p>
@@ -359,7 +359,7 @@
 <p><code>option</code>为可选字段，在本次实验中暂时用于存放文件长度。</p>
 <p><code>data</code>的最大长度可以调节，本次实验定义为1024字节。</p>
 <p>此部分定义代码段如下;</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-60efjnlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-60efjnlln8zueq"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ad5ht1lluwpkzv"></i><span>c++</span><div class="collapse show" id="collapse-ad5ht1lluwpkzv"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_SIZE 1024</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> DATA 0x0</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> FIN 0x1</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> SYN 0x2</span>
@@ -400,7 +400,7 @@
 <p><code>#pragma pack(1)</code>用于指示结构体内容按1Byte对齐，以保证报文大小是我们期望的紧凑形式。</p>
 <h4 id="建连和断连">建连和断连</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213259977349_103_image-20221119154308774.png" srcset="/img/loading.gif" lazyload alt="image-20221119154308774">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210448681529_442_20221210213259977349_103_image-20221119154308774.png" srcset="/img/loading.gif" lazyload alt="image-20221119154308774">
 <figcaption aria-hidden="true">image-20221119154308774</figcaption>
 </figure>
 <p>建连和断连过程与3.1无太大变化。主要是在建连过程中增加了接收方初始窗口大小的通告。</p>
@@ -413,16 +413,16 @@
 <p>下面先以基础的GBN为基础分析程序代码：</p>
 <h5 id="发送端">发送端</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213515660596_123_image-20221210115848469.png" srcset="/img/loading.gif" lazyload alt="image-20221210115848469">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210450479476_331_20221210213515660596_123_image-20221210115848469.png" srcset="/img/loading.gif" lazyload alt="image-20221210115848469">
 <figcaption aria-hidden="true">image-20221210115848469</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213517155143_340_image-20221210115903632.png" srcset="/img/loading.gif" lazyload alt="image-20221210115903632">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210451463902_386_20221210213517155143_340_image-20221210115903632.png" srcset="/img/loading.gif" lazyload alt="image-20221210115903632">
 <figcaption aria-hidden="true">image-20221210115903632</figcaption>
 </figure>
 <p>课件中讲述也很直观，对照伪代码实现即可。</p>
 <h6 id="发送进程主进程">发送进程（主进程）</h6>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n5lpmrlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-n5lpmrlln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zzg3bblluwpkzv"></i><span>c++</span><div class="collapse show" id="collapse-zzg3bblluwpkzv"><pre><code class="hljs c++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
 <span class="hljs-keyword">auto</span> *sndpkt = <span class="hljs-keyword">new</span> packet[pkt_total + <span class="hljs-number">1</span>];
 <span class="hljs-keyword">while</span> (base &lt; pkt_total) {
     <span class="hljs-comment">//send packets</span>
@@ -450,7 +450,7 @@
 <p>这一部分逻辑与状态机中右上角两个部分完全一致。其中<code>timer</code>是一个全局的计时器，为自己编写的类。用法可以顾名思义。<code>print_window();</code>按照<code>[base|nexeseqnum|base+n]</code>的格式将当前窗口状态打印出来。</p>
 <h6 id="接收进程">接收进程</h6>
 <p>接收进程在发送之前创建。实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-51rz8tlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-51rz8tlln8zueq"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_ACK</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pnf3l6lluwpkzv"></i><span>c++</span><div class="collapse show" id="collapse-pnf3l6lluwpkzv"><pre><code class="hljs c++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">handle_ACK</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
     packet rcvpkt;
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
         <span class="hljs-comment">//non-blocking rdt_rcv (if not rcv any packet it, it will return 0)</span>
@@ -477,7 +477,7 @@
 }</code></pre></div></div>
 <p>这一部分助教思考的也非常深入：虽然实验环境下ACK不会丢失且能按序到达，但真实的网络环境下ACK也会丢失，且由于传输速度可能不一样快，ACK未必是按序到达的。这一点在上一次实验的握手建连部分考虑到了且有所叙述（接收方在确认握手成功后也有可能因为ACK丢失而收到发送方重发的握手包），但这一次实验囿于伪代码的惯性思维没有考虑周全，感谢助教提醒指正。</p>
 <p>因此此处可参考后续SR的实现，移动时不能简单的移动到当前收到的序号+1，而是从base开始移动到按序收到的包序号之后，即：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lee9qglln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-lee9qglln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5sygpplluwpkzv"></i><span>c++</span><div class="collapse show" id="collapse-5sygpplluwpkzv"><pre><code class="hljs c++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
         acked[<span class="hljs-built_in">get_ack_num</span>(rcvpkt)] = <span class="hljs-literal">true</span>;
         <span class="hljs-keyword">while</span> (acked[base]) {
             base++;
@@ -487,11 +487,11 @@
 <p>接收端的变化主要一个是将窗口通告给发送方。这个任务只需要修改<code>make_pkt</code>即可，不再赘述。</p>
 <p>另外一个是接收发送方数据的逻辑。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213518957536_859_image-20221210123705619.png" srcset="/img/loading.gif" lazyload alt="image-20221210123705619">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210452765370_923_20221210213518957536_859_image-20221210123705619.png" srcset="/img/loading.gif" lazyload alt="image-20221210123705619">
 <figcaption aria-hidden="true">image-20221210123705619</figcaption>
 </figure>
 <p>代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wis5frlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-wis5frlln8zueq"><pre><code class="hljs C++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-is2tnwlluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-is2tnwlluwpkzv"><pre><code class="hljs C++"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">hasseqnum</span>(rcvpkt, expectedseqnum)) {
             pkt_data_size = rcvpkt.head.data_size;
@@ -519,16 +519,16 @@
 <h4 id="sr">SR</h4>
 <p>在这次实验中也额外实现了SR选择重传流水线协议。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213520764848_548_image-20221210200312667.png" srcset="/img/loading.gif" lazyload alt="image-20221210200312667">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210454088467_865_20221210213520764848_548_image-20221210200312667.png" srcset="/img/loading.gif" lazyload alt="image-20221210200312667">
 <figcaption aria-hidden="true">image-20221210200312667</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213542209437_469_image-20221210201321172.png" srcset="/img/loading.gif" lazyload alt="image-20221210201321172">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210455168753_804_20221210213542209437_469_image-20221210201321172.png" srcset="/img/loading.gif" lazyload alt="image-20221210201321172">
 <figcaption aria-hidden="true">image-20221210201321172</figcaption>
 </figure>
 <h5 id="发送端-1">发送端</h5>
 <p>发送端相比GBN，需要为每一个分组都加入定时器。一开始是希望每一个包发出后都创建一个相同进程用于监听ACK并处理超时事件，但实践中发现由于，传入的<code>packet</code>地址会在发送过程中被修改，在线程中无法正确每个线程获取需要等待的分组的序号和内容。因此转而采用线程池的方式进行实现，每个线程维护自己的定时器和需要重发的分组。代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tx6ihalln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-tx6ihalln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-arcdrllluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-arcdrllluwpkzv"><pre><code class="hljs C++"><span class="hljs-comment">//wasted space but saved time for "shifting" sndpkt window</span>
 <span class="hljs-type">clock_t</span> single_file_timer = <span class="hljs-built_in">clock</span>();
 <span class="hljs-keyword">while</span> (base &lt; pkt_total) {
     <span class="hljs-comment">//send packets</span>
@@ -546,7 +546,7 @@
 <p>其中<code>SR</code>线程的实现思路如下：</p>
 <p><code>acked</code>数组中保存了当前分组确认的状态，和GBN中所叙述的类似。这个数组的内容由接收线程（与GBN相同，但只标记<code>acked</code>数组状态，不进行窗口滑动）进行修改。当第<code>wait_seq</code>个包对应的SR线程发现监听到了对应<code>acked</code>数组变化（即<code>接收ACK(n)</code>）判断是否进行窗口滑动。若超时，则重发对应的包，重启定时器。</p>
 <p>下面是对应的代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c829j5lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-c829j5lln8zueq"><pre><code class="hljs C++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">SR</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mag7tzlluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-mag7tzlluwpkzv"><pre><code class="hljs C++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">SR</span><span class="hljs-params">(LPVOID lpParam)</span> </span>{
     packet sndpkt = *<span class="hljs-built_in">reinterpret_cast</span>&lt;packet *&gt;(lpParam);
     u_int wait_seq = sndpkt.head.seq;
     <span class="hljs-type">int</span> resend_times = <span class="hljs-number">0</span>;
@@ -577,7 +577,7 @@
 }</code></pre></div></div>
 <h5 id="接收端-1">接收端</h5>
 <p>接收端比GBN的情况要复杂一些，因为需要缓存失序的包。实现如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uj63rblln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-uj63rblln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//"blocking receive" here</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fy2mv7lluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-fy2mv7lluwpkzv"><pre><code class="hljs C++"><span class="hljs-comment">//"blocking receive" here</span>
 <span class="hljs-keyword">while</span> (<span class="hljs-built_in">rdt_rcv</span>(rcvpkt)) {
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">not_corrupt</span>(rcvpkt)) {
         u_int pkt_seq = rcvpkt.head.seq;
@@ -638,43 +638,43 @@
 <h3 id="建立连接">建立连接</h3>
 <p>路由器设置：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213544187165_779_image-20221119185527966.png" srcset="/img/loading.gif" lazyload alt="image-20221119185527966">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210456392083_724_20221210213544187165_779_image-20221119185527966.png" srcset="/img/loading.gif" lazyload alt="image-20221119185527966">
 <figcaption aria-hidden="true">image-20221119185527966</figcaption>
 </figure>
 <p>流程展示在上一次实验已经展示的比较完善。本次实验主要演示有丢包延时条件下的发送情况。</p>
 <h3 id="gbn流水线协议">GBN流水线协议</h3>
 <p>可以看到发送方当发现超时候会将<code>base</code>到<code>nextseqnum</code>之间的包全部重发。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213545630220_743_image-20221210212155885.png" srcset="/img/loading.gif" lazyload alt="image-20221210212155885">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210457628384_330_20221210213545630220_743_image-20221210212155885.png" srcset="/img/loading.gif" lazyload alt="image-20221210212155885">
 <figcaption aria-hidden="true">image-20221210212155885</figcaption>
 </figure>
 <p>接收方也能判断失序的分组：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213547529597_432_image-20221210212321733.png" srcset="/img/loading.gif" lazyload alt="image-20221210212321733">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210458802437_390_20221210213547529597_432_image-20221210212321733.png" srcset="/img/loading.gif" lazyload alt="image-20221210212321733">
 <figcaption aria-hidden="true">image-20221210212321733</figcaption>
 </figure>
 <h3 id="sr流水线协议">SR流水线协议</h3>
 <p>在SN协议的实践中，发现发送方会经常由于超时重发接收方能够收到的包。猜测是由于接收方串行接收且接收的逻辑比发送方发送的逻辑复杂，导致了接收的速度跟不上发送的速度。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213549149283_237_image-20221210211645995.png" srcset="/img/loading.gif" lazyload alt="image-20221210211645995">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210500124097_756_20221210213549149283_237_image-20221210211645995.png" srcset="/img/loading.gif" lazyload alt="image-20221210211645995">
 <figcaption aria-hidden="true">image-20221210211645995</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213550895116_592_image-20221210211627874.png" srcset="/img/loading.gif" lazyload alt="image-20221210211627874">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210501145708_569_20221210213550895116_592_image-20221210211627874.png" srcset="/img/loading.gif" lazyload alt="image-20221210211627874">
 <figcaption aria-hidden="true">image-20221210211627874</figcaption>
 </figure>
 <p>因此尝试略微调大超时时间（3*MAX_TIME）可以看到正常的接收发送过程。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213552672768_860_image-20221210211424408.png" srcset="/img/loading.gif" lazyload alt="image-20221210211424408">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210502268709_563_20221210213552672768_860_image-20221210211424408.png" srcset="/img/loading.gif" lazyload alt="image-20221210211424408">
 <figcaption aria-hidden="true">image-20221210211424408</figcaption>
 </figure>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213554281337_662_image-20221210211449133.png" srcset="/img/loading.gif" lazyload alt="image-20221210211449133">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210503315103_408_20221210213554281337_662_image-20221210211449133.png" srcset="/img/loading.gif" lazyload alt="image-20221210211449133">
 <figcaption aria-hidden="true">image-20221210211449133</figcaption>
 </figure>
 <p>发送成功！</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.2/20221210213555912889_771_image-20221210212403935.png" srcset="/img/loading.gif" lazyload alt="image-20221210212403935">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.2-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/20230828210504699432_552_20221210213555912889_771_image-20221210212403935.png" srcset="/img/loading.gif" lazyload alt="image-20221210212403935">
 <figcaption aria-hidden="true">image-20221210212403935</figcaption>
 </figure>
 <p>GitHub:</p>
@@ -770,9 +770,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/63534/" title="Hexo 多设备同步">
+                      <a href="/posts/55889/" title="计算机网络实验3.3-基于UDP服务设计可靠传输协议(拥塞控制)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hexo 多设备同步</span>
+                        <span class="hidden-mobile">计算机网络实验3.3-基于UDP服务设计可靠传输协议(拥塞控制)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

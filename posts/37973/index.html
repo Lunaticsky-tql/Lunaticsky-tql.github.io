@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="Hybrid Image   image-20230329203201849  •A. Oliva, A. Torralba, P.G. Schyns, “Hybrid Images,” SIGGRAPH 2006 实验目的 了解图像处理的基础，熟悉高斯滤波操作。 实验原理 根据论文，混合图像是通过在两个不同的空间尺度上叠加两个图像来生成的：低空间尺度是通过低通滤波器对一个图像进行滤波来获得的；通">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329203430934130_398_image-20230329203201849.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204715965717_301_image-20230329095603969.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204718785139_962_image-20230329110649015.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204722119165_954_image-20230329112108249.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204725159317_763_image-20230329112218382.png">
-<meta property="article:published_time" content="2023-03-29T12:47:26.589Z">
-<meta property="article:modified_time" content="2023-03-29T12:47:26.589Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210854731226_846_20230329203430934130_398_image-20230329203201849.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210855964441_824_20230329204715965717_301_image-20230329095603969.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210857054735_334_20230329204718785139_962_image-20230329110649015.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210858221680_112_20230329204722119165_954_image-20230329112108249.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210859490938_460_20230329204725159317_763_image-20230329112218382.png">
+<meta property="article:published_time" content="2022-10-21T02:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-21T02:00:00.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="计算机视觉">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329203430934130_398_image-20230329203201849.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210854731226_846_20230329203430934130_398_image-20230329203201849.png">
     
     
     
@@ -240,8 +240,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2023-03-29 20:47" pubdate>
-              2023年3月29日 晚上
+            <time datetime="2022-10-21 10:00" pubdate>
+              2022年10月21日 上午
             </time>
           </span>
           
@@ -317,7 +317,7 @@
                 
                 <h1 id="hybrid-image">Hybrid Image</h1>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329203430934130_398_image-20230329203201849.png" srcset="/img/loading.gif" lazyload alt="image-20230329203201849">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210854731226_846_20230329203430934130_398_image-20230329203201849.png" srcset="/img/loading.gif" lazyload alt="image-20230329203201849">
 <figcaption aria-hidden="true">image-20230329203201849</figcaption>
 </figure>
 <p>•A. Oliva, A. Torralba, P.G. Schyns, <a target="_blank" rel="noopener" href="http://cvcl.mit.edu/hybridimage.htm">“Hybrid Images,”</a> SIGGRAPH
@@ -330,10 +330,10 @@
 <h4 id="直接高斯滤波">直接高斯滤波</h4>
 <p>最简单的，我们可以调用OpenCV的<code>GaussianBlur</code>对图像进行高斯滤波，得到低频图像，然后用原图像和减去低频图像就可以得到高频图像。</p>
 <p><code>GaussianBlur</code>函数对操作进行了封装。如</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qj4eyolln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-qj4eyolln8zueq"><pre><code class="hljs C++"><span class="hljs-built_in">GaussianBlur</span>(low_img, blurred_low, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wfu90ulluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-wfu90ulluxp18z"><pre><code class="hljs C++"><span class="hljs-built_in">GaussianBlur</span>(low_img, blurred_low, <span class="hljs-built_in">Size</span>(<span class="hljs-number">25</span>, <span class="hljs-number">25</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</code></pre></div></div>
 <p>生成的高斯滤波器<code>kernel size</code>为25×25，后两个参数为0表示让OpenCV自动根据滤波器大小选择高斯函数中的<span class="math inline">\(\sigma\)</span>参数。最后面省略了一个参数表示<code>padding</code>的方式，默认为<code>BORDER_DEFAULT</code>，及不含边界值倒序填充。</p>
 <p>完整代码如下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-563140lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-563140lln8zueq"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2\opencv.hpp&gt;</span> </span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j9bfrylluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-j9bfrylluxp18z"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2\opencv.hpp&gt;</span> </span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;
@@ -357,7 +357,7 @@
 	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
 <p>以经典的<code>Einstein</code>和<code>Marilyn</code>为例得到结果如下所示:</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204715965717_301_image-20230329095603969.png" srcset="/img/loading.gif" lazyload alt="image-20230329095603969" width="67%" height="67%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210855964441_824_20230329204715965717_301_image-20230329095603969.png" srcset="/img/loading.gif" lazyload alt="image-20230329095603969" width="67%" height="67%"></p>
 <h4 id="频率域高斯滤波">频率域高斯滤波</h4>
 <p>实际上论文中原文有:</p>
 <blockquote>
@@ -386,7 +386,7 @@ g(i, j)=E X P\left(-\frac{(x-i)^2+(y-j)^2}{2 \sigma^2}\right)
 \]</span> 其中 <span class="math inline">\(\sigma\)</span>截止频率,
 <span class="math inline">\((i, j)\)</span> 是图片像素点位置, 而 <span class="math inline">\((x, y)\)</span> 是中心点。</p>
 <p>下面参照原理动手实现频率域高斯滤波操作。其中<a target="_blank" rel="noopener" href="https://tigercosmos.xyz/post/2020/04/cv/hybrid-image/">这篇文章</a>的python代码给我的整体思路有较大帮助。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9h9om3lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-9h9om3lln8zueq"><pre><code class="hljs C++">output[<span class="hljs-number">0</span>] = img.<span class="hljs-built_in">clone</span>();
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zn3vgwlluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-zn3vgwlluxp18z"><pre><code class="hljs C++">output[<span class="hljs-number">0</span>] = img.<span class="hljs-built_in">clone</span>();
 output[<span class="hljs-number">1</span>] = Mat::<span class="hljs-built_in">zeros</span>(img.<span class="hljs-built_in">size</span>(), CV_32FC1);
 Mat complexIm;
 <span class="hljs-built_in">merge</span>(output, <span class="hljs-number">2</span>, complexIm); 
@@ -404,7 +404,7 @@ Mat complexIm;
 2,0\right]\)</span> 部分的一样，如果想看 <span class="math inline">\(\left[-\mathrm{f}_{\mathrm{s}},
 \mathrm{f}_{\mathrm{s}}\right]\)</span> 部分
 ，就需要做<code>fftshift</code>，将零频分量移到序列中间，对于一维，左右交换即可。图像是二维的，那么就左上和右下交换。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-12aiujlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-12aiujlln8zueq"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fftshift</span><span class="hljs-params">(Mat&amp; output0, Mat&amp; output1)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-55pqbtlluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-55pqbtlluxp18z"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fftshift</span><span class="hljs-params">(Mat&amp; output0, Mat&amp; output1)</span></span>
 <span class="hljs-function"></span>{
 	<span class="hljs-comment">// 以下的操作是移动图像  (零频移到中心)</span>
 	<span class="hljs-type">int</span> cx = output0.cols / <span class="hljs-number">2</span>;
@@ -437,7 +437,7 @@ Mat complexIm;
 	temp.<span class="hljs-built_in">copyTo</span>(part3_i);
 }</code></pre></div></div>
 <p>之后按照公式进行高斯滤波即可。取高频信号时可以直接将高斯滤波器翻转。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uw4c54lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-uw4c54lln8zueq"><pre><code class="hljs C++"><span class="hljs-function">Mat <span class="hljs-title">gaussianBlur</span><span class="hljs-params">(test.size(), CV_32FC1)</span></span>; <span class="hljs-comment">//，CV_32FC1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bdbbevlluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-bdbbevlluxp18z"><pre><code class="hljs C++"><span class="hljs-function">Mat <span class="hljs-title">gaussianBlur</span><span class="hljs-params">(test.size(), CV_32FC1)</span></span>; <span class="hljs-comment">//，CV_32FC1</span>
 <span class="hljs-keyword">if</span> (is_high)
 {
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; test.rows; i++) {
@@ -456,7 +456,7 @@ Mat complexIm;
     }
 }</code></pre></div></div>
 <p>得到高斯滤波器后对图片进行过滤，实部虚部分别与滤波器模板对应元素相乘。最后还要进行逆变换，归一化，得到最终滤波图像。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p61yoxlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-p61yoxlln8zueq"><pre><code class="hljs C++">Mat blur_r, blur_i, blur_full;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z6tuo6lluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-z6tuo6lluxp18z"><pre><code class="hljs C++">Mat blur_r, blur_i, blur_full;
 <span class="hljs-built_in">multiply</span>(output[<span class="hljs-number">0</span>], gaussianBlur, blur_r);
 <span class="hljs-built_in">multiply</span>(output[<span class="hljs-number">1</span>], gaussianBlur, blur_i);
 Mat blur_split[] = { blur_r, blur_i };
@@ -467,7 +467,7 @@ blur_full = blur_full / blur_full.rows / blur_full.cols; <span class="hljs-comme
 <span class="hljs-built_in">split</span>(blur_full, output);
 output[<span class="hljs-number">0</span>] = output[<span class="hljs-number">0</span>] / <span class="hljs-number">255</span>;</code></pre></div></div>
 <p>我们还可以将离散傅里叶变换得到的结果转换成幅值矩阵展示出来:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kvj3j4lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-kvj3j4lln8zueq"><pre><code class="hljs C++">Mat amplitude;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a77njilluxp18z"></i><span>C++</span><div class="collapse show" id="collapse-a77njilluxp18z"><pre><code class="hljs C++">Mat amplitude;
 <span class="hljs-built_in">magnitude</span>(output[<span class="hljs-number">0</span>], output[<span class="hljs-number">1</span>], amplitude);
 amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span class="hljs-number">1</span>);
 <span class="hljs-built_in">log</span>(amplitude, amplitude);
@@ -477,12 +477,12 @@ amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span cla
 <p>对傅里叶变换及应用的粗浅理解参照了<a target="_blank" rel="noopener" href="https://juejin.cn/post/7188914545476239418">这里</a>。</p>
 <h3 id="结果展示">结果展示</h3>
 <p>使用OpenCV附带的Trackbar功能实现了自动调节截止频率的功能。展示如下:</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204718785139_962_image-20230329110649015.png" srcset="/img/loading.gif" lazyload alt="image-20230329110649015" width="67%" height="67%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210857054735_334_20230329204718785139_962_image-20230329110649015.png" srcset="/img/loading.gif" lazyload alt="image-20230329110649015" width="67%" height="67%"></p>
 <p>可以看到<span class="math inline">\(\sigma=16\)</span>时能够取得较好的混合效果。</p>
 <p>得到两个图片的幅值矩阵如下所示:</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204722119165_954_image-20230329112108249.png" srcset="/img/loading.gif" lazyload alt="image-20230329112108249" width="67%" height="67%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210858221680_112_20230329204722119165_954_image-20230329112108249.png" srcset="/img/loading.gif" lazyload alt="image-20230329112108249" width="67%" height="67%"></p>
 <p>换用自己喜欢的图像尝试一下:</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_HW1/20230329204725159317_763_image-20230329112218382.png" srcset="/img/loading.gif" lazyload alt="image-20230329112218382" width="67%" height="67%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/Hybrid%20Image/20230828210859490938_460_20230329204725159317_763_image-20230329112218382.png" srcset="/img/loading.gif" lazyload alt="image-20230329112218382" width="67%" height="67%"></p>
 <p>因为这两张图片都不存在明显的高频信号，因此不是一个很好的样例。</p>
 
                 
@@ -542,7 +542,7 @@ amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span cla
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年3月29日</div>
+          <div>2022年10月21日</div>
         </div>
       
       
@@ -574,9 +574,9 @@ amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span cla
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/53897/" title="软件工程-需求分析作业">
+                      <a href="/posts/16720/" title="信息检索_索引构建、压缩及查询支持">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">软件工程-需求分析作业</span>
+                        <span class="hidden-mobile">信息检索_索引构建、压缩及查询支持</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -584,8 +584,8 @@ amplitude = amplitude + Scalar::<span class="hljs-built_in">all</span>(<span cla
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/18710/" title="使用frp内网穿透远程访问Vmware虚拟机">
-                        <span class="hidden-mobile">使用frp内网穿透远程访问Vmware虚拟机</span>
+                      <a href="/posts/4810/" title="机器学习-模型评估与选择">
+                        <span class="hidden-mobile">机器学习-模型评估与选择</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

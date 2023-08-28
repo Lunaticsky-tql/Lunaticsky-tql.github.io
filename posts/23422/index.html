@@ -23,18 +23,18 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="信息检索_系统评价 总思路   image-20221102140305383  单查询 无序检索结果集合的评价   回顾  查准率 (Precision) : \(P&#x3D;\frac{T P}{T P+F P}\) 。预测正确的正例数据占预测为正例数据的比例。 召回率 (Recall) : \(R&#x3D;\frac{TP }{TP+FN}\) 。预测为正例的数据占实际为正例数据的比例。 F1值 (F1 s">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181425241957_651_image-20221102140305383.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181427482098_652_image-20221102141151261.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181431710114_302_image-20221102141322869.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181432975281_362_image-20221102142019252.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181435795246_414_image-20221102142247895.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181437971719_189_image-20221102142715051.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210413749537_765_20221102181425241957_651_image-20221102140305383.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210415422791_840_20221102181427482098_652_image-20221102141151261.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210416775229_758_20221102181431710114_302_image-20221102141322869.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210417972832_913_20221102181432975281_362_image-20221102142019252.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210419282313_192_20221102181435795246_414_image-20221102142247895.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210420576008_695_20221102181437971719_189_image-20221102142715051.png">
 <meta property="article:published_time" content="2022-11-11T02:00:00.000Z">
 <meta property="article:modified_time" content="2022-11-11T02:00:00.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="信息检索">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181425241957_651_image-20221102140305383.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210413749537_765_20221102181425241957_651_image-20221102140305383.png">
     
     
     
@@ -319,7 +319,7 @@
                 <h1 id="信息检索_系统评价">信息检索_系统评价</h1>
 <h2 id="总思路">总思路</h2>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181425241957_651_image-20221102140305383.png" srcset="/img/loading.gif" lazyload alt="image-20221102140305383">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210413749537_765_20221102181425241957_651_image-20221102140305383.png" srcset="/img/loading.gif" lazyload alt="image-20221102140305383">
 <figcaption aria-hidden="true">image-20221102140305383</figcaption>
 </figure>
 <h2 id="单查询">单查询</h2>
@@ -339,24 +339,24 @@ F1=\frac{2}{\frac{1}{P}+\frac{1}{R}}=\frac{2 * P * R}{P+R}\nonumber
 <h3 id="有序检索结果集合的评价">有序检索结果集合的评价</h3>
 <h4 id="p-r曲线的例子">P-R曲线的例子</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181427482098_652_image-20221102141151261.png" srcset="/img/loading.gif" lazyload alt="image-20221102141151261">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210415422791_840_20221102181427482098_652_image-20221102141151261.png" srcset="/img/loading.gif" lazyload alt="image-20221102141151261">
 <figcaption aria-hidden="true">image-20221102141151261</figcaption>
 </figure>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181431710114_302_image-20221102141322869.png" srcset="/img/loading.gif" lazyload alt="image-20221102141322869" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210416775229_758_20221102181431710114_302_image-20221102141322869.png" srcset="/img/loading.gif" lazyload alt="image-20221102141322869" width="50%" height="50%"></p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181432975281_362_image-20221102142019252.png" srcset="/img/loading.gif" lazyload alt="image-20221102142019252">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210417972832_913_20221102181432975281_362_image-20221102142019252.png" srcset="/img/loading.gif" lazyload alt="image-20221102142019252">
 <figcaption aria-hidden="true">image-20221102142019252</figcaption>
 </figure>
 <h4 id="平均正确率ap">平均正确率AP</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181435795246_414_image-20221102142247895.png" srcset="/img/loading.gif" lazyload alt="image-20221102142247895">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210419282313_192_20221102181435795246_414_image-20221102142247895.png" srcset="/img/loading.gif" lazyload alt="image-20221102142247895">
 <figcaption aria-hidden="true">image-20221102142247895</figcaption>
 </figure>
 <h4 id="precisionn">Precision@N</h4>
 <p>Precision@N：在第N个位置上的正确率，对于搜索引擎，大量统计数据表明，大部分搜索引擎用户只关注前一、两页的结果，因此，
 P@10，P@20对大规模搜索引擎来说是很好的评价指标</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20221102181437971719_189_image-20221102142715051.png" srcset="/img/loading.gif" lazyload alt="image-20221102142715051">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BB%B7/20230828210420576008_695_20221102181437971719_189_image-20221102142715051.png" srcset="/img/loading.gif" lazyload alt="image-20221102142715051">
 <figcaption aria-hidden="true">image-20221102142715051</figcaption>
 </figure>
 

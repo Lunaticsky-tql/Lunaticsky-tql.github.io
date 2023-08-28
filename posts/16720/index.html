@@ -23,54 +23,54 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="信息检索第一部分--索引构建 倒排索引构建 六个步骤 序列化，语言预处理，分配DocID，排序，归并，添加频率标签  为什么要加文本频率？ 便于进行词频的排序，利于后续查询优化  倒排索引布尔查询 略。并行课有涉及。比如当求交时可以先将短的链表求交。 倒排索引优化改进   image-20220922093753305  为了减少字符串所占用的内存，我们可以将键进行序列化。 Assume we h">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143627586751_718_image-20220922093753305.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143628933413_566_image-20220922094643439.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143629914308_735_image-20220922095054178.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143631068932_652_image-20220922100056227.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143632700535_256_image-20220922101046446.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143634153162_211_image-20220922095854934.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143635299312_759_image-20220922095946828.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143636457198_361_image-20220922100557902.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143637743125_385_image-20220922095721101.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143639158715_536_image-20220922102146120.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143640277003_250_image-20220922101959755.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143641398914_475_image-20220922102104189.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143642866848_892_image-20220928141323699.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143644019596_168_image-20220928141427687.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143645445454_230_image-20220928141820357.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143646682137_270_image-20220928142759774.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143647947499_639_image-20220928142854979.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143649321808_563_image-20220928142307585.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143650616612_634_image-20220928155207922.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143654714754_145_image-20220928152210011.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143655839716_271_image-20220928151740804.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143657755792_576_image-20220928152418457.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143659531464_413_image-20220928153011321.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143700905497_456_image-20220928153421273.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143702089613_543_image-20220928153533933.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143703419174_526_image-20220928153849498.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143704774266_595_image-20220930155723916.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143706251591_500_image-20220930155802505.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143708733468_476_image-20221005150319520.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143710120784_928_image-20221005150404678.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143711476304_852_image-20221005150523460.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143713258991_492_image-20221005152131580.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143716445073_262_image-20221005152231798.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143718721740_938_image-20221005153943805.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143720264162_261_image-20221005154022485.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143721509249_850_image-20221012140726185.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143722646249_170_image-20221012141847402.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143723834048_694_image-20221012143335531.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143725269033_823_image-20221012143730369.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143726834159_151_image-20221012144353569.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143728315657_544_image-20221012150059012.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143729475948_696_image-20221012151057155.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205858253275_753_20221013143627586751_718_image-20220922093753305.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205859512816_862_20221013143628933413_566_image-20220922094643439.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205900610358_356_20221013143629914308_735_image-20220922095054178.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205902036538_244_20221013143631068932_652_image-20220922100056227.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205903463513_670_20221013143632700535_256_image-20220922101046446.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205904763116_686_20221013143634153162_211_image-20220922095854934.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205905976403_245_20221013143635299312_759_image-20220922095946828.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205907157527_173_20221013143636457198_361_image-20220922100557902.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205908490376_671_20221013143637743125_385_image-20220922095721101.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205909676971_525_20221013143639158715_536_image-20220922102146120.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205910771188_815_20221013143640277003_250_image-20220922101959755.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205911947753_460_20221013143641398914_475_image-20220922102104189.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205913207853_240_20221013143642866848_892_image-20220928141323699.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205915431629_883_20221013143644019596_168_image-20220928141427687.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205916785627_424_20221013143645445454_230_image-20220928141820357.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205917919255_546_20221013143646682137_270_image-20220928142759774.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205920273505_343_20221013143647947499_639_image-20220928142854979.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205921700479_104_20221013143649321808_563_image-20220928142307585.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205922962959_958_20221013143650616612_634_image-20220928155207922.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205924880094_389_20221013143654714754_145_image-20220928152210011.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205926029760_841_20221013143655839716_271_image-20220928151740804.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205927711537_423_20221013143657755792_576_image-20220928152418457.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205929015383_614_20221013143659531464_413_image-20220928153011321.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205930212514_131_20221013143700905497_456_image-20220928153421273.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205931738018_759_20221013143702089613_543_image-20220928153533933.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205934903217_281_20221013143703419174_526_image-20220928153849498.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205936111502_610_20221013143704774266_595_image-20220930155723916.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205937375262_217_20221013143706251591_500_image-20220930155802505.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205939925179_393_20221013143708733468_476_image-20221005150319520.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205941010984_115_20221013143710120784_928_image-20221005150404678.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205942199865_675_20221013143711476304_852_image-20221005150523460.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205944152423_245_20221013143713258991_492_image-20221005152131580.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205946525988_190_20221013143716445073_262_image-20221005152231798.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205948024690_287_20221013143718721740_938_image-20221005153943805.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205949456832_729_20221013143720264162_261_image-20221005154022485.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205950707639_732_20221013143721509249_850_image-20221012140726185.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205951813968_784_20221013143722646249_170_image-20221012141847402.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205953060880_952_20221013143723834048_694_image-20221012143335531.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205954611963_730_20221013143725269033_823_image-20221012143730369.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205955905050_710_20221013143726834159_151_image-20221012144353569.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205957265992_890_20221013143728315657_544_image-20221012150059012.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205958320184_528_20221013143729475948_696_image-20221012151057155.png">
 <meta property="article:published_time" content="2022-11-10T02:00:00.000Z">
 <meta property="article:modified_time" content="2022-11-10T02:00:00.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="信息检索">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143627586751_718_image-20220922093753305.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205858253275_753_20221013143627586751_718_image-20220922093753305.png">
     
     
     
@@ -363,15 +363,15 @@
 <p>略。并行课有涉及。比如当求交时可以先将短的链表求交。</p>
 <h3 id="倒排索引优化改进">倒排索引优化改进</h3>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143627586751_718_image-20220922093753305.png" srcset="/img/loading.gif" lazyload alt="image-20220922093753305">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205858253275_753_20221013143627586751_718_image-20220922093753305.png" srcset="/img/loading.gif" lazyload alt="image-20220922093753305">
 <figcaption aria-hidden="true">image-20220922093753305</figcaption>
 </figure>
 <p>为了减少字符串所占用的内存，我们可以将键进行序列化。</p>
 <p>Assume we have 1GB of text 800,000 documents 100 million tokens
 （Reuters-RCV1 collection）</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143628933413_566_image-20220922094643439.png" srcset="/img/loading.gif" lazyload alt="image-20220922094643439" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205859512816_862_20221013143628933413_566_image-20220922094643439.png" srcset="/img/loading.gif" lazyload alt="image-20220922094643439" width="50%" height="50%"></p>
 <p>（假设是用int存docID）</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143629914308_735_image-20220922095054178.png" srcset="/img/loading.gif" lazyload alt="image-20220922095054178" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205900610358_356_20221013143629914308_735_image-20220922095054178.png" srcset="/img/loading.gif" lazyload alt="image-20220922095054178" width="50%" height="50%"></p>
 <p>16*1.4</p>
 <p>看上去很好。</p>
 <p>然而，代价是必须要维护一张termID和字符串的映射表。</p>
@@ -381,26 +381,26 @@ Indexing）</h4>
 <p>仍然保留进行映射的策略</p>
 <p>此算法的主要步骤如下：</p>
 <p>1、将文档中的词进行id的映射，这里可以用hash的方法去构造</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143631068932_652_image-20220922100056227.png" srcset="/img/loading.gif" lazyload alt="image-20220922100056227" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205902036538_244_20221013143631068932_652_image-20220922100056227.png" srcset="/img/loading.gif" lazyload alt="image-20220922100056227" width="50%" height="50%"></p>
 <p>当然，可以先把全部文档读一遍构建映射，再分块构建倒排索引，也可以在构建每一块的倒排索引的时候边构建边映射。</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143632700535_256_image-20220922101046446.png" srcset="/img/loading.gif" lazyload alt="image-20220922101046446" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205903463513_670_20221013143632700535_256_image-20220922101046446.png" srcset="/img/loading.gif" lazyload alt="image-20220922101046446" width="50%" height="50%"></p>
 <p>2、将文档分割成大小相等的部分。分治</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143634153162_211_image-20220922095854934.png" srcset="/img/loading.gif" lazyload alt="image-20220922095854934" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205904763116_686_20221013143634153162_211_image-20220922095854934.png" srcset="/img/loading.gif" lazyload alt="image-20220922095854934" width="50%" height="50%"></p>
 <p>3、将每部分按照词ID对上文档ID的方式进行排序（保证分块可以在内存里放下）</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143635299312_759_image-20220922095946828.png" srcset="/img/loading.gif" lazyload alt="image-20220922095946828" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205905976403_245_20221013143635299312_759_image-20220922095946828.png" srcset="/img/loading.gif" lazyload alt="image-20220922095946828" width="50%" height="50%"></p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143636457198_361_image-20220922100557902.png" srcset="/img/loading.gif" lazyload alt="image-20220922100557902">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205907157527_173_20221013143636457198_361_image-20220922100557902.png" srcset="/img/loading.gif" lazyload alt="image-20220922100557902">
 <figcaption aria-hidden="true">image-20220922100557902</figcaption>
 </figure>
 <p>4、将每部分排序好后的结果进行合并，最后写出到磁盘中。</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143637743125_385_image-20220922095721101.png" srcset="/img/loading.gif" lazyload alt="image-20220922095721101" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205908490376_671_20221013143637743125_385_image-20220922095721101.png" srcset="/img/loading.gif" lazyload alt="image-20220922095721101" width="50%" height="50%"></p>
 <p>归并的过程中也可以分治，比如内存中只能放100个词条的总倒排索引，可以在第100个的时候写出磁盘（因为已经确定是最后结果了），从101个再继续。</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143639158715_536_image-20220922102146120.png" srcset="/img/loading.gif" lazyload alt="image-20220922102146120" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205909676971_525_20221013143639158715_536_image-20220922102146120.png" srcset="/img/loading.gif" lazyload alt="image-20220922102146120" width="50%" height="50%"></p>
 <h4 id="spimisingle-pass-in-memory-indexing">SPIMI（Single-Pass
 In-Memory Indexing）</h4>
 <p>不作映射，其他与BSBI一样</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143640277003_250_image-20220922101959755.png" srcset="/img/loading.gif" lazyload alt="image-20220922101959755" width="50%" height="50%"></p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143641398914_475_image-20220922102104189.png" srcset="/img/loading.gif" lazyload alt="image-20220922102104189" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205910771188_815_20221013143640277003_250_image-20220922101959755.png" srcset="/img/loading.gif" lazyload alt="image-20220922101959755" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205911947753_460_20221013143641398914_475_image-20220922102104189.png" srcset="/img/loading.gif" lazyload alt="image-20220922102104189" width="50%" height="50%"></p>
 <p>因为D显然要比T小的多</p>
 <h4 id="分布式解决方案mapreduce">分布式解决方案MapReduce</h4>
 <p>大数据实训有涉及，略。</p>
@@ -408,27 +408,27 @@ In-Memory Indexing）</h4>
 <h4 id="朴素方案">朴素方案</h4>
 <h5 id="朴素方案一重建索引">朴素方案一：重建索引</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143642866848_892_image-20220928141323699.png" srcset="/img/loading.gif" lazyload alt="image-20220928141323699">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205913207853_240_20221013143642866848_892_image-20220928141323699.png" srcset="/img/loading.gif" lazyload alt="image-20220928141323699">
 <figcaption aria-hidden="true">image-20220928141323699</figcaption>
 </figure>
 <h5 id="朴素方案二辅助索引">朴素方案二：辅助索引</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143644019596_168_image-20220928141427687.png" srcset="/img/loading.gif" lazyload alt="image-20220928141427687">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205915431629_883_20221013143644019596_168_image-20220928141427687.png" srcset="/img/loading.gif" lazyload alt="image-20220928141427687">
 <figcaption aria-hidden="true">image-20220928141427687</figcaption>
 </figure>
 <p>使用辅助索引的话，一个很简便的思路是一个词建一个文档，归并便变为两个文档的合并。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143645445454_230_image-20220928141820357.png" srcset="/img/loading.gif" lazyload alt="image-20220928141820357">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205916785627_424_20221013143645445454_230_image-20220928141820357.png" srcset="/img/loading.gif" lazyload alt="image-20220928141820357">
 <figcaption aria-hidden="true">image-20220928141820357</figcaption>
 </figure>
 <p>有什么缺陷？文件大小可能差距很大，且大量小文件不便于存储和对索引的快速读写（存储系统的问题）</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143646682137_270_image-20220928142759774.png" srcset="/img/loading.gif" lazyload alt="image-20220928142759774">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205917919255_546_20221013143646682137_270_image-20220928142759774.png" srcset="/img/loading.gif" lazyload alt="image-20220928142759774">
 <figcaption aria-hidden="true">image-20220928142759774</figcaption>
 </figure>
 <p>更大的问题，随着文档的数量变大，归并会越来越慢！</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143647947499_639_image-20220928142854979.png" srcset="/img/loading.gif" lazyload alt="image-20220928142854979">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205920273505_343_20221013143647947499_639_image-20220928142854979.png" srcset="/img/loading.gif" lazyload alt="image-20220928142854979">
 <figcaption aria-hidden="true">image-20220928142854979</figcaption>
 </figure>
 <p>合并时termID是有序的，归并时类似于归并排序，最坏复杂度是较大的那个索引的termID个数。而单个倒排索引合并只需要把新的list放到旧的后面就可以了，因为新的list中的docID肯定会比旧的大（就像上面图上所示）
@@ -438,50 +438,50 @@ O\left(n+2n+\ldots+\frac{T}{n}\right)=O\left(\frac{T^2}{n}\right)
 <h4 id="文档删除怎么操作">文档删除怎么操作？</h4>
 <p>无效向量</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143649321808_563_image-20220928142307585.png" srcset="/img/loading.gif" lazyload alt="image-20220928142307585">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205921700479_104_20221013143649321808_563_image-20220928142307585.png" srcset="/img/loading.gif" lazyload alt="image-20220928142307585">
 <figcaption aria-hidden="true">image-20220928142307585</figcaption>
 </figure>
 <h3 id="倒排索引压缩">倒排索引压缩</h3>
 <h4 id="一些朴素的偷懒方法">一些朴素的偷懒方法</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143650616612_634_image-20220928155207922.png" srcset="/img/loading.gif" lazyload alt="image-20220928155207922">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205922962959_958_20221013143650616612_634_image-20220928155207922.png" srcset="/img/loading.gif" lazyload alt="image-20220928155207922">
 <figcaption aria-hidden="true">image-20220928155207922</figcaption>
 </figure>
 <p>但是现代检索系统一般不会这么做，因为会导致一些信息的丢失。</p>
 <h4 id="词典压缩">词典压缩</h4>
 <h5 id="方法一使用数组">方法一：使用数组</h5>
 <p>是一种很蠢的方法</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143654714754_145_image-20220928152210011.png" srcset="/img/loading.gif" lazyload alt="image-20220928152210011" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205924880094_389_20221013143654714754_145_image-20220928152210011.png" srcset="/img/loading.gif" lazyload alt="image-20220928152210011" width="50%" height="50%"></p>
 <h5 id="方法二指针">方法二：指针</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143655839716_271_image-20220928151740804.png" srcset="/img/loading.gif" lazyload alt="image-20220928151740804">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205926029760_841_20221013143655839716_271_image-20220928151740804.png" srcset="/img/loading.gif" lazyload alt="image-20220928151740804">
 <figcaption aria-hidden="true">image-20220928151740804</figcaption>
 </figure>
 <h5 id="方法二的优化分段指针">方法二的优化：分段指针</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143657755792_576_image-20220928152418457.png" srcset="/img/loading.gif" lazyload alt="image-20220928152418457">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205927711537_423_20221013143657755792_576_image-20220928152418457.png" srcset="/img/loading.gif" lazyload alt="image-20220928152418457">
 <figcaption aria-hidden="true">image-20220928152418457</figcaption>
 </figure>
 <p>当然，找termID对应的词项会慢一些。</p>
 <h5 id="采用前缀的方式">采用前缀的方式</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143659531464_413_image-20220928153011321.png" srcset="/img/loading.gif" lazyload alt="image-20220928153011321">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205929015383_614_20221013143659531464_413_image-20220928153011321.png" srcset="/img/loading.gif" lazyload alt="image-20220928153011321">
 <figcaption aria-hidden="true">image-20220928153011321</figcaption>
 </figure>
 <h4 id="索引表压缩">索引表压缩</h4>
 <h5 id="encoding-gaps">Encoding gaps</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143700905497_456_image-20220928153421273.png" srcset="/img/loading.gif" lazyload alt="image-20220928153421273">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205930212514_131_20221013143700905497_456_image-20220928153421273.png" srcset="/img/loading.gif" lazyload alt="image-20220928153421273">
 <figcaption aria-hidden="true">image-20220928153421273</figcaption>
 </figure>
 <h5 id="variable-length-codings">Variable length codings</h5>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143702089613_543_image-20220928153533933.png" srcset="/img/loading.gif" lazyload alt="image-20220928153533933">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205931738018_759_20221013143702089613_543_image-20220928153533933.png" srcset="/img/loading.gif" lazyload alt="image-20220928153533933">
 <figcaption aria-hidden="true">image-20220928153533933</figcaption>
 </figure>
 <p>例子：可变长UTF-8</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143703419174_526_image-20220928153849498.png" srcset="/img/loading.gif" lazyload alt="image-20220928153849498">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205934903217_281_20221013143703419174_526_image-20220928153849498.png" srcset="/img/loading.gif" lazyload alt="image-20220928153849498">
 <figcaption aria-hidden="true">image-20220928153849498</figcaption>
 </figure>
 <p>UTF-8 的编码规则很简单，只有二条：</p>
@@ -490,7 +490,7 @@ Unicode 码。因此对于英语字母，UTF-8 编码和 ASCII 码是相同的�
 <p>2）对于<code>n</code>字节的符号（<code>n &gt; 1</code>），第一个字节的前<code>n</code>位都设为<code>1</code>，第<code>n + 1</code>位设为<code>0</code>，后面字节的前两位一律设为<code>10</code>。剩下的没有提及的二进制位，全部为这个符号的
 Unicode 码。</p>
 <p>下表总结了编码规则，字母<code>x</code>表示可用编码的位。</p>
-<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k638ljlln8zueq"></i><span>asciidoc</span><div class="collapse show" id="collapse-k638ljlln8zueq"><pre><code class="hljs asciidoc">Unicode符号范围     |        UTF-8编码方式
+<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uffxaulluwpkzu"></i><span>asciidoc</span><div class="collapse show" id="collapse-uffxaulluwpkzu"><pre><code class="hljs asciidoc">Unicode符号范围     |        UTF-8编码方式
 <span class="hljs-section">(十六进制)        	|              （二进制）</span>
 <span class="hljs-section">-------------------+---------------------------------------------</span>
 0000 0000-0000 007F | 0xxxxxxx
@@ -509,12 +509,12 @@ UTF-8
 <h5 id="gamma-encoding">Gamma Encoding</h5>
 <p>根据<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Elias_gamma_coding">维基百科</a>所述，gamma编码过程如下图所示。虽具体过程与课上讲述稍有不同，但原理是一样的。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143704774266_595_image-20220930155723916.png" srcset="/img/loading.gif" lazyload alt="image-20220930155723916">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205936111502_610_20221013143704774266_595_image-20220930155723916.png" srcset="/img/loading.gif" lazyload alt="image-20220930155723916">
 <figcaption aria-hidden="true">image-20220930155723916</figcaption>
 </figure>
 <p>编码具体案例和解码过程。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143706251591_500_image-20220930155802505.png" srcset="/img/loading.gif" lazyload alt="image-20220930155802505">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205937375262_217_20221013143706251591_500_image-20220930155802505.png" srcset="/img/loading.gif" lazyload alt="image-20220930155802505">
 <figcaption aria-hidden="true">image-20220930155802505</figcaption>
 </figure>
 <h3 id="查询优化">查询优化</h3>
@@ -522,17 +522,17 @@ UTF-8
 <h5 id="跳表">“跳表”</h5>
 <p>动机</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143708733468_476_image-20221005150319520.png" srcset="/img/loading.gif" lazyload alt="image-20221005150319520">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205939925179_393_20221013143708733468_476_image-20221005150319520.png" srcset="/img/loading.gif" lazyload alt="image-20221005150319520">
 <figcaption aria-hidden="true">image-20221005150319520</figcaption>
 </figure>
 <p>怎么选取间隔？“摔瓶子”。开根号</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143710120784_928_image-20221005150404678.png" srcset="/img/loading.gif" lazyload alt="image-20221005150404678">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205941010984_115_20221013143710120784_928_image-20221005150404678.png" srcset="/img/loading.gif" lazyload alt="image-20221005150404678">
 <figcaption aria-hidden="true">image-20221005150404678</figcaption>
 </figure>
 <p>实例：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143711476304_852_image-20221005150523460.png" srcset="/img/loading.gif" lazyload alt="image-20221005150523460">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205942199865_675_20221013143711476304_852_image-20221005150523460.png" srcset="/img/loading.gif" lazyload alt="image-20221005150523460">
 <figcaption aria-hidden="true">image-20221005150523460</figcaption>
 </figure>
 <p class="note note-info">
@@ -543,62 +543,62 @@ UTF-8
 <p>优点：快</p>
 <p>缺点：不支持模糊查询</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143713258991_492_image-20221005152131580.png" srcset="/img/loading.gif" lazyload alt="image-20221005152131580">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205944152423_245_20221013143713258991_492_image-20221005152131580.png" srcset="/img/loading.gif" lazyload alt="image-20221005152131580">
 <figcaption aria-hidden="true">image-20221005152131580</figcaption>
 </figure>
 <h5 id="b树">B树</h5>
 <p>实际使用</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143716445073_262_image-20221005152231798.png" srcset="/img/loading.gif" lazyload alt="image-20221005152231798">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205946525988_190_20221013143716445073_262_image-20221005152231798.png" srcset="/img/loading.gif" lazyload alt="image-20221005152231798">
 <figcaption aria-hidden="true">image-20221005152231798</figcaption>
 </figure>
 <h4 id="通配符查询支持">通配符查询支持</h4>
 <p>前缀：B树天然支持</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143718721740_938_image-20221005153943805.png" srcset="/img/loading.gif" lazyload alt="image-20221005153943805">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205948024690_287_20221013143718721740_938_image-20221005153943805.png" srcset="/img/loading.gif" lazyload alt="image-20221005153943805">
 <figcaption aria-hidden="true">image-20221005153943805</figcaption>
 </figure>
 <p>后缀：对逆序建B树</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143720264162_261_image-20221005154022485.png" srcset="/img/loading.gif" lazyload alt="image-20221005154022485">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205949456832_729_20221013143720264162_261_image-20221005154022485.png" srcset="/img/loading.gif" lazyload alt="image-20221005154022485">
 <figcaption aria-hidden="true">image-20221005154022485</figcaption>
 </figure>
 <p>中间的？好像有点问题。。。</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143721509249_850_image-20221012140726185.png" srcset="/img/loading.gif" lazyload alt="image-20221012140726185" width="50%" height="50%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205950707639_732_20221013143721509249_850_image-20221012140726185.png" srcset="/img/loading.gif" lazyload alt="image-20221012140726185" width="50%" height="50%"></p>
 <h4 id="轮排索引">轮排索引</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143722646249_170_image-20221012141847402.png" srcset="/img/loading.gif" lazyload alt="image-20221012141847402">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205951813968_784_20221013143722646249_170_image-20221012141847402.png" srcset="/img/loading.gif" lazyload alt="image-20221012141847402">
 <figcaption aria-hidden="true">image-20221012141847402</figcaption>
 </figure>
 <p>采用B树。但通常这种方法产生的B树会非常大</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143723834048_694_image-20221012143335531.png" srcset="/img/loading.gif" lazyload alt="image-20221012143335531">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205953060880_952_20221013143723834048_694_image-20221012143335531.png" srcset="/img/loading.gif" lazyload alt="image-20221012143335531">
 <figcaption aria-hidden="true">image-20221012143335531</figcaption>
 </figure>
 <h4 id="k-gram">K-gram</h4>
 <p>一定程度上的优化</p>
 <p>在一定长度的字串上建索引</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143725269033_823_image-20221012143730369.png" srcset="/img/loading.gif" lazyload alt="image-20221012143730369">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205954611963_730_20221013143725269033_823_image-20221012143730369.png" srcset="/img/loading.gif" lazyload alt="image-20221012143730369">
 <figcaption aria-hidden="true">image-20221012143730369</figcaption>
 </figure>
 <p>查$co,ter,er$,$代表起始和结束符号</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143726834159_151_image-20221012144353569.png" srcset="/img/loading.gif" lazyload alt="image-20221012144353569">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205955905050_710_20221013143726834159_151_image-20221012144353569.png" srcset="/img/loading.gif" lazyload alt="image-20221012144353569">
 <figcaption aria-hidden="true">image-20221012144353569</figcaption>
 </figure>
 <h3 id="拼写检查支持">拼写检查支持</h3>
 <h4 id="动态规划编辑距离">动态规划：编辑距离</h4>
 <p>动态规划求字符串距离？</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143728315657_544_image-20221012150059012.png" srcset="/img/loading.gif" lazyload alt="image-20221012150059012">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205957265992_890_20221013143728315657_544_image-20221012150059012.png" srcset="/img/loading.gif" lazyload alt="image-20221012150059012">
 <figcaption aria-hidden="true">image-20221012150059012</figcaption>
 </figure>
 <p>词项太多，算法显得有些复杂，慢</p>
 <h4 id="在k-gram基础上进行">在K-gram基础上进行</h4>
 <p>Jaccard distance判断相似度</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/my_picbed/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20221013143729475948_696_image-20221012151057155.png" srcset="/img/loading.gif" lazyload alt="image-20221012151057155">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2_%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E3%80%81%E5%8E%8B%E7%BC%A9%E5%8F%8A%E6%9F%A5%E8%AF%A2%E6%94%AF%E6%8C%81/20230828205958320184_528_20221013143729475948_696_image-20221012151057155.png" srcset="/img/loading.gif" lazyload alt="image-20221012151057155">
 <figcaption aria-hidden="true">image-20221012151057155</figcaption>
 </figure>
 <p>求并集的小trick</p>
@@ -705,8 +705,8 @@ UTF-8
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/4810/" title="机器学习-模型评估与选择">
-                        <span class="hidden-mobile">机器学习-模型评估与选择</span>
+                      <a href="/posts/37973/" title="Hybrid Image">
+                        <span class="hidden-mobile">Hybrid Image</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

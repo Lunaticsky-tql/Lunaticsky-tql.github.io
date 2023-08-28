@@ -23,21 +23,21 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="计算机网络实验3.3-基于UDP服务设计可靠传输协议(拥塞控制) 实验要求  在实验3-2的基础上，选择实现一种拥塞控制 算法，也可以是改进的算法，完成给定测试文件的传输。 RENO算法； 也可以自行设计协议或实现其他拥塞控制算法； 给出实现的拥塞控制算法的原理说明； 有必要日志输出（须显示窗口大小改变情况）。  程序流程展示 注：与实验3.1相同的部分仅作简要叙述，详细可以参见计算机网络实验实验">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152034348306_831_image-20221210213415264.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152036062959_629_image-20221119154308774.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152038775603_907_image-20221230093102447.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152040038538_334_image-20221230094338108.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152041186332_251_image-20221230114950444.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152042406823_264_image-20221230150921352.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152044466619_169_image-20221230151133854.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152045800174_408_image-20221119185527966.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152046860766_341_image-20221230151606540.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210349911222_209_20221230152034348306_831_image-20221210213415264.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210351561005_344_20221230152036062959_629_image-20221119154308774.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210353307221_304_20221230152038775603_907_image-20221230093102447.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210355265155_315_20221230152040038538_334_image-20221230094338108.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210357363668_598_20221230152041186332_251_image-20221230114950444.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210358596080_182_20221230152042406823_264_image-20221230150921352.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210359833669_236_20221230152044466619_169_image-20221230151133854.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210401042416_182_20221230152045800174_408_image-20221119185527966.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210402066095_776_20221230152046860766_341_image-20221230151606540.png">
 <meta property="article:published_time" content="2022-12-30T15:58:29.000Z">
 <meta property="article:modified_time" content="2022-12-30T15:58:29.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="寄网">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152034348306_831_image-20221210213415264.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210349911222_209_20221230152034348306_831_image-20221210213415264.png">
     
     
     
@@ -335,7 +335,7 @@
 <p>基于rdt3.0,本次实验在GBN的基础上实现了RENO拥塞控制算法，并通过令接收方缓存失序包验证了快速重传的正确性和有效性。</p>
 <h4 id="报文结构">报文结构</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152034348306_831_image-20221210213415264.png" srcset="/img/loading.gif" lazyload alt="image-20221210213415264">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210349911222_209_20221230152034348306_831_image-20221210213415264.png" srcset="/img/loading.gif" lazyload alt="image-20221210213415264">
 <figcaption aria-hidden="true">image-20221210213415264</figcaption>
 </figure>
 <p>如图所示，报文头长度共<code>128Bits</code>。下面介绍报文结构如下所示：</p>
@@ -353,7 +353,7 @@
 <p>此部分代码段的定义可参阅源代码或<code>3.1</code>部分的报告。</p>
 <h4 id="建连和断连">建连和断连</h4>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152036062959_629_image-20221119154308774.png" srcset="/img/loading.gif" lazyload alt="image-20221119154308774">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210351561005_344_20221230152036062959_629_image-20221119154308774.png" srcset="/img/loading.gif" lazyload alt="image-20221119154308774">
 <figcaption aria-hidden="true">image-20221119154308774</figcaption>
 </figure>
 <p>建连和断连过程与3.1无太大变化。主要是在建连过程中增加了接收方初始窗口大小的通告。</p>
@@ -362,15 +362,15 @@
 <h4 id="发送端">发送端</h4>
 <p>在本次实验中发送端实现的是基础的RENO算法.状态机如下所示：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152038775603_907_image-20221230093102447.png" srcset="/img/loading.gif" lazyload alt="image-20221230093102447">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210353307221_304_20221230152038775603_907_image-20221230093102447.png" srcset="/img/loading.gif" lazyload alt="image-20221230093102447">
 <figcaption aria-hidden="true">image-20221230093102447</figcaption>
 </figure>
 <p>下面将结合代码进行拥塞控制算法具体的原理及实现。</p>
 <h5 id="发送分组">发送分组</h5>
 <p>首先由于拥塞控制算法中窗口大小计算是以字节为单位的，因此本次实验中计算和展示窗口大小时也改为字节计数（而不是按分组计数），如下图所示：</p>
-<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152040038538_334_image-20221230094338108.png" srcset="/img/loading.gif" lazyload alt="image-20221230094338108" width="80%" height="80%"></p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210355265155_315_20221230152040038538_334_image-20221230094338108.png" srcset="/img/loading.gif" lazyload alt="image-20221230094338108" width="80%" height="80%"></p>
 <p>在发送时，只需要添加“实际发送窗口取决于接收通告窗口和拥塞控制窗口中较小值”对应的代码即可，对应于第一行：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bkzpajlln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-bkzpajlln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//send packets</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-as2arglluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-as2arglluwpkzv"><pre><code class="hljs C++"><span class="hljs-comment">//send packets</span>
 window_size = <span class="hljs-built_in">min</span>(cwnd, advertised_window_size);
 <span class="hljs-keyword">if</span> ((LastByteSent - LastByteAcked &lt; window_size) &amp;&amp; (LastByteSent &lt; file_len)) {
     pkt_data_size = <span class="hljs-built_in">min</span>(MAX_SIZE, file_len - nextseqnum * MAX_SIZE);
@@ -388,14 +388,14 @@ window_size = <span class="hljs-built_in">min</span>(cwnd, advertised_window_siz
 <h5 id="接收ack">接收ACK</h5>
 <p>首先我们先来看处理正常收到ACK的情况：</p>
 <p>上一个实验中提到，实际网络环境中<code>ACK</code>未必是按序到达的，因此将<code>base</code>的移动改为判断按照按序接收到ACK为标准进行滑动，如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-31pfcolln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-31pfcolln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jsvmzhlluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-jsvmzhlluwpkzv"><pre><code class="hljs C++"><span class="hljs-comment">//        base = get_ack_num(rcvpkt) + 1;</span>
         acked[<span class="hljs-built_in">get_ack_num</span>(rcvpkt)] = <span class="hljs-literal">true</span>;
         <span class="hljs-keyword">while</span> (acked[base]) {
             base++;
         }</code></pre></div></div>
 <p>但是，实际上注意到，当接收方发出一个更大的ACK，说明之前的ACK事实上已经按序收到。当发送方收到一个更大的ACK时，不管之前的ACK有没有返回到发送方，发送方仅通过这个信息就已经可以确信接收方按序收到了之前的ACK了。因此其实是可以放心的进行<code>base = get_ack_num(rcvpkt) + 1</code>的。</p>
 <p>之后，我们据此更新<code>LastByteAcked</code>，然后根据状态机对RENO算法的状态进行更新，最后更新窗口大小。据此，代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6gh03elln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-6gh03elln8zueq"><pre><code class="hljs C++">      u_int ack_num = <span class="hljs-built_in">get_ack_num</span>(rcvpkt);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wro8lelluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-wro8lelluwpkzv"><pre><code class="hljs C++">      u_int ack_num = <span class="hljs-built_in">get_ack_num</span>(rcvpkt);
 <span class="hljs-keyword">if</span> (ack_num &gt;= base) {
           u_int gap = ack_num - base + <span class="hljs-number">1</span>;
           <span class="hljs-comment">//update the base and LastByteAcked</span>
@@ -427,7 +427,7 @@ window_size = <span class="hljs-built_in">min</span>(cwnd, advertised_window_siz
       }</code></pre></div></div>
 <p>处于慢启动阶段时，窗口大小增大1MSS。每过一个RTT，cwnd翻倍，窗口大小呈指数增长；而处于拥塞避阶段时，免<code>cwnd = cwnd + MSS*(MSS/cwnd)</code>。相当于每过一个RTT，cwnd加1。</p>
 <p>当收到冗余ACK时，我们需要进行快速重传，并进行窗口大小更新。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bqh6filln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-bqh6filln8zueq"><pre><code class="hljs c++"><span class="hljs-comment">//duplicate ACK</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ti9m34lluwpkzv"></i><span>c++</span><div class="collapse show" id="collapse-ti9m34lluwpkzv"><pre><code class="hljs c++"><span class="hljs-comment">//duplicate ACK</span>
 dupACKcount++;
 <span class="hljs-keyword">if</span> (RENO_STATE == SLOW_START || RENO_STATE == CONGESTION_AVOIDANCE) {
     <span class="hljs-keyword">if</span> (dupACKcount == <span class="hljs-number">3</span>) {
@@ -445,7 +445,7 @@ dupACKcount++;
 }</code></pre></div></div>
 <h5 id="超时处理">超时处理</h5>
 <p>注意到，不管什么状态下，超时后都需要恢复到慢启动状态，因此直接在超时事件上进行改动即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cf2pj6lln8zueq"></i><span>C++</span><div class="collapse show" id="collapse-cf2pj6lln8zueq"><pre><code class="hljs C++"><span class="hljs-comment">//handle timeout</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ujh7pqlluwpkzv"></i><span>C++</span><div class="collapse show" id="collapse-ujh7pqlluwpkzv"><pre><code class="hljs C++"><span class="hljs-comment">//handle timeout</span>
 <span class="hljs-keyword">if</span> (timer.<span class="hljs-built_in">timeout</span>()) {
     <span class="hljs-built_in">print_message</span>(<span class="hljs-string">"Timeout, resend packets from "</span> + <span class="hljs-built_in">to_string</span>(base) + <span class="hljs-string">" to "</span> + <span class="hljs-built_in">to_string</span>(nextseqnum - <span class="hljs-number">1</span>),
                   WARNING);
@@ -461,14 +461,14 @@ dupACKcount++;
 <h4 id="接收端">接收端</h4>
 <p>首先我们可以运行查看接收端不进行改变的情况：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152041186332_251_image-20221230114950444.png" srcset="/img/loading.gif" lazyload alt="image-20221230114950444">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210357363668_598_20221230152041186332_251_image-20221230114950444.png" srcset="/img/loading.gif" lazyload alt="image-20221230114950444">
 <figcaption aria-hidden="true">image-20221230114950444</figcaption>
 </figure>
 <p>可以看到，当接收方不缓存失序的包时，即使有了快速重传，由于之前发过的，对接收端来说失序的包没有进行缓存，仍旧相当于丢失了。因此快速重传当前期望的包只是解决了“眼前的问题”，其余的包迟早还要超时重传，因此尽管进行了拥塞控制，但重传的行为在实际网络环境中事实上加剧了拥塞。</p>
 <p>因此基于此可以对接收端的逻辑进行改进：</p>
 <p>在前面提到，接收端必须是累计确认的（确认按序收到的最大序号），发送端才有理由在移动窗口时移动到当前<code>ack+1</code>的位置。同时我们还想让接收端缓存失序的包，以避免发送端进行已收到的包的重传而加剧拥塞。</p>
 <p>因此我在上一次实验的<code>SR</code>的基础上修改发送ACK行为，使其从选择确认转变成累计确认，同时保留其缓存失序包行为即可解决这个问题。代码如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2g6yqhlln8zueq"></i><span>c++</span><div class="collapse show" id="collapse-2g6yqhlln8zueq"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (pkt_seq &gt;= rcv_base &amp;&amp; pkt_seq &lt;= rcv_base + N - <span class="hljs-number">1</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ugjoezlluwpkzv"></i><span>c++</span><div class="collapse show" id="collapse-ugjoezlluwpkzv"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (pkt_seq &gt;= rcv_base &amp;&amp; pkt_seq &lt;= rcv_base + N - <span class="hljs-number">1</span>) {
      <span class="hljs-comment">//in the window</span>
      <span class="hljs-keyword">if</span> (!acked[pkt_seq]) {
          <span class="hljs-keyword">if</span> (pkt_seq == rcv_base) {
@@ -502,24 +502,24 @@ dupACKcount++;
 <p>当收到窗口内的包时，总是发送当前<code>rcv_base - 1</code>位置的ACK。但是如果收到的包恰巧在<code>rcv_base</code>上，那么窗口其实有潜力往前移动很多，以覆盖之前缓存过的包。移动完了之后再发送<code>rcv_base - 1</code>位置的ACK，让发送端知道在这之前的包都已经按序收到了。除此之外的情况都不发送ACK。</p>
 <p>可以看到，修改后快速恢复起到了其应有的作用。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152042406823_264_image-20221230150921352.png" srcset="/img/loading.gif" lazyload alt="image-20221230150921352">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210358596080_182_20221230152042406823_264_image-20221230150921352.png" srcset="/img/loading.gif" lazyload alt="image-20221230150921352">
 <figcaption aria-hidden="true">image-20221230150921352</figcaption>
 </figure>
 <p>成功收取！</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152044466619_169_image-20221230151133854.png" srcset="/img/loading.gif" lazyload alt="image-20221230151133854">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210359833669_236_20221230152044466619_169_image-20221230151133854.png" srcset="/img/loading.gif" lazyload alt="image-20221230151133854">
 <figcaption aria-hidden="true">image-20221230151133854</figcaption>
 </figure>
 <h2 id="程序演示">程序演示</h2>
 <h3 id="建立连接">建立连接</h3>
 <p>路由器设置：</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152045800174_408_image-20221119185527966.png" srcset="/img/loading.gif" lazyload alt="image-20221119185527966">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210401042416_182_20221230152045800174_408_image-20221119185527966.png" srcset="/img/loading.gif" lazyload alt="image-20221119185527966">
 <figcaption aria-hidden="true">image-20221119185527966</figcaption>
 </figure>
 <p>增大通告窗口大小，观察慢启动和拥塞控制阶段窗口大小变化。慢启动阶段，<code>cwnd</code>的值迅速增大，当<code>cwnd&gt;=ssthresh</code>后进入拥塞控制阶段，cwnd增速减缓。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_article_resources/main/2013599_%E7%94%B0%E4%BD%B3%E4%B8%9A_%E5%AE%9E%E9%AA%8C3.3/20221230152046860766_341_image-20221230151606540.png" srcset="/img/loading.gif" lazyload alt="image-20221230151606540">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C3.3-%E5%9F%BA%E4%BA%8EUDP%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/20230828210402066095_776_20221230152046860766_341_image-20221230151606540.png" srcset="/img/loading.gif" lazyload alt="image-20221230151606540">
 <figcaption aria-hidden="true">image-20221230151606540</figcaption>
 </figure>
 <p>快速重传的正确性上面分析的过程中也已经验证。</p>
@@ -623,8 +623,8 @@ dupACKcount++;
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/63534/" title="Hexo 多设备同步">
-                        <span class="hidden-mobile">Hexo 多设备同步</span>
+                      <a href="/posts/39007/" title="计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)">
+                        <span class="hidden-mobile">计算机网络实验3.2-基于UDP服务设计可靠传输协议(流量控制)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
