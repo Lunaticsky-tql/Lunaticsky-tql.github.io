@@ -1,0 +1,1204 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="深入浅出docker应用-Docker存储模型 容器的配置和存储 快速上手 在上面的实验中我们学习了容器的网络用法和网络模型，接下来我们来学习几种配置容器中的服务，以及管理容器存储系统的方式。  容器环境变量  在容器的配置中，最简单的方式是配置容器的环境变量。当我们使用docker run运行容器是，可以添加-e参数为容器设置环境变量。在配置环境变量时，也可以和-p参数一样同时设置多个-e参数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出Docker应用-Docker存储模型">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/30866/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="深入浅出docker应用-Docker存储模型 容器的配置和存储 快速上手 在上面的实验中我们学习了容器的网络用法和网络模型，接下来我们来学习几种配置容器中的服务，以及管理容器存储系统的方式。  容器环境变量  在容器的配置中，最简单的方式是配置容器的环境变量。当我们使用docker run运行容器是，可以添加-e参数为容器设置环境变量。在配置环境变量时，也可以和-p参数一样同时设置多个-e参数。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122021966682_985_image-20230905205658055.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122024468499_912_image-20230905205826324.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122028923771_476_image-20230905210015001.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122032462368_350_image-20230905210810439.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122037142229_199_image-20230905210931741.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122041622614_523_image-20230905212216832.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122046212049_831_image-20230905212510404.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122048592517_741_image-20230905212718393.png">
+<meta property="og:image" content="https://ucc.alicdn.com/pic/developer-ecology/zfjcruuaylg7m_e5d7202a965b493a9ed0349b2f8df7fe.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122050783249_178_image-20230905213126926.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122053619676_734_image-20230905214440354.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122056313837_145_image-20230905214532760.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122100915140_351_image-20230905214555887.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122106103843_206_image-20230905215029607.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122108599300_956_image-20230905215129674.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122113368297_956_image-20230905220547182.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122116918938_377_image-20230905221232424.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122119641893_184_image-20230905221441505.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122121908293_573_image-20230905221837730.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122125472121_394_image-20230905221908534.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122128026982_637_image-20230905222708156.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122131531627_519_image-20230905222835618.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122135953291_496_image-20230905223042132.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122139537200_575_image-20230905223318221.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122144097385_795_image-20230905223606048.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122148633154_903_image-20230905223927214.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122153361471_217_image-20230905224103151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122155893833_356_image-20230905224733590.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122158059102_164_image-20230905224722864.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122201439818_823_image-20230905225110593.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122206199441_275_image-20230905225127175.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122208927409_686_image-20230905225310167.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122211511426_681_image-20230905225330187.png">
+<meta property="article:published_time" content="2023-09-06T04:22:15.000Z">
+<meta property="article:modified_time" content="2023-09-06T04:22:15.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122021966682_985_image-20230905205658055.png">
+    
+    
+    
+    <title>深入浅出Docker应用-Docker存储模型 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入浅出Docker应用-Docker存储模型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-09-06 12:22" pubdate>
+              2023年9月6日 中午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              10k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/深入浅出Docker应用-Docker存储模型/深入浅出Docker应用-Docker存储模型.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深入浅出Docker应用-Docker存储模型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="深入浅出docker应用-docker存储模型">深入浅出docker应用-Docker存储模型</h1>
+<h2 id="容器的配置和存储">容器的配置和存储</h2>
+<h3 id="快速上手">快速上手</h3>
+<p>在上面的实验中我们学习了容器的网络用法和网络模型，接下来我们来学习几种配置容器中的服务，以及管理容器存储系统的方式。</p>
+<ol type="1">
+<li>容器环境变量</li>
+</ol>
+<p>在容器的配置中，最简单的方式是配置容器的环境变量。当我们使用docker
+run运行容器是，可以添加<code>-e</code>参数为容器设置环境变量。在配置环境变量时，也可以和<code>-p</code>参数一样同时设置多个<code>-e</code>参数。</p>
+<p>参数配置完成后，进入容器使用<code>echo</code>命令输出设置的环境变量。验证<code>-e</code>参数的使用。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5qcbn8lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-5qcbn8lm7cpnta"><pre><code class="hljs shell">docker run -it --name env1 -e ECHO=环境变量 -e NUM=123456 busybox</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wp0qttlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-wp0qttlm7cpnta"><pre><code class="hljs shell">echo $ECHO $NUM
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122021966682_985_image-20230905205658055.png" srcset="/img/loading.gif" lazyload alt="image-20230905205658055">
+<figcaption aria-hidden="true">image-20230905205658055</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>容器文件复制</li>
+</ol>
+<p>容器中的另一个存储方式是使用<code>docker cp</code>命令，在宿主机和容器之间进行文件的复制。在文件复制时容器中文件的描述方式为，<code>容器名:容器文件路径</code>。</p>
+<p>我们在宿主机中通过<code>echo</code>命令创建文件<code>local.txt</code>。然后创建容器<code>file1</code>，接下来通过<code>docker cp</code>复制到容器中。最后在容器中通过<code>cat</code>命令显示文件命令。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rxtvnklm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-rxtvnklm7cpnta"><pre><code class="hljs shell">echo 本机生成的文件 &gt; local.txt
+docker run -itd --name file1 busybox
+docker cp local.txt file1:/local.txt
+docker exec file1 cat local.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122024468499_912_image-20230905205826324.png" srcset="/img/loading.gif" lazyload alt="image-20230905205826324">
+<figcaption aria-hidden="true">image-20230905205826324</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>文件的挂载</li>
+</ol>
+<p>除了使用<code>docker cp</code>文件复制的办法之外，我们还可以在创建容器的时候使用<code>-v</code>参数将宿主机中的文件直接挂载到容器中。该参数的用法为<code>-v 宿主机文件的绝对路径:容器文件的绝对路径</code>。这种方式在后面会进行详细讲解。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qgtm2zlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-qgtm2zlm7cpnta"><pre><code class="hljs shell">docker run -itd --name file2 -v $(pwd)/local.txt:/mount.txt busybox
+docker exec file2 cat mount.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122028923771_476_image-20230905210015001.png" srcset="/img/loading.gif" lazyload alt="image-20230905210015001">
+<figcaption aria-hidden="true">image-20230905210015001</figcaption>
+</figure>
+<h3 id="mysql镜像的基本用法">MYSQL镜像的基本用法</h3>
+<p>在上一个步骤中，我们讲解了容器的管理和存储的基本用法。接下来我们用一个MySQL容器来演示这些用法的具体实战。为了实验演示，我们先来学习一下MySQL容器的基本用法。</p>
+<p>传统启动MySQL服务的方式，是在操作系统中安装MySQL的服务，并且通过<code>systemctl</code>命令进行启动，但是这种方式需要在系统目录中复制相应的文件，同时向系统中注册服务。这样的流程不但复杂，一旦服务的文件或者配置被破坏或者篡改会导致服务不可用，且难以定位问题。</p>
+<p>因此在使用了Docker之后，我们可以从官方仓库中下载已经配置好的MySQL容器镜像。然后直接通过镜像的方式启动服务。这样做不会在宿主机的系统中保存任何文件和配置。服务的稳定性大大提高。</p>
+<ol type="1">
+<li>MySQL容器的启动配置</li>
+</ol>
+<p>在本实验中我们使用<strong>mysql容器的8.0版本</strong>进行实验。我们来看一下MySQL容器镜像的启动配置方式，MySQL数据库是通过网络对外提供服务的，当服务启动后，默认会打开并监听3306端口，用来接受客户端得各种命令。</p>
+<p>在这里我们使用默认的Bridge网络模型，同时使用<code>-p</code>参数设置端口映射，将MySQL得服务暴露到宿主机的网卡上。</p>
+<p>除此之外在启动MySQL容器得时候，我们还可以通过设置<code>MYSQL_ROOT_PASSWORD</code>环境变量的方式，设置MySQL中<code>root</code>用户的初始化密码。这里我们使用<code>-e</code>参数来设置。</p>
+<p>在配置好启动命令之后，我们启动容器，并且使用<code>bash</code>登录到容器中，验证环境变量的配置成功。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y4qckulm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-y4qckulm7cpnta"><pre><code class="hljs shell">docker pull mysql:8.0
+docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql:8.0
+docker exec -it mysql bin/bash</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q5ft4dlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-q5ft4dlm7cpnta"><pre><code class="hljs shell">echo $MYSQL_ROOT_PASSWORD
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122032462368_350_image-20230905210810439.png" srcset="/img/loading.gif" lazyload alt="image-20230905210810439">
+<figcaption aria-hidden="true">image-20230905210810439</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>进入MySQL服务的控制台</li>
+</ol>
+<p>MySQL服务启动后，我们可以使用mysql命令登录服务得控制台，该命令的用法为<code>mysql -u用户名 -p</code>，其中<code>-p</code>表示登录账户需要密码。命令执行后输入在上一个步骤中设置的密码即可进入控制台。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j15yoolm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-j15yoolm7cpnta"><pre><code class="hljs shell">docker exec -it mysql mysql -uroot -p
+[输入MYSQL密码]</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122037142229_199_image-20230905210931741.png" srcset="/img/loading.gif" lazyload alt="image-20230905210931741">
+<figcaption aria-hidden="true">image-20230905210931741</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>MySQL控制台验证命令</li>
+</ol>
+<p>在MySQL控制台中，我们可以使用<code>status</code>命令查看服务的运行状态，使用<code>show Database;</code>查看服务中的数据库，也可以使用<code>help</code>命令查看其他命令的用法。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dhaluflm7cpnta"></i><span>mysql</span><div class="collapse show" id="collapse-dhaluflm7cpnta"><pre><code class="hljs mysql">status
+show Databases;
+help
+exit</code></pre></div></div>
+<h3 id="复制修改mysql配置文件">复制修改MYSQL配置文件</h3>
+<p>在MySQL容器中，环境变量只能对一些简单的属性进行配置，实际上大多数属性都是通过位于<code>/etc/mysql/my.cnf</code>的配置文件进行管理的。接下来我们来学习如何使用文件复制的方式进行配置管理。</p>
+<ol type="1">
+<li>查看MySQL配置属性值</li>
+</ol>
+<p>在MySQL服务中包含了大量的属性值，这些属性值影响服务的运行状态。如果希望修改属性值，就需要修改<code>my.cnf</code>配置文件。在本次实验中，我们使用一个对服务影响不大的属性<code>general_log</code>来演示配置文件的用法。</p>
+<p>首先我们先进入控制台，然后使用<code>show variables</code>命令查看设置前的属性值。可以发现属性值现在为<code>OFF</code>。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122041622614_523_image-20230905212216832.png" srcset="/img/loading.gif" lazyload alt="image-20230905212216832">
+<figcaption aria-hidden="true">image-20230905212216832</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>复制修改配置文件</li>
+</ol>
+<p>如果单纯的为了修改配置，我们可以直接在容器中修改配置文件。但是为了防止容器被删除或者被破坏时，修改好的配置文件丢失，我们先使用<code>docker cp</code>将配置文件复制到宿主机中的<code>/root/mysql/config/</code>目录中作为副本。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ldeibjlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ldeibjlm7cpnta"><pre><code class="hljs shell">mkdir -p /root/mysql/config/
+docker cp mysql:/etc/my.cnf /root/mysql/config/my.cnf
+cat /root/mysql/config/my.cnf</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122046212049_831_image-20230905212510404.png" srcset="/img/loading.gif" lazyload alt="image-20230905212510404">
+<figcaption aria-hidden="true">image-20230905212510404</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>当配置文件复制完毕后，我们使用vi编辑该文件，在[mysqld]段落的末尾添加如下内容，修改后的段落如下。</li>
+</ol>
+<ul>
+<li>输入<code>/secure-file-priv</code>按回车可快速定位，修改<code>secure-file-priv</code>的值为<code>NULL</code>。</li>
+<li>添加<code>general_log = 1</code></li>
+</ul>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2qb0v9lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-2qb0v9lm7cpnta"><pre><code class="hljs shell">vi /root/mysql/config/my.cnf</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qbhftblm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-qbhftblm7cpnta"><pre><code class="hljs shell">general_log = 1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122048592517_741_image-20230905212718393.png" srcset="/img/loading.gif" lazyload alt="image-20230905212718393">
+<figcaption aria-hidden="true">image-20230905212718393</figcaption>
+</figure>
+<h3 id="挂载mysql配置文件">挂载MYSQL配置文件</h3>
+<p>在上一步我们完成了配置文件的复制和修改，接下来我们来将配置文件应用到容器服务中</p>
+<ol type="1">
+<li>应用配置文件</li>
+</ol>
+<p>我们将配置文件复制回容器中，为了让配置文件生效，我们需要使用docker
+restart命令重新启动容器。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7yjg5nlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-7yjg5nlm7cpnta"><pre><code class="hljs shell">docker cp /root/mysql/config/my.cnf mysql:/etc/my.cnf
+docker restart mysql</code></pre></div></div>
+<figure>
+<img src="https://ucc.alicdn.com/pic/developer-ecology/zfjcruuaylg7m_e5d7202a965b493a9ed0349b2f8df7fe.png" srcset="/img/loading.gif" lazyload alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li>查看配置结果</li>
+</ol>
+<p>容器重启之后，我们再次进入控制台查看属性值，会发现新的属性值已经生效。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xa61ollm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-xa61ollm7cpnta"><pre><code class="hljs shell">docker exec -it mysql mysql -uroot -p[MYSQL密码]
+show variables like 'general_log';
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122050783249_178_image-20230905213126926.png" srcset="/img/loading.gif" lazyload alt="image-20230905213126926">
+<figcaption aria-hidden="true">image-20230905213126926</figcaption>
+</figure>
+<h3 id="容器的文件系统挂载">容器的文件系统挂载</h3>
+<h3 id="容器的共享挂载">容器的共享挂载</h3>
+<p>在上一个实验我们学习了容器的配置和存储的几种基本用法，在实验中我们发现相比较文件复制，文件挂载的用法更加的便捷。这种方法也是我们在实际应用中常用的方法。</p>
+<p>在本实验中我们来继续学习文件系统挂载的进一步知识。</p>
+<ol type="1">
+<li>实验准备</li>
+</ol>
+<p>当我们使用<code>docker cp</code>向容器中复制文件时，会以宿主机中的文件为样本向容器中复制一个文件的副本。在复制完成之后宿主机和容器中的文件是没有关联的。</p>
+<p>但是当我们使用文件挂载的时候，宿主机和容器中的文件的关系更像是linux中的硬链接。也就是虽然看起来是两个文件，但是双方实际上在<strong>共享同一个物理文件</strong>。本小节中我们将学习并验证容器的共享挂载能力。</p>
+<p>首先我们先来做实验准备，首先我们先创建一个本地文件<code>share.txt</code>，然后让容器挂载这个文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sigtn2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-sigtn2lm7cpnta"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
+docker run -itd --name share1 -v $(pwd)/share.txt:/share.txt busybox
+docker exec share1 cat /share.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122053619676_734_image-20230905214440354.png" srcset="/img/loading.gif" lazyload alt="image-20230905214440354">
+<figcaption aria-hidden="true">image-20230905214440354</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>本地修改文件</li>
+</ol>
+<p>当宿主机和容器双方共享同一个物理文件，这就意味着双方都可以修改文件的内容，且在另一方生效。下面我们在宿主机方修改<code>share.txt</code>文件，并在容器端验证文件修改是否生效。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-15tqz3lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-15tqz3lm7cpnta"><pre><code class="hljs shell">echo '从宿主机中修改文件' &gt;&gt; share.txt
+docker exec share1 cat /share.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122056313837_145_image-20230905214532760.png" srcset="/img/loading.gif" lazyload alt="image-20230905214532760">
+<figcaption aria-hidden="true">image-20230905214532760</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>容器中修改文件</li>
+</ol>
+<p>同样我们也可以在在容器端修改share.txt文件，并在宿主机方验证文件修改。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8mo6imlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-8mo6imlm7cpnta"><pre><code class="hljs shell">docker exec share1 sh -c "echo '从容器中修改文件' &gt;&gt; /share.txt"
+cat share.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122100915140_351_image-20230905214555887.png" srcset="/img/loading.gif" lazyload alt="image-20230905214555887">
+<figcaption aria-hidden="true">image-20230905214555887</figcaption>
+</figure>
+<h3 id="挂载的权限配置">挂载的权限配置</h3>
+<ol type="1">
+<li>容器挂载的权限</li>
+</ol>
+<p>如果用户希望控制文件在容器中是否可以被修改，那么可以用<code>rw</code>或者<code>readwrite</code>参数将挂载文件设置为读写权限，或者使用<code>ro</code>或者<code>readonly</code>参数设置为只读权限。如果文件被设置为的文件，那么只有在宿主机侧才可以进行修改。</p>
+<p>先重置实验环境：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fiyj48lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-fiyj48lm7cpnta"><pre><code class="hljs shell">docker rm -f $(docker ps -aq)</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yjuihwlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-yjuihwlm7cpnta"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
+docker run -itd --name share-readonly -v $(pwd)/share.txt:/share.txt:ro busybox
+docker exec share-readonly cat /share.txt</code></pre></div></div>
+<blockquote>
+<p>注：<code>&gt;</code>：覆盖重定向，<code>&gt;&gt;</code>：追加重定向</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122106103843_206_image-20230905215029607.png" srcset="/img/loading.gif" lazyload alt="image-20230905215029607">
+<figcaption aria-hidden="true">image-20230905215029607</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>验证只读权限</li>
+</ol>
+<p>接下来我们来验证只读挂载属性，我们分别在宿主机和容器中尝试修改文件，会发现在share-readonly容器中，我们无法修改文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v63bndlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-v63bndlm7cpnta"><pre><code class="hljs shell">echo '从宿主机中修改文件' &gt;&gt; share.txt
+docker exec share-readonly cat /share.txt
+docker exec share-readonly sh -c "echo '从只读容器中修改文件' &gt;&gt; /share.txt"
+cat share.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122108599300_956_image-20230905215129674.png" srcset="/img/loading.gif" lazyload alt="image-20230905215129674">
+<figcaption aria-hidden="true">image-20230905215129674</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>多个容器同时挂载一个文件</li>
+</ol>
+<p>宿主机中一个文件，可以挂载到多个不同的容器，每个容器在挂载时可以设定不同的挂载权限，我们再来创建一个容器，并使用读写权限挂载share.txt文件。</p>
+<p>挂载成功后我们尝试分别在读写权限容器和只读权限容器中修改文件。不同的容器可以使用不同的权限挂载同一个文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-asf7g2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-asf7g2lm7cpnta"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
+docker run -itd --name share-readwrite -v $(pwd)/share.txt:/share.txt:rw busybox
+
+docker exec share-readonly sh -c "echo '从只读容器中修改文件' &gt;&gt; /share.txt"
+docker exec share-readwrite sh -c "echo '从读写容器中修改文件' &gt;&gt; /share.txt"
+
+cat share.txt
+docker exec share-readonly cat /share.txt</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122113368297_956_image-20230905220547182.png" srcset="/img/loading.gif" lazyload alt="image-20230905220547182">
+<figcaption aria-hidden="true">image-20230905220547182</figcaption>
+</figure>
+<h3 id="文件夹的挂载">文件夹的挂载</h3>
+<p>除了挂载文件之外，我们还可以挂载文件夹到容器上，当宿主机的文件或者文件夹挂载到容器时。如果容器的挂载点上已经存在同名的文件夹对象，则容器挂载点上的对象会被<strong>屏蔽</strong>。</p>
+<ol type="1">
+<li>实验准备</li>
+</ol>
+<p>为了演示挂载文件夹，我们先创建本地文件夹<code>mount</code>，并在文件夹中添加一个文件<code>mount\text</code>。然后再制作一个新的容器镜像，在容器中创建一个文件<code>/mount</code>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f4xtcklm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-f4xtcklm7cpnta"><pre><code class="hljs shell">mkdir mount
+echo '宿主机中的文件' &gt; mount/host
+vi Dockerfile</code></pre></div></div>
+<p>我们使用vi 编辑Dockerfile文件：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-inbyu0lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-inbyu0lm7cpnta"><pre><code class="hljs shell">FROM busybox:latest
+RUN mkdir mount
+RUN echo '容器中的文件' &gt; /mount/image</code></pre></div></div>
+<ol start="2" type="1">
+<li>挂载文件夹</li>
+</ol>
+<p>接下来我们构建容器镜像，并使用该镜像创建容器。在创建容器时，我们将mount挂载到容器中。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f35p94lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-f35p94lm7cpnta"><pre><code class="hljs shell">docker build -t folder .
+docker run -itd --name folder1 -v $(pwd)/mount:/mount folder</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122116918938_377_image-20230905221232424.png" srcset="/img/loading.gif" lazyload alt="image-20230905221232424">
+<figcaption aria-hidden="true">image-20230905221232424</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>验证文件夹挂载</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fhr2s7lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-fhr2s7lm7cpnta"><pre><code class="hljs shell">docker exec folder1 ls /mount
+docker exec folder1 cat /mount/host</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122119641893_184_image-20230905221441505.png" srcset="/img/loading.gif" lazyload alt="image-20230905221441505">
+<figcaption aria-hidden="true">image-20230905221441505</figcaption>
+</figure>
+<h3 id="apache挂载案例">Apache挂载案例</h3>
+<p>在前面的小节中，我们讲解了文件夹挂载的基本用法，接下来我们来看一个实际的案例。在这个案例中我们在容器中启动一个Apache网页服务器。同时为了保证网页可以动态更新，我们将宿主机中的一个文件夹绑定到服务中的存放网页的文件夹上。这样外部应用只需要更新宿主机中的网页文件夹，就可以动态的为容器中的服务更新网页。</p>
+<ol type="1">
+<li>实验准备</li>
+</ol>
+<p>首先我们在宿主机中创建一个文件夹<code>webfile</code>，然后通过<code>echo &gt;</code>命令在文件夹中生成一个简单的纯文本网页<code>index.html</code>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sawfprlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-sawfprlm7cpnta"><pre><code class="hljs shell">mkdir webfile
+echo '默认网页' &gt; ./webfile/index.html</code></pre></div></div>
+<ol start="2" type="1">
+<li>挂载网页文件夹</li>
+</ol>
+<p>然后我们在启动服务时，通过<code>-v</code>参数将宿主机中的文件夹，覆盖挂载到Apache容器的<code>/usr/local/apache2/htdocs</code>目录上；并且通过端口映射将容器中的服务发布到宿主机的<code>8000</code>端口上。</p>
+<p>容器启动成功之后，我们通过<code>curl</code>命令访问<code>127.0.0.1:8000</code>验证容器服务。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u0gd0qlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-u0gd0qlm7cpnta"><pre><code class="hljs shell">docker run -itd --name file_server1 -p 8000:80 \
+ -v /root/webfile:/usr/local/apache2/htdocs httpd
+
+curl 127.0.0.1:8000</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122121908293_573_image-20230905221837730.png" srcset="/img/loading.gif" lazyload alt="image-20230905221837730">
+<figcaption aria-hidden="true">image-20230905221837730</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>动态修改网页</li>
+</ol>
+<p>当容器启动后，我们在宿主机中修改<code>/webfile/index.html</code>文件，同时创建一个新文件<code>/webfile/host.html</code>，然后通过<code>curl</code>命令验证，发现宿主机中的修改，对容器中的Apache服务已经生效。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-007v53lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-007v53lm7cpnta"><pre><code class="hljs shell">echo '修改默认网页' &gt;&gt; ./webfile/index.html
+echo '添加Host页面' &gt; ./webfile/host.html
+
+curl 127.0.0.1:8000
+curl 127.0.0.1:8000/host.html</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122125472121_394_image-20230905221908534.png" srcset="/img/loading.gif" lazyload alt="image-20230905221908534">
+<figcaption aria-hidden="true">image-20230905221908534</figcaption>
+</figure>
+<h2 id="容器中的volume卷">容器中的volume卷</h2>
+<h3 id="volume挂载简介">Volume挂载简介</h3>
+<p>在上面的实验中我们为大家介绍了如何在容器中挂载文件和文件夹，这种采用绝对路径，直接挂载宿主机中的文件或者文件夹的方法又叫<code>bind mount</code>。这种方式比较适合将宿主机中的文件共享到容器中的场景。</p>
+<p>除此之外docker还提供了另一种<code>volume</code>的方式进行挂载。这种方式通常会先在宿主机中通过docker
+volume命令创建一个具有名称的volume，然后再将这个volume挂载到容器中。</p>
+<p>相比较于bind
+mount方式，这种方式在使用的时候完全使用docker命令，并不需要像bind
+mount方式那样依赖于宿主机的绝对目录，主要用于将容器中的数据持久化保存到宿主机中。</p>
+<ol type="1">
+<li>创建volume</li>
+</ol>
+<p>在使用volume之间，通常需要先通过<code>docker volume create</code>命令创建volume。该命令的格式为<code>docker volume create [volume名]</code>，和bind
+mount方式不同的是，volume创建之后默认并没有内容。这里我们创建名为<code>file-vol</code>的volume。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l21zx6lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-l21zx6lm7cpnta"><pre><code class="hljs shell">docker volume create file-vol</code></pre></div></div>
+<ol start="2" type="1">
+<li>挂载volume</li>
+</ol>
+<p>在volume创建好之后，我们就可以通过docker run
+的-v参数进行挂载。在使用-v参数挂载volume时，用volume名称代替宿主机路径即可。这里我们创建并启动一个busybox容器，并将<code>file-vol</code>挂载到<code>/file</code>目录。</p>
+<p>在容器创建之后，我们向volume挂载的文件夹中写入一个文件<code>/file/text</code>。验证挂载成功。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wnzwablm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-wnzwablm7cpnta"><pre><code class="hljs shell">docker run -itd --name vol1 -v file-vol:/file busybox
+docker exec vol1 sh -c "echo '向volume中写入文件' &gt; /file/text"
+
+docker exec vol1 ls /file
+docker exec vol1 cat /file/text</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122128026982_637_image-20230905222708156.png" srcset="/img/loading.gif" lazyload alt="image-20230905222708156">
+<figcaption aria-hidden="true">image-20230905222708156</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>查看volume信息</li>
+</ol>
+<p>当我们在容器的挂载点中保存数据之后，数据文件会被写入到volume中，这时我们可以通过<code>docker volume inspect</code>或者<code>docker inspect</code>来查看volume的信息。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4qoeculm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-4qoeculm7cpnta"><pre><code class="hljs shell">docker volume inspect file-vol</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122131531627_519_image-20230905222835618.png" srcset="/img/loading.gif" lazyload alt="image-20230905222835618">
+<figcaption aria-hidden="true">image-20230905222835618</figcaption>
+</figure>
+<h3 id="volume的持久化">Volume的持久化</h3>
+<p>在上一个小节中我们介绍了volume的基本用法。在容器中我们使用volume的主要作用，是为容器中的文件提供一种持久化的保存方法。</p>
+<p>在前面讲解容器基本用法的时候，我们了解到每一个容器都是一个轻量级的虚拟机，在容器中创建的文件和宿主机以及其他容器并没有关系。如果容器被删除了，那么容器上的文件也就都丢失了。但是在某些情况下，我们在容器中存放了有价值的文件，比如数据库，邮件服务器，文件备份等。这个时候我们就希望能有一种即使容器被销毁了文件还可以存在的技术。这就是volume持久化的由来。</p>
+<ol type="1">
+<li>删除容器</li>
+</ol>
+<p>接下来我们来验证volume的持久化能力。我们停止并删除刚才创建的容器<code>vol1</code>。在删除之后我们查看名为file-vol的volume。我们会发现容器的删除并不会影响volume的存在。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-giutgqlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-giutgqlm7cpnta"><pre><code class="hljs shell">docker stop vol1
+docker rm -f vol1
+docker volume inspect file-vol</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122135953291_496_image-20230905223042132.png" srcset="/img/loading.gif" lazyload alt="image-20230905223042132">
+<figcaption aria-hidden="true">image-20230905223042132</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>重用volume</li>
+</ol>
+<p>然后我们再创建一个新的容器vol2，并将<code>file-vol</code>挂载到另一个目录<code>/file-other</code>上。由于之前的容器把数据存储在了volume中，因此新容器中的<code>/file-other</code>目录中保存vol1容器中的数据。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dx5c6olm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-dx5c6olm7cpnta"><pre><code class="hljs shell">docker run -itd --name vol2 -v file-vol:/file-other busybox
+
+docker exec vol2 ls /file-other
+docker exec vol2 cat /file-other/text</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122139537200_575_image-20230905223318221.png" srcset="/img/loading.gif" lazyload alt="image-20230905223318221">
+<figcaption aria-hidden="true">image-20230905223318221</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>volume的多重绑定</li>
+</ol>
+<p>如同容器可以使用多个端口绑定，容器在启动时也可以使用多个-v参数绑定多个volume，同时一个volume也可以同时绑定到多个容器中。在容器绑定volume之后，我们还可以通过<code>docker inspec</code>t命令通过容器筛选Mounts字段查看volume的信息。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-emn63xlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-emn63xlm7cpnta"><pre><code class="hljs shell">docker volume create ext-vol
+docker run -itd --name vol3 -v ext-vol:/ext -v file-vol:/file busybox 
+docker inspect -f "{{json .Mounts}}" vol3 | jq</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122144097385_795_image-20230905223606048.png" srcset="/img/loading.gif" lazyload alt="image-20230905223606048">
+<figcaption aria-hidden="true">image-20230905223606048</figcaption>
+</figure>
+<h3 id="volume的常用命令">Volume的常用命令</h3>
+<p>在前面的小节中我们学习了volume的持久化，本小节我们再来学习一下volume相关的一些命令。</p>
+<ol type="1">
+<li>查看整体磁盘占用</li>
+</ol>
+<p>在docker中，占用磁盘的对象包括容器镜像，容器，volume等，我们还可以通过<code>docker system df -v</code>命令可以查看所有对象的的磁盘占用。</p>
+<p>如果docker的镜像，容器，或者volume对象较多，则可以使用-f参数添加过滤器来筛选具体某一个volume的信息。下面的命令可以筛选出名为<code>file-vol</code>的volume的过滤器的信息。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kvkeb5lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-kvkeb5lm7cpnta"><pre><code class="hljs shell">docker system df -v
+docker system df -v --format=\
+'{{range .Volumes}}{{if eq .Name "file-vol"}}\
+{{.Name}} - {{.Size}}\n{{end}}{{end}}'</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122148633154_903_image-20230905223927214.png" srcset="/img/loading.gif" lazyload alt="image-20230905223927214">
+<figcaption aria-hidden="true">image-20230905223927214</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>自动创建volume</li>
+</ol>
+<p>当我们使用<code>docker run</code>创建容器并使用<code>-v</code>挂载volume的时候，如果需要加载的volume还没有被创建，则<code>docker run</code>会自动创建volume。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zmnmp2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-zmnmp2lm7cpnta"><pre><code class="hljs shell">docker run -itd --name vol4 -v auto-vol:/auto busybox 
+docker inspect auto-vol</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122153361471_217_image-20230905224103151.png" srcset="/img/loading.gif" lazyload alt="image-20230905224103151">
+<figcaption aria-hidden="true">image-20230905224103151</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>volume的自动删除</li>
+</ol>
+<p>docker也提供了删除所有当前没有被挂载的volume的指令<code>docker volume prune</code>，需要注意的是使用此指令时需要小心，防止数据被误删除！下面的代码可以删除全部的容器，并清空所有的volume。下面的例子我们演示了删除所有的容器，并且删除所有的volume：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-abt6b7lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-abt6b7lm7cpnta"><pre><code class="hljs shell">docker rm -f $(docker ps -aq) 
+docker volume prune -a
+docker volume ls</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122155893833_356_image-20230905224733590.png" srcset="/img/loading.gif" lazyload alt="image-20230905224733590">
+<figcaption aria-hidden="true">image-20230905224733590</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122158059102_164_image-20230905224722864.png" srcset="/img/loading.gif" lazyload alt="image-20230905224722864">
+<figcaption aria-hidden="true">image-20230905224722864</figcaption>
+</figure>
+<h3 id="在mysql中使用volume">在MySQL中使用Volume</h3>
+<p>上面的小节中，我们学习了volume的相关知识，本小节中我们来演示一个通过volume管理MySQL容器的例子。</p>
+<ol type="1">
+<li>volume的自动创建</li>
+</ol>
+<p>事实上当我们在使用<code>docker run -v</code>
+创建数据挂载时，如果没有预先创建volume，docker会自动创建对应的volume，如果用户连volume名称都没有指定，docker会自动为volume分配名称。</p>
+<p>接下来我们直接创建名为mysql1的mysql容器，在容器创建成功后接入mysql控制台。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jvtj6glm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-jvtj6glm7cpnta"><pre><code class="hljs shell">docker run -itd --name mysql1 -v db-vol:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql
+docker exec -it mysql1 mysql -uroot -p[MYSQL密码]</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122201439818_823_image-20230905225110593.png" srcset="/img/loading.gif" lazyload alt="image-20230905225110593">
+<figcaption aria-hidden="true">image-20230905225110593</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>操作数据库</li>
+</ol>
+<p>在一个MySQL服务中，可以包含多个数据库，每一个数据库中又可以包含多个数据表。每一个数据表中又可以包含多个数据行。</p>
+<p>接下来我们再控制台中通过<code>CREATE DATABASE</code>创建一个新数据库<code>ali_db</code>，创建数据库之后需要通过<code>USE</code>命令选中要操作的数据库，然后通过<code>CREATE TABLE</code>命令在<code>ali_db</code>中添加一个数据表<code>ali_tab</code>，接下来使用<code>INSERT INTO</code>在数据表中添加一条记录。最后使用<code>SELECT</code>命令查询数据表中的记录。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u19abhlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-u19abhlm7cpnta"><pre><code class="hljs shell">CREATE DATABASE ali_db;
+USE ali_db;
+CREATE TABLE ali_tab (`name` VARCHAR(100));
+INSERT INTO ali_tab VALUES('aliyun');
+SELECT * FROM ali_tab;
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122206199441_275_image-20230905225127175.png" srcset="/img/loading.gif" lazyload alt="image-20230905225127175">
+<figcaption aria-hidden="true">image-20230905225127175</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>重用MySQL数据库</li>
+</ol>
+<p>接下来我们删除mysql1容器，删除之后在创建另一个名为mysql2的mysql容器。mysql2容器创建成功后进入mysql控制台，在控制台中通过<code>USE</code>命令选择数据库，然后用<code>SELECT</code>命令查看数据记录。会发现数据库中记录仍存存在。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z2cnxwlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-z2cnxwlm7cpnta"><pre><code class="hljs shell">docker rm -f mysql1
+docker run -itd --name mysql2 -v db-vol:/var/lib/mysql \
+-e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql
+docker exec -it mysql2 mysql -uroot -p[MYSQL密码]</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122208927409_686_image-20230905225310167.png" srcset="/img/loading.gif" lazyload alt="image-20230905225310167">
+<figcaption aria-hidden="true">image-20230905225310167</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m8valclm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-m8valclm7cpnta"><pre><code class="hljs shell">USE ali_db;
+SELECT * FROM ali_tab;
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122211511426_681_image-20230905225330187.png" srcset="/img/loading.gif" lazyload alt="image-20230905225330187">
+<figcaption aria-hidden="true">image-20230905225330187</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Docker/">#Docker</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>深入浅出Docker应用-Docker存储模型</div>
+      <div>http://lunaticsky-tql.github.io/posts/30866/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/40623/" title="深入浅出Docker应用-Docker Compose实战">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入浅出Docker应用-Docker Compose实战</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/36160/" title="深入浅出Docker应用-Docker网络模型">
+                        <span class="hidden-mobile">深入浅出Docker应用-Docker网络模型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

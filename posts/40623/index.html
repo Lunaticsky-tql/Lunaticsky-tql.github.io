@@ -1,0 +1,1489 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="深入浅出Docker应用-Docker Compose实战 Docker Compose入门 Docker Compose的安装 在之前的实验中，我们在创建和管理容器的时候，都是用的是docker的命令行，但是随着docker run参数的增多，命令行的长度会越来越长。再加上复杂的服务往往由多个不同的容器共同组成，这样在创建一个完整的服务的时候，就会输入多条超长的命令。这时候我们就可以考虑使用do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出Docker应用-Docker Compose实战">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/40623/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="深入浅出Docker应用-Docker Compose实战 Docker Compose入门 Docker Compose的安装 在之前的实验中，我们在创建和管理容器的时候，都是用的是docker的命令行，但是随着docker run参数的增多，命令行的长度会越来越长。再加上复杂的服务往往由多个不同的容器共同组成，这样在创建一个完整的服务的时候，就会输入多条超长的命令。这时候我们就可以考虑使用do">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140854608011_980_image-20230906120028310.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140858972702_400_image-20230906120814383.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140903420195_222_image-20230906120838553.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140906842553_579_image-20230906120923498.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141349874042_518_image-20230906121133060.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141356359881_590_image-20230906121351872.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141400821811_243_image-20230906121553457.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141406085546_790_image-20230906122001303.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141411787491_209_image-20230906123052607.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141417586371_108_image-20230906123259414.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141423088385_967_image-20230906123454662.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141429798156_187_image-20230906124155038.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141434316934_189_image-20230906124528944.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141438141138_443_image-20230906124731571.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141444671037_311_image-20230906124928415.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141450295097_479_image-20230906125010078.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141455440508_502_image-20230906125040580.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141500006324_531_image-20230906125109079.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141507077816_757_image-20230906125251276.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141511708977_268_image-20230906125321678.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141517641595_463_image-20230906125416859.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141522028216_638_image-20230906125527715.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141525957802_776_image-20230906132436722.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141532886509_703_image-20230906133510118.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141538989320_659_image-20230906133558164.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141545186341_141_image-20230906134113946.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141548725400_786_image-20230906134131894.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141552348830_501_image-20230906134142775.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141557051770_456_image-20230906134411157.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141600332437_952_image-20230906134537758.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141603517229_285_image-20230906134857664.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141609065118_414_image-20230906135657253.png">
+<meta property="article:published_time" content="2023-09-06T06:16:11.000Z">
+<meta property="article:modified_time" content="2023-09-06T06:16:11.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140854608011_980_image-20230906120028310.png">
+    
+    
+    
+    <title>深入浅出Docker应用-Docker Compose实战 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入浅出Docker应用-Docker Compose实战"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-09-06 14:16" pubdate>
+              2023年9月6日 下午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              13k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/深入浅出Docker应用-Docker Compose实战/深入浅出Docker应用-Docker Compose实战.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深入浅出Docker应用-Docker Compose实战</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="深入浅出docker应用-docker-compose实战">深入浅出Docker应用-Docker
+Compose实战</h1>
+<h2 id="docker-compose入门">Docker Compose入门</h2>
+<h3 id="docker-compose的安装">Docker Compose的安装</h3>
+<p>在之前的实验中，我们在创建和管理容器的时候，都是用的是docker的命令行，但是随着docker
+run参数的增多，命令行的长度会越来越长。再加上复杂的服务往往由多个不同的容器共同组成，这样在创建一个完整的服务的时候，就会输入多条超长的命令。这时候我们就可以考虑使用docker
+compose。</p>
+<p>docker compose 是一个用go语言开发的docker扩展程序，通过docker
+compose我可以使用配置文件的方式来同时管理多个容器。接下来我们先来学习docker
+compose的安装。</p>
+<blockquote>
+<p>注：可参见<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/linux/#install-using-the-repository">官网</a></p>
+</blockquote>
+<ol type="1">
+<li>插件安装（推荐）</li>
+</ol>
+<p>docker
+compose的安装有两种方式，分别为作为docker插件和单独应用。在centos或者redhat系统中，我们可以通过yum以插件的方式安装docker
+compose。这种方式在安装之后会将docker
+compose作为docker插件进行运行。我们可以通过<code>docker compose</code>命令进行调用。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mtn2j6lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-mtn2j6lm7oajch"><pre><code class="hljs shell">yum install -y docker-compose-plugin
+docker compose version</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140854608011_980_image-20230906120028310.png" srcset="/img/loading.gif" lazyload alt="image-20230906120028310">
+<figcaption aria-hidden="true">image-20230906120028310</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>单独应用安装</li>
+</ol>
+<p>略。不推荐使用。</p>
+<h3 id="yml到json的转化工具">YML到JSON的转化工具</h3>
+<p>YML文件是一种适合人类阅读的配置文件格式，这种文件格式能够表示的数据结构和JSON格式配置文件类似。为了便于我们学习，我们先来制作一个YML和JSON的互相转换工具，以便于理解YML的格式。</p>
+<ol type="1">
+<li>创建转换镜像</li>
+</ol>
+<p>我们基于python中的yaml和json模块来实现解析功能。首先我们来创建Dockerfile，在镜像中首先通过<code>pip install</code>安装<code>pyyaml</code>模块。接下来再添加两条py格式的脚本<code>2json.py</code>和<code>2yml.py</code>。我们使用<code>vi</code>来编辑<code>Dockerfile</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-icjf7elm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-icjf7elm7oajch"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q4oeqhlm7oajch"></i><span>dockerfile</span><div class="collapse show" id="collapse-q4oeqhlm7oajch"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python:latest
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> pip install pyyaml</span>
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">"import yaml, json, sys\n\</span></span>
+<span class="hljs-string"><span class="language-bash">print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=4))"</span> &gt; 2json.py</span>
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">"import yaml, json, sys\n\</span></span>
+<span class="hljs-string"><span class="language-bash">print(yaml.safe_dump(json.load(sys.stdin), sort_keys=False))"</span> &gt; 2yml.py</span></code></pre></div></div>
+<p>Dockerfile编写好之后，我们生成容器镜像：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ktdnxclm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-ktdnxclm7oajch"><pre><code class="hljs shell">docker build -t yml/py . 
+docker images</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140858972702_400_image-20230906120814383.png" srcset="/img/loading.gif" lazyload alt="image-20230906120814383">
+<figcaption aria-hidden="true">image-20230906120814383</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>YML转化为JSON</li>
+</ol>
+<p>接下来我们使用刚才创建好的镜像，将yml文件转化为json格式。首先我们创建一个最简单的YML文件<code>demo.yml</code>。内容为<code>id: '10'</code>。</p>
+<p>接下来在这里我们在执行docker
+run创建容器时使用<code>--rm</code>参数。该参数创建的容器在退出后会自动被删除，一般用于执行一次性任务的容器的创建。同时在命令中使用了<code>&lt;</code>
+重定向符号，将宿主机中的文件作为参数传递给容器中。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5uyl65lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-5uyl65lm7oajch"><pre><code class="hljs shell">echo id: '10' &gt; demo.yml
+docker run -i --rm yml/py python 2json.py &lt; demo.yml</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140903420195_222_image-20230906120838553.png" srcset="/img/loading.gif" lazyload alt="image-20230906120838553">
+<figcaption aria-hidden="true">image-20230906120838553</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>JSON转化为YML</li>
+</ol>
+<p>然后我们再来尝试将JSON格式文件转化为YML格式。首先创建一个简单的JSON文件，然后使用下面命令执行容器中的<code>2yml.py</code>即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fkglt1lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-fkglt1lm7oajch"><pre><code class="hljs shell">echo \{\"name\":\"aliyun\",\"age\":100} &gt; demo.json
+docker run -i --rm yml/py python 2yml.py &lt; demo.json</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140906842553_579_image-20230906120923498.png" srcset="/img/loading.gif" lazyload alt="image-20230906120923498">
+<figcaption aria-hidden="true">image-20230906120923498</figcaption>
+</figure>
+<h3 id="yml格式配置文件">YML格式配置文件</h3>
+<p>在docker
+compose安装完毕后，我们需要编写YML格式的配置文件配合该工具进行使用。在本小节中我们先来学习YML格式配置文件的用法。</p>
+<blockquote>
+<p>注：如果已经对YML比较熟悉，该节可以略过。</p>
+</blockquote>
+<p>YML文件中包括了纯量，Key/Value对象，数组三种形式。但是和JSON使用<code>{}</code>表示层次关系不同的是，YML通过行前的空格来表明内容之间的层次关系。</p>
+<ol type="1">
+<li>YML的对象</li>
+</ol>
+<p>接下来我们先来看YML中的第一种数据结构对象。对象是由多个Key/Value属性对对组成，属性对的格式为<code>key: value</code>。注意和JSON不同的是，一行中只包含一个属性对。</p>
+<p>如果属性对的Value值为对象或者数组时，Value的内容需要新起一行，同时新起的一行要比上一行更多的空格（一般使用4个空格）缩进来表示。</p>
+<p>接下来我们使用vi构建一个demo.yml文件来演示对象结构，并且转化成JSON结构和YML结构进行对比。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rpenu8lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-rpenu8lm7oajch"><pre><code class="hljs shell">vi demo1.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g03xrulm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-g03xrulm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">"aliyun"</span>
+<span class="hljs-attr">attr:</span> 
+    <span class="hljs-attr">age:</span> <span class="hljs-number">10</span>
+    <span class="hljs-attr">addr:</span> <span class="hljs-string">"HANGZHOU"</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-en0iinlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-en0iinlm7oajch"><pre><code class="hljs shell">cat demo1.yml
+docker run -i --rm yml/py python 2json.py &lt; demo1.yml</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141349874042_518_image-20230906121133060.png" srcset="/img/loading.gif" lazyload alt="image-20230906121133060">
+<figcaption aria-hidden="true">image-20230906121133060</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>YML中的纯量</li>
+</ol>
+<p>纯量是指对象的Value或者数组中不可分割的量，换句说话就是简单属性类型。YML的纯量包括：字符串，数字，布尔，日期，时间等类型。接下来我们编辑demo.yml来做演示。需要注意的是python默认的JSON编码模块不支持日期时间。因此我们使用<code>#</code>
+注释日期时间属性对。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-48mhavlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-48mhavlm7oajch"><pre><code class="hljs shell">vi demo2.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h7h444lm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-h7h444lm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">string:</span> <span class="hljs-string">"aliyun"</span>
+<span class="hljs-attr">number1:</span> <span class="hljs-number">10</span>
+<span class="hljs-attr">number2:</span> <span class="hljs-number">10.01</span>
+<span class="hljs-attr">boolean:</span> <span class="hljs-literal">true</span>
+<span class="hljs-comment"># datatime: 2000-01-01 23:59:59   </span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ddp4yilm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-ddp4yilm7oajch"><pre><code class="hljs shell">cat demo2.yml
+docker run -i --rm yml/py python 2json.py &lt; demo2.yml</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141356359881_590_image-20230906121351872.png" srcset="/img/loading.gif" lazyload alt="image-20230906121351872">
+<figcaption aria-hidden="true">image-20230906121351872</figcaption>
+</figure>
+<ol type="1">
+<li>YML中的数组</li>
+</ol>
+<p>YML中的数组不需要前后缀，只需要将数组中的元素前加入<code>-</code>即可，一行中只包含一个元素。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8bvm5wlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-8bvm5wlm7oajch"><pre><code class="hljs shell">vi demo3.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9xiem0lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-9xiem0lm7oajch"><pre><code class="hljs shell">scores: 
+    - 100
+    - 90.5
+    - 78</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y3hrrwlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-y3hrrwlm7oajch"><pre><code class="hljs shell">cat demo3.yml
+docker run -i --rm yml/py python 2json.py &lt; demo3.yml</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141400821811_243_image-20230906121553457.png" srcset="/img/loading.gif" lazyload alt="image-20230906121553457">
+<figcaption aria-hidden="true">image-20230906121553457</figcaption>
+</figure>
+<h3 id="docker-compose快速上手">Docker Compose快速上手</h3>
+<ol type="1">
+<li>编写配置文件</li>
+</ol>
+<p><code>docker compose</code>使用YML格式的配置文件代替<code>docker run</code>命令的各种参数，配置文件默认名称为<code>docker-compose.yml</code>。接下来我们使用<code>vi</code>构建该文件</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t2vijjlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-t2vijjlm7oajch"><pre><code class="hljs shell">vi docker-compose.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mtfxumlm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-mtfxumlm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">busy:</span>
+        <span class="hljs-attr">container_name:</span> <span class="hljs-string">busy1</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox:latest"</span>
+        <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span></code></pre></div></div>
+<ol start="2" type="1">
+<li>启动容器</li>
+</ol>
+<p>配置文件编写完成之后，我们就可以使用<code>docker compose up</code>来启动配置文件中描述的容器。一般在执行docker
+compose up时会加入-d参数，其功能类似于docker
+run中的-d，表示容器在后台运行。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jnr4q2lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-jnr4q2lm7oajch"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
+<ol start="3" type="1">
+<li>验证容器启动</li>
+</ol>
+<p>命令执行成功后，我们使用docker
+ps查看，会发现容器已经启动。相比较使用复杂的docker run命令，使用docker
+compose的方式管理容器，命令简单统一。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bvf9h5lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-bvf9h5lm7oajch"><pre><code class="hljs shell">docker ps</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141406085546_790_image-20230906122001303.png" srcset="/img/loading.gif" lazyload alt="image-20230906122001303">
+<figcaption aria-hidden="true">image-20230906122001303</figcaption>
+</figure>
+<h2 id="docker-compose部署案例">Docker Compose部署案例</h2>
+<h3 id="docker-compose常用命令">Docker Compose常用命令</h3>
+<p>在前面的实验中我们讲解了docker
+compose配置文件得常见用法，接下来我们再来学习一下docker
+compose的常用命令。</p>
+<ol type="1">
+<li>环境准备</li>
+</ol>
+<p>首先我们切换到命令行页面。进行试验环境准备。首先安装<code>docker compose</code>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-02hf7elm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-02hf7elm7oajch"><pre><code class="hljs shell">yum install -y docker-compose-plugin
+vi docker-compose.yml</code></pre></div></div>
+<p>在安装成功后使用vi创建<code>docker-compose.yml</code>文件，在<code>docker-compose.yml</code>文件中加入下列内容。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2eohk1lm7oajch"></i><span>yml</span><div class="collapse show" id="collapse-2eohk1lm7oajch"><pre><code class="hljs yml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">web:</span>
+       <span class="hljs-attr">container_name:</span> <span class="hljs-string">web</span>
+       <span class="hljs-attr">image:</span> <span class="hljs-string">"httpd:latest"</span>
+       <span class="hljs-attr">ports:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">"5000:80"</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">"6000:8000"</span>
+    <span class="hljs-attr">db:</span>
+       <span class="hljs-attr">container_name:</span> <span class="hljs-string">db</span>
+       <span class="hljs-attr">image:</span> <span class="hljs-string">"mysql"</span>
+       <span class="hljs-attr">volumes:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">"mysql-vol:/var/lib/mysql"</span>
+       <span class="hljs-attr">environment:</span>
+          <span class="hljs-attr">MYSQL_ROOT_PASSWORD:</span> <span class="hljs-string">"[MYSQL密码]"</span>
+<span class="hljs-attr">volumes:</span>
+    <span class="hljs-attr">mysql-vol:</span> {}</code></pre></div></div>
+<blockquote>
+<p>注意设置MYSQL_ROOT_PASSWORD的值，即[MYSQL密码]。</p>
+</blockquote>
+<p>配置文件编写完毕后，我们通过docker compose来启动容器。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aomeomlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-aomeomlm7oajch"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141411787491_209_image-20230906123052607.png" srcset="/img/loading.gif" lazyload alt="image-20230906123052607">
+<figcaption aria-hidden="true">image-20230906123052607</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>类Docker命令</li>
+</ol>
+<p>接下来我们来测试下面的3条docker
+compose命令，这3条命令的用法和原生docker命令类似，不同的是如果命令需要指定特定容器，我们需要在命令中使用service名来代替容器名。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ktrhwulm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-ktrhwulm7oajch"><pre><code class="hljs shell">docker compose exec db ls</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cxp4fdlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-cxp4fdlm7oajch"><pre><code class="hljs shell">docker compose cp docker-compose.yml db:/root/
+docker compose exec db bin/bash -c "cat /root/docker-compose.yml"</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141417586371_108_image-20230906123259414.png" srcset="/img/loading.gif" lazyload alt="image-20230906123259414">
+<figcaption aria-hidden="true">image-20230906123259414</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>容器的启停删除</li>
+</ol>
+<p>接下来我们来看通过docker
+compose进行容器服务组暂停/恢复，停止/重开，删除命令，这几条命令类似于docker
+compose
+up，只要使用默认配置文件docker-compose.yml，或者使用<code>-f</code>参数指定配置文件即可，不再需要指定容器名。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3d77bwlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-3d77bwlm7oajch"><pre><code class="hljs shell">docker compose pause
+docker compose unpause
+
+docker compose stop
+docker compose restart
+
+docker compose down</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141423088385_967_image-20230906123454662.png" srcset="/img/loading.gif" lazyload alt="image-20230906123454662">
+<figcaption aria-hidden="true">image-20230906123454662</figcaption>
+</figure>
+<h3 id="部署wordpress论坛">部署WordPress论坛</h3>
+<p>之前的实验中我们介绍了Docker和Docker
+Compose的大部分常见用法。接下来我们来部署一个实际WordPress论坛作为Docker的综合案例。</p>
+<p>启动wordpress论坛至少需要创建两个容器，一个mysql数据库容器，和一个运行wordpress的apache容器，除此之外如果安装了redis缓存插件，则还需部署redis容器。因此这次我们编写三个YML文件，通过Docker
+Compose来部署这三个容器。</p>
+<ol type="1">
+<li>定义MySQL配置</li>
+</ol>
+<p>首先我们先使用vi来编写<code>db.yml</code>作为MySQL的部署文件。在标准MySQL容器中，通过<code>EntryPoint</code>设置了启动命令，因此我们通过<code>command</code>设置启动参数。</p>
+<p>除此之外标准的MySQL容器可以通过多种环境变量对服务进行配置，此处我们使用<code>MYSQL_DATABASE</code>环境变量指定默认数据库。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pv63wwlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-pv63wwlm7oajch"><pre><code class="hljs shell">vi db.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c0rxe4lm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-c0rxe4lm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">mysql:8.0</span>
+    <span class="hljs-attr">command:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"--character-set-server=utf8mb4"</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"--collation-server=utf8mb4_unicode_ci"</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db_data:/var/lib/mysql</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">MYSQL_ROOT_PASSWORD:</span> [<span class="hljs-string">MySQL</span> <span class="hljs-string">root账号密码</span>]
+      <span class="hljs-attr">MYSQL_DATABASE:</span> <span class="hljs-string">wordpress</span>
+<span class="hljs-attr">volumes:</span>
+  <span class="hljs-attr">db_data:</span></code></pre></div></div>
+<blockquote>
+<p>注：注意设置MYSQL_ROOT_PASSWORD的值，即[MYSQL密码]。</p>
+</blockquote>
+<ol start="2" type="1">
+<li>定义Redis配置</li>
+</ol>
+<p>接下来我们使用<code>vi</code>来编写<code>cache.yml</code>作为Redis的部署文件。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xflzd3lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-xflzd3lm7oajch"><pre><code class="hljs shell">vi cache.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7uys4qlm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-7uys4qlm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">cache:</span>
+     <span class="hljs-attr">depends_on:</span>
+       <span class="hljs-bullet">-</span> <span class="hljs-string">db</span>
+     <span class="hljs-attr">image:</span> <span class="hljs-string">redis</span>
+     <span class="hljs-attr">network_mode:</span> <span class="hljs-string">"service:db"</span>
+     <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span></code></pre></div></div>
+<ol start="3" type="1">
+<li>定义WordPress配置</li>
+</ol>
+<p>最后我们使用<code>vi</code>来编写<code>app.yml</code>作为WordPress的部署文件。在WordPress配置中，需要依赖<code>db</code>和<code>cache</code>两个服务。使用<code>Container</code>网络模型，绑定``db服务的网卡。</p>
+<p>同时我们希望将在宿主机的<code>8000</code>端口上发布应用的服务。由于WordPress服务共享了db服务的网卡，因此我们需要在<code>db</code>服务的网卡中进行端口绑定，此处我们可以使用属性值的多次定义功能。</p>
+<p>在YML配置文件中，相同的属性值可以在不同的文件中进行定义，在docker
+compose加载的时候会将所有的属性值合并后统一处理，因此我们可以在<code>app.yml</code>中为db定义<code>ports</code>端口映射字段。</p>
+<p>除此之外我们还可以在这里对db中的MYSQL_USER和MYSQL_PASSWORD两个环境变量的属性值进行覆盖。YML属性值允许覆盖，且以最后定义的为最终值。</p>
+<p>在对db的环境变量覆盖时，我们可以使用<code>&amp;wp_passwd</code>来将属性值定义为锚点。并且在wordpress中的<code>WORDPRESS_ROOT_PASSWORD</code>使用<code>*wp_passwd</code>来引用锚点作为属性值，这种写法表示这个属性值引用了锚点位置的属性值。也就是说在WordPress中数据库的root用户密码和db.yml中数据库的默认用户密码一致。这种写法可以避免因为拼写错误导致的数值不一致。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rwemzplm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-rwemzplm7oajch"><pre><code class="hljs shell">vi app.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9od05flm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-9od05flm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"8000:80"</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">MYSQL_ROOT_PASSWORD:</span> <span class="hljs-string">&amp;wp_passwd</span> [<span class="hljs-string">MySQL</span> <span class="hljs-string">wordpress账号密码</span>]
+  <span class="hljs-attr">app:</span>
+    <span class="hljs-attr">depends_on:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">cache</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">wordpress:6.0</span>
+    <span class="hljs-attr">network_mode:</span> <span class="hljs-string">"service:db"</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">WORDPRESS_DB_HOST:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>
+      <span class="hljs-attr">WORDPRESS_DB_USER:</span> <span class="hljs-string">root</span>
+      <span class="hljs-attr">WORDPRESS_DB_PASSWORD:</span> <span class="hljs-string">*wp_passwd</span></code></pre></div></div>
+<blockquote>
+<p>注意设置MYSQL_ROOT_PASSWORD的值，即[MYSQL密码]。</p>
+</blockquote>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ee3maulm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-ee3maulm7oajch"><pre><code class="hljs shell">version: "3"
+services:
+  db:
+    ports:
+      - "8000:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: &amp;wp_passwd Mysql#pwd
+  app:
+    depends_on:
+      - db
+      - cache
+    image: wordpress:6.0
+    network_mode: "service:db"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: 127.0.0.1
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: *wp_passwd</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141429798156_187_image-20230906124155038.png" srcset="/img/loading.gif" lazyload alt="image-20230906124155038">
+<figcaption aria-hidden="true">image-20230906124155038</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>启动容器</li>
+</ol>
+<p>配置文件编写完毕后我们就可以启动Project。这里需要注意的时，我们将三个服务写在了三个不同的文件中，当docker
+compose需要引用多个配置文件时，我们只需要在参数列表中添加多个<code>-f [配置文件名]</code>的方式即可。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mp7du2lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-mp7du2lm7oajch"><pre><code class="hljs shell">docker compose -f db.yml -f cache.yml -f app.yml -p wp up -d</code></pre></div></div>
+<blockquote>
+<p>注：<code>-p wp</code>: 指定了项目名称（project
+name）<code>wp</code></p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141434316934_189_image-20230906124528944.png" srcset="/img/loading.gif" lazyload alt="image-20230906124528944">
+<figcaption aria-hidden="true">image-20230906124528944</figcaption>
+</figure>
+<h3 id="初始化wordpress论坛">初始化WordPress论坛</h3>
+<blockquote>
+<p>注：如果不需要学习使用WordPress，下面两小节内容可以跳过。</p>
+</blockquote>
+<p>接下来我们将在chromium浏览器对WordPress进行图形化配置。</p>
+<ol type="1">
+<li>在浏览器中访问WordPress</li>
+</ol>
+<p>在浏览器中输入<code>http://[ECS公网地址]:8000</code>，即可进入WordPress初始化界面。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141438141138_443_image-20230906124731571.png" srcset="/img/loading.gif" lazyload alt="image-20230906124731571">
+<figcaption aria-hidden="true">image-20230906124731571</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>初始化WordPress</li>
+</ol>
+<p>在初始化界面中我们首先选择wordpress的界面语言，并且按"继续"</p>
+<p>继续配置wordpress的相关信息，输入论坛名称，用户名，密码等，在邮箱输入栏输入符合标准的邮箱格式即可。然后按"安装WordPress"</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141444671037_311_image-20230906124928415.png" srcset="/img/loading.gif" lazyload alt="image-20230906124928415">
+<figcaption aria-hidden="true">image-20230906124928415</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>登录WordPress</li>
+</ol>
+<p>安装之后点击登录，即可进入登录界面，在登陆界面中输入上一个步骤填写的用户密码并点击登录。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141450295097_479_image-20230906125010078.png" srcset="/img/loading.gif" lazyload alt="image-20230906125010078" width="50%" height="50%"></p>
+<p>登录之后即可进入wordpress管理后台。后台界面主要由管理员使用。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141455440508_502_image-20230906125040580.png" srcset="/img/loading.gif" lazyload alt="image-20230906125040580">
+<figcaption aria-hidden="true">image-20230906125040580</figcaption>
+</figure>
+<p>接下来我们进入wordpress前台浏览界面。输入网址
+<code>http://[ECS公网地址]:8000</code>。出现如下浏览界面即说明wordpress安装成功。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141500006324_531_image-20230906125109079.png" srcset="/img/loading.gif" lazyload alt="image-20230906125109079">
+<figcaption aria-hidden="true">image-20230906125109079</figcaption>
+</figure>
+<h3 id="在wordpress中安装插件">在WordPress中安装插件</h3>
+<ol type="1">
+<li>插件管理</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141507077816_757_image-20230906125251276.png" srcset="/img/loading.gif" lazyload alt="image-20230906125251276">
+<figcaption aria-hidden="true">image-20230906125251276</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>安装reids插件</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141511708977_268_image-20230906125321678.png" srcset="/img/loading.gif" lazyload alt="image-20230906125321678">
+<figcaption aria-hidden="true">image-20230906125321678</figcaption>
+</figure>
+<p>然后点“启用”</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141517641595_463_image-20230906125416859.png" srcset="/img/loading.gif" lazyload alt="image-20230906125416859">
+<figcaption aria-hidden="true">image-20230906125416859</figcaption>
+</figure>
+<p>切换至终端，执行如下命令验证插件生效。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0goebxlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-0goebxlm7oajch"><pre><code class="hljs shell">docker exec -it wp-cache-1 redis-cli
+
+keys *</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141522028216_638_image-20230906125527715.png" srcset="/img/loading.gif" lazyload alt="image-20230906125527715">
+<figcaption aria-hidden="true">image-20230906125527715</figcaption>
+</figure>
+<h2 id="yml配置文件的常用属性">YML配置文件的常用属性</h2>
+<h3 id="yml配置文件简介">YML配置文件简介</h3>
+<p>在上一个小节中我们学习了Docker compose 的基本用法，相比较使用docker
+run命令行和参数启动容器，使用yml配置文件大步幅简化命令输入。在本实验中我们再来看一下docker_compose.yml文件的常见配置信息</p>
+<ol type="1">
+<li>环境准备</li>
+</ol>
+<p>为了接下来的实验，首先我们安装docker
+compose插件。在安装成功后使用vi创建<code>docker-compose.yml</code>文件，在<code>docker-compose.yml</code>文件中加入下列内容。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cxai4ilm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-cxai4ilm7oajch"><pre><code class="hljs shell">yum install -y docker-compose-plugin
+vi docker-compose.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qliklvlm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-qliklvlm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">web:</span>
+       <span class="hljs-attr">container_name:</span> <span class="hljs-string">web</span>
+       <span class="hljs-attr">image:</span> <span class="hljs-string">"httpd:latest"</span>
+       <span class="hljs-attr">ports:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">"5000:80"</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">"6000:8000"</span>
+    <span class="hljs-attr">db:</span>
+       <span class="hljs-attr">container_name:</span> <span class="hljs-string">db</span>
+       <span class="hljs-attr">image:</span> <span class="hljs-string">"mysql"</span>
+       <span class="hljs-attr">volumes:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">"mysql-vol:/var/lib/mysql"</span>
+       <span class="hljs-attr">environment:</span>
+          <span class="hljs-attr">MYSQL_ROOT_PASSWORD:</span> <span class="hljs-string">"[MYSQL密码]"</span>
+<span class="hljs-attr">volumes:</span>
+    <span class="hljs-attr">mysql-vol:</span> {}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ryy2i9lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-ryy2i9lm7oajch"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
+<ol start="2" type="1">
+<li>配置文件基本讲解</li>
+</ol>
+<p>在通过<code>docker compose up</code>启动容器之后，我们来看一下<code>docker_comose.yml</code>的配置文件结构。在docker_compose中，一个<code>project</code>可以包含多个配置文件中的内容，如果没有设置所有的资源都会创建在root这个project中，在project中serviecs字段中的每一个key表示一个<code>serviec</code>，每个service下又可以由一个或多个<code>container</code>，在service中的基本配置选项如下表。</p>
+<table>
+<thead>
+<tr class="header">
+<th>container_name</th>
+<th>等同于--name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>image</td>
+<td>容器镜像</td>
+</tr>
+<tr class="even">
+<td>volumes</td>
+<td>等价于-v，类型为数组</td>
+</tr>
+<tr class="odd">
+<td>ports</td>
+<td>等价于-p，类型为数组</td>
+</tr>
+<tr class="even">
+<td>environment</td>
+<td>等价于-e，类型为对象</td>
+</tr>
+</tbody>
+</table>
+<p>需要注意的是，默认情况下docker
+compose会为每个project自动创建一个network，接下来创建的所有的容器都会连接到这个network，我们来验证容器的配置。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ircnkulm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-ircnkulm7oajch"><pre><code class="hljs shell">docker network ls
+docker port web
+docker inspect -f "{{json .Mounts}}"  db | jq</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141525957802_776_image-20230906132436722.png" srcset="/img/loading.gif" lazyload alt="image-20230906132436722">
+<figcaption aria-hidden="true">image-20230906132436722</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>容器状态查询</li>
+</ol>
+<p>我们还可以通过docker
+compose命令对容器服务的状态查询。和使用docker原生命令相比，docker
+compose只会对配置文件中包含的容器生效。并不需要具体指定容器名，降低了操作复杂性。</p>
+<p>这里我们演示<code>docker compose ps</code>，<code>docker compose top</code>，<code>docker compose images</code>三个命令：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2apurzlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-2apurzlm7oajch"><pre><code class="hljs shell">docker compose ps
+docker compose top
+docker compose images</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141532886509_703_image-20230906133510118.png" srcset="/img/loading.gif" lazyload alt="image-20230906133510118">
+<figcaption aria-hidden="true">image-20230906133510118</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>容器的删除</li>
+</ol>
+<p>当我们需要结束容器的使用，我们可以使用<code>docker compose down</code>来结束和删除配置文件中的容器。</p>
+<p>需要注意的时，该命令会停止并且销毁配置文件中描述的容器。同时容器停止后相应的网络等组件都会被销毁，类似于使用<code>docker rm -f</code>加<code>docker network rm</code></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7t7dkllm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-7t7dkllm7oajch"><pre><code class="hljs shell">docker compose down</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141538989320_659_image-20230906133558164.png" srcset="/img/loading.gif" lazyload alt="image-20230906133558164">
+<figcaption aria-hidden="true">image-20230906133558164</figcaption>
+</figure>
+<h3 id="yml的常用配置项目">YML的常用配置项目</h3>
+<p>在上一个小节中我们演示了docker
+compose的主要配置和常用命令，接下来我们再来看一下docker
+compose配置文件中的其他配置项目。yml中的一部分配置选项可以和<code>docker  run</code>中的命令行对应，这些属性主要包括在下表中，在本小节中我们来实验这些属性。</p>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>容器的启动命令</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>stdin_open</td>
+<td>设置为true等价于-i参数</td>
+</tr>
+<tr class="even">
+<td>tty</td>
+<td>设置为true等价于-t参数</td>
+</tr>
+<tr class="odd">
+<td>networ_mode</td>
+<td>网络模式</td>
+</tr>
+<tr class="even">
+<td>networks</td>
+<td>容器连接的网络，类型为数组</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>编写配置文件。</li>
+</ol>
+<p>在docker compose中默认使用docker-compose.yml配置文件，
+如果我们想使用不同名称的配置文件，可以在docker
+compose后面添加<code>-f</code>参数指定yml文件。我们使用vi创建一个<code>web.yml</code>文件以演示配置选项。</p>
+<p>创建之后，我们启动project，在启动时我们可以通过<code>-p</code>参数指定资源所在的Project，以避免资源橙色图，这里我们指定project为web。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7xyo83lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-7xyo83lm7oajch"><pre><code class="hljs shell">vi web.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-121k7rlm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-121k7rlm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">busybox:</span>
+        <span class="hljs-attr">container_name:</span> <span class="hljs-string">sh</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox:latest"</span>
+        <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">networks:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">"custom"</span>
+    <span class="hljs-attr">python:</span>
+        <span class="hljs-attr">container_name:</span> <span class="hljs-string">web</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"python"</span>
+        <span class="hljs-attr">network_mode:</span> <span class="hljs-string">"host"</span>
+        <span class="hljs-attr">command:</span> <span class="hljs-string">"python -m http.server 8000"</span>
+<span class="hljs-attr">networks:</span>
+    <span class="hljs-attr">custom:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">"custom"</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-usb60zlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-usb60zlm7oajch"><pre><code class="hljs shell">docker compose -f web.yml -p web up -d</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141545186341_141_image-20230906134113946.png" srcset="/img/loading.gif" lazyload alt="image-20230906134113946">
+<figcaption aria-hidden="true">image-20230906134113946</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>创建Project并验证</li>
+</ol>
+<p>web.yml创建成功后，我们来创建Project，需要注意的是在创建Proejct时，<code>-f[配置文件名]</code>参数需要放在up命令之前。在Proejct
+创建之后我们来验证自定网络的创建和容器参数的指定。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yfuq5tlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-yfuq5tlm7oajch"><pre><code class="hljs shell">docker inspect -f '{"Tty":{{.Config.Tty}},"OpenStdin":{{.Config.OpenStdin}}}' sh | jq
+docker inspect -f "{{json .NetworkSettings.Networks}}" sh | jq</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141548725400_786_image-20230906134131894.png" srcset="/img/loading.gif" lazyload alt="image-20230906134131894">
+<figcaption aria-hidden="true">image-20230906134131894</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>查看配置信息</li>
+</ol>
+<p>当Project创建成功后使用<code>docker compose convert</code>命令，可以显示service中某个容器的的配置信息。我们可以看到显示的配置信息中，包括yml中指定的选项，也包括yml中没有指定的默认选项。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kc5vdelm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-kc5vdelm7oajch"><pre><code class="hljs shell">docker compose -f web.yml -p web convert busybox
+docker compose -f web.yml -p web convert python</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141552348830_501_image-20230906134142775.png" srcset="/img/loading.gif" lazyload alt="image-20230906134142775">
+<figcaption aria-hidden="true">image-20230906134142775</figcaption>
+</figure>
+<h3 id="yml的其他配置项目">YML的其他配置项目</h3>
+<p>在本小节中我们再来看三个并不是和docker run 命令参数有对应关系的docker
+compose属性值的用法。</p>
+<table>
+<thead>
+<tr class="header">
+<th>deploy.replicas</th>
+<th>可以选择Service中容器的部署个数。</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>depends_on</td>
+<td>可以选择Service启动的先后顺序</td>
+</tr>
+<tr class="even">
+<td>restart</td>
+<td>设置Service的重启策略</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>容器个数</li>
+</ol>
+<p>首先我们来看<code>deploy.replicas</code>，之前我们提到过在<code>docker  compose</code>中的层次结构为，<code>project-&gt;service-&gt;container</code>，这里面的service指的是不同的容器配置，而container是指可以为相同的配置建立多个容器实例。配置容器实例个数的属性就是<code>deploy.replicas</code>。我们使用<code>vi</code>创建一个<code>replicas.yml</code>文件以演示配置选项。</p>
+<p>在编写配置文件时，我们要注意由于我们需要在相同的配置下创建多个容器，因此我们不能在配置中用<code>container_name</code>属性为容器指定一个固定的名字。因此我们需要删除此字段，由启动自动分配名字。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-khxxnwlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-khxxnwlm7oajch"><pre><code class="hljs shell">vi replicas.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5pfcpklm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-5pfcpklm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">busybox:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox:latest"</span>
+        <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">deploy:</span>
+            <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lh6pexlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-lh6pexlm7oajch"><pre><code class="hljs shell">docker compose -f replicas.yml -p replicas up -d
+docker compose -f replicas.yml -p replicas ps</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141557051770_456_image-20230906134411157.png" srcset="/img/loading.gif" lazyload alt="image-20230906134411157">
+<figcaption aria-hidden="true">image-20230906134411157</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>启动顺序</li>
+</ol>
+<p>在容器启动时，如果不同service在启动时有互相依赖关系，比如redis缓存要先于web服务启动，这种情况下就可以使用<code>depends_on</code>来管理service的启动顺序。我们使用vi创建一个<code>dependson.yml</code>文件以演示启动顺序选项。会发现servie严格按照先后顺序进行了启动</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zscphelm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-zscphelm7oajch"><pre><code class="hljs shell">vi dependson.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t9s1hblm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-t9s1hblm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">busybox-before:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox"</span>
+        <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">busybox-after:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox"</span>
+        <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">depends_on:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">"busybox-before"</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">"busybox"</span>
+    <span class="hljs-attr">busybox:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox"</span>
+        <span class="hljs-attr">tty:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">depends_on:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">"busybox-before"</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aleksflm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-aleksflm7oajch"><pre><code class="hljs shell">docker compose -f dependson.yml -p dependson up -d</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141600332437_952_image-20230906134537758.png" srcset="/img/loading.gif" lazyload alt="image-20230906134537758">
+<figcaption aria-hidden="true">image-20230906134537758</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>重启策略</li>
+</ol>
+<p>在生产环境中，容器中服务难免会因为各种问题出现异常，错误，从而导致服务进程崩溃。一旦这种情况发生就会导致局部服务不可用，如果是关键服务出现问题，甚至会影响整个应用得稳定性。</p>
+<p>因此在生产环境中，我们一般会配置使用<code>restart</code>属性。该属性可以根据值得不同设定容器得自动重启策略。常用得属性值包括：<code>no</code>不自动重启，<code>always</code>总是自动重启，<code>on-failure</code>错误退出时重启。</p>
+<p>接下来我们启动一个busybox容器，在容器启动时执行<code>sleep 10</code>。这个命令表示命令行会在10秒后退出，以模拟容器服务出现错误。在project启动后等待超过10秒，然后再查看状态，会发现由于设置了always策略，容器会在退出后重新启动。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sd847vlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-sd847vlm7oajch"><pre><code class="hljs shell">vi restart.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qrpmbylm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-qrpmbylm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">busybox-auto:</span>
+        <span class="hljs-attr">container_name:</span> <span class="hljs-string">busybox-auto</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox"</span>
+        <span class="hljs-attr">command:</span> <span class="hljs-string">sleep</span> <span class="hljs-number">10</span>
+        <span class="hljs-attr">restart:</span> <span class="hljs-string">"always"</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8vz9kvlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-8vz9kvlm7oajch"><pre><code class="hljs shell">docker compose -f restart.yml -p restart up -d
+[等待超过10秒]
+docker compose -f restart.yml -p restart ps</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141603517229_285_image-20230906134857664.png" srcset="/img/loading.gif" lazyload alt="image-20230906134857664">
+<figcaption aria-hidden="true">image-20230906134857664</figcaption>
+</figure>
+<blockquote>
+<p>注：蓝框中已启动9秒而非50+秒，说明中间重启过</p>
+</blockquote>
+<h3 id="flask的build联动案例">Flask的build联动案例</h3>
+<p>在实际开发应用得过程中，我们往往不会直接使用原生容器进行部署，而是需要使用开发者自行build的镜像。这种情况下开发者部署应用时，需要先执行<code>docker build</code>构建镜像，然后再执行<code>docker compose up</code>来运行镜像。</p>
+<p>除了这种方式之外，我们还可以在YML配置文件中使用<code>build</code>属性值，这种情况下<code>docker compose</code>在创建project之前会先执行<code>docker build</code>生成镜像，然后再创建容器。简化了开发者的部署工作。</p>
+<p>本小节中我们就来通过一个Python语言的<code>Flask</code>框架来演示在开发过程中如何联动镜像的打包和部署。</p>
+<ol type="1">
+<li>环境准备</li>
+</ol>
+<p>首先我们需要构建三个文件，分别是应用开发的源代码文件<code>main.py</code>，制作镜像的打包文件<code>Dockfile</code>，和容器联动的配置文件<code>build.yml</code>。首先我们来构建<code>main.py</code>和<code>Dockfile</code>。</p>
+<p>在<code>main.py</code>中我们通过Flask框架实现了一个简单的Http服务器。具体代码原理可以参考源码中的注释，在此不做过多讲解。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i1ejnilm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-i1ejnilm7oajch"><pre><code class="hljs shell">mkdir app
+vi app/main.py</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-llid50lm7oajch"></i><span>python</span><div class="collapse show" id="collapse-llid50lm7oajch"><pre><code class="hljs python"><span class="hljs-comment"># 导入Flask类</span>
+<span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask 
+
+<span class="hljs-comment"># 创建app对象</span>
+app = Flask(__name__)
+ 
+<span class="hljs-comment"># 将对路径"/"得访问路由到函数index上</span>
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">index</span>():
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'网页首页\n'</span>
+
+<span class="hljs-comment"># 将对路径"/Host"得访问路由到函数index上</span>
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/host'</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">host</span>():
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'访问Host路径\n'</span>
+
+<span class="hljs-comment"># 启动app对象中得服务，并指导服务端口为8000</span>
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(host=<span class="hljs-string">"0.0.0.0"</span>, port=<span class="hljs-number">8000</span>)</code></pre></div></div>
+<p>接下来我们来编写<code>Dockerfile</code>，这里我们主要做几件事：首先通过<code>pip</code>安装<code>Flask</code>框架，然后将<code>main.py</code>源码文件复制到<code>/app/</code>目录下，接下来设置<code>/app</code>为工作目录，最后使用CMD设置容器的启动命令。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5qk2ywlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-5qk2ywlm7oajch"><pre><code class="hljs shell">vi app/Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8wp2oklm7oajch"></i><span>dockerfile</span><div class="collapse show" id="collapse-8wp2oklm7oajch"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> pip install Flask</span>
+
+<span class="hljs-keyword">ADD</span><span class="language-bash"> main.py /app/main.py</span>
+<span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app/</span>
+<span class="hljs-keyword">CMD</span><span class="language-bash"> python main.py</span></code></pre></div></div>
+<ol start="2" type="1">
+<li>编写配置文件</li>
+</ol>
+<p>源代码文件和打包文件编辑完毕后，我们继续通过<code>vi</code>来编写配置文件<code>build.yml</code>。在配置文件中，我们使用<code>build</code>属性值代替<code>image</code>。如果在执行<code>docker build</code>时使用的是默认的打包配置文件，那么将<code>build</code>的属性值设置为<code>Dockerfile</code>文件所在目录即可。</p>
+<p>如果需要指定打包文件名，则需要将<code>build</code>的属性值设置为对象。对象中包含<code>context</code>和<code>dockerfile</code>两个属性值，分别表示配置文件所在路径和配置文件名。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mr2um3lm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-mr2um3lm7oajch"><pre><code class="hljs shell">vi build.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rb2igblm7oajch"></i><span>yaml</span><div class="collapse show" id="collapse-rb2igblm7oajch"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">app:</span>
+        <span class="hljs-attr">build:</span> <span class="hljs-string">app/</span>
+<span class="hljs-comment">#       build: </span>
+<span class="hljs-comment">#           context: app/</span>
+<span class="hljs-comment">#           dockerfile: Dockerfile</span>
+        <span class="hljs-attr">ports:</span> 
+            <span class="hljs-bullet">-</span> <span class="hljs-string">"8080:8000"</span>
+        <span class="hljs-attr">restart:</span> <span class="hljs-string">"always"</span></code></pre></div></div>
+<ol start="3" type="1">
+<li>验证部署结果</li>
+</ol>
+<p>文件编写完成后我们即可进行编译打包和project部署的联动，proejct部署成功后。我们通过<code>docker compose ps</code>命令进行查看，发现容器使用了自动打包的镜像<code>build-app</code>。</p>
+<p>最后我们使用<code>curl</code>访问8080端口映射，验证服务部署成功。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uv0v5qlm7oajch"></i><span>shell</span><div class="collapse show" id="collapse-uv0v5qlm7oajch"><pre><code class="hljs shell">docker compose -f build.yml -p build up -d
+docker compose -f build.yml -p build ps
+curl 127.0.0.1:8080
+curl 127.0.0.1:8080/host</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141609065118_414_image-20230906135657253.png" srcset="/img/loading.gif" lazyload alt="image-20230906135657253">
+<figcaption aria-hidden="true">image-20230906135657253</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Docker/">#Docker</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>深入浅出Docker应用-Docker Compose实战</div>
+      <div>http://lunaticsky-tql.github.io/posts/40623/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/30866/" title="深入浅出Docker应用-Docker存储模型">
+                        <span class="hidden-mobile">深入浅出Docker应用-Docker存储模型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

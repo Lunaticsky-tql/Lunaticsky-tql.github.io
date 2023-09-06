@@ -1,0 +1,1297 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="深入浅出docker应用-Docker网络模型 容器的网络入门 创建实验环境镜像 在前面的实验中我们学习了Docker中的容器和容器镜像的用法。而容器作为一种虚拟机技术，其网络和存储模型也是非常重要的知识重点，因此本实验中我们讲的带领大家学习容器的网络模型的基本概念。  编写自定义Dockerfile  为了后续实验的进行，我们先来创建一个包含python环境的自定义镜像，我们基于python3.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出Docker应用-Docker网络模型">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/36160/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="深入浅出docker应用-Docker网络模型 容器的网络入门 创建实验环境镜像 在前面的实验中我们学习了Docker中的容器和容器镜像的用法。而容器作为一种虚拟机技术，其网络和存储模型也是非常重要的知识重点，因此本实验中我们讲的带领大家学习容器的网络模型的基本概念。  编写自定义Dockerfile  为了后续实验的进行，我们先来创建一个包含python环境的自定义镜像，我们基于python3.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115927011432_829_image-20230905162033315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115930659188_491_image-20230905162231861.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115935274383_307_image-20230905163325242.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115939701805_748_image-20230905163118101.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115944397056_252_image-20230905162945636.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115949958075_213_image-20230905163234783.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115952557471_924_image-20230905165716152.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115956774933_957_image-20230905164231855.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115959456283_323_image-20230905164540108.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906120003330128_908_image-20230905164647019.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906120005817916_620_image-20230905164942645.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121438023132_943_image-20230905171448071.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121443459226_284_image-20230905171940633.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121448940363_596_image-20230905172129476.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121454346633_249_image-20230905172402430.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121458521078_985_image-20230905172614913.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121502122637_753_image-20230905173151504.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121505575156_739_image-20230905173743604.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121513885053_753_image-20230905174021497.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121519436040_631_image-20230905174308569.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121524109420_497_image-20230905175352061.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121529331977_884_image-20230905175403597.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121533471480_288_image-20230905180422754.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121539097331_620_image-20230905180212999.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121542480155_579_zfjcruuaylg7m_f3201d02623c49dc80d06754a0021d63.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121547691885_678_image-20230905201850370.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121553078213_743_image-20230905202117058.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121558730303_763_image-20230905202712250.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121602244999_405_image-20230905202812343.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121607764416_189_image-20230905203100315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121613687049_409_image-20230905203413825.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121619384406_970_image-20230905204040328.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121623021954_340_image-20230905204058709.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121626357968_113_image-20230905204353188.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121632033915_844_image-20230905205150802.png">
+<meta property="article:published_time" content="2023-09-06T04:16:35.000Z">
+<meta property="article:modified_time" content="2023-09-06T04:16:35.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115927011432_829_image-20230905162033315.png">
+    
+    
+    
+    <title>深入浅出Docker应用-Docker网络模型 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入浅出Docker应用-Docker网络模型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-09-06 12:16" pubdate>
+              2023年9月6日 中午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              14k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/深入浅出Docker应用-Docker网络模型/深入浅出Docker应用-Docker网络模型.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深入浅出Docker应用-Docker网络模型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="深入浅出docker应用-docker网络模型">深入浅出docker应用-Docker网络模型</h1>
+<h2 id="容器的网络入门">容器的网络入门</h2>
+<h3 id="创建实验环境镜像">创建实验环境镜像</h3>
+<p>在前面的实验中我们学习了Docker中的容器和容器镜像的用法。而容器作为一种虚拟机技术，其网络和存储模型也是非常重要的知识重点，因此本实验中我们讲的带领大家学习容器的网络模型的基本概念。</p>
+<ol type="1">
+<li>编写自定义Dockerfile</li>
+</ol>
+<p>为了后续实验的进行，我们先来创建一个包含<code>python</code>环境的自定义镜像，我们基于python3.7构建实验镜像。接下来我们为实验镜像配置aliyun的ubuntu的apt源，并且进行apt的初始化操作，在初始化完成之后。我们为镜像安装<code>curl</code>，<code>ping</code>，<code>ifconfig</code>，<code>traceroute</code>等常用网络工具。最后我们设置镜像运行时在<code>8000</code>端口启动python3内置的<code>http</code>服务。</p>
+<p>我们通过vi编辑Dockerfile，并将下面的内容添加到中Dockerfile中，注意使用vim编辑器时：</p>
+<ol type="1">
+<li>需要先按<code>i</code>键进入编辑模式。</li>
+<li>编辑完成之后按esc退出编辑模式。</li>
+<li>然后按<code>:wq</code>保存并退出vim。</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2rqi08lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-2rqi08lm7cpnta"><pre><code class="hljs shell">vim Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1ebhehlm7cpnta"></i><span>dockerfile</span><div class="collapse show" id="collapse-1ebhehlm7cpnta"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python:<span class="hljs-number">3.7</span>
+
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8000</span>
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">"deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse \n\</span></span>
+<span class="hljs-string"><span class="language-bash">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse"</span> &gt; /etc/apt/sources.list</span>
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32</span>
+
+<span class="hljs-keyword">RUN</span><span class="language-bash"> apt-get update</span>
+<span class="hljs-keyword">RUN</span><span class="language-bash"> apt-get install -y curl net-tools inetutils-ping traceroute</span>
+
+<span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">"python3"</span>, <span class="hljs-string">"-m"</span>, <span class="hljs-string">"http.server"</span>, <span class="hljs-string">"8000"</span>]</span></code></pre></div></div>
+<ol start="2" type="1">
+<li>编译镜像</li>
+</ol>
+<p>编辑好Dockerfile之后，通过<code>docker build</code>命令生成新的镜像。注意镜像生成过程中，需要通过网络安装相关组件，因此容器构建时间可能会比较长。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2u8l98lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-2u8l98lm7cpnta"><pre><code class="hljs shell">docker build -t py/http .
+docker images</code></pre></div></div>
+<ol start="3" type="1">
+<li>验证镜像</li>
+</ol>
+<p>容器制作完毕后，我们创建容器，然后使用<code>docker exec</code>命令在容器中执行<code>curl 127.0.0.1:8000</code>验证服务的启动。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lxncr8lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-lxncr8lm7cpnta"><pre><code class="hljs shell">docker run -itd --name check py/http
+docker exec check curl 127.0.0.1:8000
+docker rm -f check</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115927011432_829_image-20230905162033315.png" srcset="/img/loading.gif" lazyload alt="image-20230905162033315">
+<figcaption aria-hidden="true">image-20230905162033315</figcaption>
+</figure>
+<h3 id="容器和宿主机中的网卡">容器和宿主机中的网卡</h3>
+<p>实验环境创建成功后，接下来我们来学习容器和宿主机中的网卡信息</p>
+<ol type="1">
+<li>容器的网卡信息</li>
+</ol>
+<p>创建容器后。docker会为容器默认创建一块虚拟网卡。容器通过这块网卡实现网络连接，为了验证容器的网卡，我们首先用自定义镜像py/http创建两个容器，当容器创建好之后，我们通过docker
+inspect命令查看容器详细信息，详细信息中包含容器网卡的IP。为了简化容器信息的查看，我们可以使用-f参数来筛选容器的信息。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y4nugvlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-y4nugvlm7cpnta"><pre><code class="hljs shell">docker run -itd --name py1 py/http
+docker run -itd --name py2 py/http
+docker inspect -f '{{.NetworkSettings.IPAddress }}' py1
+docker inspect -f '{{.NetworkSettings.IPAddress }}' py2</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115930659188_491_image-20230905162231861.png" srcset="/img/loading.gif" lazyload alt="image-20230905162231861">
+<figcaption aria-hidden="true">image-20230905162231861</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>多容器信息查询</li>
+</ol>
+<p>当Docker中的容器或者容器镜像数量较多的时候，每次使用一条命令来查询一个容器或者镜像信息就会变得非常的繁琐。这时我们就可以使用<code>docker ps</code>中<code>-f "name=value"</code>参数过滤所需要的对象，再用<code>-q</code>参数只获得所需要对象的ID。</p>
+<p>接下来再配合linux命令行的<code>$()</code>，将对象的ID作为参数传给<code>docker inspect</code>命令。这样就可以一次性获得所有对象的配置信息。我们通过下列命令显示所有容器名称包含<code>py</code>的容器的IP地址。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rwx296lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-rwx296lm7cpnta"><pre><code class="hljs shell">docker ps -f "name=py" -q
+docker inspect -f '{{.Name}} {{.NetworkSettings.IPAddress }}' $(docker ps -f "name=py" -q)</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115935274383_307_image-20230905163325242.png" srcset="/img/loading.gif" lazyload alt="image-20230905163325242">
+<figcaption aria-hidden="true">image-20230905163325242</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>宿主机的网卡信息</li>
+</ol>
+<p>在docker安装之后，也会在宿主机上安装一块默认的虚拟网卡<code>docker0</code>，该网卡可以和容器中的虚拟网卡互联互通。我们先通过<code>ifconfig</code>查看docker0的网卡信息。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kzn59rlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-kzn59rlm7cpnta"><pre><code class="hljs shell">ifconfig docker0</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115939701805_748_image-20230905163118101.png" srcset="/img/loading.gif" lazyload alt="image-20230905163118101">
+<figcaption aria-hidden="true">image-20230905163118101</figcaption>
+</figure>
+<h3 id="容器和宿主机的连通性">容器和宿主机的连通性</h3>
+<p>本小节中我们来测试容器和宿主机网络连通性</p>
+<ol type="1">
+<li>测试宿主机和容器之间的连通性</li>
+</ol>
+<p>接下来我们来测试的宿主机和容器网卡的互联互通，会发现在默认情况下，宿主机可以通过<code>docker0</code>网卡访问容器中的服务。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k4ii0jlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-k4ii0jlm7cpnta"><pre><code class="hljs shell">ping -c 4 [py1容器IP]
+curl [py1容器IP]:8000
+ping -c 4 [py2容器IP]
+curl [py2容器IP]:8000</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115944397056_252_image-20230905162945636.png" srcset="/img/loading.gif" lazyload alt="image-20230905162945636">
+<figcaption aria-hidden="true">image-20230905162945636</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>容器之间的网络连接</li>
+</ol>
+<p>接下来我们来测试容器之间的网络连通性，我们通过<code>ifconfig</code>命令查看容器详细信息，会可以发现各容器的的IP地址属于同一个子网，这种设置保证了容器之间的网卡可以互联互通，为了验证我们进入py1容器的控制台，然后测试py1到宿主机和py2的连通性。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3eu8cylm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-3eu8cylm7cpnta"><pre><code class="hljs shell">docker exec -it py1 /bin/bash
+ping -c 4 [docker0 IP]
+ping -c 4 [py2容器IP]
+curl [py2容器IP]:8000
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115949958075_213_image-20230905163234783.png" srcset="/img/loading.gif" lazyload alt="image-20230905163234783">
+<figcaption aria-hidden="true">image-20230905163234783</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>容器的外网访问</li>
+</ol>
+<p>在上一个步骤中查看容器的网络信息时，我们会发现容器的网卡中<strong>网关IP</strong>正是宿主机的<code>docker0</code>网卡的IP。</p>
+<blockquote>
+<p>注：可通过<code>netstat -rn</code>查看。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115952557471_924_image-20230905165716152.png" srcset="/img/loading.gif" lazyload alt="image-20230905165716152">
+<figcaption aria-hidden="true">image-20230905165716152</figcaption>
+</figure>
+</blockquote>
+<p>这就意味着，如果容器的宿主机可以访问互联网，容器就可以通过宿主机的<code>docker0</code>网卡转发网络数据包访问互联网。为了验证我们进入py1容器的控制台，<code>ping</code>访问<code>aliyun.com</code>验证连通性，再通过<code>traceroute</code>命令验证容器访问外网的路径。会发现容器访问外网的第一条就是<code>docker0</code>网卡。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ss0rgblm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ss0rgblm7cpnta"><pre><code class="hljs shell">docker exec -it py1 /bin/bash
+ping -c 4 www.aliyun.com
+traceroute www.aliyun.com -w 0.1
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115956774933_957_image-20230905164231855.png" srcset="/img/loading.gif" lazyload alt="image-20230905164231855">
+<figcaption aria-hidden="true">image-20230905164231855</figcaption>
+</figure>
+<h3 id="容器的端口映射">容器的端口映射</h3>
+<p>在上面的几个小节中我们学习了了，容器和宿主机的互相访问，容器和容器的互相访问，以及容器对外网的访问。但是由于容器本身使用了Docker创建的私有网络地址，虽然可以通过<code>docker0</code>网卡转发访问外网，但是无法提供服务，让外网的使用者来访问。</p>
+<p>为了解决这个问题，我们就需要用到容器的端口映射功能。通过端口映射功能，我们可以将宿主机的一个端口和一个指定容器的端口进行映射绑定，所有对宿主机端口的访问数据包，都会自动转发到指定容器的端口上。这样只要外网访问者只要能访问到宿主机，就可以通过端口映射功能，访问到容器中的服务。从而实现了通过容器对外发布服务的能力。</p>
+<p>本小节中我们就来为大家演示Docker端口映射的常用用法。</p>
+<ol type="1">
+<li>端口映射的基本用法</li>
+</ol>
+<p>第一种用法就是在<code>docker run</code>中通过<code>-p</code>参数进行容器和宿主机的端口映射绑定。<code>-p</code>参数有两种用法，第一种是分别指定宿主机端口和容器端口，其语法格式为
+<code>-p 宿主机端口:容器端口</code>；第二种是只指定容器端口，由docker自动分配宿主机端口。其语法格式为
+<code>-p 容器端口</code>。</p>
+<p>如果需要为容器指定映射多个端口，可以在<code>docker run</code>中使用多个<code>-p</code>参数。在使用端口映射启动容器之后，我们可以通过<code>docker ps</code>命令查看容器的端口映射配置。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vbg5tylm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-vbg5tylm7cpnta"><pre><code class="hljs shell">docker run -itd -p 18000:8000 -p 18001:8000 --name port1 py/http
+docker run -itd -p 8000 --name port2 py/http
+docker ps -f "name=port"</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115959456283_323_image-20230905164540108.png" srcset="/img/loading.gif" lazyload alt="image-20230905164540108">
+<figcaption aria-hidden="true">image-20230905164540108</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>查看端口映射</li>
+</ol>
+<p>端口映射完成后，我们往往需要查看映射信息，尤其是对docker自动分配宿主机端口的映射方式。除了可以用<code>docker ps</code>命令查看映射信息之外。还可以使用<code>docker port</code>命令查看映射信息，其调用格式为<code>docker port 容器名</code>或者<code>docker port 容器名 容器端口</code>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v30sgulm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-v30sgulm7cpnta"><pre><code class="hljs shell">docker port port1
+docker port port1 8000
+docker port port2</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906120003330128_908_image-20230905164647019.png" srcset="/img/loading.gif" lazyload alt="image-20230905164647019">
+<figcaption aria-hidden="true">image-20230905164647019</figcaption>
+</figure>
+<blockquote>
+<p>总结：配端口映射的时候是宿主:容器，查看时是容器 -&gt; 宿主。</p>
+</blockquote>
+<ol start="3" type="1">
+<li>验证端口映射</li>
+</ol>
+<p>当我们确定了容器在宿主机上的映射端口之后，我们就可以在宿主机上通过<code>curl</code>命令来验证映射功能。为了控制<code>curl</code>命令的输出，我们可以使用linux的|语法，配置<code>head -n1</code>压缩网页输出。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dp0s52lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-dp0s52lm7cpnta"><pre><code class="hljs shell">curl 127.0.0.1:18000 | head -n1
+curl 127.0.0.1:18001 | head -n1
+curl 127.0.0.1:[port2宿主机端口]  | head -n1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906120005817916_620_image-20230905164942645.png" srcset="/img/loading.gif" lazyload alt="image-20230905164942645">
+<figcaption aria-hidden="true">image-20230905164942645</figcaption>
+</figure>
+<h2 id="容器的自定义网络">容器的自定义网络</h2>
+<h3 id="使用自定义网络">使用自定义网络</h3>
+<p>在上一个实验中我们讲解了Docker中默认网络模式下的网卡，连通性和端口映射。实际上在Docker中，一共包含了五种网络模式。分别是<code>None</code>，<code>Bridge</code>，<code>Host</code>，<code>Container</code>和<code>自定义模型</code>。其中<code>None</code>模式为无网络容器，在默认情况下Docker中的容器使用的是<code>Bridge</code>网络模型。<code>Host</code>和<code>Container</code>是两种共享网络模型。在本实验中我们来重点讲解<code>Bridge</code>模型。</p>
+<p>Bridge网络模式的网络架构，是一种类似家用路由器的NAT网络架构。在这种架构中内网和外网使用不同的网络地址，容器中的网卡和宿主机中的Docker网卡（默认为Docker0）使用<strong>私有的内网地址</strong>，同时宿主机Docker网卡作为容器中的网卡的默认网关。而宿主机的物理网卡作为外网使用<strong>外网地址</strong>。</p>
+<p>当容器需要访问外网时，Docker通过网络地址转换（NAT）将内网对外的访问请求转发到宿主机的物理网卡实现外网访问。当外网需要访问容器中的服务时，Docker使用目标网络地址转换（DNAT）,实现容器的端口映射功能。</p>
+<p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121438023132_943_image-20230905171448071.png" srcset="/img/loading.gif" lazyload alt="image-20230905171448071" width="50%" height="50%"></p>
+<ol type="1">
+<li>自定义Bridge网络</li>
+</ol>
+<p>在上面的说明中，为大家简单介绍了Docker的Bridge网络模型。在默认情况下新创建的容器会使用Bridge网络模型，同时使用<code>docker 0</code>网卡作为默认网关。在使用bridge模型时，除了使用默认的docker0网卡之外。我们还可以使用<code>docker network</code>创建新的宿主机容器网络。</p>
+<p>在创建新的容器网络时我们使用<code>docker network create</code>命令，并且可以使用<code>--gateway</code>参数指定网卡的地址，以及使用<code>--subnet</code>内网地址的网络地址段。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m8ufuflm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-m8ufuflm7cpnta"><pre><code class="hljs shell">docker network create --gateway 192.168.0.1 --subnet 192.168.0.0/24  network1</code></pre></div></div>
+<ol start="2" type="1">
+<li>查看Bridge网络</li>
+</ol>
+<p>docker
+network除了可以创建自定义网络之外，还可以使用<code>docker network ls</code>查看已有的Docker网络。对于单个网络也可以使用<code>docker inspect</code>命令查看详细配置。</p>
+<p>另外当自定义bridge网络创建之后，通过宿主机的<code>ifconfig</code>命令可以发现在宿主机中生成了一块新的网卡，网卡的名称前缀为<code>br-</code>。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-09dx4blm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-09dx4blm7cpnta"><pre><code class="hljs shell">docker network ls
+docker inspect network1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121443459226_284_image-20230905171940633.png" srcset="/img/loading.gif" lazyload alt="image-20230905171940633">
+<figcaption aria-hidden="true">image-20230905171940633</figcaption>
+</figure>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9gnjwzlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-9gnjwzlm7cpnta"><pre><code class="hljs shell">ifconfig -s
+ifconfig br-[网络ID]</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121448940363_596_image-20230905172129476.png" srcset="/img/loading.gif" lazyload alt="image-20230905172129476">
+<figcaption aria-hidden="true">image-20230905172129476</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>加入自定义Bridge网络</li>
+</ol>
+<p>自定义网络创建完毕后，就可以在<code>docker run</code>运行容器的时候，使用<code>--network</code>参数指定容器使用某一个网络，同时我们还可以使用<code>--ip</code>参数指定容器的IP地址。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fkb4nklm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-fkb4nklm7cpnta"><pre><code class="hljs shell">docker run -itd --name busybox1 --network network1 --ip 192.168.0.101 busybox
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' busybox1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121454346633_249_image-20230905172402430.png" srcset="/img/loading.gif" lazyload alt="image-20230905172402430">
+<figcaption aria-hidden="true">image-20230905172402430</figcaption>
+</figure>
+<h3 id="多网络的连通性">多网络的连通性</h3>
+<p>在上一个小节中，我们介绍了通过docker
+network自定义Bridge网络。接下来我们来看一下不同网络之间的容器的连通性问题。</p>
+<ol type="1">
+<li>不同Bridge网络的连通性</li>
+</ol>
+<p>我们尝试在默认的<code>docker0</code>网络中再创建一个容器<code>busybox2</code>，然后通过<code>docker exec</code>命令在<code>busybox2</code>中执行<code>ping</code>命令，来测试该容器和上一个步骤中创建的<code>busybox1</code>之间的连通性。会发现不同网络之间的容器无法互联互通。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ddph0jlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ddph0jlm7cpnta"><pre><code class="hljs shell">docker run -itd --name busybox2 busybox
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' busybox2
+docker exec busybox2 ping 192.168.0.101 -w 1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121458521078_985_image-20230905172614913.png" srcset="/img/loading.gif" lazyload alt="image-20230905172614913">
+<figcaption aria-hidden="true">image-20230905172614913</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>容器连接多网络</li>
+</ol>
+<p>如果我们需要让处在不同docker网络之间的容器互联互通，从宿主机网络上配置，一般我们可以采用手动配置路由的方式。</p>
+<p>除此之外我们还可以从容器上进行配置来解决这个问题。而解决的方式就是通过<code>docker network connect</code>命令为容器创建一个新的网络连接。接下来我们来演示将已经运行容器<code>busybox2</code>，连接到<code>network1</code>网络上。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oh2k7llm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-oh2k7llm7cpnta"><pre><code class="hljs shell">docker network connect --ip 192.168.0.102 network1 busybox2</code></pre></div></div>
+<ol start="3" type="1">
+<li>验证多网络连接</li>
+</ol>
+<p>网络联通之后，我们再次测试ping命令。会发现busybox2容器已经可以ping通busybox1容器的网络地址。通过ip
+add命令。我们发现当使用<code>docker network connect</code>命令创建连接之后，在容器中会生成一块与之对应的新的网卡。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h1daa9lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-h1daa9lm7cpnta"><pre><code class="hljs shell">docker exec busybox2 ping 192.168.0.101 -w 1
+docker exec busybox2 ip addr</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121502122637_753_image-20230905173151504.png" srcset="/img/loading.gif" lazyload alt="image-20230905173151504">
+<figcaption aria-hidden="true">image-20230905173151504</figcaption>
+</figure>
+<h3 id="容器中的域名解析">容器中的域名解析</h3>
+<p>在我们实际使用Docker时，一般来说并不建议将所有的服务的部署在一个容器中，而是尽量让一个容器中只包含一个服务。然后将多个容器加入同一个网络时，如果一个容器中的服务希望访问另一个容器中的服务，就需要知道另一个容器的网络地址才能进行调用。</p>
+<p>但是在应用开发阶段，开发者往往并不知道应用所依赖的服务会被部署到具体哪个网络地址。在这种情况下，我们通常会使用域名来解决这个问题，也就是使用一个字符串作为域名表述一个服务的网络地址。然后再容器之上配置DNS域名解析服务，将域名字符串转换成具体IP地址。</p>
+<ol type="1">
+<li>默认网络容器链接</li>
+</ol>
+<p>在docker0默认网络中，我们可以使用<code>--link</code>参数链接一个已经启动的容器。当一个容器使用<code>--link</code>链接到另一个容器之后，在该容器在创建时会在容器中配置本地静态DNS域名文件，将被链接容器的容器名解析成被链接容器的IP地址。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-82b8jklm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-82b8jklm7cpnta"><pre><code class="hljs shell">docker run -itd --name domain1 --network network1 busybox
+docker exec domain1 ping busybox1 -c1
+docker exec domain1 ping domain1 -c1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121505575156_739_image-20230905173743604.png" srcset="/img/loading.gif" lazyload alt="image-20230905173743604">
+<figcaption aria-hidden="true">image-20230905173743604</figcaption>
+</figure>
+<blockquote>
+<p>注：下面两条是为了验证 domain1 正确的加入到network1。</p>
+</blockquote>
+<ol start="2" type="1">
+<li>自定义网络中得DNS</li>
+</ol>
+<p>而在自定义网络中，docker会为自动为网络中的容器添加一个内置的动态DNS服务。在同一网络中容器之间，可以直接使用容器名进行访问。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z2tkn9lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-z2tkn9lm7cpnta"><pre><code class="hljs shell">docker run -itd --name domain3 --network network1 busybox
+docker run -itd --name domain4 --network network1 busybox
+docker exec domain3 ping domain3 -c1
+docker exec domain3 ping domain4 -c1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121513885053_753_image-20230905174021497.png" srcset="/img/loading.gif" lazyload alt="image-20230905174021497">
+<figcaption aria-hidden="true">image-20230905174021497</figcaption>
+</figure>
+<blockquote>
+<p>domain3和domain4在同一网络，验证通过动态DNS配置的容器名域名能够ping的通。</p>
+</blockquote>
+<ol start="3" type="1">
+<li>网络别名</li>
+</ol>
+<p>除了使用容器名称之外，我们还可在使用<code>docker run</code>创建容器得时候使用<code>--network-alias</code>参数设置网络别名作为域名。<code>--network-alias</code>参数和<code>-p</code>参数一样，可以并列设置多个，同时设置多个域名。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gxptl2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-gxptl2lm7cpnta"><pre><code class="hljs shell">docker run -itd --name domain2 --network-alias web --network-alias db --network network1 busybox
+docker exec domain1 ping domain2 -c1
+docker exec domain1 ping web -c1
+docker exec domain1 ping db -c1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121519436040_631_image-20230905174308569.png" srcset="/img/loading.gif" lazyload alt="image-20230905174308569">
+<figcaption aria-hidden="true">image-20230905174308569</figcaption>
+</figure>
+<h3 id="容器实现nginx代理">容器实现Nginx代理</h3>
+<p>在上面的步骤中我们讲解了容器中的自定义网络。接下来我们来看一个简单的Nginx代理，来理解自定义网络。在这个例子中，我们创建三个容器，一个通过Python启动http服务，一个启动apahce服务，然后在一个Nginx服务中配置代理，让他转发其他两个服务，并且对外通过端口映射提供服务。</p>
+<ol type="1">
+<li>容器准备</li>
+</ol>
+<p>首先为了避免干扰，我们先删除全部容器。接下来我们创建两个容器，一个是名为python1的python容器，创建之后在80端口启动内置http服务(<code>python3 -m http.server 80</code>)。另一个名为httpd1的httpd容器，也就是apahce服务，默认在80端口启动服务。</p>
+<p>在容器创建成功后，我们使用curl进行测试。这里我们使用组合命令，先获取容器得IP，然后作为参数传递给curl。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pkpj9nlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-pkpj9nlm7cpnta"><pre><code class="hljs shell">docker rm -f $(docker ps -aq)
+docker run -d --name python1 python python3 -m http.server 80
+docker run -d --name httpd1 httpd
+
+curl $(docker inspect python1 -f {{.NetworkSettings.IPAddress}})
+curl $(docker inspect httpd1 -f {{.NetworkSettings.IPAddress}})</code></pre></div></div>
+<blockquote>
+<p>注：该过程下载较慢，需要耐心等待。</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121524109420_497_image-20230905175352061.png" srcset="/img/loading.gif" lazyload alt="image-20230905175352061">
+<figcaption aria-hidden="true">image-20230905175352061</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121529331977_884_image-20230905175403597.png" srcset="/img/loading.gif" lazyload alt="image-20230905175403597">
+<figcaption aria-hidden="true">image-20230905175403597</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>编写Nginx配置文件</li>
+</ol>
+<p>接下来我们来配置Nginx容器作为代理服务器。首先我们宿主机中生成Nginx的配置文件<code>proxy.conf</code>。在配置文件中，我们设置两个配置信息，分别是对8001端口的访问转发到<strong>python1的80端口</strong>，以及对8002端口的访问转发到<strong>httpd1的80端口</strong>。我们使用<code>vi</code>命令编写<code>proxy.conf</code>并编辑为如下内容。注意使用vi编辑器时：</p>
+<ol type="1">
+<li>需要先按i键进入编辑模式。</li>
+<li>编辑完成之后按esc退出编辑模式。</li>
+<li>然后按大写的ZZ保存并退出vi。</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ptg0holm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ptg0holm7cpnta"><pre><code class="hljs shell">vi proxy.conf</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gqgl4ilm7cpnta"></i><span>nginx</span><div class="collapse show" id="collapse-gqgl4ilm7cpnta"><pre><code class="hljs nginx"><span class="hljs-section">server</span> {
+    <span class="hljs-attribute">listen</span>       <span class="hljs-number">8001</span>;
+    <span class="hljs-attribute">server_name</span>  <span class="hljs-number">0.0.0.0</span>;
+
+    <span class="hljs-section">location</span> / {
+        <span class="hljs-attribute">proxy_pass</span>   http://python1;
+    }
+}
+
+<span class="hljs-section">server</span> {
+    <span class="hljs-attribute">listen</span>       <span class="hljs-number">8002</span>;
+    <span class="hljs-attribute">server_name</span>  <span class="hljs-number">0.0.0.0</span>;
+
+    <span class="hljs-section">location</span> / {
+        <span class="hljs-attribute">proxy_pass</span>   http://httpd1;
+    }
+}</code></pre></div></div>
+<ol start="3" type="1">
+<li>编写Dockerfile</li>
+</ol>
+<p>Nginx配置文件生成完毕之后，接下来我们来编辑<code>Dockerfile</code>。在<code>Dockerfile</code>中，我们将配置文件复制到<code>/etc/nginx/conf.d/proxy.conf</code>目录中。我们使用vi命令生成<code>Dockerfile</code>并编辑为如下内容：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xlyg9klm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-xlyg9klm7cpnta"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gwwhmilm7cpnta"></i><span>dockerfile</span><div class="collapse show" id="collapse-gwwhmilm7cpnta"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx:latest
+<span class="hljs-keyword">ADD</span><span class="language-bash"> proxy.conf /etc/nginx/conf.d/proxy.conf</span></code></pre></div></div>
+<blockquote>
+<p>注：此处原文表述有较多处错误，已订正。</p>
+</blockquote>
+<ol start="4" type="1">
+<li>启动代理服务</li>
+</ol>
+<p>Dockerfile编辑完成后，我们继续生成容器镜像<code>proxy</code>。镜像生成成功后，我们通过该镜像创建容器<code>proxy1</code>。在创建容器的时候，我们使用<code>--link</code>参数添加python1和httpd1域名，同时将proxy容器的80，8001，8002端口映射到宿主的8000，8001，8002。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rplh2ulm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-rplh2ulm7cpnta"><pre><code class="hljs shell">docker build -t proxy .
+docker run -d --name proxy1 -p 8000:80 -p 8001:8001 -p 8002:8002 \
+--link python1 --link httpd1 proxy</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121533471480_288_image-20230905180422754.png" srcset="/img/loading.gif" lazyload alt="image-20230905180422754">
+<figcaption aria-hidden="true">image-20230905180422754</figcaption>
+</figure>
+<ol start="5" type="1">
+<li>验证Nginx代理服务</li>
+</ol>
+<p>代理服务启动之后，我们使用<code>curl</code>命令进行验证。分别访问127.0.0.1的8000，8001，8002三个端口，我们会发现通过容器proxy在宿主机上的端口映射，我们实现了对三个容器的统一访问入口。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b2eoydlm7cpnta"></i><span>nginx</span><div class="collapse show" id="collapse-b2eoydlm7cpnta"><pre><code class="hljs nginx"><span class="hljs-attribute">curl</span> <span class="hljs-number">127.0.0.1:8000</span>
+curl <span class="hljs-number">127.0.0.1:8001</span>
+curl <span class="hljs-number">127.0.0.1:8002</span></code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121539097331_620_image-20230905180212999.png" srcset="/img/loading.gif" lazyload alt="image-20230905180212999">
+<figcaption aria-hidden="true">image-20230905180212999</figcaption>
+</figure>
+<h2 id="容器的共享网络模型">容器的共享网络模型</h2>
+<h3 id="host网络模型简介">Host网络模型简介</h3>
+<p>在上一个实验中我们学习了docker中的bridge网络模式。在bridge网络模式下，容器和宿主机网络隔离。不同网络下的容器具有不同的网络地址，这种网络模式的优点是架构比较清晰，资源具有必要的隔离。</p>
+<p>但是这种架构的缺点是容器和容器，容器和宿主机之间的网络通讯的数据包需要在不同的虚拟网卡之间传输。这种传输需要通过操作系统的底层驱动，在网络数据量大的时候会对系统资源造成消耗。同时在当容器和外网互相访问时，需要使用NAT/DNAT修改网络数据包的地址字段。这也会对系统资源造成消耗，并且对容器的网络吞吐造成影响。</p>
+<p>因此当我们需要在容器中部署对外网网络吞吐量很大，或者对网络延迟比较敏感的服务时，采用Bridge模式并不是最好的选择，这种情况下我们可以选择<strong>Host网络模式</strong>。</p>
+<ol type="1">
+<li>Host网络模式</li>
+</ol>
+<p>首先我们来看Docker中的Host网络模式的架构。在Host网络模式下，容器在创建之时，并不会创建虚拟网卡。而是共享使用宿主机的默认网卡，因此Host模式下，容器网卡的网络地址和宿主机网卡的网络地址一致。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121542480155_579_zfjcruuaylg7m_f3201d02623c49dc80d06754a0021d63.png" srcset="/img/loading.gif" lazyload alt="host">
+<figcaption aria-hidden="true">host</figcaption>
+</figure>
+<p>在了解了Host网络模式之后，我们来看如何创建Host模式的容器。在上一个实验中我们学过可以通过<code>docker network ls</code>命令查看Docker网络。细心的同学可能会观察到，在Docker的默认网络中就包含一个<code>host网络</code>。这个网络的驱动使用的就是host。</p>
+<p>因此当我们创建创建容器时，只需要使用<code>--network=host</code>参数，加入这个网络容器就会设置成Host网络模式。</p>
+<ol start="2" type="1">
+<li>获得宿主机网卡信息</li>
+</ol>
+<p>接下来我们来验证Host网络模式中的容器和宿主机的网络设置。我们首先在宿主机中使用<code>ip addr</code>命令查看网卡IP。在宿主机中我们可以找到<code>默认网卡eth0</code>，和<code>docker默认Bridge网络docker0</code>。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121547691885_678_image-20230905201850370.png" srcset="/img/loading.gif" lazyload alt="image-20230905201850370">
+<figcaption aria-hidden="true">image-20230905201850370</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>获得容器网卡配置</li>
+</ol>
+<p>接下来我们通过<code>docker exec</code>在容器中执行<code>ip addr</code>。我们会发现容器和宿主机的网卡完全一致。我们尝试ping
+docker0网卡，发现也可以ping通。这也就验证了Host网络模式下，容器的网卡和宿主机属于共享状态。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s8yqdnlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-s8yqdnlm7cpnta"><pre><code class="hljs shell">docker exec host1 ip addr
+ping [docker0 IP] -c1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121553078213_743_image-20230905202117058.png" srcset="/img/loading.gif" lazyload alt="image-20230905202117058">
+<figcaption aria-hidden="true">image-20230905202117058</figcaption>
+</figure>
+<h3 id="host模型的python案例">Host模型的python案例</h3>
+<p>在上一个小节中我们学习了Host网络模型的基本用法，在本小节中我们来看一个Host共享网络的案例。我们创建一个Python容器并启动一个Http服务。然后将容器连接到Host网络。然后再上一个小节中创建的<code>host1</code>容器中访问Python服务。</p>
+<ol type="1">
+<li>创建Host容器</li>
+</ol>
+<p>Host网络模型和Bridge模型一样，支持多个容器接入。我们创建一个接入Host网络的Python容器<code>host2</code>，并在创建容器的时候通过<code>bash -c "python -m http.server 端口号"</code>启动python内置http服务的命令。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i13i0blm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-i13i0blm7cpnta"><pre><code class="hljs shell">docker run -itd --name host2 --network=host python \
+bash -c "python -m http.server 8000"</code></pre></div></div>
+<ol start="2" type="1">
+<li>查询网络端口</li>
+</ol>
+<p>在Host网络模型中，为了保证网络传输效率，宿主机和所有的容器都使用了相同的网卡配置。因此在Host模型中，无论是在宿主机中或是容器中启动的服务绑定了端口。端口占用会对宿主机和所有容器生效。</p>
+<p>接下来我们在宿主机中也启动一个python内置的http服务，服务绑定端口<code>8001</code>。然后再容器和宿主机中通过<code>netstat</code>命令查看端口占用情况。会发现无论是宿主机还是容器host1，端口8000和8001都被占用了。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121558730303_763_image-20230905202712250.png" srcset="/img/loading.gif" lazyload alt="image-20230905202712250">
+<figcaption aria-hidden="true">image-20230905202712250</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>访问容器服务</li>
+</ol>
+<p>由于容器和宿主机都绑定了相同的网卡，因此即使是在服务中启动的服务，也不需要端口映射就可以在宿主机中访问。Host模式的这种设计简化了容器服务的发布流程，同时也提高了网络吞吐的效率。不过需要注意的是，由于容器和宿主机共享了网卡。因此我们要小心的分配宿主机和容器中服务的端口，以避免端口绑定冲突。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-abu0f2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-abu0f2lm7cpnta"><pre><code class="hljs shell">curl 127.0.0.1:8000 | head -n1</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121602244999_405_image-20230905202812343.png" srcset="/img/loading.gif" lazyload alt="image-20230905202812343">
+<figcaption aria-hidden="true">image-20230905202812343</figcaption>
+</figure>
+<h3 id="container网络模型">Container网络模型</h3>
+<p>在上面两个小节中我们了解了Docker中的一种共享网络模型Host。这种模式主要用于灵活的在宿主机网卡上发布应用，或者提高网络吞吐效率。除了这种共享网络模式之外，Docker还提供了另一种共享网络模式Container。接下来我们来学习这种网络模式的特点和用法。</p>
+<ol type="1">
+<li>创建容器</li>
+</ol>
+<p>Host网络模式下，新创建的容器共享使用宿主机的网卡。而在Container网络模式和Host模式类似，只不过新创建的容器，共享的是<strong>另一个容器的网卡</strong>。</p>
+<p>当我们希望创建一个使用Container网络模式的容器时，我们需要在docker
+run中使用<code>--network container:[已有容器名]</code>的参数格式。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zjj4hjlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-zjj4hjlm7cpnta"><pre><code class="hljs shell">docker run -itd --name container1 busybox
+docker run -itd --name container2 --network=container:container1 busybox</code></pre></div></div>
+<ol start="2" type="1">
+<li>查看地址</li>
+</ol>
+<p>Container网络模型的容器创建完毕后，我可以在两个容器中使用ip
+addr命令查看网卡信息，会发现两块网卡的信息完全一致。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p5ami1lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-p5ami1lm7cpnta"><pre><code class="hljs shell">docker exec container1 ip addr
+docker exec container2 ip addr</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121607764416_189_image-20230905203100315.png" srcset="/img/loading.gif" lazyload alt="image-20230905203100315">
+<figcaption aria-hidden="true">image-20230905203100315</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>创建python服务</li>
+</ol>
+<p>接下来我们再利用这块网卡创建一个名为python1的python容器，并在容器上启动一个python的http服务。由于docker
+run命令的参数较长，在此我们可以使用。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ruimpqlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ruimpqlm7cpnta"><pre><code class="hljs shell">docker run -itd --name container3 \
+--network=container:container1 python \
+bash -c "python -m http.server 8000"</code></pre></div></div>
+<ol start="4" type="1">
+<li>访问服务</li>
+</ol>
+<p>在服务启动后，由于三个容器使用了相同的网卡，因此我们在container1容器使用127.0.0.1网络地址就可以访问到另一个容器中的服务。</p>
+<p>由于在busybox容器中没有curl命令，这种情况下我们可以使用nc命令来访问http服务。具体访问命令解释如下：</p>
+<ul>
+<li>首先我们使用exec命令进入容器的控制台。</li>
+<li>在控制台中我们使用printf命令构建一个HTTP访问请求</li>
+<li>然后通过|符号将请求发送给nc命令</li>
+<li>在使用nc命令时，我们将IP和端口作为两个参数传入</li>
+</ul>
+<p>执行后，命令返回了HTTP应答的全部信息。这也就验证了在container模型下，容器可以向访问本机服务一样，跨容器进行服务访问。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4zg3yzlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-4zg3yzlm7cpnta"><pre><code class="hljs shell">docker exec -it container1 sh</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ezmmwilm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ezmmwilm7cpnta"><pre><code class="hljs shell">printf "GET / HTTP/1.1\r\n\r\n" | nc 127.0.0.1 8000</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121613687049_409_image-20230905203413825.png" srcset="/img/loading.gif" lazyload alt="image-20230905203413825">
+<figcaption aria-hidden="true">image-20230905203413825</figcaption>
+</figure>
+<p>执行<code>exit</code>命令退出容器控制台。</p>
+<h3 id="container模型的redis案例">Container模型的redis案例</h3>
+<p>上一个小节中我们学习了Container模式的基本用法。相比较DNS而言，使用这种方式网络地址管理会更加的方便，同时由于不同的容器共享了一块网卡，网络传输的效率也有明显的提升。</p>
+<p>在容器的使用实践时，我们在一个容器中一般只部署一个组件。对于一些由多个组件构成的服务，我们一般会使用Container网络模式。将不同的组件发布到同一个网卡上。这样不同的组件就可以向部署在同一个系统上一样使用。</p>
+<p>接下来我们来学习一个redis和Python两个组件组成的服务的部署案例。</p>
+<ol type="1">
+<li>启动redis容器</li>
+</ol>
+<p>redis是一个上手容易，使用简单的内存存储服务组件。通常被用来当作web服务的缓存组件来使用。首先我们来创建一个名为redis1的redis容器。当容器创建之后，我们可以通过<code>redis-cli</code>命令进入redis的控制台。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121619384406_970_image-20230905204040328.png" srcset="/img/loading.gif" lazyload alt="image-20230905204040328">
+<figcaption aria-hidden="true">image-20230905204040328</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>初始化redis数据</li>
+</ol>
+<p>在redis中数据的存储结构采用的是<code>key/value</code>结构，在控制台中我们可以通过<code>set [key] [value]</code>命令存储数据。数据存储后可以使用<code>get [key]</code>命令读取数据。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c0tm3alm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-c0tm3alm7cpnta"><pre><code class="hljs shell">set name aliyun
+set year 2000
+
+get name
+get year
+
+exit</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121623021954_340_image-20230905204058709.png" srcset="/img/loading.gif" lazyload alt="image-20230905204058709">
+<figcaption aria-hidden="true">image-20230905204058709</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>安装Python的redis工具</li>
+</ol>
+<p>接下来我们再启动一个名为python1的python容器，并和redis1容器共享网卡。在容器创建成功后，我们在容器中使用pip
+install命令安装访问redis的工具。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vwiil7lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-vwiil7lm7cpnta"><pre><code class="hljs shell">docker run -itd --name python1 --network=container:redis1 python
+docker exec python1 pip install redis</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121626357968_113_image-20230905204353188.png" srcset="/img/loading.gif" lazyload alt="image-20230905204353188">
+<figcaption aria-hidden="true">image-20230905204353188</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>通过Python脚本调用redis</li>
+</ol>
+<p>接下来我们在python1容器中执行<code>python</code>命令，进入命令行模式。在命令行模式中，我们可以一条一条的输入命令。并观察命令的执行结果。</p>
+<p>首先我们使用<code>import redis</code>命令加载访问工具，加载完成后，使用<code>redis.Redis()</code>命令创建到redis服务的连接。在创建连接时虽然python服务和redis服务不在同一个容器中，但是由于我们共享了网卡，我们还是可以使用127.0.0.1的网络地址来访问不同容器的服务。</p>
+<p>连接创建之后，我们就可以使用<code>keys(*)</code>命令列出redis中所有的key，然后我们继续使用<code>get([key名字])</code>的命令获得key对应的value。我们发现通过python容器获得数据和在redis-cli中获得的数据是一致的。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m9s47vlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-m9s47vlm7cpnta"><pre><code class="hljs shell">docker exec -it python1 python
+
+import redis
+r = redis.Redis(host='127.0.0.1',port=6379,db=0)
+print(r.keys('*'))
+print(r.get('name'))
+print(r.get('year'))
+exit()</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121632033915_844_image-20230905205150802.png" srcset="/img/loading.gif" lazyload alt="image-20230905205150802">
+<figcaption aria-hidden="true">image-20230905205150802</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Docker/">#Docker</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>深入浅出Docker应用-Docker网络模型</div>
+      <div>http://lunaticsky-tql.github.io/posts/36160/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/30866/" title="深入浅出Docker应用-Docker存储模型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入浅出Docker应用-Docker存储模型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/10725/" title="深入浅出Docker应用-Docker容器镜像">
+                        <span class="hidden-mobile">深入浅出Docker应用-Docker容器镜像</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
