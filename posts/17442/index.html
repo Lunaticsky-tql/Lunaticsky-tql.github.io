@@ -16,25 +16,25 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="设计模式之美-重新认识面向对象 大纲 写在前面：这是王争的《设计模式之美》阅读笔记，原文发表在极客时间，也有纸质书版本。阅读完整内容可购买正版支持。 设计模式或许显得有些“屠龙技”，但有了这些思想，能让我们站在更高的视角去看软件开发，而不是迷失在框架的细节里。 这一部分主要对“设计原则与思想：面向对象”进行总结。   image-20230911102731242  面向对象 面向对象四大特性 面">
+        <meta name="description" content="设计模式之美-面向对象 大纲 写在前面：这是王争的《设计模式之美》阅读笔记，原文发表在极客时间，也有纸质书版本。阅读完整内容可购买正版支持。 设计模式或许显得有些“屠龙技”，但有了这些思想，能让我们站在更高的视角去看软件开发，而不是迷失在框架的细节里。 这一部分主要对“设计原则与思想：面向对象”进行总结，从软件设计的角度重新认识面向对象。   image-20230911102731242  面向">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式之美-重新认识面向对象">
-<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/43433/index.html">
+<meta property="og:title" content="设计模式之美-面向对象">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/17442/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="设计模式之美-重新认识面向对象 大纲 写在前面：这是王争的《设计模式之美》阅读笔记，原文发表在极客时间，也有纸质书版本。阅读完整内容可购买正版支持。 设计模式或许显得有些“屠龙技”，但有了这些思想，能让我们站在更高的视角去看软件开发，而不是迷失在框架的细节里。 这一部分主要对“设计原则与思想：面向对象”进行总结。   image-20230911102731242  面向对象 面向对象四大特性 面">
+<meta property="og:description" content="设计模式之美-面向对象 大纲 写在前面：这是王争的《设计模式之美》阅读笔记，原文发表在极客时间，也有纸质书版本。阅读完整内容可购买正版支持。 设计模式或许显得有些“屠龙技”，但有了这些思想，能让我们站在更高的视角去看软件开发，而不是迷失在框架的细节里。 这一部分主要对“设计原则与思想：面向对象”进行总结，从软件设计的角度重新认识面向对象。   image-20230911102731242  面向">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911162803575003_338_image-20230911102731242.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911162807231208_166_image-20230910223118620.png">
-<meta property="article:published_time" content="2023-09-11T08:28:09.000Z">
-<meta property="article:modified_time" content="2023-09-11T08:28:09.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911163729034110_551_image-20230911102731242.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911163736193761_420_image-20230910223118620.png">
+<meta property="article:published_time" content="2023-09-11T08:37:38.000Z">
+<meta property="article:modified_time" content="2023-09-11T08:37:38.000Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911162803575003_338_image-20230911102731242.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911163729034110_551_image-20230911102731242.png">
     
     
     
-    <title>设计模式之美-重新认识面向对象 - Lunaticsky&#39;s Blog</title>
+    <title>设计模式之美-面向对象 - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -226,7 +226,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="设计模式之美-重新认识面向对象"></span>
+            <span id="subtitle" data-typed-text="设计模式之美-面向对象"></span>
           
         </div>
 
@@ -237,7 +237,7 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2023-09-11 16:28" pubdate>
+            <time datetime="2023-09-11 16:37" pubdate>
               2023年9月11日 下午
             </time>
           </span>
@@ -275,7 +275,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/设计模式之美-重新认识面向对象/设计模式之美-重新认识面向对象.md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/设计模式之美-面向对象/设计模式之美-面向对象.md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -307,18 +307,18 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">设计模式之美-重新认识面向对象</h1>
+            <h1 style="display: none">设计模式之美-面向对象</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="设计模式之美-重新认识面向对象">设计模式之美-重新认识面向对象</h1>
+                <h1 id="设计模式之美-面向对象">设计模式之美-面向对象</h1>
 <h2 id="大纲">大纲</h2>
 <p>写在前面：这是王争的《设计模式之美》阅读笔记，原文发表在<a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100039001">极客时间</a>，也有纸质书版本。阅读完整内容可购买正版支持。</p>
 <p>设计模式或许显得有些“屠龙技”，但有了这些思想，能让我们站在更高的视角去看软件开发，而不是迷失在框架的细节里。</p>
-<p>这一部分主要对“设计原则与思想：面向对象”进行总结。</p>
+<p>这一部分主要对“设计原则与思想：面向对象”进行总结，从软件设计的角度重新认识面向对象。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911162803575003_338_image-20230911102731242.png" srcset="/img/loading.gif" lazyload alt="image-20230911102731242">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911163729034110_551_image-20230911102731242.png" srcset="/img/loading.gif" lazyload alt="image-20230911102731242">
 <figcaption aria-hidden="true">image-20230911102731242</figcaption>
 </figure>
 <h2 id="面向对象">面向对象</h2>
@@ -379,7 +379,7 @@ RedisConstants、FileUtils，而不是定义一个大而全的 Constants 类、U
 </blockquote>
 <p>同时，纯虚函数是可以提供具体实现的，并且用于替代简朴的非纯虚函数，提供更平常更安全的缺省实现。</p>
 <p>用非纯虚函数提供缺省的默认实现：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d4odkflmemjhi9"></i><span>cpp</span><div class="collapse show" id="collapse-d4odkflmemjhi9"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c4nrf3lmemt9r1"></i><span>cpp</span><div class="collapse show" id="collapse-c4nrf3lmemt9r1"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Fly</span><span class="hljs-params">()</span> </span>{
         <span class="hljs-comment">// 缺省实现</span>
@@ -389,7 +389,7 @@ RedisConstants、FileUtils，而不是定义一个大而全的 Constants 类、U
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Model</span> : <span class="hljs-keyword">public</span> Airplane { ... };</code></pre></div></div>
 <p>这是最简朴的做法，但是这样做会带来的问题是，由于不强制对虚函数的覆写，在定义新的派生类时可能会忘记进行覆写，导致错误地使用了缺省实现。</p>
 <p>使用纯虚函数并提供默认实现：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p9idlolmemjhi9"></i><span>C++</span><div class="collapse show" id="collapse-p9idlolmemjhi9"><pre><code class="hljs C++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d1j1itlmemt9r1"></i><span>C++</span><div class="collapse show" id="collapse-d1j1itlmemt9r1"><pre><code class="hljs C++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Fly</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
 };
@@ -432,7 +432,7 @@ RedisConstants、FileUtils，而不是定义一个大而全的 Constants 类、U
 </summary>
 <p>假设我们的系统中有很多涉及图片处理和存储的业务逻辑。图片经过处理之后被上传到阿里云上。为了代码复用，我们封装了图片存储相关的代码逻辑，提供了一个统一的
 AliyunImageStore 类，供整个系统来使用。具体的代码实现如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a9x08ylmemjhi9"></i><span>java</span><div class="collapse show" id="collapse-a9x08ylmemjhi9"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AliyunImageStore</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yqdb3ilmemt9r1"></i><span>java</span><div class="collapse show" id="collapse-yqdb3ilmemt9r1"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AliyunImageStore</span> {
   <span class="hljs-comment">//...省略属性、构造函数等...</span>
   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createBucketIfNotExisting</span><span class="hljs-params">(String bucketName)</span> {
     <span class="hljs-comment">// ...创建bucket代码逻辑...</span>
@@ -470,7 +470,7 @@ access token，而私有云不需要 access
 token。代码中用到了generateAccessToken()
 方法，如果要改为私有云的上传下载流程，这些代码都需要做调整。</p>
 <p>我们可以这样重构：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7pik0flmemjhi9"></i><span>java</span><div class="collapse show" id="collapse-7pik0flmemjhi9"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImageStore</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-umqg6slmemt9r1"></i><span>java</span><div class="collapse show" id="collapse-umqg6slmemt9r1"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImageStore</span> {
   String <span class="hljs-title function_">upload</span><span class="hljs-params">(Image image, String bucketName)</span>;
   Image <span class="hljs-title function_">download</span><span class="hljs-params">(String url)</span>;
 }
@@ -547,14 +547,14 @@ Principle，也叫最少知识原则或者迪米特法则），暴露不该暴�
 AbstractFlyableBird 和不会飞的鸟类 AbstractUnFlyableBird？</p>
 <p>这确实更忠实的反映了原本的意思，但是更复杂的情况，比如会不会叫，会不会下蛋等，阁下又该如何应对？那估计就要组合爆炸了。类的继承层次会越来越深、继承关系会越来越复杂。</p>
 <figure>
-<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911162807231208_166_image-20230910223118620.png" srcset="/img/loading.gif" lazyload alt="image-20230910223118620">
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%BE%8E-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/20230911163736193761_420_image-20230910223118620.png" srcset="/img/loading.gif" lazyload alt="image-20230910223118620">
 <figcaption aria-hidden="true">image-20230910223118620</figcaption>
 </figure>
 <p>我们可以利用<strong>组合（composition）、接口(interface)、委托（delegation）</strong>三个技术手段，一块儿来解决刚刚继承存在的问题。</p>
 <p>针对“会飞”这样一个行为特性，我们可以定义一个 Flyable
 接口，只让会飞的鸟去实现这个接口。对于会叫、会下蛋这些行为特性，我们可以类似地定义
 Tweetable 接口、EggLayable 接口。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pattxylmemjhi9"></i><span>java</span><div class="collapse show" id="collapse-pattxylmemjhi9"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xivnvplmemt9r1"></i><span>java</span><div class="collapse show" id="collapse-xivnvplmemt9r1"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
   <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>;
 }
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Tweetable</span> {
@@ -586,7 +586,7 @@ layEgg()
 FlyAbility 类、实现了 tweet() 方法的 TweetAbility 类、实现了 layEgg()
 方法的 EggLayAbility
 类。然后，通过组合和委托技术来消除代码重复。具体的代码实现如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u0i1gmlmemjhi9"></i><span>java</span><div class="collapse show" id="collapse-u0i1gmlmemjhi9"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g2rrgllmemt9r1"></i><span>java</span><div class="collapse show" id="collapse-g2rrgllmemt9r1"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
   <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>；
 }
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FlyAbility</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Flyable</span> {
@@ -694,8 +694,8 @@ RPC 接口等。换句话说，就是中间件所做的工作。</li>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>设计模式之美-重新认识面向对象</div>
-      <div>http://lunaticsky-tql.github.io/posts/43433/</div>
+      <div>设计模式之美-面向对象</div>
+      <div>http://lunaticsky-tql.github.io/posts/17442/</div>
     </div>
     <div class="license-meta">
       
