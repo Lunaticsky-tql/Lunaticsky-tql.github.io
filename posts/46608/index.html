@@ -18,7 +18,7 @@
     
         <meta name="description" content="重新认识HTTP&#x2F;2 可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。上一节从HTTP的起源开始，重点深入探讨了HTTP&#x2F;1.1新增特性的一些细节。本节将继续深入剖析HTTP&#x2F;2的重要特性，并结合实践进行分析。 总览">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重新认识HTTP2">
+<meta property="og:title" content="重新认识HTTP&#x2F;2">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/46608/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="重新认识HTTP&#x2F;2 可以说，我们浏览网页，下载资源，甚至克隆一个感兴趣的github仓库，都在与HTTP协议打交道。但是，在计算机网络课程和考研中HTTP都不作为重点去讲述，而在面试和实际工作中却经常需要接触。因此更深入的了解HTTP协议显得尤为重要。上一节从HTTP的起源开始，重点深入探讨了HTTP&#x2F;1.1新增特性的一些细节。本节将继续深入剖析HTTP&#x2F;2的重要特性，并结合实践进行分析。 总览">
@@ -50,7 +50,7 @@
     
     
     
-    <title>重新认识HTTP2 - Lunaticsky&#39;s Blog</title>
+    <title>重新认识HTTP/2 - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -242,7 +242,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="重新认识HTTP2"></span>
+            <span id="subtitle" data-typed-text="重新认识HTTP/2"></span>
           
         </div>
 
@@ -291,7 +291,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/重新认识HTTP2/重新认识HTTP2.md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/重新认识HTTP/2/重新认识HTTP/2.md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -323,7 +323,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">重新认识HTTP2</h1>
+            <h1 style="display: none">重新认识HTTP/2</h1>
             
             
               <div class="markdown-body">
@@ -363,13 +363,13 @@ HTTP/2 的头部压缩 (HPACK) 问题。</p>
 <p>由于我使用的是mac，这里以mac为例讲解配置方法，Windows和linux同理。</p>
 <p>1.设置 <code>SSLKEYLOGFILE</code> 环境变量 可以简单在命令行使用
 export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h1ywysllx3su23"></i><span>shell</span><div class="collapse show" id="collapse-h1ywysllx3su23"><pre><code class="hljs shell">export SSLKEYLOGFILE=~/ssh_key.log</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ucy3wdlmdj595c"></i><span>shell</span><div class="collapse show" id="collapse-ucy3wdlmdj595c"><pre><code class="hljs shell">export SSLKEYLOGFILE=~/ssh_key.log</code></pre></div></div>
 <p>2.在同一个命令行窗口打开 Chrome</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3pf6t4llx3su23"></i><span>shell</span><div class="collapse show" id="collapse-3pf6t4llx3su23"><pre><code class="hljs shell">open /Applications/Google\ Chrome.app/</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rqcq36lmdj595c"></i><span>shell</span><div class="collapse show" id="collapse-rqcq36lmdj595c"><pre><code class="hljs shell">open /Applications/Google\ Chrome.app/</code></pre></div></div>
 <p>3.在 Chrome 随便访问一个 https 的网站, 检查<code>~/ssh_key.log</code>
 是不是有内容</p>
 <p>4.打开 wireshark 拦截流量或者 使用 tcpdump 有针对性的拦截</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-khyah4llx3su23"></i><span>shell</span><div class="collapse show" id="collapse-khyah4llx3su23"><pre><code class="hljs shell">sudo tcpdump host 103.144.218.5 -w mydump.pcap</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ibjezalmdj595c"></i><span>shell</span><div class="collapse show" id="collapse-ibjezalmdj595c"><pre><code class="hljs shell">sudo tcpdump host 103.144.218.5 -w mydump.pcap</code></pre></div></div>
 <p>5.打开 wireshark, 分析这个加密的流量. 显示设置SSL/TLS 的
 <code>pre-master secret key log</code> 文件:</p>
 <p>菜单: preferences -&gt; Protocols -&gt; TLS</p>
@@ -396,7 +396,7 @@ export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
 <p>在这种情况下，HTTP/2的协商方式和HTTP/1/1的协商方式是相同的。由于之前没有讲述HTTP/1.1的协商方式，在这里再进行讲解。</p>
 <p>在没有任何先验知识的情况下, 客户端若想要和服务端以 HTTP/2
 协议进行通信, 那么客户端可以向服务端发送如下形式的 Request:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7a9gatllx3su23"></i><span>http</span><div class="collapse show" id="collapse-7a9gatllx3su23"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/</span> <span class="hljs-meta">HTTP/1.1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lvbpmmlmdj595c"></i><span>http</span><div class="collapse show" id="collapse-lvbpmmlmdj595c"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/</span> <span class="hljs-meta">HTTP/1.1</span>
 <span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>server.example.com
 <span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade, HTTP2-Settings
 <span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>h2c
@@ -407,7 +407,7 @@ export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
 <p>如果服务端不同意升级或者不支持 <code>Upgrade</code>
 所列出的协议，直接忽略即可（当成 HTTP/1.1 请求，以 HTTP/1.1
 响应）；如果服务端同意升级，那么需要这样响应：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xfux6dllx3su23"></i><span>http</span><div class="collapse show" id="collapse-xfux6dllx3su23"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tppgdnlmdj595c"></i><span>http</span><div class="collapse show" id="collapse-tppgdnlmdj595c"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
 <span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>upgrade
 <span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>h2c
 
@@ -531,7 +531,7 @@ frame, 可以通过标记一个流依赖于另一个流的完成来表征它的�
 是流 B 的从属流 (dependent stream), 流 B 是流 A 的父级流 (parent
 stream), 一个流可以被任意个其它流所依赖, 例如流 B, C 可以同时依赖于流 A,
 它们都是流 A 的从属流, 可以用如下所示的图示来表示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6ntlxzllx3su23"></i><span>text</span><div class="collapse show" id="collapse-6ntlxzllx3su23"><pre><code class="hljs text">  A                 A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4tjsrklmdj595c"></i><span>text</span><div class="collapse show" id="collapse-4tjsrklmdj595c"><pre><code class="hljs text">  A                 A
  / \      ==&gt;      /|\
 B   C             B D C</code></pre></div></div>
 <p>可以在创建流的时候通过 HEADERS frame (将在下面讨论)
@@ -541,7 +541,7 @@ exclusive flag 来指示该流的排他性, 在上面的例子中, 我们看到�
 同时依赖于 A, 若不设置 exclusive flag 我们可以继续创建流 D 使其与流 B C
 一样都在同一级依赖于流 A, 而若设置了 exclusive flag,
 那么流的层级依赖关系将如下所示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8xqjafllx3su24"></i><span>text</span><div class="collapse show" id="collapse-8xqjafllx3su24"><pre><code class="hljs text">                    A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2q2p4vlmdj595c"></i><span>text</span><div class="collapse show" id="collapse-2q2p4vlmdj595c"><pre><code class="hljs text">                    A
   A                 |
  / \      ==&gt;       D
 B   C              / \
@@ -710,7 +710,7 @@ Table）来存储已经发送或接收的头部字段，以便更有效地传输
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>重新认识HTTP2</div>
+      <div>重新认识HTTP/2</div>
       <div>http://lunaticsky-tql.github.io/posts/46608/</div>
     </div>
     <div class="license-meta">
