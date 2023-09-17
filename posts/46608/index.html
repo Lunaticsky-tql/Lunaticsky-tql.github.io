@@ -353,8 +353,8 @@ HTTP/1.x 中顺序和阻塞的约束。</li>
 HTTP/2 的头部压缩 (HPACK) 问题。</p>
 <h2 id="实践基础">实践基础</h2>
 <p>首先，现在的HTTP/2连接几乎都是 HTTP over TLS (即 HTTPS)
-的。关于HTTPS，后面会详细介绍。这意味着，我们无法像HTTP/1.x版本一样若不启用HTTPS，是可以用wireshark抓到明文包的。</p>
-<p>但是，我们也不是没有办法。毕竟我们从浏览器的F12中就能看到HTTP/2的一些信息的，浏览器知道怎么解密这些信息。是的，否则我们也无法看到想看到的页面。</p>
+的。关于HTTPS，后面会详细介绍。这意味着，我们无法像HTTP/1.x版本一样如果不是HTTPS就可以用wireshark抓到明文包的。</p>
+<p>但是，我们也不是没有办法。毕竟我们从浏览器的F12中就能看到HTTP/2的一些信息。浏览器知道怎么解密这些信息。是的，否则我们也无法看到想看到的页面。</p>
 <p>具体来说，Chrome 或者 Firefox 都支持: 如果设置了环境变量
 <code>SSLKEYLOGFILE</code>, 就把 SSL/TLS
 的<code>pre-master  secret key</code>写到设置的文件里面去.
@@ -363,13 +363,13 @@ HTTP/2 的头部压缩 (HPACK) 问题。</p>
 <p>由于我使用的是mac，这里以mac为例讲解配置方法，Windows和linux同理。</p>
 <p>1.设置 <code>SSLKEYLOGFILE</code> 环境变量 可以简单在命令行使用
 export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ucy3wdlmdj595c"></i><span>shell</span><div class="collapse show" id="collapse-ucy3wdlmdj595c"><pre><code class="hljs shell">export SSLKEYLOGFILE=~/ssh_key.log</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5749q8lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-5749q8lmnf7n5t"><pre><code class="hljs shell">export SSLKEYLOGFILE=~/ssh_key.log</code></pre></div></div>
 <p>2.在同一个命令行窗口打开 Chrome</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rqcq36lmdj595c"></i><span>shell</span><div class="collapse show" id="collapse-rqcq36lmdj595c"><pre><code class="hljs shell">open /Applications/Google\ Chrome.app/</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-clcqw8lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-clcqw8lmnf7n5t"><pre><code class="hljs shell">open /Applications/Google\ Chrome.app/</code></pre></div></div>
 <p>3.在 Chrome 随便访问一个 https 的网站, 检查<code>~/ssh_key.log</code>
 是不是有内容</p>
 <p>4.打开 wireshark 拦截流量或者 使用 tcpdump 有针对性的拦截</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ibjezalmdj595c"></i><span>shell</span><div class="collapse show" id="collapse-ibjezalmdj595c"><pre><code class="hljs shell">sudo tcpdump host 103.144.218.5 -w mydump.pcap</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ucd5h3lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-ucd5h3lmnf7n5t"><pre><code class="hljs shell">sudo tcpdump host 103.144.218.5 -w mydump.pcap</code></pre></div></div>
 <p>5.打开 wireshark, 分析这个加密的流量. 显示设置SSL/TLS 的
 <code>pre-master secret key log</code> 文件:</p>
 <p>菜单: preferences -&gt; Protocols -&gt; TLS</p>
@@ -396,7 +396,7 @@ export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
 <p>在这种情况下，HTTP/2的协商方式和HTTP/1/1的协商方式是相同的。由于之前没有讲述HTTP/1.1的协商方式，在这里再进行讲解。</p>
 <p>在没有任何先验知识的情况下, 客户端若想要和服务端以 HTTP/2
 协议进行通信, 那么客户端可以向服务端发送如下形式的 Request:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lvbpmmlmdj595c"></i><span>http</span><div class="collapse show" id="collapse-lvbpmmlmdj595c"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/</span> <span class="hljs-meta">HTTP/1.1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c0tunelmnf7n5t"></i><span>http</span><div class="collapse show" id="collapse-c0tunelmnf7n5t"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/</span> <span class="hljs-meta">HTTP/1.1</span>
 <span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>server.example.com
 <span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade, HTTP2-Settings
 <span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>h2c
@@ -407,7 +407,7 @@ export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
 <p>如果服务端不同意升级或者不支持 <code>Upgrade</code>
 所列出的协议，直接忽略即可（当成 HTTP/1.1 请求，以 HTTP/1.1
 响应）；如果服务端同意升级，那么需要这样响应：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tppgdnlmdj595c"></i><span>http</span><div class="collapse show" id="collapse-tppgdnlmdj595c"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7kbh76lmnf7n5t"></i><span>http</span><div class="collapse show" id="collapse-7kbh76lmnf7n5t"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
 <span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>upgrade
 <span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>h2c
 
@@ -531,7 +531,7 @@ frame, 可以通过标记一个流依赖于另一个流的完成来表征它的�
 是流 B 的从属流 (dependent stream), 流 B 是流 A 的父级流 (parent
 stream), 一个流可以被任意个其它流所依赖, 例如流 B, C 可以同时依赖于流 A,
 它们都是流 A 的从属流, 可以用如下所示的图示来表示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4tjsrklmdj595c"></i><span>text</span><div class="collapse show" id="collapse-4tjsrklmdj595c"><pre><code class="hljs text">  A                 A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7w22a7lmnf7n5t"></i><span>text</span><div class="collapse show" id="collapse-7w22a7lmnf7n5t"><pre><code class="hljs text">  A                 A
  / \      ==&gt;      /|\
 B   C             B D C</code></pre></div></div>
 <p>可以在创建流的时候通过 HEADERS frame (将在下面讨论)
@@ -541,7 +541,7 @@ exclusive flag 来指示该流的排他性, 在上面的例子中, 我们看到�
 同时依赖于 A, 若不设置 exclusive flag 我们可以继续创建流 D 使其与流 B C
 一样都在同一级依赖于流 A, 而若设置了 exclusive flag,
 那么流的层级依赖关系将如下所示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2q2p4vlmdj595c"></i><span>text</span><div class="collapse show" id="collapse-2q2p4vlmdj595c"><pre><code class="hljs text">                    A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cswwlklmnf7n5t"></i><span>text</span><div class="collapse show" id="collapse-cswwlklmnf7n5t"><pre><code class="hljs text">                    A
   A                 |
  / \      ==&gt;       D
 B   C              / \
