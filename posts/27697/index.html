@@ -357,7 +357,7 @@
 <p>我们不应该将业务逻辑耦合到<code>check()</code>中，其入参也不应该与具体check的内容耦合，否则我们添加或改变预警的指标或逻辑时，便不可避免的修改接口。</p>
 <p>比较好的思路是传入<code>ApiStatInfo</code>，向<code>check()</code>函数对应的接口对象注册检查方法。</p>
 <p>更具体一些：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dw1e0flmnfc67d"></i><span>java</span><div class="collapse show" id="collapse-dw1e0flmnfc67d"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alert</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9tshezlmngiym7"></i><span>java</span><div class="collapse show" id="collapse-9tshezlmngiym7"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alert</span> {
 
     <span class="hljs-keyword">private</span> List&lt;AlertHandler&gt; alertHandlers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 

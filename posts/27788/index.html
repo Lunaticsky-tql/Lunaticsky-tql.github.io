@@ -339,7 +339,7 @@
 我们约定最高位为符号位, 接下来的15位表示整数部分, 低16位表示小数部分,
 即约定小数点在第15和第16位之间(从第0位开始). 从这个约定可以看到,
 <code>FLOAT</code>类型其实是实数的一种定点表示.</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-76t642lluwpkzu"></i><span>asciidoc</span><div class="collapse show" id="collapse-76t642lluwpkzu"><pre><code class="hljs asciidoc"><span class="hljs-section">31  30                  16                    0</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yuf3drlmngiym4"></i><span>asciidoc</span><div class="collapse show" id="collapse-yuf3drlmngiym4"><pre><code class="hljs asciidoc"><span class="hljs-section">31  30                  16                    0</span>
 <span class="hljs-section">+----+-------------------+--------------------+</span>
 <span class="hljs-section">|sign|      integer      |      fraction      |</span>
 <span class="hljs-section">+----+-------------------+--------------------+</span></code></pre></div></div>
@@ -356,7 +356,7 @@
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230828210315373336_905_20230601235924396067_218_image-20230601153308456.png" srcset="/img/loading.gif" lazyload alt="image-20230601153308456">
 <figcaption aria-hidden="true">image-20230601153308456</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cv5c4ulluwpkzu"></i><span>C</span><div class="collapse show" id="collapse-cv5c4ulluwpkzu"><pre><code class="hljs C"><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> FLOAT;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a5k2xclmngiym4"></i><span>C</span><div class="collapse show" id="collapse-a5k2xclmngiym4"><pre><code class="hljs C"><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> FLOAT;
 FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<span class="hljs-type">float</span> a)</span> {
   <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">float_</span> {</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> {</span>
@@ -383,7 +383,7 @@ FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<s
 <h3 id="浮点乘除">浮点乘除</h3>
 <h4 id="乘法">乘法</h4>
 <p>整数部分和小数部分分别相乘，进位。关于舍入处理，这里是采用的“0舍1入”的模式。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-duofjhlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-duofjhlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function">FLOAT <span class="hljs-title">F_mul_F</span><span class="hljs-params">(FLOAT a, FLOAT b)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yytnpplmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-yytnpplmngiym4"><pre><code class="hljs C++"><span class="hljs-function">FLOAT <span class="hljs-title">F_mul_F</span><span class="hljs-params">(FLOAT a, FLOAT b)</span> </span>{
   <span class="hljs-type">int</span> sign = (a ^ b) &gt;&gt; <span class="hljs-number">31</span>;  <span class="hljs-comment">// 计算符号位</span>
 
   <span class="hljs-comment">// 将a和b的符号位清零</span>
@@ -409,7 +409,7 @@ FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<s
 }</code></pre></div></div>
 <h4 id="除法">除法</h4>
 <p>和乘法类似，也是采用列竖式的思路。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5lgaoxlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-5lgaoxlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function">FLOAT <span class="hljs-title">F_div_F</span><span class="hljs-params">(FLOAT a, FLOAT b)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4fg9eulmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-4fg9eulmngiym4"><pre><code class="hljs C++"><span class="hljs-function">FLOAT <span class="hljs-title">F_div_F</span><span class="hljs-params">(FLOAT a, FLOAT b)</span> </span>{
   FLOAT result = <span class="hljs-built_in">Fabs</span>(a) / <span class="hljs-built_in">Fabs</span>(b);
   FLOAT m = <span class="hljs-built_in">Fabs</span>(a);
   FLOAT n = <span class="hljs-built_in">Fabs</span>(b);
@@ -431,7 +431,7 @@ FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<s
 }</code></pre></div></div>
 <h3 id="float和int转换">FLOAT和int转换</h3>
 <p>直接取整数部分即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g3kntmlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-g3kntmlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">int</span> <span class="hljs-title">F2int</span><span class="hljs-params">(FLOAT a)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r0cic7lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-r0cic7lmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">int</span> <span class="hljs-title">F2int</span><span class="hljs-params">(FLOAT a)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-keyword">if</span> ((a &amp; <span class="hljs-number">0x80000000</span>) == <span class="hljs-number">0</span>)
   {
@@ -456,7 +456,7 @@ FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<s
 }</code></pre></div></div>
 <h3 id="float和int乘除">FLOAT和int乘除</h3>
 <p>直观的思路是都把他们转成FLOAT类型。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-10liyllluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-10liyllluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> FLOAT <span class="hljs-title">F_mul_int</span><span class="hljs-params">(FLOAT a, <span class="hljs-type">int</span> b)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cx0c7ylmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-cx0c7ylmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> FLOAT <span class="hljs-title">F_mul_int</span><span class="hljs-params">(FLOAT a, <span class="hljs-type">int</span> b)</span></span>
 <span class="hljs-function"></span>{
     <span class="hljs-comment">// assert(0);</span>
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">F_mul_F</span>(a, <span class="hljs-built_in">int2F</span>(b));
@@ -479,7 +479,7 @@ FLOAT <span class="hljs-title function_">f2F</span><span class="hljs-params">(<s
 <figcaption aria-hidden="true">image-20230601112713746</figcaption>
 </figure>
 <p>报这种错误:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iriu0olluwpkzu"></i><span>shell</span><div class="collapse show" id="collapse-iriu0olluwpkzu"><pre><code class="hljs shell">Error:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bclc0dlmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-bclc0dlmngiym4"><pre><code class="hljs shell">Error:
 You may not have permission to collect stats.
 Consider tweaking /proc/sys/kernel/perf_event_paranoid:
  -1 - Not paranoid at all
@@ -487,8 +487,8 @@ Consider tweaking /proc/sys/kernel/perf_event_paranoid:
   1 - Disallow cpu events for unpriv
   2 - Disallow kernel profiling for unpriv</code></pre></div></div>
 <p>可以临时提权:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7uxz4nlluwpkzu"></i><span>shell</span><div class="collapse show" id="collapse-7uxz4nlluwpkzu"><pre><code class="hljs shell">sudo sh -c "echo -1 &gt; /proc/sys/kernel/perf_event_paranoid"</code></pre></div></div>
-<p>运行: </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xixc2jlluwpkzu"></i><span>shell</span><div class="collapse show" id="collapse-xixc2jlluwpkzu"><pre><code class="hljs shell">perf record nemu/build/x86-nemu nanos-lite/build/nanos-lite-x86-nemu.bin</code></pre></div></div><p></p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ytqfezlmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-ytqfezlmngiym4"><pre><code class="hljs shell">sudo sh -c "echo -1 &gt; /proc/sys/kernel/perf_event_paranoid"</code></pre></div></div>
+<p>运行: </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vt80nplmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-vt80nplmngiym4"><pre><code class="hljs shell">perf record nemu/build/x86-nemu nanos-lite/build/nanos-lite-x86-nemu.bin</code></pre></div></div><p></p>
 <p>我感觉也不太好看出什么。。</p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA5/20230828210321017793_737_20230601235934898992_647_image-20230601113933501.png" srcset="/img/loading.gif" lazyload alt="image-20230601113933501">

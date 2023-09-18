@@ -354,17 +354,17 @@
 <li>安装docker的依赖组件</li>
 </ol>
 <p>在安装docker之前，我们需要先通过yum来安装docker的必要的依赖组件。同时为了编译后面的配置信息格式化输出，我们同时需要安装jq工具。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-20w1filmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-20w1filmnf7n5t"><pre><code class="hljs shell">yum install -y yum-utils device-mapper-persistent-data lvm2</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f87n6klmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-f87n6klmnf7n5t"><pre><code class="hljs shell">yum install -y jq</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9pl3sxlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-9pl3sxlmngiym6"><pre><code class="hljs shell">yum install -y yum-utils device-mapper-persistent-data lvm2</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uig9a3lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-uig9a3lmngiym6"><pre><code class="hljs shell">yum install -y jq</code></pre></div></div>
 <ol start="2" type="1">
 <li>添加Docker的安装来源</li>
 </ol>
 <p>因为docker安装包不在yum的默认源列表中，因此在安装之前我们需要通过yum-config-manager
 --add-repo命令向yum默认源列表中添加docker源的地址。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ucj3bolmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-ucj3bolmnf7n5t"><pre><code class="hljs shell">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-paq4o4lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-paq4o4lmngiym6"><pre><code class="hljs shell">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</code></pre></div></div>
 <p>源添加成功后，我们可以使用yum
 list命令查看当前的docker源中支持的安装包版本列表。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hxv1fflmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-hxv1fflmnf7n5t"><pre><code class="hljs shell">yum list docker-ce --showduplicates | sort -r</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g80np0lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-g80np0lmngiym6"><pre><code class="hljs shell">yum list docker-ce --showduplicates | sort -r</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113647495716_679_image-20230904220149946.png" srcset="/img/loading.gif" lazyload alt="image-20230904220149946">
 <figcaption aria-hidden="true">image-20230904220149946</figcaption>
@@ -375,13 +375,13 @@ list命令查看当前的docker源中支持的安装包版本列表。</p>
 <p>docker依赖和docker源安装完成之后，我们就可以使用yum install
 docker-ce.x86_64命令来安装docker 应用，在使用yum
 install安装时，默认会选择最新的版本进行安装。如果需要指定安装版本也可以在命令后面加入具体的版本号，接下来我们来安装docker的最新版本。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3ebzyelmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-3ebzyelmnf7n5t"><pre><code class="hljs shell">yum install -y docker-ce.x86_64</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-om0p7glmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-om0p7glmngiym6"><pre><code class="hljs shell">yum install -y docker-ce.x86_64</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113649155016_953_image-20230904220307344.png" srcset="/img/loading.gif" lazyload alt="image-20230904220307344">
 <figcaption aria-hidden="true">image-20230904220307344</figcaption>
 </figure>
 <p>安装成功之后，我们还需要通过systemctl start命令来启动docker服务</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w4vlxzlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-w4vlxzlmnf7n5t"><pre><code class="hljs shell">systemctl start docker.service</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a14l6wlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-a14l6wlmngiym6"><pre><code class="hljs shell">systemctl start docker.service</code></pre></div></div>
 <h3 id="配置">配置</h3>
 <p>1.镜像源配置</p>
 <p>通过docker拉取镜像时，默认会通过国外的镜像源进行下载，因此可以配置国内的镜像源以加快下载速度。修改docker的镜像源时，我们使用vi编辑文件
@@ -391,18 +391,18 @@ install安装时，默认会选择最新的版本进行安装。如果需要指�
 <li>编辑完成之后按esc退出编辑模式。</li>
 <li>然后按大写的ZZ保存并退出vi。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gnytaolmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-gnytaolmnf7n5t"><pre><code class="hljs shell">vi /etc/docker/daemon.json</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-89tj2blmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-89tj2blmnf7n5t"><pre><code class="hljs shell">{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r5hpuylmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-r5hpuylmngiym6"><pre><code class="hljs shell">vi /etc/docker/daemon.json</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n9mf05lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-n9mf05lmngiym6"><pre><code class="hljs shell">{
    "registry-mirrors":["https://registry.docker-cn.com"]
 }</code></pre></div></div>
 <p>在编辑成功后，按ECS推出编辑模式，然后按ZZ退出vi。</p>
 <ol start="2" type="1">
 <li>镜像源修改后，需要重新启动docker服务。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-khan3klmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-khan3klmnf7n5t"><pre><code class="hljs shell">systemctl restart docker.service</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8inawklmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-8inawklmngiym6"><pre><code class="hljs shell">systemctl restart docker.service</code></pre></div></div>
 <p>服务重启成功后，我们可以通过docker
 version查看docker版本信息。如果出现客户端版本信息和服务版本信息，则说明dcoker已经安装成功且服务已经启动</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qm30h4lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-qm30h4lmnf7n5t"><pre><code class="hljs shell">docker version</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-in9etplmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-in9etplmngiym6"><pre><code class="hljs shell">docker version</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113759513071_319_image-20230904220736850.png" srcset="/img/loading.gif" lazyload alt="image-20230904220736850">
 <figcaption aria-hidden="true">image-20230904220736850</figcaption>
@@ -411,7 +411,7 @@ version查看docker版本信息。如果出现客户端版本信息和服务版�
 <li>服务启动之后，为了防止计算机重启之后docker服务被关闭，我们还可以通过systemctl
 enable命令将docker服务配置为开机自启动。（此步骤为可选操作）</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4x7y9elmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-4x7y9elmnf7n5t"><pre><code class="hljs shell">systemctl enable docker.service</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rkard9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-rkard9lmngiym6"><pre><code class="hljs shell">systemctl enable docker.service</code></pre></div></div>
 <h3 id="快速上手">快速上手</h3>
 <p>在前面的小节中我们介绍了Docker
 的安装的配置，接下来为大家介绍一些Docker的快速上手命令和用法。</p>
@@ -419,7 +419,7 @@ enable命令将docker服务配置为开机自启动。（此步骤为可选操�
 <li>启动hello-world</li>
 </ol>
 <p>Docker安装配置成功之后，我们就可以通过<code>docker run</code>命令启动轻量级的容器虚拟机。我们执行如下命令</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-516ylqlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-516ylqlmnf7n5t"><pre><code class="hljs shell">docker run hello-world</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hyqgstlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-hyqgstlmngiym6"><pre><code class="hljs shell">docker run hello-world</code></pre></div></div>
 <p>会发现屏幕上输出了Hello from
 Docker!信息。这个信息输出表示hello-world容器虚拟机启动成功。</p>
 <figure>
@@ -431,7 +431,7 @@ Docker!信息。这个信息输出表示hello-world容器虚拟机启动成功�
 </ol>
 <p>在上一个步骤中，我们演示了docker最基本的用法，这种方式启动的<code>hello-world</code>容器，在启动之后会输出文字，在输出之后容器就会结束。</p>
 <p>接下来我们来启动一个可以长期运行的bash容器。我们在命令行中输入如下命令，运行成功后会看到命令提示行变为bash，这表示容器虚拟机已经持续运行。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hswyxylmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-hswyxylmnf7n5t"><pre><code class="hljs shell">docker run -it bash</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w1hlr8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-w1hlr8lmngiym6"><pre><code class="hljs shell">docker run -it bash</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113808950713_810_image-20230904220909280.png" srcset="/img/loading.gif" lazyload alt="image-20230904220909280">
 <figcaption aria-hidden="true">image-20230904220909280</figcaption>
@@ -440,14 +440,14 @@ Docker!信息。这个信息输出表示hello-world容器虚拟机启动成功�
 <li>bash容器的退出</li>
 </ol>
 <p>在运行的bash容器中我们可以使用一些基本的linux命令，如pwd，ls等</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gjck9qlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-gjck9qlmnf7n5t"><pre><code class="hljs shell">pwd
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hkg98xlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-hkg98xlmngiym6"><pre><code class="hljs shell">pwd
 ls</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113813340599_640_image-20230904221015298.png" srcset="/img/loading.gif" lazyload alt="image-20230904221015298">
 <figcaption aria-hidden="true">image-20230904221015298</figcaption>
 </figure>
 <p>如果希望退出bash容器，回到宿主机，我们在控制台中输入exit命令即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2mkguqlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-2mkguqlmnf7n5t"><pre><code class="hljs shell">exit</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zb4pixlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-zb4pixlmngiym6"><pre><code class="hljs shell">exit</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113818586520_163_image-20230904221027326.png" srcset="/img/loading.gif" lazyload alt="image-20230904221027326">
 <figcaption aria-hidden="true">image-20230904221027326</figcaption>
@@ -462,7 +462,7 @@ image状态。这表示在容器虚拟机第一次运行时，会首先从远程
 </ol>
 <p>当我们需要查找容器时，可以通过docker
 search命令在的镜像源中查找所需要的容器镜像。接下来我们来查找ubuntu容器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8u2s0glmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-8u2s0glmnf7n5t"><pre><code class="hljs shell">docker search ubuntu</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-llmfwblmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-llmfwblmngiym6"><pre><code class="hljs shell">docker search ubuntu</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113823028609_871_image-20230904221056674.png" srcset="/img/loading.gif" lazyload alt="image-20230904221056674">
 <figcaption aria-hidden="true">image-20230904221056674</figcaption>
@@ -478,33 +478,33 @@ search命令在的镜像源中查找所需要的容器镜像。接下来我们�
 <li>编辑完成之后按esc退出编辑模式。</li>
 <li>然后按大写的ZZ保存并退出vi。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qdmamglmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-qdmamglmnf7n5t"><pre><code class="hljs shell">vi docker-tags</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-abiznulmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-abiznulmnf7n5t"><pre><code class="hljs shell">curl -s -S "https://registry.hub.docker.com/v2/repositories/library/$1/tags/?page=$2" |
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uuea8rlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-uuea8rlmngiym6"><pre><code class="hljs shell">vi docker-tags</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b1h2eplmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-b1h2eplmngiym6"><pre><code class="hljs shell">curl -s -S "https://registry.hub.docker.com/v2/repositories/library/$1/tags/?page=$2" |
 sed -e 's/,/\n/g' -e 's/\[/\\\[\n/g' |
 grep -E '"name":|"count":' |
 sed -e 's/"//g' -e "s/name:/$1:/g" -e "s/{count:/$1总版本数-/"</code></pre></div></div>
 <p>docker-tags脚本编辑好之后，需要通过chmod修改文件权限才可以执行。在权限修改完成之后，就可以使用docker-tags脚本来查询相关镜像的最近版本信息了。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7cuboklmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-7cuboklmnf7n5t"><pre><code class="hljs shell">chmod 777 docker-tags 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j7m0dclmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-j7m0dclmngiym6"><pre><code class="hljs shell">chmod 777 docker-tags 
 ./docker-tags ubuntu</code></pre></div></div>
 <ol type="1">
 <li>拉取容器镜像</li>
 </ol>
 <p>当我们查找到镜像的版本信息之后，就可以拉取镜像到本地了。在拉取镜像时我们可指定拉取镜像的版本，也可不指定版本默认拉取最新版本。首先我们使用docker
 pull命令来拉取ubuntu容器的jammy版本。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uux3e4lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-uux3e4lmnf7n5t"><pre><code class="hljs shell">docker pull ubuntu:jammy</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-30klv9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-30klv9lmngiym6"><pre><code class="hljs shell">docker pull ubuntu:jammy</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113826463659_596_image-20230904221220297.png" srcset="/img/loading.gif" lazyload alt="image-20230904221220297">
 <figcaption aria-hidden="true">image-20230904221220297</figcaption>
 </figure>
 <p>接下来我们来拉取ubuntu的最新版本。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vkhhuglmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-vkhhuglmnf7n5t"><pre><code class="hljs shell">docker pull ubuntu</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0znftzlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-0znftzlmngiym6"><pre><code class="hljs shell">docker pull ubuntu</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113831522600_650_image-20230904221246435.png" srcset="/img/loading.gif" lazyload alt="image-20230904221246435">
 <figcaption aria-hidden="true">image-20230904221246435</figcaption>
 </figure>
 <p>当镜像源已经拉取到本地之后，我们可以通过docker
 images命令来查看已经拉取到的本地镜像。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-us8zxqlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-us8zxqlmnf7n5t"><pre><code class="hljs shell">docker images</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qlvihnlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-qlvihnlmngiym6"><pre><code class="hljs shell">docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113834482846_648_image-20230904221300207.png" srcset="/img/loading.gif" lazyload alt="image-20230904221300207">
 <figcaption aria-hidden="true">image-20230904221300207</figcaption>
@@ -519,10 +519,10 @@ images命令来查看已经拉取到的本地镜像。</p>
 create命令，利用下载好的ubuntu镜像创建容器。注意：因为我们要创建一个可以持久运行的ubuntu容器，因此需要添加-it参数。</p>
 <p><code>-i</code>：这个参数代表“交互式（Interactive）”。它使容器的标准输入（stdin）保持打开状态，允许你与容器的命令行交互。这意味着你可以在容器内部执行命令，并从键盘输入内容，就像在本地计算机上的终端一样。</p>
 <p><code>-t</code>：这个参数代表“终端（TTY）”。它为容器分配了一个伪终端（pseudo-TTY），这使得容器内的命令行界面可以正常工作，包括支持终端窗口大小的调整和ANSI转义序列的处理。这通常与<code>-i</code>一起使用，以确保交互式终端在容器内部能够正常运行。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ihcrpolmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-ihcrpolmnf7n5t"><pre><code class="hljs shell">docker create -it ubuntu</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ryra3qlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ryra3qlmngiym6"><pre><code class="hljs shell">docker create -it ubuntu</code></pre></div></div>
 <p>容器创建成功之后，可以使用<code>docker ps</code>命令查看现有的容器，注意：如果docker
 ps默认只会显示正在运行的容器。如果想查看所有状态的容器，需要添加-a参数。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4x7oj7lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-4x7oj7lmnf7n5t"><pre><code class="hljs shell">docker ps -a</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p6gcqvlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-p6gcqvlmngiym6"><pre><code class="hljs shell">docker ps -a</code></pre></div></div>
 <p>注：换了一个服务器，因此只显示了一个</p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113838384667_198_image-20230904222052915.png" srcset="/img/loading.gif" lazyload alt="image-20230904222052915">
@@ -535,7 +535,7 @@ ps默认只会显示正在运行的容器。如果想查看所有状态的容器
 ID表示系统为容器创建的ID，IMAGE为容器的镜像名称。STATUS表示容器当前的状态。NAMES为容器的名称。</p>
 <p>使用默认的docker
 create命令所创建的容器并没有指定名称，因此docker会为容器生成一个随机的名字。如果用户想创建指定名称的容器，则可以使用<code>--name</code>参数。注意如果用户制定了容器名，则要注意容器不要重名，否则会创建失败。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5dwc4qlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-5dwc4qlmnf7n5t"><pre><code class="hljs shell">docker create -it --name ubuntu-1 ubuntu
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rt9ybylmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-rt9ybylmngiym6"><pre><code class="hljs shell">docker create -it --name ubuntu-1 ubuntu
 docker ps -a</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906113842660170_765_image-20230904222138404.png" srcset="/img/loading.gif" lazyload alt="image-20230904222138404">
@@ -547,7 +547,7 @@ docker ps -a</code></pre></div></div>
 <p>当容器创建好之后，我们就可以通过docker
 start命令来启动容器，容器启动成功后通过docker
 ps命令可以查看到容器状态的变化。在这里我们要注意：同一个镜像创建的多个容器之间是不相关的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-198xjulmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-198xjulmnf7n5t"><pre><code class="hljs shell">docker start ubuntu-1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ar5x6blmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ar5x6blmngiym6"><pre><code class="hljs shell">docker start ubuntu-1
 docker ps -a</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115032403100_490_image-20230904222232252.png" srcset="/img/loading.gif" lazyload alt="image-20230904222232252">
@@ -561,7 +561,7 @@ run。使用该命令时，docker会自动完成下载镜像，创建容器，�
 </ol>
 <p>通过以下的一条命令，我们就可以完成下载busybox的容器镜像，创建名为busybox-1的容器，为了让容器可以在创建之后长期运行我们要使用-it参数，为了让容器在启动之后在后台运行，我们需要使用-d参数。在容器启动之后我们使用docker
 ps命令查询正在运行的容器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5dqge7lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-5dqge7lmnf7n5t"><pre><code class="hljs shell">docker run -itd --name ubuntu-2 ubuntu
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-imjod8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-imjod8lmngiym6"><pre><code class="hljs shell">docker run -itd --name ubuntu-2 ubuntu
 docker ps -a</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115035769165_650_image-20230904222752630.png" srcset="/img/loading.gif" lazyload alt="image-20230904222752630">
@@ -572,7 +572,7 @@ docker ps -a</code></pre></div></div>
 </ol>
 <p>使用-d参数创建容器之后，容器在后台运行，前台的命令行仍然指向宿主机。为了能狗通过命令行操作容器，我们可以使用docker
 exec命令在ubuntu-2容器上启动bash控制台程序，从而对容器进行操作。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eimcsclmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-eimcsclmnf7n5t"><pre><code class="hljs shell">docker exec -it ubuntu-2 bin/bash</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uxx5v6lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-uxx5v6lmngiym6"><pre><code class="hljs shell">docker exec -it ubuntu-2 bin/bash</code></pre></div></div>
 <p>​
 命令执行之后提示行提示符发生了改变。这说明当前用户所操作的已经是容器中的操作系统。</p>
 <figure>
@@ -587,9 +587,9 @@ run创建容器的时候，如果不使用-d参数。则启动容器成功之后
 <p>接下来我们创建一次性容器，并且在一次性容器退出之后使用docker ps
 -a查看容器，当我们使用docker
 ps时，只会列出正在运行的容器，而使用了-a参数之后，会列出包括了正在运行的和已经退出了的各种状态的容器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-isv9julmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-isv9julmnf7n5t"><pre><code class="hljs shell">docker run -it --name temp ubuntu
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b6s3rvlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-b6s3rvlmngiym6"><pre><code class="hljs shell">docker run -it --name temp ubuntu
 exit</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1sicvrlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-1sicvrlmnf7n5t"><pre><code class="hljs shell">docker ps -a</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tp4wu5lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-tp4wu5lmngiym6"><pre><code class="hljs shell">docker ps -a</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115043608109_578_image-20230904223136488.png" srcset="/img/loading.gif" lazyload alt="image-20230904223136488">
 <figcaption aria-hidden="true">image-20230904223136488</figcaption>
@@ -599,9 +599,9 @@ exit</code></pre></div></div>
 <li>启动容器并测试常用命令</li>
 </ol>
 <p>首先用docker run创建一个新的ubuntu容器并启动</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zdnbezlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-zdnbezlmnf7n5t"><pre><code class="hljs shell">docker run -it --name ubuntu-3 ubuntu</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uh3eb2lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-uh3eb2lmngiym6"><pre><code class="hljs shell">docker run -it --name ubuntu-3 ubuntu</code></pre></div></div>
 <p>接下来再通过<code>lsb_release</code>查看操作系统的状态。会显示命令无法找到，原因是通过容器安装的ubuntu属于极简版本，没有安装非必要的命令。为了能在容器虚拟机中执行常用的操作</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-73tyielmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-73tyielmnf7n5t"><pre><code class="hljs shell">lsb_release</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3ja3v4lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-3ja3v4lmngiym6"><pre><code class="hljs shell">lsb_release</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115049222439_512_image-20230904223327185.png" srcset="/img/loading.gif" lazyload alt="image-20230904223327185">
 <figcaption aria-hidden="true">image-20230904223327185</figcaption>
@@ -614,7 +614,7 @@ install来安装lsb_release，
 ifconfig，vim三个工具。需要注意的在使用apt-get
 install之前，需要首先使用apt-get
 udpate来更新本地资源库。另外就是此步骤受网络速度影响可能会有比大的延迟。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gvohlnlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-gvohlnlmnf7n5t"><pre><code class="hljs shell">apt-get update
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e3qx4almngiym6"></i><span>shell</span><div class="collapse show" id="collapse-e3qx4almngiym6"><pre><code class="hljs shell">apt-get update
 apt-get install -y lsb-core net-tools vim --fix-missing</code></pre></div></div>
 <p>在容器中体验安装命令后，使用exit退出容器继续下面操作。</p>
 <ol type="1">
@@ -622,7 +622,7 @@ apt-get install -y lsb-core net-tools vim --fix-missing</code></pre></div></div>
 </ol>
 <p>在docker中，传统的ubuntu或者centos镜像所包含的命令数量都非常少，每次使用时都需要手动安装相关命令非常不方便，因此在实际使用docker时，我们经常使用busybox镜像来作为基础镜像。</p>
 <p>接下来我们尝试创建busybox镜像，要注意的时，为了保证镜像体积，busybox镜像中并不包括bash命令，而是使用了替代的sh命令。因此我们创建busybox镜像的命令也需要做调整。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hikek5lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-hikek5lmnf7n5t"><pre><code class="hljs shell">docker run -itd --name busybox-1 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6s3anmlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-6s3anmlmngiym6"><pre><code class="hljs shell">docker run -itd --name busybox-1 busybox
 docker exec -it busybox-1 sh</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115052365509_199_image-20230904223513737.png" srcset="/img/loading.gif" lazyload alt="image-20230904223513737">
@@ -635,7 +635,7 @@ docker exec -it busybox-1 sh</code></pre></div></div>
 <li>编辑完成之后按esc退出编辑模式。</li>
 <li>然后按大写的ZZ保存并退出vi。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c13ycolmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-c13ycolmnf7n5t"><pre><code class="hljs shell">ifconfig
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v9qnmulmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-v9qnmulmngiym6"><pre><code class="hljs shell">ifconfig
 vi a.txt</code></pre></div></div>
 <p>体验完busybox镜像的使用后，我们执行exit退出继续下面操作。</p>
 <h3 id="查看容器系统信息">查看容器系统信息</h3>
@@ -644,13 +644,13 @@ vi a.txt</code></pre></div></div>
 <li>查看宿主机信息</li>
 </ol>
 <p>为了对比容器和宿主机，我们先用lsb_release -a命令查看宿主操作系统</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-13bq4blmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-13bq4blmnf7n5t"><pre><code class="hljs shell">lsb_release -a</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kl6nphlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-kl6nphlmngiym6"><pre><code class="hljs shell">lsb_release -a</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115057562682_162_image-20230904223838981.png" srcset="/img/loading.gif" lazyload alt="image-20230904223838981">
 <figcaption aria-hidden="true">image-20230904223838981</figcaption>
 </figure>
 <p>接下来我们再用ifconfig命令查看宿主机网络信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xsd34blmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-xsd34blmnf7n5t"><pre><code class="hljs shell">ifconfig</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7gukh8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-7gukh8lmngiym6"><pre><code class="hljs shell">ifconfig</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115101741869_245_image-20230904225731155.png" srcset="/img/loading.gif" lazyload alt="image-20230904225731155">
 <figcaption aria-hidden="true">image-20230904225731155</figcaption>
@@ -659,15 +659,15 @@ vi a.txt</code></pre></div></div>
 <li>查看容器信息</li>
 </ol>
 <p>当上述命令(在<code>ubuntu-3</code>中)安装好之后，我们就可以查看容器操作系统的状态和网络状态了。查询后发现和宿主机的信息已经不同。说明我们的控制台已经在容器操作系统中了。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-apd41llmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-apd41llmnf7n5t"><pre><code class="hljs shell">docker start ubuntu-3
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-63indvlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-63indvlmngiym6"><pre><code class="hljs shell">docker start ubuntu-3
 docker exec -it ubuntu-2 bin/bash</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gj8dfclmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-gj8dfclmnf7n5t"><pre><code class="hljs shell">lsb_release -a</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sqpsfslmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-sqpsfslmngiym6"><pre><code class="hljs shell">lsb_release -a</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115105385086_458_image-20230904225509265.png" srcset="/img/loading.gif" lazyload alt="image-20230904225509265">
 <figcaption aria-hidden="true">image-20230904225509265</figcaption>
 </figure>
 <p>我们接下来在查看容器的IP地址，（注意和宿主机网络信息的对比）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aodvr8lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-aodvr8lmnf7n5t"><pre><code class="hljs shell">ifconfig</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fapdhnlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-fapdhnlmngiym6"><pre><code class="hljs shell">ifconfig</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115109519062_970_image-20230904225756902.png" srcset="/img/loading.gif" lazyload alt="image-20230904225756902">
 <figcaption aria-hidden="true">image-20230904225756902</figcaption>
@@ -681,13 +681,13 @@ docker exec -it ubuntu-2 bin/bash</code></pre></div></div>
 </ol>
 <p>首先我们来创建一个新的ubuntu容器。在创建成功后使用docker
 exec进入容器控制台。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s7gpixlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-s7gpixlmnf7n5t"><pre><code class="hljs shell">docker run -itd --name ubuntu-3 ubuntu
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vqenjflmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-vqenjflmngiym6"><pre><code class="hljs shell">docker run -itd --name ubuntu-3 ubuntu
 docker exec -it ubuntu-3 /bin/bash</code></pre></div></div>
 <ol start="2" type="1">
 <li>安装工具</li>
 </ol>
 <p>为了演示后面的实验，我们在容器中安装python3，ifconfig，curl三个命令行工具。其中ifconfig命令工具需要安装net-tools工具包。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ocs51wlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-ocs51wlmnf7n5t"><pre><code class="hljs shell">apt-get update
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-figkp0lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-figkp0lmngiym6"><pre><code class="hljs shell">apt-get update
 apt-get install -y python3 net-tools curl</code></pre></div></div>
 <ol start="3" type="1">
 <li>运行服务</li>
@@ -696,7 +696,7 @@ apt-get install -y python3 net-tools curl</code></pre></div></div>
 http服务，服务启动在8000端口，并使用<code>nohup</code>命令将服务设置为在后台运行(nohup:ignoring
 input and appending output to
 'nphup.out'按回车)。在服务启动之后，我们在容器中使用curl测试一下服务的运行状态。会看到http服务返回了网页。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d8ypmzlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-d8ypmzlmnf7n5t"><pre><code class="hljs shell">nohup python3 -m http.server 8000 &amp;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cqdf6llmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-cqdf6llmngiym6"><pre><code class="hljs shell">nohup python3 -m http.server 8000 &amp;
 curl 127.0.0.1:8000</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115112783989_685_image-20230905102403283.png" srcset="/img/loading.gif" lazyload alt="image-20230905102403283">
@@ -716,7 +716,7 @@ curl 127.0.0.1:8000</code></pre></div></div>
 <li>测试访问容器服务</li>
 </ol>
 <p>在宿主机控制台中，我们同样使用<code>curl</code>命令来访问容器中的http服务，需要注意的是：在宿主机中我们需要通过上一步<code>容器IP地址</code>才能访问到容器中的服务。通过测试我们发现在宿主机中通过IP访问容器服务活得内容和在容器中获得的内容一致。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gxs41jlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-gxs41jlmnf7n5t"><pre><code class="hljs shell">curl [容器IP]:8000</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0me4kilmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-0me4kilmngiym6"><pre><code class="hljs shell">curl [容器IP]:8000</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115120768011_197_image-20230905102847301.png" srcset="/img/loading.gif" lazyload alt="image-20230905102847301">
 <figcaption aria-hidden="true">image-20230905102847301</figcaption>
@@ -724,7 +724,7 @@ curl 127.0.0.1:8000</code></pre></div></div>
 <p>在上一个步骤中我们通过宿主机访问了容器内的服务。除此之外我们还可以在宿主机中通过docker
 top命令来查看容器中正在运行的具体进程。其命令的语法为docker top
 容器名。我们输入如下命令，可以看到ubuntu-3容器运行着2个进程，分别是bash控制台进程和python3http服务器进程。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1x4q32lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-1x4q32lmnf7n5t"><pre><code class="hljs shell">docker top ubuntu-3</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vouc5glmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-vouc5glmngiym6"><pre><code class="hljs shell">docker top ubuntu-3</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115127139220_531_image-20230905103123487.png" srcset="/img/loading.gif" lazyload alt="image-20230905103123487">
 <figcaption aria-hidden="true">image-20230905103123487</figcaption>
@@ -735,7 +735,7 @@ pause/unpause命令对容器进行暂停/恢复。当容器被暂停之后，容
 <ol type="1">
 <li>通过<code>docker pause</code>命令暂停容器运行，容器暂停后通过<code>docker top</code>命令来查看容器中进程。发现进程依然存在，再通过<code>curl</code>测试http服务，发现已经无响应，证明服务已经停止。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u41rihlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-u41rihlmnf7n5t"><pre><code class="hljs shell">docker pause ubuntu-3
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-49yhn3lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-49yhn3lmngiym6"><pre><code class="hljs shell">docker pause ubuntu-3
 docker ps -a
 curL[容器IP]:8000 
 Ctrl+C</code></pre></div></div>
@@ -757,7 +757,7 @@ Ctrl+C</code></pre></div></div>
 </ol>
 <p>首先我们利用<code>docker top</code>命令显示容器中正在运行的应用。接下来我们使用<code>docker stop</code>命令停止容器，停止之后用<code>docker ps -a</code>命令查看容器状态，会发现容器变成了<code>Exited</code>状态</p>
 <p>看容器状态，会发现容器变成了Exited状态</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-djlah0lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-djlah0lmnf7n5t"><pre><code class="hljs shell">docker top ubuntu-3
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2uztc1lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-2uztc1lmngiym6"><pre><code class="hljs shell">docker top ubuntu-3
 docker stop ubuntu-3
 docker ps -a</code></pre></div></div>
 <figure>
@@ -768,9 +768,9 @@ docker ps -a</code></pre></div></div>
 <li>容器的重启</li>
 </ol>
 <p>对于已经进入<code>Exited</code>状态的容器，我们可以利用<code>docker restart</code>命令重新启动容器，当容器重新启动之后，我们再利用<code>docker top</code>和<code>curl</code>测试容器中的http服务，已经不可使用。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8vd2j2lmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-8vd2j2lmnf7n5t"><pre><code class="hljs shell">docker restart ubuntu-3
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u1pj51lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-u1pj51lmngiym6"><pre><code class="hljs shell">docker restart ubuntu-3
 docker top ubuntu-3</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-618c0wlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-618c0wlmnf7n5t"><pre><code class="hljs shell">curl [容器IP]:8000</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4rnqp0lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-4rnqp0lmngiym6"><pre><code class="hljs shell">curl [容器IP]:8000</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115145758825_431_image-20230905104419168.png" srcset="/img/loading.gif" lazyload alt="image-20230905104419168">
 <figcaption aria-hidden="true">image-20230905104419168</figcaption>
@@ -780,18 +780,18 @@ docker top ubuntu-3</code></pre></div></div>
 </ol>
 <p>对于已经不再需要的容器，我们可以使用<code>docker rm</code>命令进行删除，<code>docker rm</code>
 命令可以使用<code>CONTAINER ID</code>或者<code>NAME</code>作为参数。在默认情况下，我们只能删除<code>Exited状</code>态下的容器，如果容器的状态不是停止。则需要为<code>docker rm</code>添加<code>--force</code>或者<code>-f</code>参数才可以删除。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qz8qfblmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-qz8qfblmnf7n5t"><pre><code class="hljs shell">docker ps -a
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mxsc57lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-mxsc57lmngiym6"><pre><code class="hljs shell">docker ps -a
 docker rm --force [CONTAINER ID]
 docker ps -a</code></pre></div></div>
 <p>或</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kyfqzdlmnf7n5t"></i><span>shell</span><div class="collapse show" id="collapse-kyfqzdlmnf7n5t"><pre><code class="hljs shell">docker rm --force ubuntu-3
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u8l4vwlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-u8l4vwlmngiym6"><pre><code class="hljs shell">docker rm --force ubuntu-3
 docker ps -a</code></pre></div></div>
 <p>我们会发现容器已经被删除了。</p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/20230906115148957414_272_image-20230905104646099.png" srcset="/img/loading.gif" lazyload alt="image-20230905104646099">
 <figcaption aria-hidden="true">image-20230905104646099</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-huikndlmnf7n5t"></i><span>stylus</span><div class="collapse show" id="collapse-huikndlmnf7n5t"><pre><code class="hljs stylus">rm-bp1n5f8yed463o5d0<span class="hljs-selector-class">.mysql</span><span class="hljs-selector-class">.rds</span><span class="hljs-selector-class">.aliyuncs</span>.com</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uuvwcmlmngiym6"></i><span>stylus</span><div class="collapse show" id="collapse-uuvwcmlmngiym6"><pre><code class="hljs stylus">rm-bp1n5f8yed463o5d0<span class="hljs-selector-class">.mysql</span><span class="hljs-selector-class">.rds</span><span class="hljs-selector-class">.aliyuncs</span>.com</code></pre></div></div>
 
                 
               </div>

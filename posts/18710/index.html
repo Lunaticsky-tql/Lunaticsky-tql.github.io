@@ -23,8 +23,8 @@
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
 <meta property="og:description" content="使用frp内网穿透远程访问Vmware虚拟机 为什么需要内网穿透功能 大三的课程实验大多需要x86的linux环境，如果可以使用mac甚至手机或平板就可以远程访问Windows中的linux虚拟机，那就不用背着沉重又特别容易没电的游戏本跑来跑去了。经过一番探索发现内网穿透可以满足我的需求。 如果有自己的云服务器(关键是有公网ip)，便可以使用开源的frp工具进行内网穿透。开干！ 参考 本文只供个人">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-22T01:12:17.617Z">
-<meta property="article:modified_time" content="2023-03-22T01:12:17.617Z">
+<meta property="article:published_time" content="2023-08-28T12:58:39.819Z">
+<meta property="article:modified_time" content="2023-08-28T12:58:39.819Z">
 <meta property="article:author" content="Lunatic sky">
 <meta property="article:tag" content="环境配置">
 <meta name="twitter:card" content="summary_large_image">
@@ -234,8 +234,8 @@
         
           <span class="post-meta">
             <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-            <time datetime="2023-03-22 09:12" pubdate>
-              2023年3月22日 上午
+            <time datetime="2023-08-28 20:58" pubdate>
+              2023年8月28日 晚上
             </time>
           </span>
           
@@ -321,16 +321,16 @@
 <p>https://gofrp.org/docs/setup/systemd/</p>
 <h2 id="操作步骤">操作步骤</h2>
 <p>服务器和客户端都需要下载:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-653b6plln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-653b6plln8zueq"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o2lvf1lmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-o2lvf1lmngiym4"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
 <p><strong>注:下载时一定要注意选对系统架构。比如2016南京大学PA的环境是32位Ubuntu，就要下<code>frp_0.47.0_linux_386.tar.gz</code>。</strong></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y4tlgqlln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-y4tlgqlln8zueq"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_386.tar.gz</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f995a1lmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-f995a1lmngiym4"><pre><code class="hljs shell">wget https://github.com/fatedier/frp/releases/download/v0.47.0/frp_0.47.0_linux_386.tar.gz</code></pre></div></div>
 <p>解压</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0lffw9lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-0lffw9lln8zueq"><pre><code class="hljs shell">tar -zxvf frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4duuwvlmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-4duuwvlmngiym4"><pre><code class="hljs shell">tar -zxvf frp_0.47.0_linux_amd64.tar.gz</code></pre></div></div>
 <p>改名。非必须，但方便后续配置</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pm5gl3lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-pm5gl3lln8zueq"><pre><code class="hljs shell">mv frp_0.47.0_linux_amd64 frp</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cvwx5dlmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-cvwx5dlmngiym4"><pre><code class="hljs shell">mv frp_0.47.0_linux_amd64 frp</code></pre></div></div>
 <p>具体的配置项可以参见第一篇博客。<a target="_blank" rel="noopener" href="https://gofrp.org/docs/examples/ssh/">官方</a>也说的很简洁明了。</p>
 <p>按照官网里的<a target="_blank" rel="noopener" href="https://gofrp.org/docs/setup/systemd/">开机自启</a>配置发现开机自启不成功，原因和解决方法可参见<a target="_blank" rel="noopener" href="https://www.mmuaa.com/post/537d04e936b78620.html">这个博客</a></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hb7hx2lln8zueq"></i><span>shell</span><div class="collapse show" id="collapse-hb7hx2lln8zueq"><pre><code class="hljs shell">[Unit]
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-54y5f3lmngiym4"></i><span>shell</span><div class="collapse show" id="collapse-54y5f3lmngiym4"><pre><code class="hljs shell">[Unit]
 <span class="hljs-meta prompt_"># </span><span class="language-bash">服务名称，可自定义</span>
 Description = frp client
 After = network.target syslog.target
@@ -402,7 +402,7 @@ WantedBy = multi-user.target</code></pre></div></div>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年3月22日</div>
+          <div>2023年8月28日</div>
         </div>
       
       
@@ -434,9 +434,9 @@ WantedBy = multi-user.target</code></pre></div></div>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/53897/" title="软件工程-需求分析作业">
+                      <a href="/posts/46285/" title="重新认识HTTP/1.1">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">软件工程-需求分析作业</span>
+                        <span class="hidden-mobile">重新认识HTTP/1.1</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -444,8 +444,8 @@ WantedBy = multi-user.target</code></pre></div></div>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/42585/" title="Lenet5 手写数字分类">
-                        <span class="hidden-mobile">Lenet5 手写数字分类</span>
+                      <a href="/posts/31511/" title="HTTP总结(二)">
+                        <span class="hidden-mobile">HTTP总结(二)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

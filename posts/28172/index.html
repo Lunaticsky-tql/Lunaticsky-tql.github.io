@@ -362,7 +362,7 @@
 <figcaption aria-hidden="true">image-20230501202135298</figcaption>
 </figure>
 <p>因此我们的寄存器结构应该长这样:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ffuzuwlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-ffuzuwlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5n31eilmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-5n31eilmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span>{
     <span class="hljs-type">rtlreg_t</span> limit : <span class="hljs-number">16</span>;
     <span class="hljs-type">rtlreg_t</span> base : <span class="hljs-number">32</span>;
 } idtr;</code></pre></div></div>
@@ -372,7 +372,7 @@
 <figcaption aria-hidden="true">image-20230501202925594</figcaption>
 </figure>
 <p>综上，代码如下所示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gl9hfglluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-gl9hfglluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(lidt) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bzqau1lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-bzqau1lmngiym4"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(lidt) {
   <span class="hljs-comment">//TODO();</span>
   <span class="hljs-built_in">rtl_li</span>(&amp;s0,id_dest-&gt;addr);
   cpu.idtr.limit=<span class="hljs-built_in">vaddr_read</span>(s0,<span class="hljs-number">2</span>);
@@ -401,7 +401,7 @@
 </ol>
 <p>为了diftest，我们需要手动添加<code>cs</code>寄存器，在寄存器结构体里补充一下即可。</p>
 <p>下面是依据四个步骤实现的<code>raise_intr</code>。其中额外关中断防止嵌套中断，并检查了特权级(额外是指不这么做也不影响NEMU实现的正确)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h09vgclluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-h09vgclluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wwiok7lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-wwiok7lmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">/* <span class="hljs-doctag">TODO:</span> Trigger an interrupt/exception with ``NO''.</span>
 <span class="hljs-comment">   * That is, use ``NO'' to index the IDT.</span>
@@ -436,7 +436,7 @@
 }</code></pre></div></div>
 <p>int指令根据手册有三种。<code>0xcc</code>的是断点，<code>0xcd</code>的是一般的中断指令，<code>0xce</code>是溢出中断指令。<code>0xcc</code>和<code>0xce</code>中断号分别为3和4。<code>decinfo.seq_pc</code>中保存的是int
 指令的下一条指令。因此可以做以下实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2ottcylluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-2ottcylluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-type">int</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0rx4r8lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-0rx4r8lmngiym4"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-type">int</span>) {
 <span class="hljs-comment">//  TODO();</span>
   <span class="hljs-keyword">switch</span>(decinfo.opcode){
     <span class="hljs-keyword">case</span> <span class="hljs-number">0xcc</span> : <span class="hljs-built_in">raise_intr</span>(<span class="hljs-number">0x3</span>,decinfo.seq_pc);  <span class="hljs-keyword">break</span>;
@@ -448,7 +448,7 @@
   <span class="hljs-built_in">difftest_skip_dut</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
 }</code></pre></div></div>
 <p>写完之后发现报错，是没有外部声明。在开头加上外部声明:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c1i543lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-c1i543lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lqfueolmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-lqfueolmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>;</code></pre></div></div>
 <p>关于讲义中提到阅读<code>_cte_init()</code>的代码,
 找出相应的异常入口地址:对x86来说,
 这个函数就是准备了一个有意义的IDT，出现异常的时候根据IDTR中保存的信息去找中断向量表即可。这个过程上面已经实现了。</p>
@@ -464,7 +464,7 @@
 flags register from the stack and resumes the interrupted routine.</p>
 </blockquote>
 <p>故可实现如下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6ysbvilluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-6ysbvilluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(iret) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-993v34lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-993v34lmngiym4"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(iret) {
   <span class="hljs-comment">//TODO();</span>
   <span class="hljs-built_in">rtl_pop</span>(&amp;s0);
   <span class="hljs-built_in">rtl_j</span>(s0);
@@ -482,7 +482,7 @@ flags register from the stack and resumes the interrupted routine.</p>
 </figure>
 <p>顾名思义，它的功能是把所有通用寄存器都压入栈中。这个可以说是非常赏心悦目了，对照实现即可。<code>popa</code>显然也是对称的，不再赘述。</p>
 <p><img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA3/20230828211434803453_893_20230601235723245458_604_image-20230501223135299.png" srcset="/img/loading.gif" lazyload alt="image-20230501223135299" width="50%" height="50%"></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hxw4xwlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-hxw4xwlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(pusha) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m0d5vnlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-m0d5vnlmngiym4"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(pusha) {
   <span class="hljs-comment">//TODO();</span>
     <span class="hljs-built_in">rtl_mv</span>(&amp;s0,&amp;cpu.esp);
 	<span class="hljs-built_in">rtl_push</span>(&amp;cpu.eax);
@@ -499,7 +499,7 @@ flags register from the stack and resumes the interrupted routine.</p>
 <p>触发异常后硬件处理第一步是通过<code>raise_intr</code>依次将触发异常时的PC和处理器状态(对于x86来说就是eflags,
 cs和eip)压栈，根据异常号找到中断向量表中的中断描述符，描述符给出了该执行哪个中断。比如如果是80系统调用，程序运行后会触发<code>trap.S</code>汇编代码上面的第一个函数<code>__am_vecsys</code>，会压入异常号，然后跳转到<code>__am_asm_trap()</code>。在
 <code>__am_asm_trap()</code>中，代码将会把用户进程的通用寄存器通过<code>pusha</code>保存到堆栈上。由此形成了陷阱帧。栈由改地址往低地址延伸，因此<code>_Context</code>的顺序与此相反，或者说和<code>popa</code>的顺序是一致的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2mbocklluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-2mbocklluwpkzu"><pre><code class="hljs C++">#----|------------entry------------|---irq id---|-----handler-----|
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kwukbglmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-kwukbglmngiym4"><pre><code class="hljs C++">#----|------------entry------------|---irq id---|-----handler-----|
 .globl __am_vecsys;    __am_vecsys: pushl $<span class="hljs-number">0x80</span>; jmp __am_asm_trap
 ......
 __am_asm_trap:
@@ -517,12 +517,12 @@ __am_asm_trap:
 <p>讲义中指出，这是因为CTE的<code>__am_irq_handle()</code>函数并未正确识别出自陷事件.
 根据<code>_yield()</code>的定义,
 <code>__am_irq_handle()</code>函数需要将自陷事件打包成编号为<code>_EVENT_YIELD</code>的事件。让它识别一下就好:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2yv1hwlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-2yv1hwlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (c-&gt;irq) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eiyipllmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-eiyipllmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (c-&gt;irq) {
     <span class="hljs-keyword">case</span> <span class="hljs-number">0x81</span>:ev.event=_EVENT_YIELD;<span class="hljs-keyword">break</span>;
     <span class="hljs-keyword">default</span>: ev.event = _EVENT_ERROR; <span class="hljs-keyword">break</span>;
 }</code></pre></div></div>
 <p><code>do_event</code>也识别一下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w5km18lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-w5km18lluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (e.event) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5n9n3dlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-5n9n3dlmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (e.event) {
     <span class="hljs-keyword">case</span> _EVENT_YIELD:  <span class="hljs-built_in">Log</span>(<span class="hljs-string">"_EVENT_YIELD recognized"</span>);<span class="hljs-keyword">break</span>;
     <span class="hljs-keyword">default</span>: <span class="hljs-built_in">panic</span>(<span class="hljs-string">"Unhandled event ID = %d"</span>, e.event);
 }</code></pre></div></div>
@@ -538,14 +538,14 @@ __am_asm_trap:
 到从<code>_yield()</code>返回的期间, 这一趟旅程具体经历了什么？</h6>
 <p>1.<code>nexus-am/am/src/x86/nemu/cte.c</code> 中，_yield
 函数中执行指令 int 0x81。</p>
-<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o6sm4zlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-o6sm4zlluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">void</span> _yield() {
+<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nirw4wlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-nirw4wlmngiym4"><pre><code class="hljs C++"><span class="hljs-type">void</span> _yield() {
     <span class="hljs-function"><span class="hljs-keyword">asm</span> <span class="hljs-title">volatile</span><span class="hljs-params">(<span class="hljs-string">"int $0x81"</span>)</span></span>;
 }</code></pre></div></div><p></p>
 <p>2.<code>nemu/src/isa/x86/exec/system.c</code>
 中，<code>exec_int</code> 函数为 nemu 对 int 指令的执行函数，其中调用了
 <code>raise_intr</code> 函数，参数为 int 中断编号(此处为 0x81)以及当前的
 PC 值。一般的中断走的是<code>0xcd</code>分支。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fwz2s0lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-fwz2s0lluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-type">int</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ldabphlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-ldabphlmngiym4"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-type">int</span>) {
 <span class="hljs-comment">//  TODO();</span>
   <span class="hljs-keyword">switch</span>(decinfo.opcode){
     <span class="hljs-keyword">case</span> <span class="hljs-number">0xcc</span> : <span class="hljs-built_in">raise_intr</span>(<span class="hljs-number">0x3</span>,decinfo.seq_pc);  <span class="hljs-keyword">break</span>;
@@ -568,7 +568,7 @@ eflags ,cs,eip
 函数(下面<code>idt[0x81]</code>这一行），因此<code>raise_intr</code>
 最终的效果是将虚拟机内部运行的程序转移到了其中断服务程序处继续执行。nemu
 完成了 int 指令的执行。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g4vp85lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-g4vp85lluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">int</span> _cte_init(_Context*(*handler)(_Event, _Context*)) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w0r3kqlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-w0r3kqlmngiym4"><pre><code class="hljs C++"><span class="hljs-type">int</span> _cte_init(_Context*(*handler)(_Event, _Context*)) {
   <span class="hljs-type">static</span> GateDesc idt[NR_IRQ];
   <span class="hljs-comment">// initialize IDT</span>
   <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NR_IRQ; i ++) {
@@ -589,7 +589,7 @@ eflags ,cs,eip
 入栈，跳转到<code>__am_asm_trap</code>
 继续执行。进行一系列压栈操作后(压的其实就是<code>_Context</code>结构体这个参数，这回答了讲义中“<code>__am_irq_handle()</code>有一个上下文结构指针<code>c</code>这个上下文结构<code>c</code>是怎么来的”这个问题)，转移到函数<code>__am_irq_handle</code>
 处执行。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y9ga5rlluwpkzu"></i><span>assembly</span><div class="collapse show" id="collapse-y9ga5rlluwpkzu"><pre><code class="hljs assembly">.globl __am_vectrap;  __am_vectrap: pushl $0x81; jmp __am_asm_trap
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8qen8hlmngiym4"></i><span>assembly</span><div class="collapse show" id="collapse-8qen8hlmngiym4"><pre><code class="hljs assembly">.globl __am_vectrap;  __am_vectrap: pushl $0x81; jmp __am_asm_trap
     
 __am_asm_trap:
   pushal
@@ -611,7 +611,7 @@ __am_asm_trap:
 中保存的中断号对事件进行打包，调用<code>user_handler</code>对事件进行处理。其中<code>user_handler</code>
 在<code>_cte_init</code> 中进行了初始化，为<code>do_event</code>
 函数。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0trclrlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-0trclrlluwpkzu"><pre><code class="hljs C++">_Context* __am_irq_handle(_Context *c) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q7zqqqlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-q7zqqqlmngiym4"><pre><code class="hljs C++">_Context* __am_irq_handle(_Context *c) {
   _Context *next = c;
   <span class="hljs-keyword">if</span> (user_handler) {
     _Event ev = {<span class="hljs-number">0</span>};
@@ -630,7 +630,7 @@ __am_asm_trap:
 <p><code>user_handler</code>
 是怎么初始化的呢？具体是<code>_cte_init</code> 中
 <code>user_handler = handler;</code>这一句，而这个参数<code>handler</code>是<code>init_irq</code>时调用时传给它的，这也回到了<code>main</code>函数为实现上下文做准备的阶段。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-emv2urlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-emv2urlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_irq</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2wq8sqlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-2wq8sqlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_irq</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> </span>{
   <span class="hljs-built_in">Log</span>(<span class="hljs-string">"Initializing interrupt/exception handler..."</span>);
   _cte_init(do_event);
 }</code></pre></div></div>
@@ -638,7 +638,7 @@ __am_asm_trap:
 函数对传入的时间进行解析，做出相应的操作，对于 <code>yield</code>
 操作，我们现在直接输出一段文本，表示程序运行至此即可。顾名思义的话应该是要做进程调度，但我们现在仅有一个上下文，因此不做上下文切换，此处直接返回<code>NULL</code>
 给<code>__am_irq_handle</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t27z0olluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-t27z0olluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> _Context* <span class="hljs-title">do_event</span><span class="hljs-params">(_Event e, _Context* c)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zuyowhlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-zuyowhlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> _Context* <span class="hljs-title">do_event</span><span class="hljs-params">(_Event e, _Context* c)</span> </span>{
   <span class="hljs-keyword">switch</span> (e.event) {
     <span class="hljs-keyword">case</span> _EVENT_YIELD:  <span class="hljs-built_in">Log</span>(<span class="hljs-string">"_EVENT_YIELD recognized"</span>);<span class="hljs-keyword">break</span>;
     <span class="hljs-keyword">default</span>: <span class="hljs-built_in">panic</span>(<span class="hljs-string">"Unhandled event ID = %d"</span>, e.event);
@@ -652,13 +652,13 @@ __am_asm_trap:
 经过适当的出栈操作后，使用 <code>iret</code>
 指令进行中断返回，回复现场，回到中断前程序的执行位置。至此，一次自陷操作全部完成。</p>
 <p><code>__am_irq_handle</code>:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k3468alluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-k3468alluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (next == <span class="hljs-literal">NULL</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0rz930lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-0rz930lmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (next == <span class="hljs-literal">NULL</span>) {
     next = c;
 }
 }
 <span class="hljs-keyword">return</span> next;</code></pre></div></div>
 <p><code>trap.S</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nl2fvylluwpkzu"></i><span>assembly</span><div class="collapse show" id="collapse-nl2fvylluwpkzu"><pre><code class="hljs assembly">call __am_irq_handle
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4h05iulmngiym4"></i><span>assembly</span><div class="collapse show" id="collapse-4h05iulmngiym4"><pre><code class="hljs assembly">call __am_irq_handle
 
 addl $4, %esp
 
@@ -668,7 +668,7 @@ addl $4, %esp
 
 iret</code></pre></div></div>
 <p><code>iret</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m6za8elluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-m6za8elluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(iret) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fg692glmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-fg692glmngiym4"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(iret) {
   <span class="hljs-built_in">rtl_pop</span>(&amp;s0);
   <span class="hljs-built_in">rtl_j</span>(s0);
   <span class="hljs-built_in">rtl_pop</span>(&amp;cpu.cs);
@@ -712,7 +712,7 @@ Navy-apps已经设置好了相应的选项(见<code>navy-apps/Makefile.compile</
 <p>程序开始的地方由ELF header中的Entry point
 address来指示，因此我们读出来，返回这个入口地址就可以了。下面的<code>naive_uload</code>
 将程序入口强制转换一个函数指针并调用，因此我们确信就直接返回这个地址值就可以了。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4zpupvlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-4zpupvlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">naive_uload</span><span class="hljs-params">(PCB *pcb, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *filename)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-81f4wvlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-81f4wvlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">naive_uload</span><span class="hljs-params">(PCB *pcb, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *filename)</span> </span>{
   <span class="hljs-type">uintptr_t</span> entry = <span class="hljs-built_in">loader</span>(pcb, filename);
   <span class="hljs-built_in">Log</span>(<span class="hljs-string">"Jump to entry = %p"</span>, entry);
   ((<span class="hljs-built_in">void</span>(*)())entry) ();
@@ -733,7 +733,7 @@ address来指示，因此我们读出来，返回这个入口地址就可以了�
 <p>因此还没完。我们没有做清零的工作。因此我们还要根据ELF
 header知道有几个segments，然后从Program
 Header中知道segment的属性。讲义中有一个图表现的比较清楚。然后对每一个段清零。代码如下所示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-en1hyjlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-en1hyjlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">uintptr_t</span> <span class="hljs-title">loader</span><span class="hljs-params">(PCB *pcb, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *filename)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ce02cdlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-ce02cdlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">uintptr_t</span> <span class="hljs-title">loader</span><span class="hljs-params">(PCB *pcb, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *filename)</span> </span>{
   <span class="hljs-comment">// TODO();</span>
   Elf_Ehdr elf_header;
   <span class="hljs-type">size_t</span> offset=<span class="hljs-built_in">ramdisk_read</span>(&amp;elf_header,<span class="hljs-number">0</span>,<span class="hljs-built_in">sizeof</span>(Elf_Ehdr));
@@ -752,7 +752,7 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
   <span class="hljs-keyword">return</span> elf_header.e_entry;
 }</code></pre></div></div>
 <p>实现完了按照提示在<code>init_proc()</code>中调用<code>naive_uload(NULL, NULL)</code>。需要在上面声明一下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mak3aelluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-mak3aelluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6a0hmplmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-6a0hmplmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span> </span>{
   switch_boot_pcb();
   <span class="hljs-built_in">Log</span>(<span class="hljs-string">"Initializing processes..."</span>);
   <span class="hljs-comment">// load program here</span>
@@ -803,17 +803,17 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
 对于不同的ISA, 系统调用的返回值存放在不同的寄存器中,
 宏<code>GPRx</code>用于实现这一抽象,
 所以我们通过<code>GPRx</code>来进行设置系统调用返回值即可.”换句话说，刚才的返回0就是把这个<code>GPRx</code>寄存器设置成0；查看宏定义，它在<code>x86</code>中是<code>eip</code>。这不是胡扯吗。。<code>eip</code>是指针寄存器，返回值应当存到通用寄存器里啊。看要求果然有“在<code>nexus-am/am/include/arch/$ISA-nemu.h</code>中实现正确的<code>GPR?</code>宏”，因此我们先把这个错改过来:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f6dfrslluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-f6dfrslluwpkzu"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> GPR1 eax</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6q0u8rlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-6q0u8rlmngiym4"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> GPR1 eax</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> GPR2 ebx</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> GPR3 ecx</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> GPR4 edx</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> GPRx eax</span></code></pre></div></div>
 <p>依据的是下面的定义:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yekov0lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-yekov0lluwpkzu"><pre><code class="hljs C++"><span class="hljs-comment">// ISA-depedent definitions</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0es1ejlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-0es1ejlmngiym4"><pre><code class="hljs C++"><span class="hljs-comment">// ISA-depedent definitions</span>
 <span class="hljs-meta">#<span class="hljs-keyword">if</span> defined(__ISA_X86__)</span>
 <span class="hljs-meta"># <span class="hljs-keyword">define</span> ARGS_ARRAY (<span class="hljs-string">"int $0x80"</span>, <span class="hljs-string">"eax"</span>, <span class="hljs-string">"ebx"</span>, <span class="hljs-string">"ecx"</span>, <span class="hljs-string">"edx"</span>, <span class="hljs-string">"eax"</span>)</span></code></pre></div></div>
 <p>这个ARRAY对应的就是封装的系统调用的四个参数:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7w0nhklluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-7w0nhklluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">intptr_t</span> _syscall_(<span class="hljs-type">intptr_t</span> type, <span class="hljs-type">intptr_t</span> a0, <span class="hljs-type">intptr_t</span> a1, <span class="hljs-type">intptr_t</span> a2) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b9qayrlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-b9qayrlmngiym4"><pre><code class="hljs C++"><span class="hljs-type">intptr_t</span> _syscall_(<span class="hljs-type">intptr_t</span> type, <span class="hljs-type">intptr_t</span> a0, <span class="hljs-type">intptr_t</span> a1, <span class="hljs-type">intptr_t</span> a2) {
   <span class="hljs-function"><span class="hljs-keyword">register</span> <span class="hljs-type">intptr_t</span> _gpr1 <span class="hljs-title">asm</span> <span class="hljs-params">(GPR1)</span> </span>= type;
   <span class="hljs-function"><span class="hljs-keyword">register</span> <span class="hljs-type">intptr_t</span> _gpr2 <span class="hljs-title">asm</span> <span class="hljs-params">(GPR2)</span> </span>= a0;
   <span class="hljs-function"><span class="hljs-keyword">register</span> <span class="hljs-type">intptr_t</span> _gpr3 <span class="hljs-title">asm</span> <span class="hljs-params">(GPR3)</span> </span>= a1;
@@ -823,16 +823,16 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
   <span class="hljs-keyword">return</span> ret;
 }</code></pre></div></div>
 <p>然后我们去按部就班实现“约定”:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c5ktsrlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-c5ktsrlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (a[<span class="hljs-number">0</span>]) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a0bv4clmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-a0bv4clmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (a[<span class="hljs-number">0</span>]) {
     <span class="hljs-keyword">case</span> SYS_yield: _yield(); c-&gt;GPRx = <span class="hljs-number">0</span>; <span class="hljs-keyword">break</span>;
     <span class="hljs-keyword">default</span>: <span class="hljs-built_in">panic</span>(<span class="hljs-string">"Unhandled syscall ID = %d"</span>, a[<span class="hljs-number">0</span>]);
 }</code></pre></div></div>
 <p><code>do_event</code>分发:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gs4gxqlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-gs4gxqlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _EVENT_SYSCALL:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c4q788lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-c4q788lmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _EVENT_SYSCALL:
 <span class="hljs-built_in">Log</span>(<span class="hljs-string">"EVENT_SYSCALL"</span>);
 <span class="hljs-built_in">do_syscall</span>(c);</code></pre></div></div>
 <p>发现还是不行。因为做完上下文管理和做这一部分中间隔了一段时间写qt大作业，所以不太熟悉了。仔细回顾了这一部分发现是没有在am中处理中断指令:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9vki0ylluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-9vki0ylluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (c-&gt;irq)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ixpz3slmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-ixpz3slmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (c-&gt;irq)
 {
 <span class="hljs-keyword">case</span> <span class="hljs-number">0x80</span>:
   ev.event = _EVENT_SYSCALL;
@@ -849,7 +849,7 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
 <figcaption aria-hidden="true">image-20230515195959094</figcaption>
 </figure>
 <p>这次对了。0号事件好说。按照提示直接调用<code>_halt</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wyjuzjlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-wyjuzjlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_exit: _halt(a[<span class="hljs-number">1</span>]); <span class="hljs-keyword">break</span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8917y8lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-8917y8lmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_exit: _halt(a[<span class="hljs-number">1</span>]); <span class="hljs-keyword">break</span>;</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA3/20230828211442505567_744_20230601235747183942_216_image-20230515200157973.png" srcset="/img/loading.gif" lazyload alt="image-20230515200157973">
 <figcaption aria-hidden="true">image-20230515200157973</figcaption>
@@ -857,7 +857,7 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
 <h3 id="操作系统之上的trm">操作系统之上的TRM</h3>
 <h4 id="标准输出">标准输出</h4>
 <p>根据<code>write</code>的函数声明(不用man，代码里也可以看出来)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fhyebxlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-fhyebxlluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">int</span> _write(<span class="hljs-type">int</span> fd, <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> count) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d1780plmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-d1780plmngiym4"><pre><code class="hljs C++"><span class="hljs-type">int</span> _write(<span class="hljs-type">int</span> fd, <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> count) {
  <span class="hljs-keyword">return</span> _syscall_(SYS_write, fd, (<span class="hljs-type">intptr_t</span>)buf, count);
 }</code></pre></div></div>
 <p>在<code>do_syscall()</code>中识别出系统调用号是<code>SYS_write</code>之后,
@@ -871,7 +871,7 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
 <figcaption aria-hidden="true">image-20230515203231772</figcaption>
 </figure>
 <p>因此可做如下实现(<code>do_syscall</code>中):</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6fos74lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-6fos74lluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_write:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n95u20lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-n95u20lmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_write:
 {
   <span class="hljs-type">int</span> fd = (<span class="hljs-type">int</span>)a[<span class="hljs-number">1</span>];
   <span class="hljs-type">char</span> *buf = (<span class="hljs-type">char</span> *)a[<span class="hljs-number">2</span>];
@@ -904,7 +904,7 @@ Header中知道segment的属性。讲义中有一个图表现的比较清楚。�
 break的位置作为<code>_sbrk()</code>的返回值返回</li>
 <li>若该系统调用失败, <code>_sbrk()</code>会返回<code>-1</code></li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8wrz6plluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-8wrz6plluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">extern</span> <span class="hljs-type">char</span> _end;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hbvh1blmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-hbvh1blmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">extern</span> <span class="hljs-type">char</span> _end;
 ...
 <span class="hljs-type">static</span> <span class="hljs-type">intptr_t</span> program_break=(<span class="hljs-type">intptr_t</span>)&amp;_end;
 <span class="hljs-type">void</span> *_sbrk(<span class="hljs-type">intptr_t</span> increment) {
@@ -918,7 +918,7 @@ break的位置作为<code>_sbrk()</code>的返回值返回</li>
   }
 }</code></pre></div></div>
 <p>暂时只有单道应用程序，认为堆区分配总能成功:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-32v323lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-32v323lluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_brk:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6aja4flmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-6aja4flmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_brk:
   c-&gt;GPRx = <span class="hljs-number">0</span>;
   <span class="hljs-keyword">break</span>;</code></pre></div></div>
 <p>输出能够走缓冲区了:</p>
@@ -934,7 +934,7 @@ break的位置作为<code>_sbrk()</code>的返回值返回</li>
 <p>实验指导书中说，需要先实现<code>fs_open()</code>,
 <code>fs_read()</code>和<code>fs_close()</code>,
 这样就可以在loader中使用文件名来指定加载的程序了。但是按照指导书的指示先实现了这三个指令，仿照原来的loader把所有的<code>randisk_read</code>改成<code>fs_read</code>后却一直内存超限。一想，<code>fs_read</code>只能从当前的open_offset开始读啊，读pheader时我们要从<code>elf_header.e_phoff</code>开始读。后面读每个块的时候也是类似。所以<code>fs_lseek</code>还是必不可少。当时实现loader的细节有些模糊了，所以干了蠢事。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-no7dlelluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-no7dlelluwpkzu"><pre><code class="hljs C++">Elf_Ehdr elf_header;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n3luz2lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-n3luz2lmngiym4"><pre><code class="hljs C++">Elf_Ehdr elf_header;
 <span class="hljs-type">int</span> fd = <span class="hljs-built_in">fs_open</span>(filename,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>);
 <span class="hljs-built_in">Log</span>(<span class="hljs-string">"filename: %s, fd: %d"</span>, filename, fd);
 <span class="hljs-type">size_t</span> read_len = <span class="hljs-built_in">fs_read</span>(fd, &amp;elf_header, <span class="hljs-built_in">sizeof</span>(Elf_Ehdr));
@@ -957,7 +957,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 <span class="hljs-built_in">fs_close</span>(fd);
 <span class="hljs-keyword">return</span> elf_header.e_entry;</code></pre></div></div>
 <p>另外，关于如何加载新的文件也找了一些时间，在这里:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7honpolluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-7honpolluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-517x87lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-517x87lmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span> </span>{
   switch_boot_pcb();
 
   <span class="hljs-built_in">Log</span>(<span class="hljs-string">"Initializing processes..."</span>);
@@ -977,7 +977,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 </figure>
 <h3 id="操作系统之上的ioe">操作系统之上的IOE</h3>
 <h4 id="串口">串口</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lg6t4vlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-lg6t4vlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">serial_write</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> offset, <span class="hljs-type">size_t</span> len)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pxdr78lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-pxdr78lmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">serial_write</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> offset, <span class="hljs-type">size_t</span> len)</span> </span>{
 
   <span class="hljs-comment">// return 0;</span>
   <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++)
@@ -987,13 +987,13 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
   <span class="hljs-keyword">return</span> len;
 }</code></pre></div></div>
 <p>这时候读写文件就不需要对标准输入输出特判了，如:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1i9vnylluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-1i9vnylluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (fd &lt;= <span class="hljs-number">2</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j5p560lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-j5p560lmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (fd &lt;= <span class="hljs-number">2</span>)
 {
   <span class="hljs-built_in">Log</span>(<span class="hljs-string">"ignore read from %d"</span>, fd);
   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
 <h4 id="设备">设备</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2qiaw6lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-2qiaw6lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">events_read</span><span class="hljs-params">(<span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> offset, <span class="hljs-type">size_t</span> len)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5jozbdlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-5jozbdlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">events_read</span><span class="hljs-params">(<span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> offset, <span class="hljs-type">size_t</span> len)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">//  return 0;</span>
   <span class="hljs-type">int</span> key = <span class="hljs-built_in">read_key</span>();
@@ -1023,7 +1023,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 <figcaption aria-hidden="true">image-20230517120535802</figcaption>
 </figure>
 <p>更新文件描述表:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-osat16lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-osat16lluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">static</span> Finfo file_table[] __attribute__((used)) = {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dnw1kjlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-dnw1kjlmngiym4"><pre><code class="hljs C++"><span class="hljs-type">static</span> Finfo file_table[] __attribute__((used)) = {
     {<span class="hljs-string">"stdin"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, invalid_read, invalid_write},
     {<span class="hljs-string">"stdout"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, invalid_read, serial_write},
     {<span class="hljs-string">"stderr"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, invalid_read, serial_write},
@@ -1039,7 +1039,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 <p>这一部分指导书上说的是非常贴心，每一步该干什么都非常明确，真是非常难得。</p>
 <p>其中主要是<code>fb_write</code>需要额外思索一下，其他的都是比较常规的流程。</p>
 <p>另外注意VGA的一个像素占4bit。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-22y538lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-22y538lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">fb_write</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> offset, <span class="hljs-type">size_t</span> len)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cmr6cplmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-cmr6cplmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">fb_write</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> offset, <span class="hljs-type">size_t</span> len)</span></span>
 <span class="hljs-function"></span>{
 	<span class="hljs-type">int</span> width=<span class="hljs-built_in">screen_width</span>();
 	<span class="hljs-type">int</span> x=(offset/<span class="hljs-number">4</span>)%width,y=(offset/<span class="hljs-number">4</span>)/width;

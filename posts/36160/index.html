@@ -359,8 +359,8 @@
 <li>编辑完成之后按esc退出编辑模式。</li>
 <li>然后按<code>:wq</code>保存并退出vim。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2rqi08lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-2rqi08lm7cpnta"><pre><code class="hljs shell">vim Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1ebhehlm7cpnta"></i><span>dockerfile</span><div class="collapse show" id="collapse-1ebhehlm7cpnta"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python:<span class="hljs-number">3.7</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5sxdf8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-5sxdf8lmngiym6"><pre><code class="hljs shell">vim Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w9okhdlmngiym6"></i><span>dockerfile</span><div class="collapse show" id="collapse-w9okhdlmngiym6"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python:<span class="hljs-number">3.7</span>
 
 <span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8000</span>
 
@@ -385,13 +385,13 @@
 <li>编译镜像</li>
 </ol>
 <p>编辑好Dockerfile之后，通过<code>docker build</code>命令生成新的镜像。注意镜像生成过程中，需要通过网络安装相关组件，因此容器构建时间可能会比较长。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2u8l98lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-2u8l98lm7cpnta"><pre><code class="hljs shell">docker build -t py/http .
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8j6sm4lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-8j6sm4lmngiym6"><pre><code class="hljs shell">docker build -t py/http .
 docker images</code></pre></div></div>
 <ol start="3" type="1">
 <li>验证镜像</li>
 </ol>
 <p>容器制作完毕后，我们创建容器，然后使用<code>docker exec</code>命令在容器中执行<code>curl 127.0.0.1:8000</code>验证服务的启动。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lxncr8lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-lxncr8lm7cpnta"><pre><code class="hljs shell">docker run -itd --name check py/http
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-09yrjalmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-09yrjalmngiym6"><pre><code class="hljs shell">docker run -itd --name check py/http
 docker exec check curl 127.0.0.1:8000
 docker rm -f check</code></pre></div></div>
 <figure>
@@ -405,7 +405,7 @@ docker rm -f check</code></pre></div></div>
 </ol>
 <p>创建容器后。docker会为容器默认创建一块虚拟网卡。容器通过这块网卡实现网络连接，为了验证容器的网卡，我们首先用自定义镜像py/http创建两个容器，当容器创建好之后，我们通过docker
 inspect命令查看容器详细信息，详细信息中包含容器网卡的IP。为了简化容器信息的查看，我们可以使用-f参数来筛选容器的信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y4nugvlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-y4nugvlm7cpnta"><pre><code class="hljs shell">docker run -itd --name py1 py/http
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a2l3hxlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-a2l3hxlmngiym6"><pre><code class="hljs shell">docker run -itd --name py1 py/http
 docker run -itd --name py2 py/http
 docker inspect -f '{{.NetworkSettings.IPAddress }}' py1
 docker inspect -f '{{.NetworkSettings.IPAddress }}' py2</code></pre></div></div>
@@ -418,7 +418,7 @@ docker inspect -f '{{.NetworkSettings.IPAddress }}' py2</code></pre></div></div>
 </ol>
 <p>当Docker中的容器或者容器镜像数量较多的时候，每次使用一条命令来查询一个容器或者镜像信息就会变得非常的繁琐。这时我们就可以使用<code>docker ps</code>中<code>-f "name=value"</code>参数过滤所需要的对象，再用<code>-q</code>参数只获得所需要对象的ID。</p>
 <p>接下来再配合linux命令行的<code>$()</code>，将对象的ID作为参数传给<code>docker inspect</code>命令。这样就可以一次性获得所有对象的配置信息。我们通过下列命令显示所有容器名称包含<code>py</code>的容器的IP地址。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rwx296lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-rwx296lm7cpnta"><pre><code class="hljs shell">docker ps -f "name=py" -q
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cw5phwlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-cw5phwlmngiym6"><pre><code class="hljs shell">docker ps -f "name=py" -q
 docker inspect -f '{{.Name}} {{.NetworkSettings.IPAddress }}' $(docker ps -f "name=py" -q)</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115935274383_307_image-20230905163325242.png" srcset="/img/loading.gif" lazyload alt="image-20230905163325242">
@@ -428,7 +428,7 @@ docker inspect -f '{{.Name}} {{.NetworkSettings.IPAddress }}' $(docker ps -f "na
 <li>宿主机的网卡信息</li>
 </ol>
 <p>在docker安装之后，也会在宿主机上安装一块默认的虚拟网卡<code>docker0</code>，该网卡可以和容器中的虚拟网卡互联互通。我们先通过<code>ifconfig</code>查看docker0的网卡信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kzn59rlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-kzn59rlm7cpnta"><pre><code class="hljs shell">ifconfig docker0</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4mxjuulmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-4mxjuulmngiym6"><pre><code class="hljs shell">ifconfig docker0</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906115939701805_748_image-20230905163118101.png" srcset="/img/loading.gif" lazyload alt="image-20230905163118101">
 <figcaption aria-hidden="true">image-20230905163118101</figcaption>
@@ -439,7 +439,7 @@ docker inspect -f '{{.Name}} {{.NetworkSettings.IPAddress }}' $(docker ps -f "na
 <li>测试宿主机和容器之间的连通性</li>
 </ol>
 <p>接下来我们来测试的宿主机和容器网卡的互联互通，会发现在默认情况下，宿主机可以通过<code>docker0</code>网卡访问容器中的服务。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k4ii0jlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-k4ii0jlm7cpnta"><pre><code class="hljs shell">ping -c 4 [py1容器IP]
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pejhz2lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-pejhz2lmngiym6"><pre><code class="hljs shell">ping -c 4 [py1容器IP]
 curl [py1容器IP]:8000
 ping -c 4 [py2容器IP]
 curl [py2容器IP]:8000</code></pre></div></div>
@@ -451,7 +451,7 @@ curl [py2容器IP]:8000</code></pre></div></div>
 <li>容器之间的网络连接</li>
 </ol>
 <p>接下来我们来测试容器之间的网络连通性，我们通过<code>ifconfig</code>命令查看容器详细信息，会可以发现各容器的的IP地址属于同一个子网，这种设置保证了容器之间的网卡可以互联互通，为了验证我们进入py1容器的控制台，然后测试py1到宿主机和py2的连通性。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3eu8cylm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-3eu8cylm7cpnta"><pre><code class="hljs shell">docker exec -it py1 /bin/bash
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-muwsbclmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-muwsbclmngiym6"><pre><code class="hljs shell">docker exec -it py1 /bin/bash
 ping -c 4 [docker0 IP]
 ping -c 4 [py2容器IP]
 curl [py2容器IP]:8000
@@ -472,7 +472,7 @@ exit</code></pre></div></div>
 </figure>
 </blockquote>
 <p>这就意味着，如果容器的宿主机可以访问互联网，容器就可以通过宿主机的<code>docker0</code>网卡转发网络数据包访问互联网。为了验证我们进入py1容器的控制台，<code>ping</code>访问<code>aliyun.com</code>验证连通性，再通过<code>traceroute</code>命令验证容器访问外网的路径。会发现容器访问外网的第一条就是<code>docker0</code>网卡。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ss0rgblm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ss0rgblm7cpnta"><pre><code class="hljs shell">docker exec -it py1 /bin/bash
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lo1wc1lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-lo1wc1lmngiym6"><pre><code class="hljs shell">docker exec -it py1 /bin/bash
 ping -c 4 www.aliyun.com
 traceroute www.aliyun.com -w 0.1
 exit</code></pre></div></div>
@@ -491,7 +491,7 @@ exit</code></pre></div></div>
 <code>-p 宿主机端口:容器端口</code>；第二种是只指定容器端口，由docker自动分配宿主机端口。其语法格式为
 <code>-p 容器端口</code>。</p>
 <p>如果需要为容器指定映射多个端口，可以在<code>docker run</code>中使用多个<code>-p</code>参数。在使用端口映射启动容器之后，我们可以通过<code>docker ps</code>命令查看容器的端口映射配置。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vbg5tylm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-vbg5tylm7cpnta"><pre><code class="hljs shell">docker run -itd -p 18000:8000 -p 18001:8000 --name port1 py/http
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gbqokslmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-gbqokslmngiym6"><pre><code class="hljs shell">docker run -itd -p 18000:8000 -p 18001:8000 --name port1 py/http
 docker run -itd -p 8000 --name port2 py/http
 docker ps -f "name=port"</code></pre></div></div>
 <figure>
@@ -502,7 +502,7 @@ docker ps -f "name=port"</code></pre></div></div>
 <li>查看端口映射</li>
 </ol>
 <p>端口映射完成后，我们往往需要查看映射信息，尤其是对docker自动分配宿主机端口的映射方式。除了可以用<code>docker ps</code>命令查看映射信息之外。还可以使用<code>docker port</code>命令查看映射信息，其调用格式为<code>docker port 容器名</code>或者<code>docker port 容器名 容器端口</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v30sgulm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-v30sgulm7cpnta"><pre><code class="hljs shell">docker port port1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4fomablmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-4fomablmngiym6"><pre><code class="hljs shell">docker port port1
 docker port port1 8000
 docker port port2</code></pre></div></div>
 <figure>
@@ -516,7 +516,7 @@ docker port port2</code></pre></div></div>
 <li>验证端口映射</li>
 </ol>
 <p>当我们确定了容器在宿主机上的映射端口之后，我们就可以在宿主机上通过<code>curl</code>命令来验证映射功能。为了控制<code>curl</code>命令的输出，我们可以使用linux的|语法，配置<code>head -n1</code>压缩网页输出。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dp0s52lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-dp0s52lm7cpnta"><pre><code class="hljs shell">curl 127.0.0.1:18000 | head -n1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z4bcnplmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-z4bcnplmngiym6"><pre><code class="hljs shell">curl 127.0.0.1:18000 | head -n1
 curl 127.0.0.1:18001 | head -n1
 curl 127.0.0.1:[port2宿主机端口]  | head -n1</code></pre></div></div>
 <figure>
@@ -534,20 +534,20 @@ curl 127.0.0.1:[port2宿主机端口]  | head -n1</code></pre></div></div>
 </ol>
 <p>在上面的说明中，为大家简单介绍了Docker的Bridge网络模型。在默认情况下新创建的容器会使用Bridge网络模型，同时使用<code>docker 0</code>网卡作为默认网关。在使用bridge模型时，除了使用默认的docker0网卡之外。我们还可以使用<code>docker network</code>创建新的宿主机容器网络。</p>
 <p>在创建新的容器网络时我们使用<code>docker network create</code>命令，并且可以使用<code>--gateway</code>参数指定网卡的地址，以及使用<code>--subnet</code>内网地址的网络地址段。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m8ufuflm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-m8ufuflm7cpnta"><pre><code class="hljs shell">docker network create --gateway 192.168.0.1 --subnet 192.168.0.0/24  network1</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7zljkclmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-7zljkclmngiym6"><pre><code class="hljs shell">docker network create --gateway 192.168.0.1 --subnet 192.168.0.0/24  network1</code></pre></div></div>
 <ol start="2" type="1">
 <li>查看Bridge网络</li>
 </ol>
 <p>docker
 network除了可以创建自定义网络之外，还可以使用<code>docker network ls</code>查看已有的Docker网络。对于单个网络也可以使用<code>docker inspect</code>命令查看详细配置。</p>
 <p>另外当自定义bridge网络创建之后，通过宿主机的<code>ifconfig</code>命令可以发现在宿主机中生成了一块新的网卡，网卡的名称前缀为<code>br-</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-09dx4blm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-09dx4blm7cpnta"><pre><code class="hljs shell">docker network ls
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l0ppz5lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-l0ppz5lmngiym6"><pre><code class="hljs shell">docker network ls
 docker inspect network1</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121443459226_284_image-20230905171940633.png" srcset="/img/loading.gif" lazyload alt="image-20230905171940633">
 <figcaption aria-hidden="true">image-20230905171940633</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9gnjwzlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-9gnjwzlm7cpnta"><pre><code class="hljs shell">ifconfig -s
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ipoa5slmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ipoa5slmngiym6"><pre><code class="hljs shell">ifconfig -s
 ifconfig br-[网络ID]</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121448940363_596_image-20230905172129476.png" srcset="/img/loading.gif" lazyload alt="image-20230905172129476">
@@ -557,7 +557,7 @@ ifconfig br-[网络ID]</code></pre></div></div>
 <li>加入自定义Bridge网络</li>
 </ol>
 <p>自定义网络创建完毕后，就可以在<code>docker run</code>运行容器的时候，使用<code>--network</code>参数指定容器使用某一个网络，同时我们还可以使用<code>--ip</code>参数指定容器的IP地址。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fkb4nklm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-fkb4nklm7cpnta"><pre><code class="hljs shell">docker run -itd --name busybox1 --network network1 --ip 192.168.0.101 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vuv3lclmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-vuv3lclmngiym6"><pre><code class="hljs shell">docker run -itd --name busybox1 --network network1 --ip 192.168.0.101 busybox
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' busybox1</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121454346633_249_image-20230905172402430.png" srcset="/img/loading.gif" lazyload alt="image-20230905172402430">
@@ -570,7 +570,7 @@ network自定义Bridge网络。接下来我们来看一下不同网络之间的�
 <li>不同Bridge网络的连通性</li>
 </ol>
 <p>我们尝试在默认的<code>docker0</code>网络中再创建一个容器<code>busybox2</code>，然后通过<code>docker exec</code>命令在<code>busybox2</code>中执行<code>ping</code>命令，来测试该容器和上一个步骤中创建的<code>busybox1</code>之间的连通性。会发现不同网络之间的容器无法互联互通。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ddph0jlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ddph0jlm7cpnta"><pre><code class="hljs shell">docker run -itd --name busybox2 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wb38f8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-wb38f8lmngiym6"><pre><code class="hljs shell">docker run -itd --name busybox2 busybox
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' busybox2
 docker exec busybox2 ping 192.168.0.101 -w 1</code></pre></div></div>
 <figure>
@@ -582,13 +582,13 @@ docker exec busybox2 ping 192.168.0.101 -w 1</code></pre></div></div>
 </ol>
 <p>如果我们需要让处在不同docker网络之间的容器互联互通，从宿主机网络上配置，一般我们可以采用手动配置路由的方式。</p>
 <p>除此之外我们还可以从容器上进行配置来解决这个问题。而解决的方式就是通过<code>docker network connect</code>命令为容器创建一个新的网络连接。接下来我们来演示将已经运行容器<code>busybox2</code>，连接到<code>network1</code>网络上。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oh2k7llm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-oh2k7llm7cpnta"><pre><code class="hljs shell">docker network connect --ip 192.168.0.102 network1 busybox2</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zeuywalmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-zeuywalmngiym6"><pre><code class="hljs shell">docker network connect --ip 192.168.0.102 network1 busybox2</code></pre></div></div>
 <ol start="3" type="1">
 <li>验证多网络连接</li>
 </ol>
 <p>网络联通之后，我们再次测试ping命令。会发现busybox2容器已经可以ping通busybox1容器的网络地址。通过ip
 add命令。我们发现当使用<code>docker network connect</code>命令创建连接之后，在容器中会生成一块与之对应的新的网卡。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h1daa9lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-h1daa9lm7cpnta"><pre><code class="hljs shell">docker exec busybox2 ping 192.168.0.101 -w 1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o00wielmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-o00wielmngiym6"><pre><code class="hljs shell">docker exec busybox2 ping 192.168.0.101 -w 1
 docker exec busybox2 ip addr</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121502122637_753_image-20230905173151504.png" srcset="/img/loading.gif" lazyload alt="image-20230905173151504">
@@ -601,7 +601,7 @@ docker exec busybox2 ip addr</code></pre></div></div>
 <li>默认网络容器链接</li>
 </ol>
 <p>在docker0默认网络中，我们可以使用<code>--link</code>参数链接一个已经启动的容器。当一个容器使用<code>--link</code>链接到另一个容器之后，在该容器在创建时会在容器中配置本地静态DNS域名文件，将被链接容器的容器名解析成被链接容器的IP地址。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-82b8jklm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-82b8jklm7cpnta"><pre><code class="hljs shell">docker run -itd --name domain1 --network network1 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-edutlwlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-edutlwlmngiym6"><pre><code class="hljs shell">docker run -itd --name domain1 --network network1 busybox
 docker exec domain1 ping busybox1 -c1
 docker exec domain1 ping domain1 -c1</code></pre></div></div>
 <figure>
@@ -615,7 +615,7 @@ docker exec domain1 ping domain1 -c1</code></pre></div></div>
 <li>自定义网络中得DNS</li>
 </ol>
 <p>而在自定义网络中，docker会为自动为网络中的容器添加一个内置的动态DNS服务。在同一网络中容器之间，可以直接使用容器名进行访问。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z2tkn9lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-z2tkn9lm7cpnta"><pre><code class="hljs shell">docker run -itd --name domain3 --network network1 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qtjuv3lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-qtjuv3lmngiym6"><pre><code class="hljs shell">docker run -itd --name domain3 --network network1 busybox
 docker run -itd --name domain4 --network network1 busybox
 docker exec domain3 ping domain3 -c1
 docker exec domain3 ping domain4 -c1</code></pre></div></div>
@@ -630,7 +630,7 @@ docker exec domain3 ping domain4 -c1</code></pre></div></div>
 <li>网络别名</li>
 </ol>
 <p>除了使用容器名称之外，我们还可在使用<code>docker run</code>创建容器得时候使用<code>--network-alias</code>参数设置网络别名作为域名。<code>--network-alias</code>参数和<code>-p</code>参数一样，可以并列设置多个，同时设置多个域名。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gxptl2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-gxptl2lm7cpnta"><pre><code class="hljs shell">docker run -itd --name domain2 --network-alias web --network-alias db --network network1 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fw1838lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-fw1838lmngiym6"><pre><code class="hljs shell">docker run -itd --name domain2 --network-alias web --network-alias db --network network1 busybox
 docker exec domain1 ping domain2 -c1
 docker exec domain1 ping web -c1
 docker exec domain1 ping db -c1</code></pre></div></div>
@@ -645,7 +645,7 @@ docker exec domain1 ping db -c1</code></pre></div></div>
 </ol>
 <p>首先为了避免干扰，我们先删除全部容器。接下来我们创建两个容器，一个是名为python1的python容器，创建之后在80端口启动内置http服务(<code>python3 -m http.server 80</code>)。另一个名为httpd1的httpd容器，也就是apahce服务，默认在80端口启动服务。</p>
 <p>在容器创建成功后，我们使用curl进行测试。这里我们使用组合命令，先获取容器得IP，然后作为参数传递给curl。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pkpj9nlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-pkpj9nlm7cpnta"><pre><code class="hljs shell">docker rm -f $(docker ps -aq)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4dineulmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-4dineulmngiym6"><pre><code class="hljs shell">docker rm -f $(docker ps -aq)
 docker run -d --name python1 python python3 -m http.server 80
 docker run -d --name httpd1 httpd
 
@@ -671,8 +671,8 @@ curl $(docker inspect httpd1 -f {{.NetworkSettings.IPAddress}})</code></pre></di
 <li>编辑完成之后按esc退出编辑模式。</li>
 <li>然后按大写的ZZ保存并退出vi。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ptg0holm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ptg0holm7cpnta"><pre><code class="hljs shell">vi proxy.conf</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gqgl4ilm7cpnta"></i><span>nginx</span><div class="collapse show" id="collapse-gqgl4ilm7cpnta"><pre><code class="hljs nginx"><span class="hljs-section">server</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l3loq7lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-l3loq7lmngiym6"><pre><code class="hljs shell">vi proxy.conf</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3zd62tlmngiym6"></i><span>nginx</span><div class="collapse show" id="collapse-3zd62tlmngiym6"><pre><code class="hljs nginx"><span class="hljs-section">server</span> {
     <span class="hljs-attribute">listen</span>       <span class="hljs-number">8001</span>;
     <span class="hljs-attribute">server_name</span>  <span class="hljs-number">0.0.0.0</span>;
 
@@ -693,8 +693,8 @@ curl $(docker inspect httpd1 -f {{.NetworkSettings.IPAddress}})</code></pre></di
 <li>编写Dockerfile</li>
 </ol>
 <p>Nginx配置文件生成完毕之后，接下来我们来编辑<code>Dockerfile</code>。在<code>Dockerfile</code>中，我们将配置文件复制到<code>/etc/nginx/conf.d/proxy.conf</code>目录中。我们使用vi命令生成<code>Dockerfile</code>并编辑为如下内容：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xlyg9klm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-xlyg9klm7cpnta"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gwwhmilm7cpnta"></i><span>dockerfile</span><div class="collapse show" id="collapse-gwwhmilm7cpnta"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tiewmrlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-tiewmrlmngiym6"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3qrxdglmngiym6"></i><span>dockerfile</span><div class="collapse show" id="collapse-3qrxdglmngiym6"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx:latest
 <span class="hljs-keyword">ADD</span><span class="language-bash"> proxy.conf /etc/nginx/conf.d/proxy.conf</span></code></pre></div></div>
 <blockquote>
 <p>注：此处原文表述有较多处错误，已订正。</p>
@@ -703,7 +703,7 @@ curl $(docker inspect httpd1 -f {{.NetworkSettings.IPAddress}})</code></pre></di
 <li>启动代理服务</li>
 </ol>
 <p>Dockerfile编辑完成后，我们继续生成容器镜像<code>proxy</code>。镜像生成成功后，我们通过该镜像创建容器<code>proxy1</code>。在创建容器的时候，我们使用<code>--link</code>参数添加python1和httpd1域名，同时将proxy容器的80，8001，8002端口映射到宿主的8000，8001，8002。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rplh2ulm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-rplh2ulm7cpnta"><pre><code class="hljs shell">docker build -t proxy .
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oivjejlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-oivjejlmngiym6"><pre><code class="hljs shell">docker build -t proxy .
 docker run -d --name proxy1 -p 8000:80 -p 8001:8001 -p 8002:8002 \
 --link python1 --link httpd1 proxy</code></pre></div></div>
 <figure>
@@ -714,7 +714,7 @@ docker run -d --name proxy1 -p 8000:80 -p 8001:8001 -p 8002:8002 \
 <li>验证Nginx代理服务</li>
 </ol>
 <p>代理服务启动之后，我们使用<code>curl</code>命令进行验证。分别访问127.0.0.1的8000，8001，8002三个端口，我们会发现通过容器proxy在宿主机上的端口映射，我们实现了对三个容器的统一访问入口。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b2eoydlm7cpnta"></i><span>nginx</span><div class="collapse show" id="collapse-b2eoydlm7cpnta"><pre><code class="hljs nginx"><span class="hljs-attribute">curl</span> <span class="hljs-number">127.0.0.1:8000</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5cfveslmngiym6"></i><span>nginx</span><div class="collapse show" id="collapse-5cfveslmngiym6"><pre><code class="hljs nginx"><span class="hljs-attribute">curl</span> <span class="hljs-number">127.0.0.1:8000</span>
 curl <span class="hljs-number">127.0.0.1:8001</span>
 curl <span class="hljs-number">127.0.0.1:8002</span></code></pre></div></div>
 <figure>
@@ -749,7 +749,7 @@ curl <span class="hljs-number">127.0.0.1:8002</span></code></pre></div></div>
 </ol>
 <p>接下来我们通过<code>docker exec</code>在容器中执行<code>ip addr</code>。我们会发现容器和宿主机的网卡完全一致。我们尝试ping
 docker0网卡，发现也可以ping通。这也就验证了Host网络模式下，容器的网卡和宿主机属于共享状态。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s8yqdnlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-s8yqdnlm7cpnta"><pre><code class="hljs shell">docker exec host1 ip addr
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n6dbnolmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-n6dbnolmngiym6"><pre><code class="hljs shell">docker exec host1 ip addr
 ping [docker0 IP] -c1</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121553078213_743_image-20230905202117058.png" srcset="/img/loading.gif" lazyload alt="image-20230905202117058">
@@ -761,7 +761,7 @@ ping [docker0 IP] -c1</code></pre></div></div>
 <li>创建Host容器</li>
 </ol>
 <p>Host网络模型和Bridge模型一样，支持多个容器接入。我们创建一个接入Host网络的Python容器<code>host2</code>，并在创建容器的时候通过<code>bash -c "python -m http.server 端口号"</code>启动python内置http服务的命令。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i13i0blm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-i13i0blm7cpnta"><pre><code class="hljs shell">docker run -itd --name host2 --network=host python \
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c0em88lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-c0em88lmngiym6"><pre><code class="hljs shell">docker run -itd --name host2 --network=host python \
 bash -c "python -m http.server 8000"</code></pre></div></div>
 <ol start="2" type="1">
 <li>查询网络端口</li>
@@ -776,7 +776,7 @@ bash -c "python -m http.server 8000"</code></pre></div></div>
 <li>访问容器服务</li>
 </ol>
 <p>由于容器和宿主机都绑定了相同的网卡，因此即使是在服务中启动的服务，也不需要端口映射就可以在宿主机中访问。Host模式的这种设计简化了容器服务的发布流程，同时也提高了网络吞吐的效率。不过需要注意的是，由于容器和宿主机共享了网卡。因此我们要小心的分配宿主机和容器中服务的端口，以避免端口绑定冲突。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-abu0f2lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-abu0f2lm7cpnta"><pre><code class="hljs shell">curl 127.0.0.1:8000 | head -n1</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-as4h2vlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-as4h2vlmngiym6"><pre><code class="hljs shell">curl 127.0.0.1:8000 | head -n1</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121602244999_405_image-20230905202812343.png" srcset="/img/loading.gif" lazyload alt="image-20230905202812343">
 <figcaption aria-hidden="true">image-20230905202812343</figcaption>
@@ -789,14 +789,14 @@ bash -c "python -m http.server 8000"</code></pre></div></div>
 <p>Host网络模式下，新创建的容器共享使用宿主机的网卡。而在Container网络模式和Host模式类似，只不过新创建的容器，共享的是<strong>另一个容器的网卡</strong>。</p>
 <p>当我们希望创建一个使用Container网络模式的容器时，我们需要在docker
 run中使用<code>--network container:[已有容器名]</code>的参数格式。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zjj4hjlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-zjj4hjlm7cpnta"><pre><code class="hljs shell">docker run -itd --name container1 busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2331rrlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-2331rrlmngiym6"><pre><code class="hljs shell">docker run -itd --name container1 busybox
 docker run -itd --name container2 --network=container:container1 busybox</code></pre></div></div>
 <ol start="2" type="1">
 <li>查看地址</li>
 </ol>
 <p>Container网络模型的容器创建完毕后，我可以在两个容器中使用ip
 addr命令查看网卡信息，会发现两块网卡的信息完全一致。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p5ami1lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-p5ami1lm7cpnta"><pre><code class="hljs shell">docker exec container1 ip addr
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9hgdprlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-9hgdprlmngiym6"><pre><code class="hljs shell">docker exec container1 ip addr
 docker exec container2 ip addr</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121607764416_189_image-20230905203100315.png" srcset="/img/loading.gif" lazyload alt="image-20230905203100315">
@@ -807,7 +807,7 @@ docker exec container2 ip addr</code></pre></div></div>
 </ol>
 <p>接下来我们再利用这块网卡创建一个名为python1的python容器，并在容器上启动一个python的http服务。由于docker
 run命令的参数较长，在此我们可以使用。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ruimpqlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ruimpqlm7cpnta"><pre><code class="hljs shell">docker run -itd --name container3 \
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-barlt0lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-barlt0lmngiym6"><pre><code class="hljs shell">docker run -itd --name container3 \
 --network=container:container1 python \
 bash -c "python -m http.server 8000"</code></pre></div></div>
 <ol start="4" type="1">
@@ -822,8 +822,8 @@ bash -c "python -m http.server 8000"</code></pre></div></div>
 <li>在使用nc命令时，我们将IP和端口作为两个参数传入</li>
 </ul>
 <p>执行后，命令返回了HTTP应答的全部信息。这也就验证了在container模型下，容器可以向访问本机服务一样，跨容器进行服务访问。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4zg3yzlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-4zg3yzlm7cpnta"><pre><code class="hljs shell">docker exec -it container1 sh</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ezmmwilm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-ezmmwilm7cpnta"><pre><code class="hljs shell">printf "GET / HTTP/1.1\r\n\r\n" | nc 127.0.0.1 8000</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2kj826lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-2kj826lmngiym6"><pre><code class="hljs shell">docker exec -it container1 sh</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-82aru2lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-82aru2lmngiym6"><pre><code class="hljs shell">printf "GET / HTTP/1.1\r\n\r\n" | nc 127.0.0.1 8000</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121613687049_409_image-20230905203413825.png" srcset="/img/loading.gif" lazyload alt="image-20230905203413825">
 <figcaption aria-hidden="true">image-20230905203413825</figcaption>
@@ -845,7 +845,7 @@ bash -c "python -m http.server 8000"</code></pre></div></div>
 <li>初始化redis数据</li>
 </ol>
 <p>在redis中数据的存储结构采用的是<code>key/value</code>结构，在控制台中我们可以通过<code>set [key] [value]</code>命令存储数据。数据存储后可以使用<code>get [key]</code>命令读取数据。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c0tm3alm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-c0tm3alm7cpnta"><pre><code class="hljs shell">set name aliyun
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sda87tlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-sda87tlmngiym6"><pre><code class="hljs shell">set name aliyun
 set year 2000
 
 get name
@@ -861,7 +861,7 @@ exit</code></pre></div></div>
 </ol>
 <p>接下来我们再启动一个名为python1的python容器，并和redis1容器共享网卡。在容器创建成功后，我们在容器中使用pip
 install命令安装访问redis的工具。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vwiil7lm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-vwiil7lm7cpnta"><pre><code class="hljs shell">docker run -itd --name python1 --network=container:redis1 python
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dsjvxtlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-dsjvxtlmngiym6"><pre><code class="hljs shell">docker run -itd --name python1 --network=container:redis1 python
 docker exec python1 pip install redis</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/20230906121626357968_113_image-20230905204353188.png" srcset="/img/loading.gif" lazyload alt="image-20230905204353188">
@@ -873,7 +873,7 @@ docker exec python1 pip install redis</code></pre></div></div>
 <p>接下来我们在python1容器中执行<code>python</code>命令，进入命令行模式。在命令行模式中，我们可以一条一条的输入命令。并观察命令的执行结果。</p>
 <p>首先我们使用<code>import redis</code>命令加载访问工具，加载完成后，使用<code>redis.Redis()</code>命令创建到redis服务的连接。在创建连接时虽然python服务和redis服务不在同一个容器中，但是由于我们共享了网卡，我们还是可以使用127.0.0.1的网络地址来访问不同容器的服务。</p>
 <p>连接创建之后，我们就可以使用<code>keys(*)</code>命令列出redis中所有的key，然后我们继续使用<code>get([key名字])</code>的命令获得key对应的value。我们发现通过python容器获得数据和在redis-cli中获得的数据是一致的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m9s47vlm7cpnta"></i><span>shell</span><div class="collapse show" id="collapse-m9s47vlm7cpnta"><pre><code class="hljs shell">docker exec -it python1 python
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-10r89glmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-10r89glmngiym6"><pre><code class="hljs shell">docker exec -it python1 python
 
 import redis
 r = redis.Redis(host='127.0.0.1',port=6379,db=0)

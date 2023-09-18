@@ -320,14 +320,14 @@
 Obj，这是因为运算符重载最好保持原运算符的用法。C++
 固有的前置<code>++</code>运算符的返回值本来就是操作数的引用，而后置<code>++</code>运算符的返回值则是操作数值修改前的复制品。</p>
 <p>例如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rhaie7lluxp18y"></i><span>C++</span><div class="collapse show" id="collapse-rhaie7lluxp18y"><pre><code class="hljs C++"><span class="hljs-type">int</span> a = <span class="hljs-number">5</span>;(++a) = <span class="hljs-number">2</span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wyxmaclmngiym3"></i><span>C++</span><div class="collapse show" id="collapse-wyxmaclmngiym3"><pre><code class="hljs C++"><span class="hljs-type">int</span> a = <span class="hljs-number">5</span>;(++a) = <span class="hljs-number">2</span>;</code></pre></div></div>
 <p>上面两条语句执行后，a 的值是 2，因为 ++a 的返回值是 a 的引用。而</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rzymrilluxp18y"></i><span>C++</span><div class="collapse show" id="collapse-rzymrilluxp18y"><pre><code class="hljs C++">(a++) = <span class="hljs-number">2</span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3n0oaelmngiym3"></i><span>C++</span><div class="collapse show" id="collapse-3n0oaelmngiym3"><pre><code class="hljs C++">(a++) = <span class="hljs-number">2</span>;</code></pre></div></div>
 <p>这条语句是非法的，因为 a++ 的返回值不是引用，不能作为左值。</p>
 <p>换句话说，前置<code>++</code>返回左值，后置<code>++</code>返回右值。</p>
 <p>当然，如果我们还重载了对象的加减等运算符，希望自增自减参与对象的这些运算，返回的应当是对象(这也是推荐的做法)，如果希望得到自增自减的“数值”，可以返回<code>int</code>。</p>
 <p>但如果重载后置运算符时返回的是引用，有可能破坏类的封装性。如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9dgxjmlluxp18y"></i><span>c++</span><div class="collapse show" id="collapse-9dgxjmlluxp18y"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vmm9rllmngiym3"></i><span>c++</span><div class="collapse show" id="collapse-vmm9rllmngiym3"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Sample</span>{
     <span class="hljs-type">int</span> n;

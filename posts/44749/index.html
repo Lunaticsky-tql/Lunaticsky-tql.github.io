@@ -393,16 +393,16 @@
 <p>熟悉添加指令的流程，完成<code>dummy</code>程序运行。并且真正学会RTFM。</p>
 <h4 id="遇到的问题">遇到的问题</h4>
 <p>1.运行<code>make ARCH=x86-nemu ALL=dummy run</code>出现如图所示错误:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mbh5ymlluwpkzu"></i><span>shell</span><div class="collapse show" id="collapse-mbh5ymlluwpkzu"><pre><code class="hljs shell">fatal error: bits/libc-header-start.h: No such file or directory</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b8knnblmngiym5"></i><span>shell</span><div class="collapse show" id="collapse-b8knnblmngiym5"><pre><code class="hljs shell">fatal error: bits/libc-header-start.h: No such file or directory</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230828210935594767_446_20230523225359236876_857_image-20230416202629539.png" srcset="/img/loading.gif" lazyload alt="image-20230416202629539">
 <figcaption aria-hidden="true">image-20230416202629539</figcaption>
 </figure>
 <p>解决方法:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y3h54nlluwpkzu"></i><span>shell</span><div class="collapse show" id="collapse-y3h54nlluwpkzu"><pre><code class="hljs shell">sudo apt-get install gcc-multilib</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nft30ylmngiym5"></i><span>shell</span><div class="collapse show" id="collapse-nft30ylmngiym5"><pre><code class="hljs shell">sudo apt-get install gcc-multilib</code></pre></div></div>
 <p>因为我们是要模拟一个i386的isa，它是32位的。</p>
 <p>之后又遇到下述错误:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sodbrwlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-sodbrwlluwpkzu"><pre><code class="hljs C++">/home/lunaticsky/ics2019/nexus-am/am/src/nemu-common/trm.c: In function ‘_trm_init’:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ih7etzlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ih7etzlmngiym5"><pre><code class="hljs C++">/home/lunaticsky/ics2019/nexus-am/am/src/nemu-common/trm.c: In function ‘_trm_init’:
 /home/lunaticsky/ics2019/nexus-am/am/src/nemu-common/trm.c:<span class="hljs-number">26</span>:<span class="hljs-number">15</span>: error: array subscript <span class="hljs-number">-1048576</span> is outside array bounds of ‘<span class="hljs-type">const</span> <span class="hljs-type">char</span>[<span class="hljs-number">1</span>]’ [-Werror=array-bounds]
    <span class="hljs-number">26</span> |   <span class="hljs-type">const</span> <span class="hljs-type">char</span> *mainargs = &amp;_start - <span class="hljs-number">0x100000</span>;
       |               ^~~~~~~~
@@ -433,7 +433,7 @@
 </figure>
 <p>这里顺带把后面几个可能用到的也填了:</p>
 <p>可以这些<code>opcode</code>都是单字节的，填<code>opcode_table</code>的时候千万不要错填到2字节部分！</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j7uatmlluwpkzu"></i><span>c</span><div class="collapse show" id="collapse-j7uatmlluwpkzu"><pre><code class="hljs c"><span class="hljs-comment">/* 0xe8 */</span>	IDEX(I,call), IDEX(J,jmp), EMPTY, IDEXW(J,jmp,<span class="hljs-number">1</span>),</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s9s73vlmngiym5"></i><span>c</span><div class="collapse show" id="collapse-s9s73vlmngiym5"><pre><code class="hljs c"><span class="hljs-comment">/* 0xe8 */</span>	IDEX(I,call), IDEX(J,jmp), EMPTY, IDEXW(J,jmp,<span class="hljs-number">1</span>),</code></pre></div></div>
 <p>显然call 指令的实现中需要使用压栈操作，因此先去实现push指令。</p>
 <h5 id="push_prepare">push_prepare</h5>
 <p>这个指令学长贴心的给出了勘误:</p>
@@ -443,10 +443,10 @@
 </figure>
 <p>填<code>opcode_table</code></p>
 <p><code>nemu/src/isa/x86/exec/exec.c</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8gngf0lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-8gngf0lluwpkzu"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x50 */</span>	<span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push),
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e0hu2glmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-e0hu2glmngiym5"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x50 */</span>	<span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push),
 <span class="hljs-comment">/* 0x54 */</span>	<span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push), <span class="hljs-built_in">IDEX</span>(r, push),</code></pre></div></div>
 <p>ics2019把ISA相关的RTL伪指令放到了<code>nemu/src/isa/$ISA/include/isa/rtl.h</code>中定义，一开始去<code>nemu/include</code>没找到，后来发现指导手册里有说明，还是没仔细看。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mpz92vlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-mpz92vlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_push</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y9cbvqlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-y9cbvqlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_push</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1)</span> </span>{
   <span class="hljs-comment">// esp &lt;- esp - 4</span>
   <span class="hljs-comment">// M[esp] &lt;- src1</span>
   <span class="hljs-comment">//TODO();</span>
@@ -478,7 +478,7 @@
 <h5 id="sub">sub</h5>
 <p>然后这时候发现，我们想实现push，sub都没实现哩。开始折磨起来了。</p>
 <p>sub本身的实现不难。因为实验代码中给了更复杂的<code>sbb</code>指令的实现，仿照即可。代码如下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9fj2oalluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-9fj2oalluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(sub) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ejobv5lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ejobv5lmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(sub) {
   <span class="hljs-comment">//TODO();</span>
 	<span class="hljs-built_in">rtl_sub</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val);
 	<span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
@@ -501,12 +501,12 @@ group)。</p>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230828210945133885_542_20230523225429817644_186_image-20230417211556676.png" srcset="/img/loading.gif" lazyload alt="image-20230417211556676">
 <figcaption aria-hidden="true">image-20230417211556676</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lotq8zlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-lotq8zlluwpkzu"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x80, 0x81, 0x83 */</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2vkdhhlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-2vkdhhlmngiym5"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x80, 0x81, 0x83 */</span>
 <span class="hljs-built_in">make_group</span>(gp1,
     <span class="hljs-built_in">EX</span>(add), <span class="hljs-built_in">EX</span>(<span class="hljs-keyword">or</span>), <span class="hljs-built_in">EX</span>(adc), <span class="hljs-built_in">EX</span>(sbb),
     <span class="hljs-built_in">EX</span>(<span class="hljs-keyword">and</span>), <span class="hljs-built_in">EX</span>(sub), <span class="hljs-built_in">EX</span>(<span class="hljs-keyword">xor</span>), <span class="hljs-built_in">EX</span>(cmp))</code></pre></div></div>
 <p>这几个位置涉及到<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b7c968baecaf">变长指令</a>，比如</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xudnkllluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-xudnkllluwpkzu"><pre><code class="hljs C++"><span class="hljs-number">100017</span>:	<span class="hljs-number">83</span> ec <span class="hljs-number">14</span>             	sub    $<span class="hljs-number">0x14</span>,%esp</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k1vnl8lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-k1vnl8lmngiym5"><pre><code class="hljs C++"><span class="hljs-number">100017</span>:	<span class="hljs-number">83</span> ec <span class="hljs-number">14</span>             	sub    $<span class="hljs-number">0x14</span>,%esp</code></pre></div></div>
 <p>就是这一类的。</p>
 <p>实现<code>sub</code>的主要问题是还需要实现<code>eflags</code>。</p>
 <h5 id="eflags">eflags</h5>
@@ -527,7 +527,7 @@ group)。</p>
 1，反之清零。这个标志为带符号整型运算指示溢出状态。</p>
 </blockquote>
 <p>我们可以用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E4%BD%8D%E6%AE%B5">位域</a>实现<code>eflag</code>结构，它本质上就是一个结构体。把它放到<code>CPU_state</code>结构体里面。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wjsbfclluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-wjsbfclluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">union</span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qhkui5lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-qhkui5lmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">union</span>{
     <span class="hljs-keyword">struct</span>{
         <span class="hljs-type">uint32_t</span> CF:<span class="hljs-number">1</span>;
         <span class="hljs-type">unsigned</span> :<span class="hljs-number">5</span>;
@@ -542,14 +542,14 @@ group)。</p>
     <span class="hljs-type">uint32_t</span> val;
 }eflags;</code></pre></div></div>
 <p>不要忘了eflags 的初始化。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q0m9inlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-q0m9inlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">restart</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ibaxgllmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ibaxgllmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">restart</span><span class="hljs-params">()</span> </span>{
   <span class="hljs-comment">/* Set the initial program counter. */</span>
   cpu.pc = PC_START;
   cpu.eflags.val = <span class="hljs-number">0x2</span>;
   }</code></pre></div></div>
 <p>这时候再运行，发现eflag更新相关的rtl方法还没实现。</p>
 <p>下面是更新ZF标志的方法，根据不同长度判断相与是否为0.或许可以有更好的方法或者可以调用接口实现，不过如文档所说，先完成再完美。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0tnjtglluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-0tnjtglluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (width)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-glw2eslmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-glw2eslmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">switch</span> (width)
 {
 <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
 {
@@ -573,7 +573,7 @@ group)。</p>
   <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
 }</code></pre></div></div>
 <p>框架还要求我们去实现一个设置标志位的宏。就连这么小的一个功能都要抽象成一个宏，而不是复制黏贴设置<code>src</code>和<code>dest</code>，相较文档中的哲学确实做到了言行一致。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8nt32vlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-8nt32vlluwpkzu"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> make_rtl_setget_eflags(f) \</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c8766flmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-c8766flmngiym5"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> make_rtl_setget_eflags(f) \</span>
 <span class="hljs-meta">  static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \</span>
 <span class="hljs-meta">    cpu.eflags.f=*src; \</span>
 <span class="hljs-meta">  } \</span>
@@ -583,14 +583,14 @@ group)。</p>
 <p>中间还涉及要要求判断何时“溢出”和“借位”以及判断有效最高位。虽然计算机使用补码运算，没有“借位”这一概念，但减法变成补码加法运算的时候没进位，其实就是借位了。这一部分的实现是真·小学知识，但确实很琐碎，具体代码不在报告展示了。</p>
 <h5 id="push">push</h5>
 <p><code>nemu/src/isa/x86/exec/data-mov.c</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7trz3dlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-7trz3dlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(push) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9ydcbjlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-9ydcbjlmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(push) {
   <span class="hljs-comment">//TODO();</span>
   <span class="hljs-built_in">rtl_push</span>(&amp;id_dest -&gt; val);
   <span class="hljs-built_in">print_asm_template1</span>(push); 
 }</code></pre></div></div>
 <h5 id="call">call</h5>
 <p>下面就可以把<code>call</code>的<code>make_EHelper</code>补充完整了。ics2019为了照顾不同的ISA，相比2018改了一些变量名。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vn6bcklluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-vn6bcklluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(call) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f2oa4zlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-f2oa4zlmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(call) {
   <span class="hljs-comment">// the target address is calculated at the decode stage</span>
  <span class="hljs-comment">// TODO();</span>
 	<span class="hljs-built_in">rtl_push</span>(pc); <span class="hljs-comment">//push pc</span>
@@ -610,16 +610,16 @@ eip。转移eip这一步需要J指令。</p>
 <p>回到PA。这一阶段还没完呢矮油喂。。</p>
 <h5 id="pop">pop</h5>
 <p>pop的实现和push类似，虽然在一阶段用不到，反正迟早要做，就一起写了。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3jqm2ylluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-3jqm2ylluwpkzu"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x58 */</span>	<span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop),
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e7dac8lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-e7dac8lmngiym5"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x58 */</span>	<span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop),
 <span class="hljs-comment">/* 0x5c */</span>	EMPTY, <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop), <span class="hljs-built_in">IDEX</span>(r, pop),</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qv6geqlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-qv6geqlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_pop</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1spk6vlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-1spk6vlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_pop</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest)</span> </span>{
   <span class="hljs-comment">// dest &lt;- M[esp]</span>
   <span class="hljs-comment">// esp &lt;- esp + 4</span>
   <span class="hljs-comment">// TODO();</span>
   <span class="hljs-built_in">rtl_lm</span>(dest, &amp;cpu.esp, <span class="hljs-number">4</span>);
   <span class="hljs-built_in">rtl_addi</span>(&amp;cpu.esp, &amp;cpu.esp, <span class="hljs-number">4</span>);
 }</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-93iubwlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-93iubwlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(pop)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jnysmqlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-jnysmqlmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(pop)
 {
   <span class="hljs-comment">// TODO();</span>
   <span class="hljs-built_in">rtl_pop</span>(&amp;t0);                     <span class="hljs-comment">// register t0 is used according to the convention</span>
@@ -646,7 +646,7 @@ eip。转移eip这一步需要J指令。</p>
 </figure>
 <p><code>xor</code>的执行函数在<code>logic.c</code>里面。</p>
 <p>仿照着写，并不难。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2d4f0hlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-2d4f0hlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-keyword">xor</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nctdo5lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-nctdo5lmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-keyword">xor</span>)
 {
 	<span class="hljs-built_in">rtl_li</span>(&amp;s1,<span class="hljs-number">0</span>);
 	<span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
@@ -672,7 +672,7 @@ eip。转移eip这一步需要J指令。</p>
 <p>可以看到<code>ret</code>有好几种形式。但是我们显然只需要实现<code>c3</code>就可以满足需要。</p>
 <p>根据描述，C3 ret是用栈的数据修改IP的内容，实现近转移。</p>
 <p>我们在操作系统课上学过，<code>ret</code>弹出栈中保存的<code>eip</code>，跳到对应地址就可以返回调用它的位置。注意设置跳转标志。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cfajfdlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-cfajfdlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(ret)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pbdnb4lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-pbdnb4lmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(ret)
 {
 	<span class="hljs-built_in">rtl_pop</span>(&amp;decinfo.jmp_pc);
 	<span class="hljs-built_in">rtl_j</span>(decinfo.jmp_pc);
@@ -702,7 +702,7 @@ NEMU的框架代码一旦检测到这一行为就会直接panic.
 (建议二周目思考)</h6>
 <p>为什么需要有host内存访问的RTL指令呢?</p>
 <p>阅读源码发现，用到host内存访问指令的是</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1vgcgclluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-1vgcgclluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_lr</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> width)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zp7ptklmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-zp7ptklmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_lr</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> width)</span> </span>{
 
  <span class="hljs-keyword">switch</span> (width) {
   <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>: <span class="hljs-built_in">rtl_mv</span>(dest, &amp;<span class="hljs-built_in">reg_l</span>(r)); <span class="hljs-keyword">return</span>;
@@ -713,10 +713,10 @@ NEMU的框架代码一旦检测到这一行为就会直接panic.
 }</code></pre></div></div>
 <p>lr或sr的时候宽度小于4</p>
 <p>而<code>guest</code>内存访问和<code>host</code>内存访问指令的区别在于一个是直接赋值，另一个是经过了<code>vaddr</code>转换。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-escjzvlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-escjzvlluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">interpret_rtl_lm</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span> *dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* addr, <span class="hljs-type">int</span> len)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8ynlbrlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-8ynlbrlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">interpret_rtl_lm</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span> *dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* addr, <span class="hljs-type">int</span> len)</span> </span>{
   *dest = <span class="hljs-built_in">vaddr_read</span>(*addr, len);
 }</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wqv0a9lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-wqv0a9lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">interpret_rtl_host_lm</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">const</span> <span class="hljs-type">void</span> *addr, <span class="hljs-type">int</span> len)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v8v5o4lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-v8v5o4lmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">interpret_rtl_host_lm</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">const</span> <span class="hljs-type">void</span> *addr, <span class="hljs-type">int</span> len)</span> </span>{
   <span class="hljs-keyword">switch</span> (len) {
     <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>: *dest = *(<span class="hljs-type">uint32_t</span> *)addr; <span class="hljs-keyword">return</span>;
     <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>: *dest = *( <span class="hljs-type">uint8_t</span> *)addr; <span class="hljs-keyword">return</span>;
@@ -734,7 +734,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 <h3 id="更多指令实现">更多指令实现</h3>
 <h4 id="任务-1">任务</h4>
 <p><code>nemu</code>目录运行</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vzsea1lluwpkzu"></i><span>shell</span><div class="collapse show" id="collapse-vzsea1lluwpkzu"><pre><code class="hljs shell">bash runall.sh ISA=x86</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h4ln0slmngiym5"></i><span>shell</span><div class="collapse show" id="collapse-h4ln0slmngiym5"><pre><code class="hljs shell">bash runall.sh ISA=x86</code></pre></div></div>
 <p>可以看到第一个需要实现的是<code>add_longlong</code>。</p>
 <p>这里面第一个需要实现的指令是<code>lea</code></p>
 <figure>
@@ -785,7 +785,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 </figure>
 <p>emm有一个手册里没有必须要看源码才知道的事情，就是<code>nemu</code>将这一类指令抽象成了<code>setcc</code></p>
 <p>执行阶段给出了实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k18aqwlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-k18aqwlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(setcc) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zp5ieylmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-zp5ieylmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(setcc) {
   <span class="hljs-type">uint32_t</span> cc = decinfo.opcode &amp; <span class="hljs-number">0xf</span>;
 
   <span class="hljs-built_in">rtl_setcc</span>(&amp;s0, cc);
@@ -793,7 +793,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 
   <span class="hljs-built_in">print_asm</span>(<span class="hljs-string">"set%s %s"</span>, <span class="hljs-built_in">get_cc_name</span>(cc), id_dest-&gt;str);</code></pre></div></div>
 <p><code>rtl_setcc</code>需要我们自己实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ser145lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-ser145lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rtl_setcc</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">uint8_t</span> subcode)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2wfoyxlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-2wfoyxlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rtl_setcc</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">uint8_t</span> subcode)</span> </span>{
   <span class="hljs-type">bool</span> invert = subcode &amp; <span class="hljs-number">0x1</span>;
   <span class="hljs-keyword">enum</span> {
     CC_O, CC_NO, CC_B,  CC_NB,
@@ -835,7 +835,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 </figure>
 <p>可以看到movvsx和movvzx。这两个指令都是在mov的基础上加了符号拓展功能。</p>
 <p>可以看到框架里已经实现了，填表即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sofc8llluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-sofc8llluwpkzu"><pre><code class="hljs C++"><span class="hljs-comment">/* 0xb4 */</span>	EMPTY, EMPTY, <span class="hljs-built_in">IDEXW</span>(mov_E2G,movzx,<span class="hljs-number">1</span>), <span class="hljs-built_in">IDEXW</span>(mov_E2G,movzx,<span class="hljs-number">2</span>),
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1jv318lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-1jv318lmngiym5"><pre><code class="hljs C++"><span class="hljs-comment">/* 0xb4 */</span>	EMPTY, EMPTY, <span class="hljs-built_in">IDEXW</span>(mov_E2G,movzx,<span class="hljs-number">1</span>), <span class="hljs-built_in">IDEXW</span>(mov_E2G,movzx,<span class="hljs-number">2</span>),
 <span class="hljs-comment">/* 0xb8 */</span>	EMPTY, EMPTY, EMPTY, EMPTY,
 <span class="hljs-comment">/* 0xbc */</span>	EMPTY, EMPTY, <span class="hljs-built_in">IDEXW</span>(mov_E2G,movsx,<span class="hljs-number">1</span>), <span class="hljs-built_in">IDEXW</span>(mov_E2G,movsx,<span class="hljs-number">2</span>),</code></pre></div></div>
 <figure>
@@ -851,7 +851,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 <figcaption aria-hidden="true">image-20230418014447181</figcaption>
 </figure>
 <p>据此实现即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wii956lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-wii956lluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(test) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k97bt5lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-k97bt5lmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(test) {
   <span class="hljs-built_in">rtl_li</span>(&amp;s1,<span class="hljs-number">0</span>);
   <span class="hljs-built_in">rtl_set_OF</span>(&amp;s1);
   <span class="hljs-built_in">rtl_set_CF</span>(&amp;s1);
@@ -864,7 +864,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 <figcaption aria-hidden="true">image-20230418014935039</figcaption>
 </figure>
 <p>框架将这一类型的执行抽象成了<code>jcc</code>，调用了之前提到的<code>setcc</code>。因此可以这样填:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ruqdi8lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-ruqdi8lluwpkzu"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x70 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6civ6klmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-6civ6klmngiym5"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x70 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
 <span class="hljs-comment">/* 0x74 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
 <span class="hljs-comment">/* 0x78 */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),
 <span class="hljs-comment">/* 0x7c */</span>	<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),<span class="hljs-built_in">IDEXW</span>(J,jcc,<span class="hljs-number">1</span>),</code></pre></div></div>
@@ -878,7 +878,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 <figcaption aria-hidden="true">image-20230418015919938</figcaption>
 </figure>
 <p>填表，补充执行逻辑:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bh14tslluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-bh14tslluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(leave) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ykn06ilmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ykn06ilmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(leave) {
 <span class="hljs-comment">//  TODO();</span>
   <span class="hljs-built_in">rtl_mv</span>(&amp;cpu.esp,&amp;cpu.ebp);
   <span class="hljs-built_in">rtl_pop</span>(&amp;cpu.ebp);
@@ -889,7 +889,7 @@ NEMU都是这台抽象计算机的具体实现,只是真机是通过物理上存
 <figcaption aria-hidden="true">image-20230418020130781</figcaption>
 </figure>
 <p>dec，inc，cmp</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3masdglluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-3masdglluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(cmp) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7tivhylmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-7tivhylmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(cmp) {
 <span class="hljs-comment">//  TODO();</span>
 	<span class="hljs-built_in">rtl_sub</span>(&amp;s0,&amp;id_dest-&gt;val,&amp;id_src-&gt;val);
 	<span class="hljs-built_in">rtl_update_ZFSF</span>(&amp;s0,id_dest-&gt;width);
@@ -939,14 +939,14 @@ TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tq
 </figure>
 <p>这个是<code>not</code>，对应第三个指令组，开填。</p>
 <p>至于实现，这应该是最简单的一个。。。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-403ub6lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-403ub6lluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-keyword">not</span>) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p1arcblmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-p1arcblmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(<span class="hljs-keyword">not</span>) {
 <span class="hljs-comment">//  TODO();</span>
   <span class="hljs-built_in">rtl_not</span>(&amp;s0,&amp;id_dest-&gt;val);
   <span class="hljs-built_in">operand_write</span>(id_dest,&amp;s0);
   <span class="hljs-built_in">print_asm_template1</span>(<span class="hljs-keyword">not</span>);
 }</code></pre></div></div>
 <p>还有一个<code>rtl_not</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zz4zxplluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-zz4zxplluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_not</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span> *dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n9r7ealmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-n9r7ealmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_not</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span> *dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1)</span> </span>{
   <span class="hljs-comment">// dest &lt;- ~src1</span>
 <span class="hljs-comment">//  TODO();</span>
 	*dest=~(*src1);
@@ -968,7 +968,7 @@ TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tq
 </figure>
 <p>符号拓展</p>
 <p>这个要填rtl。利用好抽象层的东西。不就是把低位搬到高位么。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-626022lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-626022lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_sext</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1, <span class="hljs-type">int</span> width)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xuv8u1lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-xuv8u1lmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">rtl_sext</span><span class="hljs-params">(<span class="hljs-type">rtlreg_t</span>* dest, <span class="hljs-type">const</span> <span class="hljs-type">rtlreg_t</span>* src1, <span class="hljs-type">int</span> width)</span> </span>{
   <span class="hljs-comment">// dest &lt;- signext(src1[(width * 8 - 1) .. 0])</span>
 <span class="hljs-comment">//  TODO();</span>
 	<span class="hljs-built_in">rtl_shli</span>(&amp;t0,src1,<span class="hljs-number">32</span>-width*<span class="hljs-number">8</span>);
@@ -986,7 +986,7 @@ TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tq
 </figure>
 <p>框架中给的是cltd和cwtl，cltd就是CWD/CDQ，而cwtl对应CBW/CWDE。</p>
 <p>按理说可以调抽象层的接口，但我总是调不对。。只好重新造轮子了。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lnyhcjlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-lnyhcjlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(cltd) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zvxqztlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-zvxqztlmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(cltd) {
   <span class="hljs-keyword">if</span> (decinfo.isa.is_operand_size_16) {
     <span class="hljs-comment">//TODO();</span>
     <span class="hljs-keyword">if</span> ((cpu.eax&gt;&gt;<span class="hljs-number">15</span>)&amp;<span class="hljs-number">1</span>) cpu.edx|=<span class="hljs-number">0x0000ffff</span>;
@@ -1032,7 +1032,7 @@ TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tq
 <figcaption aria-hidden="true">image-20230418034759314</figcaption>
 </figure>
 <p>对应实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7lgg84lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-7lgg84lluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(call_rm) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fyw88mlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-fyw88mlmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(call_rm) {
   <span class="hljs-comment">//TODO();</span>
   <span class="hljs-built_in">rtl_li</span>(&amp;s0,id_dest-&gt;val);
   <span class="hljs-built_in">rtl_mv</span>(&amp;decinfo.jmp_pc,&amp;s0);
@@ -1048,7 +1048,7 @@ TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tq
 </figure>
 <p>一开始看到运行到了bad指令以为是自己跳转指令实现的有问题，回去检查了一遍没发现毛病，看指导书才发现是自己少做了东西。然后2020版的文档这个位置就挨着不要以为有TDDO才需要实现的免责声明。多少有点挑衅了。但又不能说什么，谁让我没好好看文档。。。</p>
 <p>按照指导书提示，要完成<code>string.c</code>中列出的字符串处理函数才能通过这个样例。看源代码实现下面三个函数就可以了。我们只需要通过直接操作字符来完成库函数本应有的功能即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mv689llluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-mv689llluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">char</span>* <span class="hljs-title">strncpy</span><span class="hljs-params">(<span class="hljs-type">char</span>* dst, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* src, <span class="hljs-type">size_t</span> n)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pmmagnlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-pmmagnlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">char</span>* <span class="hljs-title">strncpy</span><span class="hljs-params">(<span class="hljs-type">char</span>* dst, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* src, <span class="hljs-type">size_t</span> n)</span> </span>{
 	<span class="hljs-type">char</span>* pd=dst;
 	<span class="hljs-keyword">while</span> (n&gt;<span class="hljs-number">0</span>&amp;&amp;*src!=<span class="hljs-string">'\0'</span>) --n,*pd=*src,++pd,++src;
 	<span class="hljs-keyword">while</span> (n&gt;<span class="hljs-number">0</span>) --n,*pd=<span class="hljs-string">'\0'</span>,++pd;
@@ -1091,7 +1091,7 @@ TRAP</font></strong>！<img src="https://raw.githubusercontent.com/Lunaticsky-tq
 <h4 id="任务-2">任务</h4>
 <p><code>difftest</code>的实现我们只需要实现检查寄存器的环节即可。</p>
 <p><code>nemu/src/isa/mips32/diff-test.c</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1kw6oslluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-1kw6oslluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isa_difftest_checkregs</span><span class="hljs-params">(CPU_state *ref_r, <span class="hljs-type">vaddr_t</span> pc)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bxtnlmlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-bxtnlmlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isa_difftest_checkregs</span><span class="hljs-params">(CPU_state *ref_r, <span class="hljs-type">vaddr_t</span> pc)</span> </span>{
   <span class="hljs-keyword">if</span> ((*ref_r).eax!=cpu.eax||(*ref_r).ecx!=cpu.ecx
 	||(*ref_r).edx!=cpu.edx||(*ref_r).ebx!=cpu.ebx
 	||(*ref_r).esp!=cpu.esp||(*ref_r).ebp!=cpu.ebp
@@ -1141,7 +1141,7 @@ instruction引起的问题确实不好定位，difftest也无能为力，定位�
 <p>选x86有福了。还要实现<code>in</code>,
 <code>out</code>指令。还好这个也不难，在它们的执行辅助函数中分别调用
 <code>pio_read_[l|w|b]()</code>和<code>pio_write_[l|w|b]()</code>函数即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wj5s6hlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-wj5s6hlluwpkzu"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(in) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sittdilmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-sittdilmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(in) {
 <span class="hljs-comment">//  TODO();</span>
   <span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">4</span>) s0=<span class="hljs-built_in">pio_read_l</span>(id_src-&gt;val);
   <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (id_dest-&gt;width==<span class="hljs-number">2</span>) s0=<span class="hljs-built_in">pio_read_w</span>(id_src-&gt;val);
@@ -1172,12 +1172,12 @@ instruction引起的问题确实不好定位，difftest也无能为力，定位�
 <p>这个部分看了半天没看明白要干什么，查阅网上资料才知道怎么做:</p>
 <p>初始化时通过inl(RTC_ADDR)获取初始时间boot_time，随后uptime时同样读取时间，相减作为uptime-&gt;lo。</p>
 <p>在<code>_DEVREG_TIMER_UPTIME</code>case里面:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ak8ibzlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-ak8ibzlluwpkzu"><pre><code class="hljs C++">      <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> tt=(<span class="hljs-built_in">inl</span>(RTC_ADDR)-init_tim);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v2zs48lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-v2zs48lmngiym5"><pre><code class="hljs C++">      <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> tt=(<span class="hljs-built_in">inl</span>(RTC_ADDR)-init_tim);
 <span class="hljs-comment">//      printf("%d\n",tt);</span>
       uptime-&gt;hi = <span class="hljs-number">0</span>;
       uptime-&gt;lo = tt;</code></pre></div></div>
 <p>后面没实现的初始化函数:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hy957olluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-hy957olluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">void</span> __am_timer_init() {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yjncuqlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-yjncuqlmngiym5"><pre><code class="hljs C++"><span class="hljs-type">void</span> __am_timer_init() {
 	init_tim=<span class="hljs-built_in">inl</span>(RTC_ADDR);
 }</code></pre></div></div>
 <p>当然要增加一个静态全局变量<code>init_tim</code>把初始时间记下来。</p>
@@ -1199,7 +1199,7 @@ instruction引起的问题确实不好定位，difftest也无能为力，定位�
 </figure>
 <h4 id="键盘">键盘</h4>
 <p>和时钟相似。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gu7trzlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-gu7trzlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _DEVREG_INPUT_KBD:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1vpclelmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-1vpclelmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _DEVREG_INPUT_KBD:
 {
   _DEV_INPUT_KBD_t *kbd = (_DEV_INPUT_KBD_t *)buf;
   <span class="hljs-type">uint32_t</span> code_key = <span class="hljs-built_in">inl</span>(KBD_ADDR);
@@ -1223,7 +1223,7 @@ instruction引起的问题确实不好定位，difftest也无能为力，定位�
 <figcaption aria-hidden="true">image-20230418202105754</figcaption>
 </figure>
 <h3 id="vga">VGA</h3>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vqejgslluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-vqejgslluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">vga_io_handler</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> offset, <span class="hljs-type">int</span> len, <span class="hljs-type">bool</span> is_write)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t4fyhqlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-t4fyhqlmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">vga_io_handler</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> offset, <span class="hljs-type">int</span> len, <span class="hljs-type">bool</span> is_write)</span> </span>{
   <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> call `update_screen()` when writing to the sync register</span>
   <span class="hljs-comment">//TODO();</span>
   <span class="hljs-keyword">if</span> (is_write)
@@ -1231,7 +1231,7 @@ instruction引起的问题确实不好定位，difftest也无能为力，定位�
     <span class="hljs-built_in">update_screen</span>();
   }
 }</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-efzegnlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-efzegnlluwpkzu"><pre><code class="hljs C++"><span class="hljs-type">size_t</span> __am_video_write(<span class="hljs-type">uintptr_t</span> reg, <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> size)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0yhjpulmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-0yhjpulmngiym5"><pre><code class="hljs C++"><span class="hljs-type">size_t</span> __am_video_write(<span class="hljs-type">uintptr_t</span> reg, <span class="hljs-type">void</span> *buf, <span class="hljs-type">size_t</span> size)
 {
   <span class="hljs-keyword">switch</span> (reg)
   {
@@ -1275,7 +1275,7 @@ instruction引起的问题确实不好定位，difftest也无能为力，定位�
 <p>参见<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343688629">这里</a></p>
 <p>文中的例子便是手册中提及到的情形:</p>
 <p>假设要对一个设备进行初始化，此设备的某一个寄存器为0x8049000</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0om3a4lluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-0om3a4lluwpkzu"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fun</span><span class="hljs-params">()</span></span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hajp4ulmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-hajp4ulmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fun</span><span class="hljs-params">()</span></span>{
 <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *p=(<span class="hljs-type">void</span> *)<span class="hljs-number">0x8049000</span>; 
 *p=<span class="hljs-number">0</span>;
 <span class="hljs-keyword">while</span>(*p !=<span class="hljs-number">0xff</span>);
@@ -1335,30 +1335,30 @@ inline,这个函数就会被多次定义，在链接的时候会报错。</p>
 <h6 id="makefile执行过程">makefile执行过程</h6>
 <p>之前操作系统折磨过的一次makefile又回来折磨人了。 即便当时写了<a href="https://lunaticsky-tql.github.io/posts/23557/">makefile急速入门</a>，makefile这个东西不得不说和shell脚本一样，语法独具其风格，简练强大但可读性也不敢恭维。</p>
 <p>我们输入make默认生成NEMU的二进制文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-umx2wxlluwpkzu"></i><span>makefile</span><div class="collapse show" id="collapse-umx2wxlluwpkzu"><pre><code class="hljs makefile"><span class="hljs-section">app: <span class="hljs-variable">$(BINARY)</span></span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ii9karlmngiym5"></i><span>makefile</span><div class="collapse show" id="collapse-ii9karlmngiym5"><pre><code class="hljs makefile"><span class="hljs-section">app: <span class="hljs-variable">$(BINARY)</span></span></code></pre></div></div>
 <p>再去看<code>$(BINARY)</code>的依赖:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tfgygvlluwpkzu"></i><span>makefile</span><div class="collapse show" id="collapse-tfgygvlluwpkzu"><pre><code class="hljs makefile"><span class="hljs-variable">$(BINARY)</span>: <span class="hljs-variable">$(OBJS)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r78u8glmngiym5"></i><span>makefile</span><div class="collapse show" id="collapse-r78u8glmngiym5"><pre><code class="hljs makefile"><span class="hljs-variable">$(BINARY)</span>: <span class="hljs-variable">$(OBJS)</span>
 	<span class="hljs-variable">$(<span class="hljs-built_in">call</span> git_commit, "compile")</span>
 	@echo + LD <span class="hljs-variable">$@</span>
 	@<span class="hljs-variable">$(LD)</span> -O2 -rdynamic <span class="hljs-variable">$(SO_LDLAGS)</span> -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$^</span> -lSDL2 -lreadline -ldl</code></pre></div></div>
 <p>BINARY 依赖于 OBJS</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vcewehlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-vcewehlluwpkzu"><pre><code class="hljs C++">OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4j3jollmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-4j3jollmngiym5"><pre><code class="hljs C++">OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)</code></pre></div></div>
 <p>(var:a=b)，是将 var 变量中每一个单词后面的 a 替换为
 b。所以OBJS其实就是build 文件夹下的所有.o 文件</p>
 <p>OBJ_DIR是前面定义了的构建路径目标</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-40l8d6lluwpkzu"></i><span>makefile</span><div class="collapse show" id="collapse-40l8d6lluwpkzu"><pre><code class="hljs makefile">OBJ_DIR ?= <span class="hljs-variable">$(BUILD_DIR)</span>/obj-<span class="hljs-variable">$(ISA)</span><span class="hljs-variable">$(SO)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-72xjellmngiym5"></i><span>makefile</span><div class="collapse show" id="collapse-72xjellmngiym5"><pre><code class="hljs makefile">OBJ_DIR ?= <span class="hljs-variable">$(BUILD_DIR)</span>/obj-<span class="hljs-variable">$(ISA)</span><span class="hljs-variable">$(SO)</span>
 BINARY ?= <span class="hljs-variable">$(BUILD_DIR)</span>/<span class="hljs-variable">$(ISA)</span>-<span class="hljs-variable">$(NAME)</span><span class="hljs-variable">$(SO)</span></code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA2/20230828211049486409_502_20230523230818475318_173_image-20230418215016739.png" srcset="/img/loading.gif" lazyload alt="image-20230418215016739">
 <figcaption aria-hidden="true">image-20230418215016739</figcaption>
 </figure>
 <p>关于SRC:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-apn67tlluwpkzu"></i><span>makefile</span><div class="collapse show" id="collapse-apn67tlluwpkzu"><pre><code class="hljs makefile">SRCS = <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> find src/ -name "*.c" | grep -v "isa")</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fs8w3llmngiym5"></i><span>makefile</span><div class="collapse show" id="collapse-fs8w3llmngiym5"><pre><code class="hljs makefile">SRCS = <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> find src/ -name "*.c" | grep -v "isa")</span>
 SRCS += <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> find src/isa/<span class="hljs-variable">$(ISA)</span> -name "*.c")</span></code></pre></div></div>
 <p>-v
 表示不匹配“isa"，先把isa文件夹排除掉，再根据选择的指令集去isa文件夹里面找。SRC包括构建NEMU用到的所有.c文件。</p>
 <p>build 的各.o 文件依赖于 src 文件夹下的所有.c 文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0xgmdnlluwpkzu"></i><span>makefile</span><div class="collapse show" id="collapse-0xgmdnlluwpkzu"><pre><code class="hljs makefile"><span class="hljs-variable">$(OBJ_DIR)</span>/%.o: src/%.c
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k8ckeqlmngiym5"></i><span>makefile</span><div class="collapse show" id="collapse-k8ckeqlmngiym5"><pre><code class="hljs makefile"><span class="hljs-variable">$(OBJ_DIR)</span>/%.o: src/%.c
 	@echo + CC <span class="hljs-variable">$&lt;</span>
 	@mkdir -p <span class="hljs-variable">$(<span class="hljs-built_in">dir</span> <span class="hljs-variable">$@</span>)</span>
 	@<span class="hljs-variable">$(CC)</span> <span class="hljs-variable">$(CFLAGS)</span> <span class="hljs-variable">$(SO_CFLAGS)</span> -c -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$&lt;</span>
@@ -1374,9 +1374,9 @@ commit一下，commit信息是“compile”。这个函数是在Makefile.git里�
 </figure>
 <p>最后一行便是生成NEMU的临门一脚。</p>
 <p>顺便说一下执行make run 的过程。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c4yd4qlluwpkzu"></i><span>makefile</span><div class="collapse show" id="collapse-c4yd4qlluwpkzu"><pre><code class="hljs makefile">NEMU_EXEC := <span class="hljs-variable">$(BINARY)</span> <span class="hljs-variable">$(ARGS)</span> <span class="hljs-variable">$(IMG)</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s3u12jlmngiym5"></i><span>makefile</span><div class="collapse show" id="collapse-s3u12jlmngiym5"><pre><code class="hljs makefile">NEMU_EXEC := <span class="hljs-variable">$(BINARY)</span> <span class="hljs-variable">$(ARGS)</span> <span class="hljs-variable">$(IMG)</span></code></pre></div></div>
 <p>定义参数:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lpfy7rlluwpkzu"></i><span>C++</span><div class="collapse show" id="collapse-lpfy7rlluwpkzu"><pre><code class="hljs C++"><span class="hljs-keyword">override</span> ARGS ?= -l $(BUILD_DIR)/nemu-log.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8qhezclmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-8qhezclmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">override</span> ARGS ?= -l $(BUILD_DIR)/nemu-log.txt
 <span class="hljs-keyword">override</span> ARGS += -d $(QEMU_SO)</code></pre></div></div>
 <p>override的意思是不允许通过命令行指定的方式替代在Makefile中的变量定义。</p>
 <p>执行出来就是这一句。</p>
@@ -1395,7 +1395,7 @@ commit一下，commit信息是“compile”。这个函数是在Makefile.git里�
 中，内存地址被视为无符号整数，所以要用jbe。</p>
 <p>至于为什么源代码里是大于，却用了小于等于，从各种角度看好像两种用法是等价的，不是很清楚CPU为什么要做这种转换。</p>
 <p>下面是用jbe</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-61flt4lluwpkzu"></i><span>c++</span><div class="collapse show" id="collapse-61flt4lluwpkzu"><pre><code class="hljs c++">get_cont:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v45a6flmngiym5"></i><span>c++</span><div class="collapse show" id="collapse-v45a6flmngiym5"><pre><code class="hljs c++">get_cont:
   movl <span class="hljs-number">8</span>(%ebp), %eax 
   movl <span class="hljs-number">12</span>(%ebp), %edx 
   cmpl %eax, %edx
