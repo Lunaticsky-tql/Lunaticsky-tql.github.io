@@ -1,0 +1,835 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="Effective C++-资源管理 总览 这一模块的内容是在完整阅读《Effective C++》的基础上，参考了缪之灵大佬的一篇文章学完 Effective C++：条款 &amp; 实践进行总结。虽然缪之灵大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读性。虽然原书有些地方写的比较">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective C++-资源管理">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/30855/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="Effective C++-资源管理 总览 这一模块的内容是在完整阅读《Effective C++》的基础上，参考了缪之灵大佬的一篇文章学完 Effective C++：条款 &amp; 实践进行总结。虽然缪之灵大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读性。虽然原书有些地方写的比较">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-19T02:46:30.000Z">
+<meta property="article:modified_time" content="2023-09-19T02:46:30.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+    
+    
+    
+    <title>Effective C++-资源管理 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Effective C++-资源管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-09-19 10:46" pubdate>
+              2023年9月19日 上午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              3.5k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+                            <!-- add a sorce code icon -->
+                            <span class="post-meta mr-2">
+                              <i class="iconfont icon-code"></i>
+                              <!-- a link with white font color -->
+                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
+                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
+                              <!-- construct the souce code url-->
+                              
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Effective C++-资源管理/Effective C++-资源管理.md" style="color: #EA7A99">Article Resource Link</a>
+                            </span>
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Effective C++-资源管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="effective-c-资源管理">Effective C++-资源管理</h1>
+<h3 id="总览">总览</h3>
+<p>这一模块的内容是在完整阅读《Effective C++》的基础上，参考了<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/96-61-29-67">缪之灵</a>大佬的<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/613356779">一篇文章学完 Effective
+C++：条款 &amp; 实践</a>进行总结。虽然<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/96-61-29-67">缪之灵</a>大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读性。虽然原书有些地方写的比较拖沓，但作为经典的C++参考书，想要了解更多的细节，还是值得仔细去阅读的。</p>
+<p>同时，假定阅读文章时对C++已经具有本科高级语言程序设计课程内容的理解水平。大部分情况下，除非它很重要，不会对C++基础的语法特性进行介绍。</p>
+<p>本部分是第二章内容，对<strong>条款13-17</strong>进行介绍。</p>
+<p>资源管理是编写C++代码相比编写其他高级语言代码时所需要更加留心的。C++有强大的操纵资源的能力和性能的同时，也留给我们更多的心智负担去思考如何管理资源。这是我们享受性能裨益的同时要担负的责任。</p>
+<p>很多新兴语言如Rust正尝试通过更明确的语言级别限制来尽可能容易的写出安全的代码，但理解了在C++下如何防止资源泄漏，并具有良好的防范意识，是一通百通的。本部分主要的核心内容是<strong>基于对象的资源管理</strong>，从现代C++的视角看其实现便是<strong>智能指针</strong>。经验显示，经过训练后严守这些做法，可以几乎消除资源管理问题。</p>
+<h3 id="条款-13以对象管理资源">条款 13：以对象管理资源</h3>
+<p>对于传统的堆资源管理，我们需要使用成对的<code>new</code>和<code>delete</code>，这样若忘记<code>delete</code>就会造成内存泄漏。</p>
+<blockquote>
+<p>比如，在delete之前过早的return掉函数。</p>
+</blockquote>
+<p>因此，我们应尽可能以对象管理资源，并采用RAII（Resource Acquisition Is
+Initialization，资源取得时机便是初始化时机），让<strong>析构函数负责资源的释放</strong>。</p>
+<p>原书此处关于智能指针的内容已经过时，在 C++11
+中，通过专一所有权来管理RAII对象可以使用<code>std::unique_ptr</code>，通过引用计数来管理RAII对象可以使用<code>std::shared_ptr</code>。</p>
+<blockquote>
+<p>引用计数型能指针 (reference--counting smart pointer RCSP)</p>
+</blockquote>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g2mrnzlmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-g2mrnzlmppruit"><pre><code class="hljs cpp"><span class="hljs-comment">// Investment* CreateInvestment();</span>
+
+<span class="hljs-function">std::unique_ptr&lt;Investment&gt; <span class="hljs-title">pUniqueInv1</span><span class="hljs-params">(CreateInvestment())</span></span>;
+<span class="hljs-function">std::unique_ptr&lt;Investment&gt; <span class="hljs-title">pUniqueInv2</span><span class="hljs-params">(std::move(pUniqueInv1))</span></span>;    <span class="hljs-comment">// 转移资源所有权</span>
+
+<span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv1</span><span class="hljs-params">(CreateInvestment())</span></span>;
+<span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv2</span><span class="hljs-params">(pSharedInv1)</span></span>;               <span class="hljs-comment">// 引用计数+1</span></code></pre></div></div>
+<p>智能指针默认会自动delete所持有的对象，我们也可以为智能指针指定所管理对象的释放方式（删除器deleter）：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8mnemalmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-8mnemalmppruit"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetRidOfInvestment</span><span class="hljs-params">(Investment*)</span> </span>{ std::cout&lt;&lt;<span class="hljs-string">"Clean up"</span>;}
+
+<span class="hljs-function">std::unique_ptr&lt;Investment, <span class="hljs-title">decltype</span><span class="hljs-params">(GetRidOfInvestment)</span>*&gt; <span class="hljs-title">pUniqueInv</span><span class="hljs-params">(CreateInvestment(), GetRidOfInvestment)</span></span>;
+<span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv</span><span class="hljs-params">(CreateInvestment(), GetRidOfInvestment)</span></span>;</code></pre></div></div>
+<h3 id="条款-14在资源管理类中小心拷贝行为">条款
+14：在资源管理类中小心拷贝行为</h3>
+<p>我们应该永远保持这样的思考：当一个RAII对象被复制，会发生什么事？</p>
+<blockquote>
+<p>比如，我们将C API的互斥锁包装成RAII对象，它显然不应该被复制。</p>
+</blockquote>
+<p><strong>选择一：禁止复制</strong></p>
+<p>许多时候允许RAII对象被复制并不合理，如果确是如此，那么就该明确禁止复制行为，条款
+6 已经阐述了怎么做这件事。</p>
+<blockquote>
+<p>拷贝构造函数和拷贝复值运算符声明为private或者=delete</p>
+</blockquote>
+<p><strong>选择二：对底层资源祭出“引用计数法”</strong></p>
+<p>正如<code>std::shared_ptr</code>所做的那样，每一次复制对象就使引用计数+1，每一个对象离开定义域就调用析构函数使引用计数-1，直到引用计数为0就彻底销毁资源。</p>
+<p><strong>选择三：复制底层资源</strong></p>
+<p>在复制对象的同时复制底层资源的行为又被称作<strong>深拷贝（Deep
+copying）</strong>，例如在一个对象中有一个指针，那么在复制这个对象时就不能只复制指针，也要复制指针所指向的数据。</p>
+<p><strong>选择四：转移底层资源的所有权</strong></p>
+<p>和<code>std::unique_ptr</code>的行为类似，永远保持只有一个对象拥有对资源的管理权，当需要复制对象时转移资源的管理权。</p>
+<h3 id="条款-15在资源管理类中提供对原始资源的访问">条款
+15：在资源管理类中提供对原始资源的访问</h3>
+<p>和所有的智能指针一样，STL
+中的智能指针也提供了对原始资源的隐式访问和显式访问：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e91od8lmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-e91od8lmppruit"><pre><code class="hljs cpp">Investment* pRaw = pSharedInv.<span class="hljs-built_in">get</span>();    <span class="hljs-comment">// 显式访问原始资源</span>
+Investment raw = *pSharedInv;           <span class="hljs-comment">// 隐式访问原始资源</span></code></pre></div></div>
+<blockquote>
+<p>智能指针针重载了指针取值操作符(operator-&gt;和operator*)，它们允许使用指针的方式操作资源，也可以隐式转换至底部原始指针。</p>
+</blockquote>
+<p>当我们在设计自己的资源管理类时，也要考虑在提供对原始资源的访问时，是使用显式访问还是隐式访问的方法，还是两者皆可。</p>
+<blockquote>
+<p>下面的例子是将字体包装成RAII对象，同时考虑C
+API的兼容性，考虑转换为原始资源<code>FontHandle</code>的需求，</p>
+</blockquote>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iximyulmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-iximyulmppruit"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Font</span> {
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function">FontHandle <span class="hljs-title">Get</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>{ <span class="hljs-keyword">return</span> handle; }       <span class="hljs-comment">// 显式转换函数</span>
+    <span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">FontHandle</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>{ <span class="hljs-keyword">return</span> handle; }  <span class="hljs-comment">// 隐式转换函数</span>
+
+<span class="hljs-keyword">private</span>:
+    FontHandle handle;
+};</code></pre></div></div>
+<blockquote>
+<p>注：这里是重载了强制类型转换的括号运算符。</p>
+</blockquote>
+<p>一般而言显式转换比较安全，但隐式转换对客户比较方便。</p>
+<blockquote>
+<p>就像多数设计良好的classes一样，它隐藏了客户不需要看的部分，但备妥客户需要的所有东西。</p>
+</blockquote>
+<h3 id="条款-16成对使用-new-和-delete-时要采用相同形式">条款
+16：成对使用 new 和 delete 时要采用相同形式</h3>
+<p>使用<code>new</code>来分配单一对象，使用<code>new[]</code>来分配对象数组，必须明确它们的行为并不一致，分配对象数组时会额外在内存中记录“数组大小”，而使用<code>delete[]</code>会根据记录的数组大小多次调用析构函数，使用<code>delete</code>则仅仅只会调用一次析构函数。对于单一对象使用<code>delete[]</code>其结果也是未定义的，程序可能会读取若干内存并将其错误地解释为数组大小。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mghnaglmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-mghnaglmppruit"><pre><code class="hljs cpp"><span class="hljs-type">int</span>* array = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>];
+<span class="hljs-type">int</span>* object = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>;
+
+<span class="hljs-keyword">delete</span>[] array;
+<span class="hljs-keyword">delete</span> object;</code></pre></div></div>
+<p>需要注意的是，使用<code>typedef</code>定义数组类型会带来额外的风险：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-52h9s7lmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-52h9s7lmppruit"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::string AddressLines[<span class="hljs-number">4</span>];
+
+std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span class="hljs-comment">// pal 是一个对象数组，而非单一对象</span>
+<span class="hljs-comment">//用户后续可能忘记它是个数组</span>
+<span class="hljs-keyword">delete</span> pal;                             <span class="hljs-comment">// 行为未定义</span>
+<span class="hljs-keyword">delete</span>[] pal;                           <span class="hljs-comment">// 正确</span></code></pre></div></div>
+<h3 id="条款-17以独立语句将-newed-对象置入智能指针">条款
+17：以独立语句将 newed 对象置入智能指针</h3>
+<p>现在更好的做法是使用<code>std::make_unique</code>和<code>std::make_shared</code>：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o4rbi2lmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-o4rbi2lmppruit"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> pUniqueInv = std::<span class="hljs-built_in">make_unique</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++14</span>
+<span class="hljs-keyword">auto</span> pSharedInv = std::<span class="hljs-built_in">make_shared</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++11</span></code></pre></div></div>
+<blockquote>
+<p>原文中举了这样的例子：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7xrz9slmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-7xrz9slmppruit"><pre><code class="hljs cpp"><span class="hljs-built_in">processwidget</span>(std::<span class="hljs-built_in">shared_ptr</span>&lt;Widget&gt;(<span class="hljs-keyword">new</span> Widget),<span class="hljs-built_in">priority</span>());</code></pre></div></div>
+<p>认为<code>priority()</code>的执行异常可能导致<code>Widget</code>未被置于智能指针中，从而引发资源泄漏。</p>
+<p>函数入参的表达式计算顺序本身就是未定义的，不同编译器的执行结果可能是不同的：</p>
+<p>如：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vh30pxlmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-vh30pxlmppruit"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dis</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b,<span class="hljs-type">int</span> c)</span></span>
+<span class="hljs-function"></span>{
+ cout&lt;&lt;a&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;b&lt;&lt;<span class="hljs-string">' '</span>&lt;&lt;c;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+ <span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;
+ <span class="hljs-built_in">dis</span>(x++, x++,x);
+ <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre></div></div>
+<p>clang-tidy会报： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hi3v61lmppruit"></i><span>llvm</span><div class="collapse show" id="collapse-hi3v61lmppruit"><pre><code class="hljs llvm">Multiple unsequenced modifications <span class="hljs-keyword">to</span> ’<span class="hljs-keyword">x</span>'</code></pre></div></div><p></p>
+<p><strong>因此，不要这么写。</strong></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Effective C++-资源管理</div>
+      <div>http://lunaticsky-tql.github.io/posts/30855/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/42906/" title="Effective C++-构造/析构/赋值运算">
+                        <span class="hidden-mobile">Effective C++-构造/析构/赋值运算</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
