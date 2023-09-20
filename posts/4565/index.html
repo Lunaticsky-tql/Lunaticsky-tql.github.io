@@ -330,7 +330,7 @@ Library)和Boost的基石，为C++保持运行效率的同时提高易用性作�
 <p>而对模板参数而言，接口是隐式的，奠基于有效表达式，多态则是通过<strong>模板具现化和函数重载解析（function
 overloading resolution）</strong>，发生于编译期。</p>
 <p>考虑以下例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8cuv25lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-8cuv25lmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nsvwoilmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-nsvwoilmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">DoProcessing</span><span class="hljs-params">(T&amp; w)</span> </span>{
     <span class="hljs-keyword">if</span> (w.<span class="hljs-built_in">size</span>() &gt; <span class="hljs-number">10</span> &amp;&amp; w != someNastyWidget) {
     ...</code></pre></div></div>
@@ -352,13 +352,13 @@ Java 虚拟机接收并执行，这种技术被称为擦除 (erasure)。</p>
 <p>Java
 编译后不同类型的模板类编译出的是同一份代码。然后在使用时编译器会帮助进行类型转换。</p>
 <p>这么做是为了保持与Java早期版本的向后兼容性。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zw0h7mlmr5loks"></i><span>java</span><div class="collapse show" id="collapse-zw0h7mlmr5loks"><pre><code class="hljs java">Pair&lt;String&gt; pair = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Pair</span>&lt;&gt;(<span class="hljs-string">""</span>, <span class="hljs-string">""</span>);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fsini7lmr7uuqp"></i><span>java</span><div class="collapse show" id="collapse-fsini7lmr7uuqp"><pre><code class="hljs java">Pair&lt;String&gt; pair = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Pair</span>&lt;&gt;(<span class="hljs-string">""</span>, <span class="hljs-string">""</span>);
     pair.setFirst(<span class="hljs-string">"Generic"</span>);
     pair.setSecond(<span class="hljs-string">"Programming"</span>);
     <span class="hljs-type">String</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> pair.getFirst();
     <span class="hljs-type">String</span> <span class="hljs-variable">second</span> <span class="hljs-operator">=</span> pair.getSecond();</code></pre></div></div>
 <p>反编译后为:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fsgk9wlmr5loks"></i><span>Java</span><div class="collapse show" id="collapse-fsgk9wlmr5loks"><pre><code class="hljs Java"><span class="hljs-type">Pair</span> <span class="hljs-variable">pair</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Pair</span>(<span class="hljs-string">""</span>, <span class="hljs-string">""</span>);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m9my15lmr7uuqp"></i><span>Java</span><div class="collapse show" id="collapse-m9my15lmr7uuqp"><pre><code class="hljs Java"><span class="hljs-type">Pair</span> <span class="hljs-variable">pair</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Pair</span>(<span class="hljs-string">""</span>, <span class="hljs-string">""</span>);
     pair.setFirst(<span class="hljs-string">"Generic"</span>);
     pair.setSecond(<span class="hljs-string">"Programming"</span>);
     <span class="hljs-type">String</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> (String)pair.getFirst();
@@ -375,7 +375,7 @@ dependent
 name）</strong>；如果一个名称并不倚赖任何模板参数的名称，我们称之为<strong>非从属名称（non-dependent
 names）</strong>。</p>
 <p>考虑以下模板代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5ulws6lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-5ulws6lmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> C&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bob5q5lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-bob5q5lmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> C&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Print2nd</span><span class="hljs-params">(<span class="hljs-type">const</span> C&amp; container)</span> </span>{
     <span class="hljs-comment">//打印容器内的第二元素，注意这不是有效的C++代码</span>
     <span class="hljs-keyword">if</span> (container.<span class="hljs-built_in">size</span>() &gt;= <span class="hljs-number">2</span>) {
@@ -403,15 +403,15 @@ C++ <strong>默认假设嵌套从属名称不是类型名称</strong>。</p>
 <p>这句话是什么意思呢？对于<code>A::b</code>这种情况，只是说明在命名空间<code>A</code>中有名称<code>b</code>，<code>b</code>可能是个<code>typedef</code>，这种情况就像上面所预想的一样，是嵌套从属类型名称，但也可能是变量名称。这时候如果上面的例子换成这样：<code>C::const_iterator* x;</code>,那如果<code>const_iterator</code>是变量，我们将<code>*</code>理解成乘号便是理所当然的，而且也是<strong>默认的情况</strong>。这就造成了二义性。</p>
 </blockquote>
 <p>这时我们应当显式指明嵌套从属<strong>类型</strong>名称，方法就是将<code>typename</code>关键字作为其前缀词：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ficy7olmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-ficy7olmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">typename</span> C::const_iterator <span class="hljs-title">iter</span><span class="hljs-params">(container.begin())</span></span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cy7xeflmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-cy7xeflmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">typename</span> C::const_iterator <span class="hljs-title">iter</span><span class="hljs-params">(container.begin())</span></span>;</code></pre></div></div>
 <p>同样地，若嵌套从属名称出现在模板函数声明部分，也需要显式地指明是否为类型名称：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y5w7ihlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-y5w7ihlmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> C&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9f8aislmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-9f8aislmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> C&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Print2nd</span><span class="hljs-params">(<span class="hljs-type">const</span> C&amp; container, <span class="hljs-type">const</span> <span class="hljs-keyword">typename</span> C::iterator iter)</span></span>;</code></pre></div></div>
 <blockquote>
 <p>而且<code>typename</code>只被用来验明嵌套从属类型名称；或者说只是用来打这个补丁。其他名称不该有它存在。比如在<code>const C&amp;</code>前面加<code>typename</code>就是画蛇添足了。</p>
 </blockquote>
 <p>这一规则的例外是，<code>typename</code>不可以出现在基类列表内的嵌套从属类型名称之前，也不可以在成员初始化列表中作为基类的修饰符：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6hfyrqlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-6hfyrqlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6n3k4vlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-6n3k4vlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base&lt;T&gt;::Nested {    <span class="hljs-comment">// 基类列表中不允许使用 typename</span>
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Derived</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>
@@ -425,7 +425,7 @@ C++ <strong>默认假设嵌套从属名称不是类型名称</strong>。</p>
 <blockquote>
 <p>假设我们正在撰写一个function
 template，它接受一个迭代器，而我们打算为该迭代器指涉的对象做一份local副本temp。我们可以这么写：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i97cq6lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-i97cq6lmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t1osn1lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-t1osn1lmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">workWithIterator</span><span class="hljs-params">(IterT iter)</span></span>
 <span class="hljs-function"></span>{
 	<span class="hljs-keyword">typename</span> std::iterator_traits&lt;IterT&gt;::<span class="hljs-function">value_type <span class="hljs-title">temp</span><span class="hljs-params">(*iter)</span></span>;
@@ -437,7 +437,7 @@ template，它接受一个迭代器，而我们打算为该迭代器指涉的对
 <code>temp</code>的类型就是<code>int</code>。如果<code>IterT</code>是<code>list&lt;string&gt;::iterator</code>，<code>temp</code>的类型就是
 <code>string</code>。由于<code>std::iterator_traits&lt;IterT&gt;::value_type</code>是个嵌套从属类型名称(<code>value type</code>被嵌套于<code>iterator_traits&lt;IterT&gt;</code>之内而<code>IterT</code>是个<code>template</code>参数)，所以我们必须在它之前放置typename。</p>
 <p>可以这样写：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zphl3klmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-zphl3klmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ziberwlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-ziberwlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">workWithIterator</span><span class="hljs-params">(IterT iter)</span></span>
 <span class="hljs-function"></span>{
 	<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> std:iterator_traits&lt;IterT&gt;:<span class="hljs-function">value_type <span class="hljs-title">temp</span><span class="hljs-params">(*iter)</span></span>;
@@ -452,7 +452,7 @@ template，它接受一个迭代器，而我们打算为该迭代器指涉的对
 <p>考虑以下情形：</p>
 <blockquote>
 <p>有若干公司有发送信息的需求，我们需要写一个<code>MsgSender</code>接口，用来对不同公司的信息进行传送。</p>
-<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wr7msxlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-wr7msxlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CompanyA</span>{
+<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4ogo9glmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-4ogo9glmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CompanyA</span>{
 <span class="hljs-keyword">public</span>:
 	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sendcleartext</span> <span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp;msg)</span></span>;
 	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sendEncrypted</span> <span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp;msg)</span></span>;
@@ -464,7 +464,7 @@ template，它接受一个迭代器，而我们打算为该迭代器指涉的对
 		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sendEncrypted</span><span class="hljs-params">(<span class="hljs-type">const</span> std:string&amp;msg)</span></span>;
 }；</code></pre></div></div><p></p>
 <p>如果编译期间我们有足够信息来决定哪一个信息传至哪一家公司，就可以采用基于template的解法：</p>
-<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xy3iyclmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-xy3iyclmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MsgInfo</span> { ... }; <span class="hljs-comment">//MsgInfo决定我们需要发送的信息</span>
+<p></p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sxla4wlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-sxla4wlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MsgInfo</span> { ... }; <span class="hljs-comment">//MsgInfo决定我们需要发送的信息</span>
 
 <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Company&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MsgSender</span> {
@@ -492,7 +492,7 @@ template，它接受一个迭代器，而我们打算为该迭代器指涉的对
 <p>很明显，由于直到模板类被真正实例化之前，编译器并不知道模版派生类所继承的基类（如上例<code>MsgSender&lt;Company&gt;</code>）具体长什么样，有可能它是一个<strong>全特化</strong>的版本。</p>
 <blockquote>
 <p>什么叫全特化？如上例，有一个公司只希望他的信息被加密通信：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2f299olmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-2f299olmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-comment">//一个全特化的MsgSender；它和一般template相同， </span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x4dc4llmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-x4dc4llmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-comment">//一个全特化的MsgSender；它和一般template相同， </span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MsgSender</span>&lt;CompanyZ&gt; { 
 <span class="hljs-keyword">public</span>： 
   <span class="hljs-comment">//差别只在于它删掉了sendclear。</span>
@@ -509,20 +509,20 @@ C++
 <p>为了解决这个问题，我们需要令
 C++“进入模板基类观察”的行为生效，有三种办法达成这个目标：</p>
 <p>第一种：在对基类函数的调用动作之前加上<code>this-&gt;</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vd2k1llmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-vd2k1llmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">SendClear</span>(info);</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8pt44hlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-8pt44hlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">SendClear</span>(info);</code></pre></div></div>
 <p>第二种：使用<code>using</code>声明式：</p>
 <blockquote>
 <p>如条款33所述，这将基类被遮掩的名称带入派生类中。</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wsyfv9lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-wsyfv9lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> MsgSender&lt;Company&gt;::SendClear; <span class="hljs-comment">//告诉编译器，请它假设sendClear位于base class内.</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zdx25plmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-zdx25plmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> MsgSender&lt;Company&gt;::SendClear; <span class="hljs-comment">//告诉编译器，请它假设sendClear位于base class内.</span>
 <span class="hljs-built_in">SendClear</span>(info);</code></pre></div></div>
 <p>第三种：明白指出被调用的函数位于基类内：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mwzsmtlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-mwzsmtlmr5loks"><pre><code class="hljs cpp">MsgSender&lt;Company&gt;::<span class="hljs-built_in">SendClear</span>(info);</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x09dy6lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-x09dy6lmr7uuqp"><pre><code class="hljs cpp">MsgSender&lt;Company&gt;::<span class="hljs-built_in">SendClear</span>(info);</code></pre></div></div>
 <p>第三种做法是最不令人满意的，如果被调用的是虚函数，上述的明确资格修饰（explicit
 qualification）会使“虚函数绑定行为”失效。</p>
 <blockquote>
 <p>总结一下，这一部分说的是在派生模版类调用基类方法时，怎样解决编译器默认不去寻找继承来的名称的问题，以及编译器这样做的原因。如果你偏偏就要去特化基类，那派生模版类假设基类有这个方法，在传入这个特化基类名作为模版占位符名称，理所当然的会报错。比如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uogcq4lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-uogcq4lmr5loks"><pre><code class="hljs cpp">LoggingMsgSender&lt;CompanyZ&gt; zMsgSender;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iq1ue8lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-iq1ue8lmr7uuqp"><pre><code class="hljs cpp">LoggingMsgSender&lt;CompanyZ&gt; zMsgSender;
 MsgInfo msgData;
 <span class="hljs-comment">//在msgData内放置信息。</span>
 zMsgSender.<span class="hljs-built_in">sendClearMsg</span>(msgData); <span class="hljs-comment">//错误!无法通过编译.</span></code></pre></div></div>
@@ -540,7 +540,7 @@ analysis）</strong>
 <li><p>因类型模板参数而造成的代码膨胀，往往可以降低，做法是让带有完全相同二进制表述的具现类型共享实现代码。</p></li>
 </ul>
 <p>参考以下矩阵类的例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-42rvf7lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-42rvf7lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, std::<span class="hljs-type">size_t</span> n&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zadnv7lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-zadnv7lmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, std::<span class="hljs-type">size_t</span> n&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SquareMatrix</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Invert</span><span class="hljs-params">()</span></span>;
@@ -550,14 +550,14 @@ analysis）</strong>
 };</code></pre></div></div>
 <blockquote>
 <p>这种情况下</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xhfrgdlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-xhfrgdlmr5loks"><pre><code class="hljs cpp">SquareMatrix&lt;<span class="hljs-type">double</span>,<span class="hljs-number">5</span>&gt;sml;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i5yap7lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-i5yap7lmr7uuqp"><pre><code class="hljs cpp">SquareMatrix&lt;<span class="hljs-type">double</span>,<span class="hljs-number">5</span>&gt;sml;
 sml.<span class="hljs-built_in">invert</span>() <span class="hljs-comment">//调用SquareMatrix&lt;double,5&gt;::invert</span>
 SquareMatrix&lt;<span class="hljs-type">double</span>,<span class="hljs-number">10</span>&gt;sm2;
 sm2.<span class="hljs-built_in">invert</span>() <span class="hljs-comment">//调用SquareMatrix&lt;double,l0&gt;::invert</span></code></pre></div></div>
 <p>会具现化两份invert，而这两份invert除了尺寸不一样，操作逻辑都是完全相同的。</p>
 </blockquote>
 <p>修改为：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-78idjolmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-78idjolmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8pwbaclmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-8pwbaclmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SquareMatrixBase</span> {
 <span class="hljs-keyword">protected</span>:
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Invert</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> matrixSize)</span></span>;
@@ -575,7 +575,7 @@ sm2.<span class="hljs-built_in">invert</span>() <span class="hljs-comment">//调
     ...
 };</code></pre></div></div>
 <p><code>Invert</code>并不是我们唯一要使用的矩阵操作函数，而且每次都往基类传递矩阵尺寸显得太过繁琐，我们可以考虑将数据放在派生类中，在基类中储存指针和矩阵尺寸。修改代码如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1c1hl7lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-1c1hl7lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mug80tlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-mug80tlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SquareMatrixBase</span> {
 <span class="hljs-keyword">protected</span>:
     <span class="hljs-built_in">SquareMatrixBase</span>(std::<span class="hljs-type">size_t</span> n, T* pMem)
@@ -608,7 +608,7 @@ reference），这些都可能使程序执行得更快速。究竟哪个版本�
 <p>从某种意义上说，<strong>面向对象设计和模版设计是正交的</strong>。</p>
 <p>同一个template的不同具现体<em>(instantiations)</em>之间并不存在什么固有关系：如果以带有继承关系的<code>B</code>，<code>D</code>两类型分别具现化某个<code>template</code>，产生出来的两个具现体并不带有继承关系。</p>
 <blockquote>
-<p>具体一点，下面的代码无法通过编译： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-uaddm1lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-uaddm1lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> {..}
+<p>具体一点，下面的代码无法通过编译： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-otil41lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-otil41lmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> {..}
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span>:<span class="hljs-keyword">public</span> B {..}
 
 <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
@@ -625,7 +625,7 @@ SmartPtr&lt;<span class="hljs-type">const</span> B&gt; pt2=pt1; <span class="hlj
 <p>那考虑设计一个智能指针模版类，而智能指针需要支持不同类型指针之间的隐式转换（如果可以的话），以及普通指针到智能指针的显式转换。</p>
 <p>这时我们需要的是模版成员函数<em>(member function
 templates)</em>，比如下面的模版构造函数和模板拷贝构造函数：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l5bc3blmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-l5bc3blmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7y4antlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-7y4antlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SmartPtr</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;</span>
@@ -646,7 +646,7 @@ list)</em>来初始化<code>SmartPtr&lt;T&gt;</code>之内类型为<code>T*</cod
 <p>这个行为只有当“存在某个隐式转换可将一个<code>U*</code>指针转为一个<code>T*</code>指针”时才能通过编译，而那正是我们想要的。最终效益是<code>SmartPtr&lt;T&gt;</code>现在有了一个泛化copy构造函数，这个构造函数只在其所获得的实参隶属适当（兼容）类型时才通过编译。</p>
 <p>使用<code>get</code>获取原始指针，并将在原始指针之间进行类型转换本身提供了一种保障，如果原始指针之间不能隐式转换，那么其对应的智能指针之间的隐式转换会造成编译错误。</p>
 <p>模板构造函数并不会阻止编译器暗自生成默认的构造函数，所以如果你想要控制拷贝构造的方方面面，你必须同时声明泛化拷贝构造函数和普通拷贝构造函数，相同规则也适用于赋值运算符：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dqrln1lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-dqrln1lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u392oylmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-u392oylmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">shared_ptr</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-built_in">shared_ptr</span>(shared_ptr <span class="hljs-type">const</span>&amp; r);                <span class="hljs-comment">// 拷贝构造函数</span>
@@ -664,7 +664,7 @@ list)</em>来初始化<code>SmartPtr&lt;T&gt;</code>之内类型为<code>T*</cod
 <h3 id="条款-46需要类型转换时请为模板定义非成员函数">条款
 46：需要类型转换时请为模板定义非成员函数</h3>
 <p>该条款与条款 24 一脉相承，还是使用原先的例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yhoytjlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-yhoytjlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5vzc0glmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-5vzc0glmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Rational</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-built_in">Rational</span>(<span class="hljs-type">const</span> T&amp; numerator = <span class="hljs-number">0</span>, <span class="hljs-type">const</span> T&amp; denominator = <span class="hljs-number">1</span>);
@@ -685,7 +685,7 @@ list)</em>来初始化<code>SmartPtr&lt;T&gt;</code>之内类型为<code>T*</cod
 Rational&lt;<span class="hljs-type">int</span>&gt; result = oneHalf * <span class="hljs-number">2</span>;     <span class="hljs-comment">// 无法通过编译！</span></code></pre></div></div>
 <p>上述失败启示我们：模板实参在推导过程中，从不将隐式类型转换纳入考虑。虽然以<code>oneHalf</code>推导出<code>Rational&lt;int&gt;</code>类型是可行的，但是试图将<code>int</code>类型隐式转换为<code>Rational&lt;T&gt;</code>是绝对会失败的。</p>
 <p>由于模板类并不依赖模板实参推导，所以编译器总能够在<code>Rational&lt;T&gt;</code>具现化时得知<code>T</code>，因此我们可以使用友元声明式在模板类内指涉特定函数：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hz4nielmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-hz4nielmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xqva0ulmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-xqva0ulmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Rational</span> {
 <span class="hljs-keyword">public</span>:
     ...
@@ -693,7 +693,7 @@ Rational&lt;<span class="hljs-type">int</span>&gt; result = oneHalf * <span clas
     ...
 };</code></pre></div></div>
 <p>在模板类内，模板名称可被用来作为“模板及其参数”的简略表达形式，因此下面的写法也是一样的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7z1cwrlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-7z1cwrlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tpryxulmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-tpryxulmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Rational</span> {
 <span class="hljs-keyword">public</span>:
     ...
@@ -702,11 +702,11 @@ Rational&lt;<span class="hljs-type">int</span>&gt; result = oneHalf * <span clas
 };</code></pre></div></div>
 <p>当对象<code>oneHalf</code>被声明为一个<code>Rational&lt;int&gt;</code>时，<code>Rational&lt;int&gt;</code>类于是被具现化出来，而作为过程的一部分，友元函数<code>operator*</code>也就被自动声明出来，其为一个普通函数而非模板函数，因此在接受参数时可以正常执行隐式转换。</p>
 <p>为了使程序能正常链接，我们需要为其提供对应的定义式，最简单有效的方法就是直接合并至声明式处：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3q2h8tlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-3q2h8tlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">friend</span> <span class="hljs-type">const</span> Rational <span class="hljs-keyword">operator</span>*(<span class="hljs-type">const</span> Rational&amp; lhs, <span class="hljs-type">const</span> Rational&amp; rhs) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hahmyslmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-hahmyslmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">friend</span> <span class="hljs-type">const</span> Rational <span class="hljs-keyword">operator</span>*(<span class="hljs-type">const</span> Rational&amp; lhs, <span class="hljs-type">const</span> Rational&amp; rhs) {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">Rational</span>(lhs.<span class="hljs-built_in">Numerator</span>() * rhs.<span class="hljs-built_in">Numerator</span>(), lhs.<span class="hljs-built_in">Denominator</span>() * rhs.<span class="hljs-built_in">Denominator</span>());
 }</code></pre></div></div>
 <p>由于定义在类内的函数都会暗自成为内联函数，为了降低内联带来的冲击，可以使<code>operator*</code>调用类外的辅助模板函数：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lbn5fdlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-lbn5fdlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Rational</span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xa946almr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-xa946almr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Rational</span>;
 
 <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span>
 <span class="hljs-function"><span class="hljs-type">const</span> Rational&lt;T&gt; <span class="hljs-title">DoMultiply</span><span class="hljs-params">(<span class="hljs-type">const</span> Rational&lt;T&gt;&amp; lhs, <span class="hljs-type">const</span> Rational&lt;T&gt;&amp; rhs)</span> </span>{
@@ -744,7 +744,7 @@ C++ 标准库中。traits 并不是 C++
 </ol>
 <p>标准库为这些迭代器种类提供的标签结构体（tag
 struct）的继承关系如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lphtr2lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-lphtr2lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">input_iterator_tag</span> {};
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oufv9clmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-oufv9clmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">input_iterator_tag</span> {};
 
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">output_iterator_tag</span> {};
 
@@ -754,7 +754,7 @@ struct）的继承关系如下：</p>
 
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">random_access_iterator_tag</span> : bidirectional_iterator_tag {};</code></pre></div></div>
 <p>将<code>iterator_category</code>作为迭代器种类的名称，嵌入容器的迭代器中，并且确认使用适当的标签结构体：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6u5m9elmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-6u5m9elmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt; ... &gt; <span class="hljs-comment">//省略一些 template参数</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-neqw29lmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-neqw29lmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt; ... &gt; <span class="hljs-comment">//省略一些 template参数</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">deque</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">iterator</span> {
@@ -777,14 +777,14 @@ struct）的继承关系如下：</p>
 }</code></pre></div></div>
 <p>为了做到类型的 traits
 信息可以在类型自身之外获得，标准技术是把它放进一个模板及其一个或多个特化版本中。这样的模板在标准库中有若干个，其中针对迭代器的是<code>iterator_traits</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xxgkijlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-xxgkijlmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">IterT</span>&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-waf2qalmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-waf2qalmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">IterT</span>&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">iterator_traits</span> {
   	<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> IterT::iterator_category iterator_category;
     <span class="hljs-comment">// 或者 using iterator_category = IterT::iterator_category; 见条款42</span>
     ...
 };</code></pre></div></div>
 <p>为了支持指针迭代器，<code>iterator_traits</code>特别针对指针类型提供一个<strong>偏特化版本</strong>，而指针的类型和随机访问迭代器类似，所以可以写出如下代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pohpullmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-pohpullmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">IterT</span>&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cz8y0jlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-cz8y0jlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">IterT</span>&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">iterator_traits</span>&lt;IterT*&gt; {
   		<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> iterator_category = random_access_iterator_tag;
      <span class="hljs-comment">// using iterator_category = random_access_iterator_tag;</span>
@@ -793,7 +793,7 @@ struct）的继承关系如下：</p>
 <p>当我们需要为不同的迭代器种类应用不同的代码时，traits classes
 就派上用场了。</p>
 <p>或许我们朴素的想法是这样：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1yee5vlmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-1yee5vlmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT, <span class="hljs-keyword">typename</span> DisT&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ixjpablmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-ixjpablmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT, <span class="hljs-keyword">typename</span> DisT&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">advance</span><span class="hljs-params">(IterT&amp; iter, DisT d)</span> </span>{
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">typeid</span>(std::iterator_traits&lt;IterT&gt;::iterator_category)
         == <span class="hljs-built_in">typeid</span>(std::random_access_iterator_tag)) {
@@ -803,11 +803,11 @@ struct）的继承关系如下：</p>
 <p>但这样类型测试便发生于运行期而非编译期。而我们希望类型的判断能在编译期完成。</p>
 <blockquote>
 <p>不仅如此，这样的实现也会造成编译期问题。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qqossklmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-qqossklmr5loks"><pre><code class="hljs cpp">std::list&lt;<span class="hljs-type">int</span>&gt;::iterator iter;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-346gqhlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-346gqhlmr7uuqp"><pre><code class="hljs cpp">std::list&lt;<span class="hljs-type">int</span>&gt;::iterator iter;
 <span class="hljs-built_in">advance</span>(iter,<span class="hljs-number">10</span>); <span class="hljs-comment">//移动1ter向前走10个元素:</span>
 <span class="hljs-comment">//上述实现无法通过编译。</span></code></pre></div></div>
 <p>为什么呢？我们不妨模拟一下编译器的模板实参推导：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8eh9g6lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-8eh9g6lmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">advance</span><span class="hljs-params">(std::list&lt;<span class="hljs-type">int</span>&gt;::iterator&amp; iter,<span class="hljs-type">int</span> d)</span></span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iqcm4tlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-iqcm4tlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">advance</span><span class="hljs-params">(std::list&lt;<span class="hljs-type">int</span>&gt;::iterator&amp; iter,<span class="hljs-type">int</span> d)</span></span>{
   <span class="hljs-keyword">if</span>(<span class="hljs-built_in">typeid</span>(std:iterator_traits&lt;std:list&lt;<span class="hljs-type">int</span>&gt;:iterator&gt;::iterator_category)==<span class="hljs-built_in">typeid</span>(std:random_access_iterator_tag)){ 
     iter +=d; <span class="hljs-comment">//错误!</span>
 }
@@ -824,7 +824,7 @@ access迭代器才支持<code>+=</code>，而<code>std::list&lt;int&gt;::iterato
 <blockquote>
 <p>编译器匹配<strong>最</strong>适合的重载函数，何尝不是一种if？</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-945i83lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-945i83lmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT, <span class="hljs-keyword">typename</span> DisT&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dk6pdwlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-dk6pdwlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT, <span class="hljs-keyword">typename</span> DisT&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doAdvance</span><span class="hljs-params">(IterT&amp; iter, DisT d, std::random_access_iterator_tag)</span> </span>{
     iter +=d;
 }   
@@ -851,7 +851,7 @@ access迭代器才支持<code>+=</code>，而<code>std::list&lt;int&gt;::iterato
 }</code></pre></div></div>
 <p>在 C++17
 之后，我们有了更简单有效的做法——使用<code>if constexpr</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dk5grllmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-dk5grllmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT, <span class="hljs-keyword">typename</span> DisT&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n6d0ntlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-n6d0ntlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> IterT, <span class="hljs-keyword">typename</span> DisT&gt;</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Advance</span><span class="hljs-params">(IterT&amp; iter, DisT d)</span> </span>{
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">constexpr</span> (<span class="hljs-built_in">typeid</span>(std::iterator_traits&lt;IterT&gt;::iterator_category)
         == <span class="hljs-built_in">typeid</span>(std::random_access_iterator_tag)) {
@@ -870,7 +870,7 @@ C++ 标准的一部分。实际上，在条款 47 中编写 traits classes
 <strong>“递归模板具现化（recursive template instantiation）”</strong>
 实现的。</p>
 <p>常用于引入模板元编程的例子是在编译期计算阶乘：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-284y6clmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-284y6clmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">unsigned</span> n&gt;            <span class="hljs-comment">// Factorial&lt;n&gt; = n * Factorial&lt;n-1&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fckhfrlmr7uuqp"></i><span>cpp</span><div class="collapse show" id="collapse-fckhfrlmr7uuqp"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">unsigned</span> n&gt;            <span class="hljs-comment">// Factorial&lt;n&gt; = n * Factorial&lt;n-1&gt;</span>
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Factorial</span> {
     <span class="hljs-keyword">enum</span> { value = n * Factorial&lt;n<span class="hljs-number">-1</span>&gt;::value }; <span class="hljs-comment">//enum hack，见条款2</span>
 };
