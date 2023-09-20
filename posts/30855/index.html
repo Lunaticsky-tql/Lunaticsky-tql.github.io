@@ -16,12 +16,12 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="Effective C++-资源管理 总览 这一模块的内容是在完整阅读《Effective C++》的基础上，参考了缪之灵大佬的一篇文章学完 Effective C++：条款 &amp; 实践进行总结。虽然缪之灵大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读性。虽然原书有些地方写的比较">
+        <meta name="description" content="Effective C++ - Item13-17 - 资源管理 总览 这一模块的内容是在完整阅读《Effective C++》的基础上，参考了缪之灵大佬的一篇文章学完 Effective C++：条款 &amp; 实践进行总结。虽然缪之灵大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Effective C++-资源管理">
+<meta property="og:title" content="Effective C++ - Item13-17 - 资源管理">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/30855/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="Effective C++-资源管理 总览 这一模块的内容是在完整阅读《Effective C++》的基础上，参考了缪之灵大佬的一篇文章学完 Effective C++：条款 &amp; 实践进行总结。虽然缪之灵大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读性。虽然原书有些地方写的比较">
+<meta property="og:description" content="Effective C++ - Item13-17 - 资源管理 总览 这一模块的内容是在完整阅读《Effective C++》的基础上，参考了缪之灵大佬的一篇文章学完 Effective C++：条款 &amp; 实践进行总结。虽然缪之灵大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-09-19T02:46:30.000Z">
 <meta property="article:modified_time" content="2023-09-19T02:46:30.000Z">
@@ -31,7 +31,7 @@
     
     
     
-    <title>Effective C++-资源管理 - Lunaticsky&#39;s Blog</title>
+    <title>Effective C++ - Item13-17 - 资源管理 - Lunaticsky&#39;s Blog</title>
 
     
   
@@ -74,7 +74,7 @@
     <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -223,7 +223,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Effective C++-资源管理"></span>
+            <span id="subtitle" data-typed-text="Effective C++ - Item13-17 - 资源管理"></span>
           
         </div>
 
@@ -246,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              3.5k 字
+              3.6k 字
                 
       </span>
       
@@ -272,7 +272,7 @@
                               <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
                               <!-- construct the souce code url-->
                               
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Effective C++-资源管理/Effective C++-资源管理.md" style="color: #EA7A99">Article Resource Link</a>
+                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Effective C++ - Item13-17 - 资源管理/Effective C++ - Item13-17 - 资源管理.md" style="color: #EA7A99">Article Resource Link</a>
                             </span>
   </div>
   
@@ -304,19 +304,20 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Effective C++-资源管理</h1>
+            <h1 style="display: none">Effective C++ - Item13-17 - 资源管理</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="effective-c-资源管理">Effective C++-资源管理</h1>
+                <h1 id="effective-c---item13-17---资源管理">Effective C++ - Item13-17 -
+资源管理</h1>
 <h3 id="总览">总览</h3>
 <p>这一模块的内容是在完整阅读《Effective C++》的基础上，参考了<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/96-61-29-67">缪之灵</a>大佬的<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/613356779">一篇文章学完 Effective
 C++：条款 &amp; 实践</a>进行总结。虽然<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/96-61-29-67">缪之灵</a>大佬的文章将最重要的部分总结的非常到位，但在此结合自己的理解和编程实践对其进行补充，并订正一些错误，以方便自己后续总结回顾，同时在尽可能保持简洁的前提下提高可读性。虽然原书有些地方写的比较拖沓，但作为经典的C++参考书，想要了解更多的细节，还是值得仔细去阅读的。</p>
 <p>同时，假定阅读文章时对C++已经具有本科高级语言程序设计课程内容的理解水平。大部分情况下，除非它很重要，不会对C++基础的语法特性进行介绍。</p>
-<p>本部分是第二章内容，对<strong>条款13-17</strong>进行介绍。</p>
+<p>本部分是第三章内容，对<strong>条款13-17</strong>进行介绍。</p>
 <p>资源管理是编写C++代码相比编写其他高级语言代码时所需要更加留心的。C++有强大的操纵资源的能力和性能的同时，也留给我们更多的心智负担去思考如何管理资源。这是我们享受性能裨益的同时要担负的责任。</p>
-<p>很多新兴语言如Rust正尝试通过更明确的语言级别限制来尽可能容易的写出安全的代码，但理解了在C++下如何防止资源泄漏，并具有良好的防范意识，是一通百通的。本部分主要的核心内容是<strong>基于对象的资源管理</strong>，从现代C++的视角看其实现便是<strong>智能指针</strong>。经验显示，经过训练后严守这些做法，可以几乎消除资源管理问题。</p>
+<p>很多新兴语言如Rust正尝试通过更明确的语言级别限制来尽可能容易的写出安全的代码，但理解在C++下如何防止资源泄漏，并养成良好的防范意识，这种能力是一通百通的。本部分主要的核心内容是<strong>基于对象的资源管理</strong>，从现代C++的视角看其实现便是<strong>智能指针</strong>。经验显示，经过训练后严守这些做法，可以几乎消除资源管理问题。</p>
 <h3 id="条款-13以对象管理资源">条款 13：以对象管理资源</h3>
 <p>对于传统的堆资源管理，我们需要使用成对的<code>new</code>和<code>delete</code>，这样若忘记<code>delete</code>就会造成内存泄漏。</p>
 <blockquote>
@@ -329,7 +330,7 @@ Initialization，资源取得时机便是初始化时机），让<strong>析构�
 <blockquote>
 <p>引用计数型能指针 (reference--counting smart pointer RCSP)</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g2mrnzlmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-g2mrnzlmppruit"><pre><code class="hljs cpp"><span class="hljs-comment">// Investment* CreateInvestment();</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rbyk2almr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-rbyk2almr5loks"><pre><code class="hljs cpp"><span class="hljs-comment">// Investment* CreateInvestment();</span>
 
 <span class="hljs-function">std::unique_ptr&lt;Investment&gt; <span class="hljs-title">pUniqueInv1</span><span class="hljs-params">(CreateInvestment())</span></span>;
 <span class="hljs-function">std::unique_ptr&lt;Investment&gt; <span class="hljs-title">pUniqueInv2</span><span class="hljs-params">(std::move(pUniqueInv1))</span></span>;    <span class="hljs-comment">// 转移资源所有权</span>
@@ -337,7 +338,7 @@ Initialization，资源取得时机便是初始化时机），让<strong>析构�
 <span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv1</span><span class="hljs-params">(CreateInvestment())</span></span>;
 <span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv2</span><span class="hljs-params">(pSharedInv1)</span></span>;               <span class="hljs-comment">// 引用计数+1</span></code></pre></div></div>
 <p>智能指针默认会自动delete所持有的对象，我们也可以为智能指针指定所管理对象的释放方式（删除器deleter）：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8mnemalmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-8mnemalmppruit"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetRidOfInvestment</span><span class="hljs-params">(Investment*)</span> </span>{ std::cout&lt;&lt;<span class="hljs-string">"Clean up"</span>;}
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7zne37lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-7zne37lmr5loks"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetRidOfInvestment</span><span class="hljs-params">(Investment*)</span> </span>{ std::cout&lt;&lt;<span class="hljs-string">"Clean up"</span>;}
 
 <span class="hljs-function">std::unique_ptr&lt;Investment, <span class="hljs-title">decltype</span><span class="hljs-params">(GetRidOfInvestment)</span>*&gt; <span class="hljs-title">pUniqueInv</span><span class="hljs-params">(CreateInvestment(), GetRidOfInvestment)</span></span>;
 <span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv</span><span class="hljs-params">(CreateInvestment(), GetRidOfInvestment)</span></span>;</code></pre></div></div>
@@ -364,7 +365,7 @@ copying）</strong>，例如在一个对象中有一个指针，那么在复制�
 15：在资源管理类中提供对原始资源的访问</h3>
 <p>和所有的智能指针一样，STL
 中的智能指针也提供了对原始资源的隐式访问和显式访问：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e91od8lmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-e91od8lmppruit"><pre><code class="hljs cpp">Investment* pRaw = pSharedInv.<span class="hljs-built_in">get</span>();    <span class="hljs-comment">// 显式访问原始资源</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g244cplmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-g244cplmr5loks"><pre><code class="hljs cpp">Investment* pRaw = pSharedInv.<span class="hljs-built_in">get</span>();    <span class="hljs-comment">// 显式访问原始资源</span>
 Investment raw = *pSharedInv;           <span class="hljs-comment">// 隐式访问原始资源</span></code></pre></div></div>
 <blockquote>
 <p>智能指针针重载了指针取值操作符(operator-&gt;和operator*)，它们允许使用指针的方式操作资源，也可以隐式转换至底部原始指针。</p>
@@ -372,9 +373,9 @@ Investment raw = *pSharedInv;           <span class="hljs-comment">// 隐式访�
 <p>当我们在设计自己的资源管理类时，也要考虑在提供对原始资源的访问时，是使用显式访问还是隐式访问的方法，还是两者皆可。</p>
 <blockquote>
 <p>下面的例子是将字体包装成RAII对象，同时考虑C
-API的兼容性，考虑转换为原始资源<code>FontHandle</code>的需求，</p>
+API的兼容性，考虑转换为原始资源<code>FontHandle</code>的需求。</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iximyulmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-iximyulmppruit"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Font</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t0p5dalmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-t0p5dalmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Font</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function">FontHandle <span class="hljs-title">Get</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>{ <span class="hljs-keyword">return</span> handle; }       <span class="hljs-comment">// 显式转换函数</span>
     <span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">FontHandle</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>{ <span class="hljs-keyword">return</span> handle; }  <span class="hljs-comment">// 隐式转换函数</span>
@@ -392,13 +393,13 @@ API的兼容性，考虑转换为原始资源<code>FontHandle</code>的需求，
 <h3 id="条款-16成对使用-new-和-delete-时要采用相同形式">条款
 16：成对使用 new 和 delete 时要采用相同形式</h3>
 <p>使用<code>new</code>来分配单一对象，使用<code>new[]</code>来分配对象数组，必须明确它们的行为并不一致，分配对象数组时会额外在内存中记录“数组大小”，而使用<code>delete[]</code>会根据记录的数组大小多次调用析构函数，使用<code>delete</code>则仅仅只会调用一次析构函数。对于单一对象使用<code>delete[]</code>其结果也是未定义的，程序可能会读取若干内存并将其错误地解释为数组大小。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mghnaglmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-mghnaglmppruit"><pre><code class="hljs cpp"><span class="hljs-type">int</span>* array = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>];
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5q9n0ulmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-5q9n0ulmr5loks"><pre><code class="hljs cpp"><span class="hljs-type">int</span>* array = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>];
 <span class="hljs-type">int</span>* object = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>;
 
 <span class="hljs-keyword">delete</span>[] array;
 <span class="hljs-keyword">delete</span> object;</code></pre></div></div>
 <p>需要注意的是，使用<code>typedef</code>定义数组类型会带来额外的风险：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-52h9s7lmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-52h9s7lmppruit"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::string AddressLines[<span class="hljs-number">4</span>];
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gj2tyilmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-gj2tyilmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::string AddressLines[<span class="hljs-number">4</span>];
 
 std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span class="hljs-comment">// pal 是一个对象数组，而非单一对象</span>
 <span class="hljs-comment">//用户后续可能忘记它是个数组</span>
@@ -407,15 +408,15 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
 <h3 id="条款-17以独立语句将-newed-对象置入智能指针">条款
 17：以独立语句将 newed 对象置入智能指针</h3>
 <p>现在更好的做法是使用<code>std::make_unique</code>和<code>std::make_shared</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o4rbi2lmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-o4rbi2lmppruit"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> pUniqueInv = std::<span class="hljs-built_in">make_unique</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++14</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q388h4lmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-q388h4lmr5loks"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> pUniqueInv = std::<span class="hljs-built_in">make_unique</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++14</span>
 <span class="hljs-keyword">auto</span> pSharedInv = std::<span class="hljs-built_in">make_shared</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++11</span></code></pre></div></div>
 <blockquote>
 <p>原文中举了这样的例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7xrz9slmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-7xrz9slmppruit"><pre><code class="hljs cpp"><span class="hljs-built_in">processwidget</span>(std::<span class="hljs-built_in">shared_ptr</span>&lt;Widget&gt;(<span class="hljs-keyword">new</span> Widget),<span class="hljs-built_in">priority</span>());</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vvs1kslmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-vvs1kslmr5loks"><pre><code class="hljs cpp"><span class="hljs-built_in">processwidget</span>(std::<span class="hljs-built_in">shared_ptr</span>&lt;Widget&gt;(<span class="hljs-keyword">new</span> Widget),<span class="hljs-built_in">priority</span>());</code></pre></div></div>
 <p>认为<code>priority()</code>的执行异常可能导致<code>Widget</code>未被置于智能指针中，从而引发资源泄漏。</p>
 <p>函数入参的表达式计算顺序本身就是未定义的，不同编译器的执行结果可能是不同的：</p>
 <p>如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vh30pxlmppruit"></i><span>cpp</span><div class="collapse show" id="collapse-vh30pxlmppruit"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ql6vqelmr5loks"></i><span>cpp</span><div class="collapse show" id="collapse-ql6vqelmr5loks"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dis</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b,<span class="hljs-type">int</span> c)</span></span>
 <span class="hljs-function"></span>{
@@ -426,7 +427,7 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
  <span class="hljs-built_in">dis</span>(x++, x++,x);
  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
-<p>clang-tidy会报： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hi3v61lmppruit"></i><span>llvm</span><div class="collapse show" id="collapse-hi3v61lmppruit"><pre><code class="hljs llvm">Multiple unsequenced modifications <span class="hljs-keyword">to</span> ’<span class="hljs-keyword">x</span>'</code></pre></div></div><p></p>
+<p>clang-tidy会报： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ym2l5flmr5loks"></i><span>llvm</span><div class="collapse show" id="collapse-ym2l5flmr5loks"><pre><code class="hljs llvm">Multiple unsequenced modifications <span class="hljs-keyword">to</span> ’<span class="hljs-keyword">x</span>'</code></pre></div></div><p></p>
 <p><strong>因此，不要这么写。</strong></p>
 </blockquote>
 
@@ -474,7 +475,7 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Effective C++-资源管理</div>
+      <div>Effective C++ - Item13-17 - 资源管理</div>
       <div>http://lunaticsky-tql.github.io/posts/30855/</div>
     </div>
     <div class="license-meta">
@@ -519,12 +520,18 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/posts/4565/" title="Effective C++ - Item41-47 - 模版与泛型编程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Effective C++ - Item41-47 - 模版与泛型编程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/42906/" title="Effective C++-构造/析构/赋值运算">
-                        <span class="hidden-mobile">Effective C++-构造/析构/赋值运算</span>
+                      <a href="/posts/42906/" title="Effective C++ - Item5-12 - 构造/析构/赋值运算">
+                        <span class="hidden-mobile">Effective C++ - Item5-12 - 构造/析构/赋值运算</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -572,6 +579,9 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
 
   
 
+
+
+  
 
 
 
@@ -758,6 +768,44 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
   <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
   
