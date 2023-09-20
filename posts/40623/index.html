@@ -364,7 +364,7 @@ compose的安装。</p>
 compose的安装有两种方式，分别为作为docker插件和单独应用。在centos或者redhat系统中，我们可以通过yum以插件的方式安装docker
 compose。这种方式在安装之后会将docker
 compose作为docker插件进行运行。我们可以通过<code>docker compose</code>命令进行调用。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mebri9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-mebri9lmngiym6"><pre><code class="hljs shell">yum install -y docker-compose-plugin
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8ysqtalmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-8ysqtalmrc2t9p"><pre><code class="hljs shell">yum install -y docker-compose-plugin
 docker compose version</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140854608011_980_image-20230906120028310.png" srcset="/img/loading.gif" lazyload alt="image-20230906120028310">
@@ -380,8 +380,8 @@ docker compose version</code></pre></div></div>
 <li>创建转换镜像</li>
 </ol>
 <p>我们基于python中的yaml和json模块来实现解析功能。首先我们来创建Dockerfile，在镜像中首先通过<code>pip install</code>安装<code>pyyaml</code>模块。接下来再添加两条py格式的脚本<code>2json.py</code>和<code>2yml.py</code>。我们使用<code>vi</code>来编辑<code>Dockerfile</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ktbcj4lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ktbcj4lmngiym6"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1jv89hlmngiym6"></i><span>dockerfile</span><div class="collapse show" id="collapse-1jv89hlmngiym6"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2kv395lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-2kv395lmrc2t9p"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6c42ftlmrc2t9p"></i><span>dockerfile</span><div class="collapse show" id="collapse-6c42ftlmrc2t9p"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python:latest
 
 <span class="hljs-keyword">RUN</span><span class="language-bash"> pip install pyyaml</span>
 
@@ -391,7 +391,7 @@ docker compose version</code></pre></div></div>
 <span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">"import yaml, json, sys\n\</span></span>
 <span class="hljs-string"><span class="language-bash">print(yaml.safe_dump(json.load(sys.stdin), sort_keys=False))"</span> &gt; 2yml.py</span></code></pre></div></div>
 <p>Dockerfile编写好之后，我们生成容器镜像：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4rt5w0lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-4rt5w0lmngiym6"><pre><code class="hljs shell">docker build -t yml/py . 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ujxvztlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-ujxvztlmrc2t9p"><pre><code class="hljs shell">docker build -t yml/py . 
 docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140858972702_400_image-20230906120814383.png" srcset="/img/loading.gif" lazyload alt="image-20230906120814383">
@@ -404,7 +404,7 @@ docker images</code></pre></div></div>
 <p>接下来在这里我们在执行docker
 run创建容器时使用<code>--rm</code>参数。该参数创建的容器在退出后会自动被删除，一般用于执行一次性任务的容器的创建。同时在命令中使用了<code>&lt;</code>
 重定向符号，将宿主机中的文件作为参数传递给容器中。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yi72q8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-yi72q8lmngiym6"><pre><code class="hljs shell">echo id: '10' &gt; demo.yml
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s7z3xdlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-s7z3xdlmrc2t9p"><pre><code class="hljs shell">echo id: '10' &gt; demo.yml
 docker run -i --rm yml/py python 2json.py &lt; demo.yml</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140903420195_222_image-20230906120838553.png" srcset="/img/loading.gif" lazyload alt="image-20230906120838553">
@@ -414,7 +414,7 @@ docker run -i --rm yml/py python 2json.py &lt; demo.yml</code></pre></div></div>
 <li>JSON转化为YML</li>
 </ol>
 <p>然后我们再来尝试将JSON格式文件转化为YML格式。首先创建一个简单的JSON文件，然后使用下面命令执行容器中的<code>2yml.py</code>即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-db34swlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-db34swlmngiym6"><pre><code class="hljs shell">echo \{\"name\":\"aliyun\",\"age\":100} &gt; demo.json
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9d60iflmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-9d60iflmrc2t9p"><pre><code class="hljs shell">echo \{\"name\":\"aliyun\",\"age\":100} &gt; demo.json
 docker run -i --rm yml/py python 2yml.py &lt; demo.json</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906140906842553_579_image-20230906120923498.png" srcset="/img/loading.gif" lazyload alt="image-20230906120923498">
@@ -433,12 +433,12 @@ compose安装完毕后，我们需要编写YML格式的配置文件配合该工�
 <p>接下来我们先来看YML中的第一种数据结构对象。对象是由多个Key/Value属性对对组成，属性对的格式为<code>key: value</code>。注意和JSON不同的是，一行中只包含一个属性对。</p>
 <p>如果属性对的Value值为对象或者数组时，Value的内容需要新起一行，同时新起的一行要比上一行更多的空格（一般使用4个空格）缩进来表示。</p>
 <p>接下来我们使用vi构建一个demo.yml文件来演示对象结构，并且转化成JSON结构和YML结构进行对比。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l79uy3lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-l79uy3lmngiym6"><pre><code class="hljs shell">vi demo1.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pz4pzulmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-pz4pzulmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">"aliyun"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i1gtyblmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-i1gtyblmrc2t9p"><pre><code class="hljs shell">vi demo1.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6fu3v9lmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-6fu3v9lmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">"aliyun"</span>
 <span class="hljs-attr">attr:</span> 
     <span class="hljs-attr">age:</span> <span class="hljs-number">10</span>
     <span class="hljs-attr">addr:</span> <span class="hljs-string">"HANGZHOU"</span></code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rgptmdlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-rgptmdlmngiym6"><pre><code class="hljs shell">cat demo1.yml
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e660vslmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-e660vslmrc2t9p"><pre><code class="hljs shell">cat demo1.yml
 docker run -i --rm yml/py python 2json.py &lt; demo1.yml</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141349874042_518_image-20230906121133060.png" srcset="/img/loading.gif" lazyload alt="image-20230906121133060">
@@ -449,13 +449,13 @@ docker run -i --rm yml/py python 2json.py &lt; demo1.yml</code></pre></div></div
 </ol>
 <p>纯量是指对象的Value或者数组中不可分割的量，换句说话就是简单属性类型。YML的纯量包括：字符串，数字，布尔，日期，时间等类型。接下来我们编辑demo.yml来做演示。需要注意的是python默认的JSON编码模块不支持日期时间。因此我们使用<code>#</code>
 注释日期时间属性对。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kxbljelmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-kxbljelmngiym6"><pre><code class="hljs shell">vi demo2.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j6c096lmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-j6c096lmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">string:</span> <span class="hljs-string">"aliyun"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-em8l96lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-em8l96lmrc2t9p"><pre><code class="hljs shell">vi demo2.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-73lk1ylmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-73lk1ylmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">string:</span> <span class="hljs-string">"aliyun"</span>
 <span class="hljs-attr">number1:</span> <span class="hljs-number">10</span>
 <span class="hljs-attr">number2:</span> <span class="hljs-number">10.01</span>
 <span class="hljs-attr">boolean:</span> <span class="hljs-literal">true</span>
 <span class="hljs-comment"># datatime: 2000-01-01 23:59:59   </span></code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-peqmtylmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-peqmtylmngiym6"><pre><code class="hljs shell">cat demo2.yml
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gw8sbnlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-gw8sbnlmrc2t9p"><pre><code class="hljs shell">cat demo2.yml
 docker run -i --rm yml/py python 2json.py &lt; demo2.yml</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141356359881_590_image-20230906121351872.png" srcset="/img/loading.gif" lazyload alt="image-20230906121351872">
@@ -465,12 +465,12 @@ docker run -i --rm yml/py python 2json.py &lt; demo2.yml</code></pre></div></div
 <li>YML中的数组</li>
 </ol>
 <p>YML中的数组不需要前后缀，只需要将数组中的元素前加入<code>-</code>即可，一行中只包含一个元素。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wewrvklmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-wewrvklmngiym6"><pre><code class="hljs shell">vi demo3.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ejot4slmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ejot4slmngiym6"><pre><code class="hljs shell">scores: 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z8uc8plmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-z8uc8plmrc2t9p"><pre><code class="hljs shell">vi demo3.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-98lrxhlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-98lrxhlmrc2t9p"><pre><code class="hljs shell">scores: 
     - 100
     - 90.5
     - 78</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e8tjdslmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-e8tjdslmngiym6"><pre><code class="hljs shell">cat demo3.yml
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-64rkt9lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-64rkt9lmrc2t9p"><pre><code class="hljs shell">cat demo3.yml
 docker run -i --rm yml/py python 2json.py &lt; demo3.yml</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141400821811_243_image-20230906121553457.png" srcset="/img/loading.gif" lazyload alt="image-20230906121553457">
@@ -481,8 +481,8 @@ docker run -i --rm yml/py python 2json.py &lt; demo3.yml</code></pre></div></div
 <li>编写配置文件</li>
 </ol>
 <p><code>docker compose</code>使用YML格式的配置文件代替<code>docker run</code>命令的各种参数，配置文件默认名称为<code>docker-compose.yml</code>。接下来我们使用<code>vi</code>构建该文件</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fbljknlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-fbljknlmngiym6"><pre><code class="hljs shell">vi docker-compose.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0w7spclmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-0w7spclmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kt70bblmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-kt70bblmrc2t9p"><pre><code class="hljs shell">vi docker-compose.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ankmgwlmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-ankmgwlmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">busy:</span>
         <span class="hljs-attr">container_name:</span> <span class="hljs-string">busy1</span>
@@ -495,14 +495,14 @@ docker run -i --rm yml/py python 2json.py &lt; demo3.yml</code></pre></div></div
 <p>配置文件编写完成之后，我们就可以使用<code>docker compose up</code>来启动配置文件中描述的容器。一般在执行docker
 compose up时会加入-d参数，其功能类似于docker
 run中的-d，表示容器在后台运行。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i1ti1jlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-i1ti1jlmngiym6"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ojfs1flmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-ojfs1flmrc2t9p"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
 <ol start="3" type="1">
 <li>验证容器启动</li>
 </ol>
 <p>命令执行成功后，我们使用docker
 ps查看，会发现容器已经启动。相比较使用复杂的docker run命令，使用docker
 compose的方式管理容器，命令简单统一。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h384ailmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-h384ailmngiym6"><pre><code class="hljs shell">docker ps</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-akf3t1lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-akf3t1lmrc2t9p"><pre><code class="hljs shell">docker ps</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141406085546_790_image-20230906122001303.png" srcset="/img/loading.gif" lazyload alt="image-20230906122001303">
 <figcaption aria-hidden="true">image-20230906122001303</figcaption>
@@ -516,10 +516,10 @@ compose的常用命令。</p>
 <li>环境准备</li>
 </ol>
 <p>首先我们切换到命令行页面。进行试验环境准备。首先安装<code>docker compose</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m0b7f8lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-m0b7f8lmngiym6"><pre><code class="hljs shell">yum install -y docker-compose-plugin
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8mx28wlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-8mx28wlmrc2t9p"><pre><code class="hljs shell">yum install -y docker-compose-plugin
 vi docker-compose.yml</code></pre></div></div>
 <p>在安装成功后使用vi创建<code>docker-compose.yml</code>文件，在<code>docker-compose.yml</code>文件中加入下列内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rn1lpllmngiym6"></i><span>yml</span><div class="collapse show" id="collapse-rn1lpllmngiym6"><pre><code class="hljs yml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yfx64olmrc2t9p"></i><span>yml</span><div class="collapse show" id="collapse-yfx64olmrc2t9p"><pre><code class="hljs yml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">web:</span>
        <span class="hljs-attr">container_name:</span> <span class="hljs-string">web</span>
@@ -540,7 +540,7 @@ vi docker-compose.yml</code></pre></div></div>
 <p>注意设置MYSQL_ROOT_PASSWORD的值，即[MYSQL密码]。</p>
 </blockquote>
 <p>配置文件编写完毕后，我们通过docker compose来启动容器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8h7lm3lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-8h7lm3lmngiym6"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4uwf8olmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-4uwf8olmrc2t9p"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141411787491_209_image-20230906123052607.png" srcset="/img/loading.gif" lazyload alt="image-20230906123052607">
 <figcaption aria-hidden="true">image-20230906123052607</figcaption>
@@ -550,8 +550,8 @@ vi docker-compose.yml</code></pre></div></div>
 </ol>
 <p>接下来我们来测试下面的3条docker
 compose命令，这3条命令的用法和原生docker命令类似，不同的是如果命令需要指定特定容器，我们需要在命令中使用service名来代替容器名。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nouzbalmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-nouzbalmngiym6"><pre><code class="hljs shell">docker compose exec db ls</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-un8z40lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-un8z40lmngiym6"><pre><code class="hljs shell">docker compose cp docker-compose.yml db:/root/
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b08yizlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-b08yizlmrc2t9p"><pre><code class="hljs shell">docker compose exec db ls</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8hp6iglmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-8hp6iglmrc2t9p"><pre><code class="hljs shell">docker compose cp docker-compose.yml db:/root/
 docker compose exec db bin/bash -c "cat /root/docker-compose.yml"</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141417586371_108_image-20230906123259414.png" srcset="/img/loading.gif" lazyload alt="image-20230906123259414">
@@ -564,7 +564,7 @@ docker compose exec db bin/bash -c "cat /root/docker-compose.yml"</code></pre></
 compose进行容器服务组暂停/恢复，停止/重开，删除命令，这几条命令类似于docker
 compose
 up，只要使用默认配置文件docker-compose.yml，或者使用<code>-f</code>参数指定配置文件即可，不再需要指定容器名。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eux54llmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-eux54llmngiym6"><pre><code class="hljs shell">docker compose pause
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pq7379lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-pq7379lmrc2t9p"><pre><code class="hljs shell">docker compose pause
 docker compose unpause
 
 docker compose stop
@@ -585,8 +585,8 @@ Compose来部署这三个容器。</p>
 </ol>
 <p>首先我们先使用vi来编写<code>db.yml</code>作为MySQL的部署文件。在标准MySQL容器中，通过<code>EntryPoint</code>设置了启动命令，因此我们通过<code>command</code>设置启动参数。</p>
 <p>除此之外标准的MySQL容器可以通过多种环境变量对服务进行配置，此处我们使用<code>MYSQL_DATABASE</code>环境变量指定默认数据库。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lxtqcflmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-lxtqcflmngiym6"><pre><code class="hljs shell">vi db.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ls4nvdlmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-ls4nvdlmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u8cujylmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-u8cujylmrc2t9p"><pre><code class="hljs shell">vi db.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-snd8wwlmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-snd8wwlmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
 <span class="hljs-attr">services:</span>
   <span class="hljs-attr">db:</span>
     <span class="hljs-attr">image:</span> <span class="hljs-string">mysql:8.0</span>
@@ -608,8 +608,8 @@ Compose来部署这三个容器。</p>
 <li>定义Redis配置</li>
 </ol>
 <p>接下来我们使用<code>vi</code>来编写<code>cache.yml</code>作为Redis的部署文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6zooxtlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-6zooxtlmngiym6"><pre><code class="hljs shell">vi cache.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qfhzg3lmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-qfhzg3lmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-krfl97lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-krfl97lmrc2t9p"><pre><code class="hljs shell">vi cache.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nq3e8plmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-nq3e8plmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
 <span class="hljs-attr">services:</span>
   <span class="hljs-attr">cache:</span>
      <span class="hljs-attr">depends_on:</span>
@@ -626,8 +626,8 @@ Compose来部署这三个容器。</p>
 compose加载的时候会将所有的属性值合并后统一处理，因此我们可以在<code>app.yml</code>中为db定义<code>ports</code>端口映射字段。</p>
 <p>除此之外我们还可以在这里对db中的MYSQL_USER和MYSQL_PASSWORD两个环境变量的属性值进行覆盖。YML属性值允许覆盖，且以最后定义的为最终值。</p>
 <p>在对db的环境变量覆盖时，我们可以使用<code>&amp;wp_passwd</code>来将属性值定义为锚点。并且在wordpress中的<code>WORDPRESS_ROOT_PASSWORD</code>使用<code>*wp_passwd</code>来引用锚点作为属性值，这种写法表示这个属性值引用了锚点位置的属性值。也就是说在WordPress中数据库的root用户密码和db.yml中数据库的默认用户密码一致。这种写法可以避免因为拼写错误导致的数值不一致。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f88rk9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-f88rk9lmngiym6"><pre><code class="hljs shell">vi app.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-07ymt0lmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-07ymt0lmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-or1p6elmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-or1p6elmrc2t9p"><pre><code class="hljs shell">vi app.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lk9osnlmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-lk9osnlmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
 <span class="hljs-attr">services:</span>
   <span class="hljs-attr">db:</span>
     <span class="hljs-attr">ports:</span>
@@ -648,7 +648,7 @@ compose加载的时候会将所有的属性值合并后统一处理，因此我�
 <blockquote>
 <p>注意设置MYSQL_ROOT_PASSWORD的值，即[MYSQL密码]。</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-re8n5glmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-re8n5glmngiym6"><pre><code class="hljs shell">version: "3"
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eb1ib7lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-eb1ib7lmrc2t9p"><pre><code class="hljs shell">version: "3"
 services:
   db:
     ports:
@@ -675,7 +675,7 @@ services:
 </ol>
 <p>配置文件编写完毕后我们就可以启动Project。这里需要注意的时，我们将三个服务写在了三个不同的文件中，当docker
 compose需要引用多个配置文件时，我们只需要在参数列表中添加多个<code>-f [配置文件名]</code>的方式即可。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d6nbbvlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-d6nbbvlmngiym6"><pre><code class="hljs shell">docker compose -f db.yml -f cache.yml -f app.yml -p wp up -d</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ewpw97lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-ewpw97lmrc2t9p"><pre><code class="hljs shell">docker compose -f db.yml -f cache.yml -f app.yml -p wp up -d</code></pre></div></div>
 <blockquote>
 <p>注：<code>-p wp</code>: 指定了项目名称（project
 name）<code>wp</code></p>
@@ -743,7 +743,7 @@ name）<code>wp</code></p>
 <figcaption aria-hidden="true">image-20230906125416859</figcaption>
 </figure>
 <p>切换至终端，执行如下命令验证插件生效。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rhhj8elmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-rhhj8elmngiym6"><pre><code class="hljs shell">docker exec -it wp-cache-1 redis-cli
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d3ilozlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-d3ilozlmrc2t9p"><pre><code class="hljs shell">docker exec -it wp-cache-1 redis-cli
 
 keys *</code></pre></div></div>
 <figure>
@@ -759,9 +759,9 @@ run命令行和参数启动容器，使用yml配置文件大步幅简化命令�
 </ol>
 <p>为了接下来的实验，首先我们安装docker
 compose插件。在安装成功后使用vi创建<code>docker-compose.yml</code>文件，在<code>docker-compose.yml</code>文件中加入下列内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2ow4c9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-2ow4c9lmngiym6"><pre><code class="hljs shell">yum install -y docker-compose-plugin
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hl64zblmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-hl64zblmrc2t9p"><pre><code class="hljs shell">yum install -y docker-compose-plugin
 vi docker-compose.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vs7skmlmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-vs7skmlmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fpit3olmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-fpit3olmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">web:</span>
        <span class="hljs-attr">container_name:</span> <span class="hljs-string">web</span>
@@ -778,7 +778,7 @@ vi docker-compose.yml</code></pre></div></div>
           <span class="hljs-attr">MYSQL_ROOT_PASSWORD:</span> <span class="hljs-string">"[MYSQL密码]"</span>
 <span class="hljs-attr">volumes:</span>
     <span class="hljs-attr">mysql-vol:</span> {}</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-isvppglmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-isvppglmngiym6"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9wa4galmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-9wa4galmrc2t9p"><pre><code class="hljs shell">docker compose up -d</code></pre></div></div>
 <ol start="2" type="1">
 <li>配置文件基本讲解</li>
 </ol>
@@ -811,7 +811,7 @@ vi docker-compose.yml</code></pre></div></div>
 </table>
 <p>需要注意的是，默认情况下docker
 compose会为每个project自动创建一个network，接下来创建的所有的容器都会连接到这个network，我们来验证容器的配置。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1fuphalmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-1fuphalmngiym6"><pre><code class="hljs shell">docker network ls
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7aykyllmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-7aykyllmrc2t9p"><pre><code class="hljs shell">docker network ls
 docker port web
 docker inspect -f "{{json .Mounts}}"  db | jq</code></pre></div></div>
 <figure>
@@ -825,7 +825,7 @@ docker inspect -f "{{json .Mounts}}"  db | jq</code></pre></div></div>
 compose命令对容器服务的状态查询。和使用docker原生命令相比，docker
 compose只会对配置文件中包含的容器生效。并不需要具体指定容器名，降低了操作复杂性。</p>
 <p>这里我们演示<code>docker compose ps</code>，<code>docker compose top</code>，<code>docker compose images</code>三个命令：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0stcttlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-0stcttlmngiym6"><pre><code class="hljs shell">docker compose ps
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j9x2bmlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-j9x2bmlmrc2t9p"><pre><code class="hljs shell">docker compose ps
 docker compose top
 docker compose images</code></pre></div></div>
 <figure>
@@ -837,7 +837,7 @@ docker compose images</code></pre></div></div>
 </ol>
 <p>当我们需要结束容器的使用，我们可以使用<code>docker compose down</code>来结束和删除配置文件中的容器。</p>
 <p>需要注意的时，该命令会停止并且销毁配置文件中描述的容器。同时容器停止后相应的网络等组件都会被销毁，类似于使用<code>docker rm -f</code>加<code>docker network rm</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ohehp3lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ohehp3lmngiym6"><pre><code class="hljs shell">docker compose down</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8kww1xlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-8kww1xlmrc2t9p"><pre><code class="hljs shell">docker compose down</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141538989320_659_image-20230906133558164.png" srcset="/img/loading.gif" lazyload alt="image-20230906133558164">
 <figcaption aria-hidden="true">image-20230906133558164</figcaption>
@@ -879,8 +879,8 @@ compose配置文件中的其他配置项目。yml中的一部分配置选项可�
 如果我们想使用不同名称的配置文件，可以在docker
 compose后面添加<code>-f</code>参数指定yml文件。我们使用vi创建一个<code>web.yml</code>文件以演示配置选项。</p>
 <p>创建之后，我们启动project，在启动时我们可以通过<code>-p</code>参数指定资源所在的Project，以避免资源橙色图，这里我们指定project为web。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cfwhi2lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-cfwhi2lmngiym6"><pre><code class="hljs shell">vi web.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dzimq0lmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-dzimq0lmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3l7meolmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-3l7meolmrc2t9p"><pre><code class="hljs shell">vi web.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x2j4zulmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-x2j4zulmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">busybox:</span>
         <span class="hljs-attr">container_name:</span> <span class="hljs-string">sh</span>
@@ -897,7 +897,7 @@ compose后面添加<code>-f</code>参数指定yml文件。我们使用vi创建�
 <span class="hljs-attr">networks:</span>
     <span class="hljs-attr">custom:</span>
         <span class="hljs-attr">name:</span> <span class="hljs-string">"custom"</span></code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p1mug9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-p1mug9lmngiym6"><pre><code class="hljs shell">docker compose -f web.yml -p web up -d</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-39fi8blmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-39fi8blmrc2t9p"><pre><code class="hljs shell">docker compose -f web.yml -p web up -d</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141545186341_141_image-20230906134113946.png" srcset="/img/loading.gif" lazyload alt="image-20230906134113946">
 <figcaption aria-hidden="true">image-20230906134113946</figcaption>
@@ -907,7 +907,7 @@ compose后面添加<code>-f</code>参数指定yml文件。我们使用vi创建�
 </ol>
 <p>web.yml创建成功后，我们来创建Project，需要注意的是在创建Proejct时，<code>-f[配置文件名]</code>参数需要放在up命令之前。在Proejct
 创建之后我们来验证自定网络的创建和容器参数的指定。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y59qhjlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-y59qhjlmngiym6"><pre><code class="hljs shell">docker inspect -f '{"Tty":{{.Config.Tty}},"OpenStdin":{{.Config.OpenStdin}}}' sh | jq
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0h2jcolmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-0h2jcolmrc2t9p"><pre><code class="hljs shell">docker inspect -f '{"Tty":{{.Config.Tty}},"OpenStdin":{{.Config.OpenStdin}}}' sh | jq
 docker inspect -f "{{json .NetworkSettings.Networks}}" sh | jq</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141548725400_786_image-20230906134131894.png" srcset="/img/loading.gif" lazyload alt="image-20230906134131894">
@@ -917,7 +917,7 @@ docker inspect -f "{{json .NetworkSettings.Networks}}" sh | jq</code></pre></div
 <li>查看配置信息</li>
 </ol>
 <p>当Project创建成功后使用<code>docker compose convert</code>命令，可以显示service中某个容器的的配置信息。我们可以看到显示的配置信息中，包括yml中指定的选项，也包括yml中没有指定的默认选项。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5qtge5lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-5qtge5lmngiym6"><pre><code class="hljs shell">docker compose -f web.yml -p web convert busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ypog2glmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-ypog2glmrc2t9p"><pre><code class="hljs shell">docker compose -f web.yml -p web convert busybox
 docker compose -f web.yml -p web convert python</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141552348830_501_image-20230906134142775.png" srcset="/img/loading.gif" lazyload alt="image-20230906134142775">
@@ -949,8 +949,8 @@ compose属性值的用法。</p>
 </ol>
 <p>首先我们来看<code>deploy.replicas</code>，之前我们提到过在<code>docker  compose</code>中的层次结构为，<code>project-&gt;service-&gt;container</code>，这里面的service指的是不同的容器配置，而container是指可以为相同的配置建立多个容器实例。配置容器实例个数的属性就是<code>deploy.replicas</code>。我们使用<code>vi</code>创建一个<code>replicas.yml</code>文件以演示配置选项。</p>
 <p>在编写配置文件时，我们要注意由于我们需要在相同的配置下创建多个容器，因此我们不能在配置中用<code>container_name</code>属性为容器指定一个固定的名字。因此我们需要删除此字段，由启动自动分配名字。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bqencnlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-bqencnlmngiym6"><pre><code class="hljs shell">vi replicas.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0muqwllmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-0muqwllmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d3uog9lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-d3uog9lmrc2t9p"><pre><code class="hljs shell">vi replicas.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p7i2c9lmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-p7i2c9lmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">busybox:</span>
         <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox:latest"</span>
@@ -958,7 +958,7 @@ compose属性值的用法。</p>
         <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
         <span class="hljs-attr">deploy:</span>
             <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span></code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0dzdazlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-0dzdazlmngiym6"><pre><code class="hljs shell">docker compose -f replicas.yml -p replicas up -d
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5zzno8lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-5zzno8lmrc2t9p"><pre><code class="hljs shell">docker compose -f replicas.yml -p replicas up -d
 docker compose -f replicas.yml -p replicas ps</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141557051770_456_image-20230906134411157.png" srcset="/img/loading.gif" lazyload alt="image-20230906134411157">
@@ -968,8 +968,8 @@ docker compose -f replicas.yml -p replicas ps</code></pre></div></div>
 <li>启动顺序</li>
 </ol>
 <p>在容器启动时，如果不同service在启动时有互相依赖关系，比如redis缓存要先于web服务启动，这种情况下就可以使用<code>depends_on</code>来管理service的启动顺序。我们使用vi创建一个<code>dependson.yml</code>文件以演示启动顺序选项。会发现servie严格按照先后顺序进行了启动</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1sbe0slmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-1sbe0slmngiym6"><pre><code class="hljs shell">vi dependson.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9h87fxlmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-9h87fxlmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ccz8zzlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-ccz8zzlmrc2t9p"><pre><code class="hljs shell">vi dependson.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u11f48lmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-u11f48lmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">busybox-before:</span>
         <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox"</span>
@@ -988,7 +988,7 @@ docker compose -f replicas.yml -p replicas ps</code></pre></div></div>
         <span class="hljs-attr">stdin_open:</span> <span class="hljs-literal">true</span>
         <span class="hljs-attr">depends_on:</span>
             <span class="hljs-bullet">-</span> <span class="hljs-string">"busybox-before"</span></code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yc2o5glmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-yc2o5glmngiym6"><pre><code class="hljs shell">docker compose -f dependson.yml -p dependson up -d</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gx0x0wlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-gx0x0wlmrc2t9p"><pre><code class="hljs shell">docker compose -f dependson.yml -p dependson up -d</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%20Compose%E5%AE%9E%E6%88%98/20230906141600332437_952_image-20230906134537758.png" srcset="/img/loading.gif" lazyload alt="image-20230906134537758">
 <figcaption aria-hidden="true">image-20230906134537758</figcaption>
@@ -999,15 +999,15 @@ docker compose -f replicas.yml -p replicas ps</code></pre></div></div>
 <p>在生产环境中，容器中服务难免会因为各种问题出现异常，错误，从而导致服务进程崩溃。一旦这种情况发生就会导致局部服务不可用，如果是关键服务出现问题，甚至会影响整个应用得稳定性。</p>
 <p>因此在生产环境中，我们一般会配置使用<code>restart</code>属性。该属性可以根据值得不同设定容器得自动重启策略。常用得属性值包括：<code>no</code>不自动重启，<code>always</code>总是自动重启，<code>on-failure</code>错误退出时重启。</p>
 <p>接下来我们启动一个busybox容器，在容器启动时执行<code>sleep 10</code>。这个命令表示命令行会在10秒后退出，以模拟容器服务出现错误。在project启动后等待超过10秒，然后再查看状态，会发现由于设置了always策略，容器会在退出后重新启动。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-50q4oslmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-50q4oslmngiym6"><pre><code class="hljs shell">vi restart.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1cqxtwlmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-1cqxtwlmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ezxm6xlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-ezxm6xlmrc2t9p"><pre><code class="hljs shell">vi restart.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tutl1wlmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-tutl1wlmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">busybox-auto:</span>
         <span class="hljs-attr">container_name:</span> <span class="hljs-string">busybox-auto</span>
         <span class="hljs-attr">image:</span> <span class="hljs-string">"busybox"</span>
         <span class="hljs-attr">command:</span> <span class="hljs-string">sleep</span> <span class="hljs-number">10</span>
         <span class="hljs-attr">restart:</span> <span class="hljs-string">"always"</span></code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-04nxg9lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-04nxg9lmngiym6"><pre><code class="hljs shell">docker compose -f restart.yml -p restart up -d
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bvkuzklmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-bvkuzklmrc2t9p"><pre><code class="hljs shell">docker compose -f restart.yml -p restart up -d
 [等待超过10秒]
 docker compose -f restart.yml -p restart ps</code></pre></div></div>
 <figure>
@@ -1026,9 +1026,9 @@ docker compose -f restart.yml -p restart ps</code></pre></div></div>
 </ol>
 <p>首先我们需要构建三个文件，分别是应用开发的源代码文件<code>main.py</code>，制作镜像的打包文件<code>Dockfile</code>，和容器联动的配置文件<code>build.yml</code>。首先我们来构建<code>main.py</code>和<code>Dockfile</code>。</p>
 <p>在<code>main.py</code>中我们通过Flask框架实现了一个简单的Http服务器。具体代码原理可以参考源码中的注释，在此不做过多讲解。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w2weqhlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-w2weqhlmngiym6"><pre><code class="hljs shell">mkdir app
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2940h4lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-2940h4lmrc2t9p"><pre><code class="hljs shell">mkdir app
 vi app/main.py</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ssqn2almngiym6"></i><span>python</span><div class="collapse show" id="collapse-ssqn2almngiym6"><pre><code class="hljs python"><span class="hljs-comment"># 导入Flask类</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-stybpolmrc2t9p"></i><span>python</span><div class="collapse show" id="collapse-stybpolmrc2t9p"><pre><code class="hljs python"><span class="hljs-comment"># 导入Flask类</span>
 <span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask 
 
 <span class="hljs-comment"># 创建app对象</span>
@@ -1048,8 +1048,8 @@ app = Flask(__name__)
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
     app.run(host=<span class="hljs-string">"0.0.0.0"</span>, port=<span class="hljs-number">8000</span>)</code></pre></div></div>
 <p>接下来我们来编写<code>Dockerfile</code>，这里我们主要做几件事：首先通过<code>pip</code>安装<code>Flask</code>框架，然后将<code>main.py</code>源码文件复制到<code>/app/</code>目录下，接下来设置<code>/app</code>为工作目录，最后使用CMD设置容器的启动命令。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ollilvlmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-ollilvlmngiym6"><pre><code class="hljs shell">vi app/Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ebrkiklmngiym6"></i><span>dockerfile</span><div class="collapse show" id="collapse-ebrkiklmngiym6"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sw2gb5lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-sw2gb5lmrc2t9p"><pre><code class="hljs shell">vi app/Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ct9c3vlmrc2t9p"></i><span>dockerfile</span><div class="collapse show" id="collapse-ct9c3vlmrc2t9p"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> python
 
 <span class="hljs-keyword">RUN</span><span class="language-bash"> pip install Flask</span>
 
@@ -1061,8 +1061,8 @@ app = Flask(__name__)
 </ol>
 <p>源代码文件和打包文件编辑完毕后，我们继续通过<code>vi</code>来编写配置文件<code>build.yml</code>。在配置文件中，我们使用<code>build</code>属性值代替<code>image</code>。如果在执行<code>docker build</code>时使用的是默认的打包配置文件，那么将<code>build</code>的属性值设置为<code>Dockerfile</code>文件所在目录即可。</p>
 <p>如果需要指定打包文件名，则需要将<code>build</code>的属性值设置为对象。对象中包含<code>context</code>和<code>dockerfile</code>两个属性值，分别表示配置文件所在路径和配置文件名。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c8zabclmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-c8zabclmngiym6"><pre><code class="hljs shell">vi build.yml</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-01edhglmngiym6"></i><span>yaml</span><div class="collapse show" id="collapse-01edhglmngiym6"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-itf983lmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-itf983lmrc2t9p"><pre><code class="hljs shell">vi build.yml</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ge6tmolmrc2t9p"></i><span>yaml</span><div class="collapse show" id="collapse-ge6tmolmrc2t9p"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.9"</span>
 <span class="hljs-attr">services:</span>
     <span class="hljs-attr">app:</span>
         <span class="hljs-attr">build:</span> <span class="hljs-string">app/</span>
@@ -1077,7 +1077,7 @@ app = Flask(__name__)
 </ol>
 <p>文件编写完成后我们即可进行编译打包和project部署的联动，proejct部署成功后。我们通过<code>docker compose ps</code>命令进行查看，发现容器使用了自动打包的镜像<code>build-app</code>。</p>
 <p>最后我们使用<code>curl</code>访问8080端口映射，验证服务部署成功。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o3v1b0lmngiym6"></i><span>shell</span><div class="collapse show" id="collapse-o3v1b0lmngiym6"><pre><code class="hljs shell">docker compose -f build.yml -p build up -d
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-na40yhlmrc2t9p"></i><span>shell</span><div class="collapse show" id="collapse-na40yhlmrc2t9p"><pre><code class="hljs shell">docker compose -f build.yml -p build up -d
 docker compose -f build.yml -p build ps
 curl 127.0.0.1:8080
 curl 127.0.0.1:8080/host</code></pre></div></div>

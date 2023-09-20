@@ -383,7 +383,7 @@
 <p>为了便于通过路径快速寻找到对应的标签页，可以将<code>&lt;filePath，tabINdex&gt;</code>的对应关系存到一个<code>unordered_map</code>中。哈希表可以实现近似<code>O(1)</code>的查找替换的复杂度。</p>
 <p>下面是添加标签页的部分代码，有两个重载函数，分别对应了是否关联文件的标签页。</p>
 <p>关联文件的标签页:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-awgkkvlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-awgkkvlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionTabWidget::addNewTab</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text, <span class="hljs-type">const</span> QString &amp;filePath)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gnwfzxlmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-gnwfzxlmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionTabWidget::addNewTab</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text, <span class="hljs-type">const</span> QString &amp;filePath)</span> </span>{
     <span class="hljs-keyword">if</span> (mainWindow) {
         <span class="hljs-type">bool</span> needToDistinguish = <span class="hljs-literal">false</span>;
         QString fileName = <span class="hljs-built_in">QFileInfo</span>(filePath).<span class="hljs-built_in">fileName</span>();
@@ -417,7 +417,7 @@
 }</code></pre></div></div>
 <p>由于文字较长时代码高亮会有卡顿，因此当大于一定长度的时候取消高亮。现在的编辑器如VSCode也是这么做的。</p>
 <p>新建的标签页</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5u8i88lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-5u8i88lmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionTabWidget::addNewTab</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9hrlq7lmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-9hrlq7lmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionTabWidget::addNewTab</span><span class="hljs-params">()</span> </span>{
     <span class="hljs-keyword">if</span> (mainWindow) {
         <span class="hljs-comment">// get the minimum unused untitledID from the set</span>
         <span class="hljs-type">int</span> newID = <span class="hljs-number">1</span>;
@@ -439,10 +439,10 @@
 <h4 id="行号事件响应">行号事件响应</h4>
 <h5 id="点击事件">点击事件</h5>
 <p>VSCode中点击行号可以跳转到对应行号，选中该行文本并将光标置于下一行。对此进行实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-54pvnqlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-54pvnqlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">mousePressEvent</span><span class="hljs-params">(QMouseEvent *event)</span> <span class="hljs-keyword">override</span></span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3isl69lmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-3isl69lmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">mousePressEvent</span><span class="hljs-params">(QMouseEvent *event)</span> <span class="hljs-keyword">override</span></span>{
     codeEditor-&gt;<span class="hljs-built_in">lineNumberAreaMousePressEvent</span>(event);
 }</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bewmi7lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-bewmi7lmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::lineNumberAreaMousePressEvent</span><span class="hljs-params">(QMouseEvent *mEvent)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dd06pblmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-dd06pblmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::lineNumberAreaMousePressEvent</span><span class="hljs-params">(QMouseEvent *mEvent)</span> </span>{
     <span class="hljs-comment">// select the current line and jump the cursor to the beginning of the next line</span>
     <span class="hljs-type">int</span> clickedLineNumber=<span class="hljs-built_in">qRound</span>(mEvent-&gt;<span class="hljs-built_in">position</span>().<span class="hljs-built_in">y</span>())/<span class="hljs-built_in">fontMetrics</span>().<span class="hljs-built_in">height</span>()+<span class="hljs-built_in">verticalScrollBar</span>()-&gt;<span class="hljs-built_in">value</span>();
 <span class="hljs-comment">//    qDebug()&lt;&lt;clickedLineNumber;</span>
@@ -464,7 +464,7 @@
 <li>完全可以部分高亮匹配的文本，也可以为不同的部分添加不同的高亮颜色</li>
 </ul>
 <p>基于第一条，我们必须选择合理的顺序渲染；同时还可以弥补一些渲染上的缺陷。比如浮点数的渲染。搜索尝试了多种正则表达形式，最后采用了编译原理中编写了一条几乎适用所有浮点形式的正则表达式:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y7oca3lmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-y7oca3lmngiym4"><pre><code class="hljs C++">((([<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*[.][<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*([eE][+-]?[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+)?)|([<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+[eE][+-]?[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+))[fLlL]?)</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cwoto8lmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-cwoto8lmrc2t9m"><pre><code class="hljs C++">((([<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*[.][<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*([eE][+-]?[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+)?)|([<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+[eE][+-]?[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]+))[fLlL]?)</code></pre></div></div>
 <p>它可以匹配<code>.xxx</code>和<code>xxx.</code>形式的浮点数，且不与变量名冲突(这也是为什么编译原理词法分析选择用这个表达式)，还能匹配科学计数法和带显式浮点格式的浮点数。但是唯一的缺陷是会把单独的点高亮。而通常在作为类成员访问符时是不高亮的。类成员的高亮规则刚好解决了这个问题。我们认为点后面加变量名这种方式作为类成员的高亮定义。又根据第二条，我们可单独为此时的点设置不同的颜色。把这条规则放到浮点数后面，就能完美的解决点高亮的问题。</p>
 <p>第二条的其他应用比如我们可以将头文件定义作为一条规则来匹配。CLion中高亮是这样:</p>
 <figure>
@@ -472,7 +472,7 @@
 <figcaption aria-hidden="true">image-20230514210950317</figcaption>
 </figure>
 <p>单独的尖括号包裹的字符串不会被高亮，只有与<code>#include</code>配合使用时才会高亮。这只有通过单一匹配规则和部分高亮实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iynyaslmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-iynyaslmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Highlighter::addIncludeFormat</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-isaso1lmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-isaso1lmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Highlighter::addIncludeFormat</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text)</span> </span>{
     HighlightRule rule;
     rule.pattern = <span class="hljs-built_in">QRegularExpression</span>(<span class="hljs-string">R"(#include\s*[&lt;"][a-zA-Z0-9_./\\]*[&gt;"])"</span>);
     <span class="hljs-function">QColor <span class="hljs-title">stringColor</span><span class="hljs-params">(<span class="hljs-number">106</span>, <span class="hljs-number">135</span>, <span class="hljs-number">89</span>)</span></span>;
@@ -489,7 +489,7 @@
 }</code></pre></div></div>
 <p>由于时间原因没做主题配置功能，因此颜色暂时硬编码到了代码中。</p>
 <p>另外，不同于单行的高亮内容。若支持高亮注释，需要记录每一行的状态。QT提供了<code>setCurrentBlockState()</code>函数供我们记录行的信息。对每一行来说，如果上一行是注释，跳过检测前面的<code>/*</code>。代码实现如下:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zo1mtylmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-zo1mtylmngiym4"><pre><code class="hljs C++"><span class="hljs-comment">//notice: it was called line by line</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2jydkmlmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-2jydkmlmrc2t9m"><pre><code class="hljs C++"><span class="hljs-comment">//notice: it was called line by line</span>
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Highlighter::addMultiLineCommentFormat</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;text)</span> </span>{
     <span class="hljs-comment">//mark the start of the comment</span>
     <span class="hljs-built_in">setCurrentBlockState</span>(<span class="hljs-number">0</span>);
@@ -562,7 +562,7 @@
 <p>注意到替换文本可能会为查找位置带来偏移，一开始保存的查找到的位置可能会失效。如果Highlighter提供某个正则表达式第n个匹配位置之类的接口，这就不需要我们太担心这个问题，只需要利用highlighter实时获取位置即可。理论上现在的编辑器支持查找过程中改变文本，也是采用的实时正则匹配。但是一开始没有考虑到偏移问题，采用的是第一次查询把所有位置保存下来，后面查找直接从向量中取位置出来即可。后面发现这是一种很蠢的方案。毕竟，这些位置是编辑敏感的，编辑或替换文本后位置就变了。因此后续引入了偏移，以在替换时根据查找词长度更新位置。但是这还是没解决编辑的问题。因此查找替换时冻结了编辑页面。这样可以经过简单的偏移计算保证位置准确性。不过由于每次替换都需要更新后续所有的位置，复杂度还是很高。后来意识到没有有效利用高亮器提供的匹配功能本身就带有长度和位置信息。但是由于时间有限，这一部分并没有进行比较优雅的设计。后续再去进行调整。比较合理的思路是高亮器获取当前查找的index，高亮的过程中记录位置和匹配个数，分别发送信号给codePage和mainWindow(再传给FindReplaceView,这样设计的原因是有较明确的主从关系，而非任何两个对象都能直接交流，造成较强的耦合)去改变选中文本和查找的情况。抛开底层算法(字符串和正则匹配)的复杂性，将这一部分的业务逻辑进行合理的设计也是需要费些心思的。这也是在这个项目上面投入时间有些后悔的原因:比起业务逻辑和API调用，算法和系统设计才是我们最应当关注的地方。除开智商的因素，尽可能有意识的培养这一方面的直觉还是给常重要的。</p>
 <h3 id="快速注释">快速注释</h3>
 <p>快速注释可以通过按<kbd>ctrl</kbd>+<kbd>/</kbd>来注释和取消注释。看上去只是在行首添加或去掉<code>/</code>的问题，但更重要的是需要将光标恢复到原来的位置。如果处理不好将导致光标恢复到错误的位置甚至有效范围之外，导致不可预知的行为。另外需要额外处理单个<code>/</code>的情况，虽然这种情况在实际编辑中并不常见。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yh5jxwlmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-yh5jxwlmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::denoteCurrentLine</span><span class="hljs-params">()</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-18zxhzlmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-18zxhzlmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::denoteCurrentLine</span><span class="hljs-params">()</span> </span>{
     QTextCursor cursor = <span class="hljs-built_in">textCursor</span>();
     <span class="hljs-comment">// record the current position</span>
     <span class="hljs-type">int</span> position = cursor.<span class="hljs-built_in">position</span>();
@@ -659,13 +659,13 @@
 <h2 id="自动缩进">自动缩进</h2>
 <p>这一部分看上去比较复杂，实际上需要考虑的因素也不少，但没有那么难。这一部分首先要做的是重写<code>keyPressEvent</code>识别按键，然后根据不同的按键结合上下文因素实现自动缩进。这里就以<code>{}</code>为例吧。</p>
 <p>我们让<code>closeParenthesis</code>处理这件事，它包装了各种类型括号的操作。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6wikwolmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-6wikwolmngiym4"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (event-&gt;<span class="hljs-built_in">key</span>() == Qt::Key_BraceLeft) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e59aw9lmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-e59aw9lmrc2t9m"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (event-&gt;<span class="hljs-built_in">key</span>() == Qt::Key_BraceLeft) {
     <span class="hljs-built_in">closeParenthesis</span>(<span class="hljs-string">"{"</span>, <span class="hljs-string">"}"</span>);
     <span class="hljs-keyword">return</span>;
 }</code></pre></div></div>
 <p><code>closeParenthesis</code>代码比较长。说一下主要思路，代码不看也行。首先我们需要判断是否有选中的文本。若有，那好说，直接用括号包住就可以了。对于<code>{}</code>，如果是紧跟在函数定义语句后面，证明我们要写函数体了，需要缩进一下。如果不是，那么可能是数组初始化之类的操作，我们就把括号补齐，移动光标到中间。其他的也是同理。</p>
 <p>其中的<code>getIndentation</code>函数虽然短，但是是是实现自动缩进的核心。放代码:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5dw4zulmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-5dw4zulmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">QLionCodePage::getIndentation</span><span class="hljs-params">(QTextCursor cursor)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vkqjb7lmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-vkqjb7lmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">QLionCodePage::getIndentation</span><span class="hljs-params">(QTextCursor cursor)</span> </span>{
     <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> prevLineText = cursor.<span class="hljs-built_in">block</span>().<span class="hljs-built_in">previous</span>().<span class="hljs-built_in">text</span>();
     <span class="hljs-type">int</span> n = <span class="hljs-built_in">leadingSpaces</span>(prevLineText);
     <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isEndingBraceOrColon</span>(prevLineText)) {
@@ -676,7 +676,7 @@
 <p>我们获取前面一行，看有多少缩进。<code>leadingSpaces</code>处理了空格和<code>tab</code>缩进的情况。虽然我们在代码编辑器中将<code>tab</code>映射为四个空格，但不敢保证源文件里就没有。我们还要对tab进行讨论以及让它正常显示。</p>
 <p>接下来<code>isEndingBraceOrColon</code>的作用是如果发现以<code>{</code>或<code>:</code>末尾的话，说明有新的类或函数声明，下面就要多缩进一级。最后返回的值是光标所在的一行需要缩进的字符数。</p>
 <p>下面是<code>closeParenthesis</code>的完整代码，可以结合上面提到的思路阅读。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-td6pvilmngiym4"></i><span>C++</span><div class="collapse show" id="collapse-td6pvilmngiym4"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::closeParenthesis</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;startStr, <span class="hljs-type">const</span> QString &amp;endStr)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kn4whblmrc2t9m"></i><span>C++</span><div class="collapse show" id="collapse-kn4whblmrc2t9m"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">QLionCodePage::closeParenthesis</span><span class="hljs-params">(<span class="hljs-type">const</span> QString &amp;startStr, <span class="hljs-type">const</span> QString &amp;endStr)</span> </span>{
     <span class="hljs-keyword">auto</span> cursor = <span class="hljs-built_in">textCursor</span>();
 
     <span class="hljs-keyword">if</span> (cursor.<span class="hljs-built_in">hasSelection</span>()) {

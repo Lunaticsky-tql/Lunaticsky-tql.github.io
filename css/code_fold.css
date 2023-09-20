@@ -27,7 +27,7 @@
 }
 [data-user-color-scheme='dark'] .markdown-body .highlight,
 [data-user-color-scheme='dark'] .markdown-body .code-wrapper {
-  background-color: #696969;
+  background-color: #0e1116;
   transition: background-color 0.2s ease-in-out;
 }
 [data-user-color-scheme='dark'] .markdown-body .highlight > i,

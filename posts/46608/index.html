@@ -365,13 +365,13 @@ HTTP/2 的头部压缩 (HPACK) 问题。</p>
 <p>由于我使用的是mac，这里以mac为例讲解配置方法，Windows和linux同理。</p>
 <p>1.设置 <code>SSLKEYLOGFILE</code> 环境变量 可以简单在命令行使用
 export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rwt9yulmngp7mt"></i><span>shell</span><div class="collapse show" id="collapse-rwt9yulmngp7mt"><pre><code class="hljs shell">export SSLKEYLOGFILE=~/ssh_key.log</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6dqu0almrc2t9o"></i><span>shell</span><div class="collapse show" id="collapse-6dqu0almrc2t9o"><pre><code class="hljs shell">export SSLKEYLOGFILE=~/ssh_key.log</code></pre></div></div>
 <p>2.在同一个命令行窗口打开 Chrome</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j1f9ljlmngp7mt"></i><span>shell</span><div class="collapse show" id="collapse-j1f9ljlmngp7mt"><pre><code class="hljs shell">open /Applications/Google\ Chrome.app/</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-skzfa5lmrc2t9o"></i><span>shell</span><div class="collapse show" id="collapse-skzfa5lmrc2t9o"><pre><code class="hljs shell">open /Applications/Google\ Chrome.app/</code></pre></div></div>
 <p>3.在 Chrome 随便访问一个 https 的网站, 检查<code>~/ssh_key.log</code>
 是不是有内容</p>
 <p>4.打开 wireshark 拦截流量或者 使用 tcpdump 有针对性的拦截</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xt3gswlmngp7mt"></i><span>shell</span><div class="collapse show" id="collapse-xt3gswlmngp7mt"><pre><code class="hljs shell">sudo tcpdump host 103.144.218.5 -w mydump.pcap</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qchvimlmrc2t9o"></i><span>shell</span><div class="collapse show" id="collapse-qchvimlmrc2t9o"><pre><code class="hljs shell">sudo tcpdump host 103.144.218.5 -w mydump.pcap</code></pre></div></div>
 <p>5.打开 wireshark, 分析这个加密的流量. 显示设置SSL/TLS 的
 <code>pre-master secret key log</code> 文件:</p>
 <p>菜单: preferences -&gt; Protocols -&gt; TLS</p>
@@ -398,7 +398,7 @@ export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
 <p>在这种情况下，HTTP/2的协商方式和HTTP/1/1的协商方式是相同的。由于之前没有讲述HTTP/1.1的协商方式，在这里再进行讲解。</p>
 <p>在没有任何先验知识的情况下, 客户端若想要和服务端以 HTTP/2
 协议进行通信, 那么客户端可以向服务端发送如下形式的 Request:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-re3rcxlmngp7mt"></i><span>http</span><div class="collapse show" id="collapse-re3rcxlmngp7mt"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/</span> <span class="hljs-meta">HTTP/1.1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mny499lmrc2t9o"></i><span>http</span><div class="collapse show" id="collapse-mny499lmrc2t9o"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/</span> <span class="hljs-meta">HTTP/1.1</span>
 <span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>server.example.com
 <span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade, HTTP2-Settings
 <span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>h2c
@@ -409,7 +409,7 @@ export 命令 (记得之后打开 Chrome 要在这个命令行)</p>
 <p>如果服务端不同意升级或者不支持 <code>Upgrade</code>
 所列出的协议，直接忽略即可（当成 HTTP/1.1 请求，以 HTTP/1.1
 响应）；如果服务端同意升级，那么需要这样响应：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0f3bwdlmngp7mt"></i><span>http</span><div class="collapse show" id="collapse-0f3bwdlmngp7mt"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zj3e2glmrc2t9o"></i><span>http</span><div class="collapse show" id="collapse-zj3e2glmrc2t9o"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
 <span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>upgrade
 <span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>h2c
 
@@ -533,7 +533,7 @@ frame, 可以通过标记一个流依赖于另一个流的完成来表征它的�
 是流 B 的从属流 (dependent stream), 流 B 是流 A 的父级流 (parent
 stream), 一个流可以被任意个其它流所依赖, 例如流 B, C 可以同时依赖于流 A,
 它们都是流 A 的从属流, 可以用如下所示的图示来表示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4741nplmngp7mt"></i><span>text</span><div class="collapse show" id="collapse-4741nplmngp7mt"><pre><code class="hljs text">  A                 A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gwvp8wlmrc2t9o"></i><span>text</span><div class="collapse show" id="collapse-gwvp8wlmrc2t9o"><pre><code class="hljs text">  A                 A
  / \      ==&gt;      /|\
 B   C             B D C</code></pre></div></div>
 <p>可以在创建流的时候通过 HEADERS frame (将在下面讨论)
@@ -543,7 +543,7 @@ exclusive flag 来指示该流的排他性, 在上面的例子中, 我们看到�
 同时依赖于 A, 若不设置 exclusive flag 我们可以继续创建流 D 使其与流 B C
 一样都在同一级依赖于流 A, 而若设置了 exclusive flag,
 那么流的层级依赖关系将如下所示:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pkt0p9lmngp7mt"></i><span>text</span><div class="collapse show" id="collapse-pkt0p9lmngp7mt"><pre><code class="hljs text">                    A
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7kxnw8lmrc2t9o"></i><span>text</span><div class="collapse show" id="collapse-7kxnw8lmrc2t9o"><pre><code class="hljs text">                    A
   A                 |
  / \      ==&gt;       D
 B   C              / \

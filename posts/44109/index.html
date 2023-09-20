@@ -345,7 +345,7 @@
 Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 并把返回的指针记录到PCB的<code>cp</code>中.</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3qm8prlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-3qm8prlmngiym5"><pre><code class="hljs C++">_Context *_kcontext(_Area stack, <span class="hljs-built_in">void</span> (*entry)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xkrsv6lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-xkrsv6lmrc2t9n"><pre><code class="hljs C++">_Context *_kcontext(_Area stack, <span class="hljs-built_in">void</span> (*entry)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg) {
 	_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context));
 	new_p-&gt;eip=(<span class="hljs-type">uintptr_t</span>)entry;
 	new_p-&gt;eflags=<span class="hljs-number">0x2</span>;
@@ -356,7 +356,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 <li>Nanos-lite的<code>schedule()</code>函数</li>
 </ul>
 <p>如指导书所述</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0eeqvolmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-0eeqvolmngiym5"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iezjpclmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-iezjpclmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">// save the context pointer</span>
   current-&gt;cp = prev;
@@ -372,7 +372,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 调用<code>schedule()</code>并返回新的上下文</li>
 </ul>
 <p><code>nanos-lite/src/irq.c</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yvj17tlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-yvj17tlmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _EVENT_YIELD:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fdt7itlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-fdt7itlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> _EVENT_YIELD:
   <span class="hljs-built_in">Log</span>(<span class="hljs-string">"_EVENT_YIELD recognized"</span>);
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">schedule</span>(c);</code></pre></div></div>
 <ul>
@@ -383,7 +383,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 </ul>
 <p>这一部分是最核心的。</p>
 <p><code>nexus-am/am/src/x86/nemu/trap.S</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t8kv86lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-t8kv86lmngiym5"><pre><code class="hljs C++">__am_asm_trap:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4cld33lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-4cld33lmrc2t9n"><pre><code class="hljs C++">__am_asm_trap:
   pushal
 
   pushl $<span class="hljs-number">0</span>
@@ -401,7 +401,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 <p>加的是<code>movl %eax,%esp</code>。为什么呢？<code>__am_irq_handle</code>在<code>cte.c</code>中返回的正是<code>_Context</code>结构体的指针，保存在<code>eax</code>寄存器中。原来的时候我们直接跳过这个返回值，恢复中断调用前的上下文。现在我们将栈顶指针指到这个上下文地址，我们后面就可以继续<code>pop</code>新的上下文信息，从而实现乾坤挪移。</p>
 <p>另外这样之后<code>movl %eax,%esp</code>前面那句其实也并不起什么作用了。原来的目的是跳过压栈的<code>esp</code>，现在<code>move</code>指令既然都能直接跳转到另外一个进程的<code>_Context</code>结构体的位置了(虽然也有可能还是自身)，减不减已经无所谓了。</p>
 <p>最后进行测试:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-99ifsolmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-99ifsolmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-edavrslmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-edavrslmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">0</span>], hello_fun);
   switch_boot_pcb();
@@ -424,11 +424,11 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 </ul>
 <p>这个地方就涉及到x86的函数调用约定了。讲义中提到“mips32和riscv32的调用约定”需要查阅相应的ABI手册，默认我们知道x86的调用约定(捂脸)。借此问题也回顾模拟了PA3中中断调用的过程。感谢某舍友的帮助，非常有耐心的让我把模糊的细节弄清楚了。详细见必答题部分。</p>
 <p>现在增加了参数，就不再是这样了。因此原来的</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8nxowllmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-8nxowllmngiym5"><pre><code class="hljs C++">_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context));</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-04bw81lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-04bw81lmrc2t9n"><pre><code class="hljs C++">_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context));</code></pre></div></div>
 <p>现在还要多减一些，因为end不再紧跟context了，而是依次多了返回值和函数参数。</p>
 <p>当然我们还要把参数放到正确的位置。显然这个位置是<code>(stack.end-4，stack.end]</code>，按照函数调用约定。距离上下文结构体(切换的栈帧底部）需要留出返回地址所在的4字节位置。</p>
 <p>原来这个函数是没有<code>arg</code>参数的，现在我们需要手动加上。参数所指向的地址(4字节)。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-seon89lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-seon89lmngiym5"><pre><code class="hljs C++">_Context *_kcontext(_Area stack, <span class="hljs-built_in">void</span> (*entry)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l3hjyalmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-l3hjyalmrc2t9n"><pre><code class="hljs C++">_Context *_kcontext(_Area stack, <span class="hljs-built_in">void</span> (*entry)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg) {
 	_Context *new_p=(_Context*)(stack.end-<span class="hljs-built_in">sizeof</span>(_Context)<span class="hljs-number">-8</span>);
   <span class="hljs-type">void</span> ** temp=(<span class="hljs-type">void</span>**)(stack.end<span class="hljs-number">-4</span>);
   *temp=arg;
@@ -443,7 +443,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 你可以自行约定参数<code>arg</code>的类型, 包括整数, 字符, 字符串,
 指针等皆可, 然后按照你的约定来解析<code>arg</code>.</li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wurmialmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-wurmialmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">hello_fun</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dfhsallmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-dfhsallmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">hello_fun</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;
   <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)
@@ -458,7 +458,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 <li>通过<code>_kcontext()</code>创建第二个以<code>hello_fun()</code>为入口的内核线程,
 并传递不同的参数</li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-quj4xglmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-quj4xglmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z565dglmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-z565dglmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_proc</span><span class="hljs-params">()</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">0</span>], hello_fun,<span class="hljs-number">1</span>);
   <span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">1</span>], hello_fun,<span class="hljs-number">2</span>);
@@ -470,7 +470,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 <li>修改Nanos-lite的<code>schedule()</code>函数,
 使其轮流返回两个上下文</li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3lm0bglmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-3lm0bglmngiym5"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-umcug2lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-umcug2lmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">// save the context pointer</span>
   current-&gt;cp = prev;
@@ -485,7 +485,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 <figcaption aria-hidden="true">image-20230529100302757</figcaption>
 </figure>
 <h3 id="实现多道程序系统">实现多道程序系统</h3>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kdfvc1lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-kdfvc1lmngiym5"><pre><code class="hljs C++">_Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, <span class="hljs-type">void</span> *entry, <span class="hljs-type">void</span> *args) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-moswuflmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-moswuflmrc2t9n"><pre><code class="hljs C++">_Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, <span class="hljs-type">void</span> *entry, <span class="hljs-type">void</span> *args) {
 	_Context *new_p=(_Context*)(ustack.end<span class="hljs-number">-16</span>-<span class="hljs-built_in">sizeof</span>(_Context));
 	new_p-&gt;eip=(<span class="hljs-type">uintptr_t</span>)entry;
 	new_p-&gt;cs=<span class="hljs-number">8</span>;
@@ -512,10 +512,10 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 从而实现多道程序系统的功能.</p>
 </blockquote>
 <p>并不是完成这个任务所必须的，只是为了更符合“实际情况”。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xw6jo2lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-xw6jo2lmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">1</span>], hello_fun,<span class="hljs-number">2</span>);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z9yg8flmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-z9yg8flmrc2t9n"><pre><code class="hljs C++"><span class="hljs-built_in">context_kload</span>(&amp;pcb[<span class="hljs-number">1</span>], hello_fun,<span class="hljs-number">2</span>);
 <span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">0</span>], <span class="hljs-string">"/bin/pal"</span>);</code></pre></div></div>
 <p>注意至少得有一个内核进程。一开始我写成了这样:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nu6arwlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-nu6arwlmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">0</span>], <span class="hljs-string">"/bin/hello"</span>);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xie6ynlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-xie6ynlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">0</span>], <span class="hljs-string">"/bin/hello"</span>);
 <span class="hljs-built_in">context_uload</span>(&amp;pcb[<span class="hljs-number">1</span>], <span class="hljs-string">"/bin/pal"</span>);</code></pre></div></div>
 <p>内核便会不断的重启。</p>
 <p>读到后面发现这就是讲义中的<code>一山不能藏二虎?</code>问题。</p>
@@ -537,7 +537,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 这样以后, 用户进程就可以接收到属于它的参数了.</p>
 </blockquote>
 <p>Navy-apps中根本就没有<code>_start</code>函数，也没有什么<code>call_main</code>。但是<code>call_main</code>应当是指的<code>crt_0</code>中这个部分:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mry34ulmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-mry34ulmngiym5"><pre><code class="hljs C++"><span class="hljs-type">void</span> _start(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[], <span class="hljs-type">char</span> *envp[]) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rwrpgqlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-rwrpgqlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-type">void</span> _start(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[], <span class="hljs-type">char</span> *envp[]) {
   <span class="hljs-type">char</span> *env[] = {<span class="hljs-literal">NULL</span>};
   environ = env;
   <span class="hljs-built_in">printf</span>(<span class="hljs-string">"argc:%d\n"</span>,argc);
@@ -549,7 +549,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
   <span class="hljs-built_in">assert</span>(<span class="hljs-number">0</span>);
 }</code></pre></div></div>
 <p>正常的想法应该是这样，按照函数调用约定把字符数组首地址放到正确的位置:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-33oxorlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-33oxorlmngiym5"><pre><code class="hljs C++">  _Context *new_p = (_Context *)(ustack.end - <span class="hljs-number">16</span> - <span class="hljs-built_in">sizeof</span>(_Context));
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2k7tublmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-2k7tublmrc2t9n"><pre><code class="hljs C++">  _Context *new_p = (_Context *)(ustack.end - <span class="hljs-number">16</span> - <span class="hljs-built_in">sizeof</span>(_Context));
   <span class="hljs-type">uintptr_t</span> pos = ustack.end - <span class="hljs-number">8</span>;
   <span class="hljs-type">void</span> **argv_temp = (<span class="hljs-type">void</span> **)(pos);
   *argv_temp = (<span class="hljs-type">void</span> *)(argv);
@@ -569,7 +569,7 @@ Nanos-lite会调用<code>_kcontext()</code>来创建上下文,
 }</code></pre></div></div>
 <p>但是这样<code>argc</code>没问题，<code>argv</code>却无法正常读取。和其他做2019的同学交流得知他们这样做是没有问题的。</p>
 <p>甚至后面尝试了直接在栈上吧字符串数组放进去，当然虽然指导书是这么说的，但常量字符串应当在堆区，显然也是有些荒谬的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xccogklmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-xccogklmngiym5"><pre><code class="hljs C++"><span class="hljs-type">int</span> space_count=<span class="hljs-number">0</span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2e2ek6lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-2e2ek6lmrc2t9n"><pre><code class="hljs C++"><span class="hljs-type">int</span> space_count=<span class="hljs-number">0</span>;
 <span class="hljs-keyword">if</span>(argv){
   <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;argc;i++){
     space_count+=(<span class="hljs-built_in">strlen</span>(argv[i])+<span class="hljs-number">1</span>);
@@ -622,7 +622,7 @@ _Context *new_p=(_Context*)(ustack.end-space_count-<span class="hljs-built_in">s
 <p>但是我尝试了传完整路径，还是不行(哭)</p>
 <p>把PA其他部分做完回过头来尝试解决这个问题未果。不过既然<code>argc</code>能正常传递，想跳过商标页面还是能实现的。我们就用<code>argc</code>判断。</p>
 <p><code>pal-main.c</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cc6c76lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-cc6c76lmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2vqk1ylmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-2vqk1ylmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span></span>
 <span class="hljs-function"></span>{
 	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"game start!"</span>);
 	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"here show the args:"</span>);
@@ -639,7 +639,7 @@ _Context *new_p=(_Context*)(ustack.end-space_count-<span class="hljs-built_in">s
 	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
 <p><code>main.c</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0rqhailmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-0rqhailmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (argc!=<span class="hljs-number">2</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ok35twlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-ok35twlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (argc!=<span class="hljs-number">2</span>)
 {
    <span class="hljs-built_in">PAL_TrademarkScreen</span>();
    <span class="hljs-built_in">PAL_SplashScreen</span>();
@@ -670,7 +670,7 @@ $存储，太大了，如果分级可以利用局部性原理有效减小页表�
 <h4 id="空指针真的是空的吗">空指针真的是空的吗</h4>
 <p>NULL
 是一个标准规定的宏定义，用来表示空指针常量。在C中和早期的C++中它就是0</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tizr3ylmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-tizr3ylmngiym5"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NULL (void*)0</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hkiipwlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-hkiipwlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NULL (void*)0</span></code></pre></div></div>
 <p>后来C++有了<code>nullptr</code>这个东西，不过与这个问题没啥关系。</p>
 <p>下面的部分引自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/fly1988happy/archive/2012/04/16/2452021.html#">博客园</a></p>
 <blockquote>
@@ -688,13 +688,13 @@ Volitation</strong>
 <p>是这条指令:</p>
 <p><code>1010b0:  0f 22 d8                mov    %eax,%cr3</code></p>
 <p>显然<code>cr3</code>的出现应当意识到与分页有关。而且是<code>invalid opcode</code>，那么就先要吧这个指令补上。这是一个两比特操作码的指令，在表的下面一部分</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ru3p0klmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ru3p0klmngiym5"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x20 */</span>	<span class="hljs-built_in">IDEXW</span>(G2E,mov_cr2r,<span class="hljs-number">4</span>), EMPTY, <span class="hljs-built_in">IDEXW</span>(E2G,mov_r2cr,<span class="hljs-number">4</span>), EMPTY,</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pd5xa0lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-pd5xa0lmrc2t9n"><pre><code class="hljs C++"><span class="hljs-comment">/* 0x20 */</span>	<span class="hljs-built_in">IDEXW</span>(G2E,mov_cr2r,<span class="hljs-number">4</span>), EMPTY, <span class="hljs-built_in">IDEXW</span>(E2G,mov_r2cr,<span class="hljs-number">4</span>), EMPTY,</code></pre></div></div>
 <p>查阅手册<code>0x21</code>也是与<code>cr</code>寄存器有关，一起补上。</p>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA4/20230828205712227982_962_20230601235521194013_589_image-20230529223520788.png" srcset="/img/loading.gif" lazyload alt="image-20230529223520788">
 <figcaption aria-hidden="true">image-20230529223520788</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0bfcx4lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-0bfcx4lmngiym5"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(mov_r2cr) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qxbgdglmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-qxbgdglmrc2t9n"><pre><code class="hljs C++"><span class="hljs-built_in">make_EHelper</span>(mov_r2cr) {
   <span class="hljs-comment">//TODO();</span>
   <span class="hljs-keyword">if</span> (id_dest-&gt;reg==<span class="hljs-number">0</span>) cpu.cr0.val=id_src-&gt;val;
   <span class="hljs-keyword">else</span> cpu.cr3.val=id_src-&gt;val;
@@ -723,7 +723,7 @@ Volitation</strong>
 并先在<code>exit</code>的实现中调用<code>_halt()</code>结束系统的运行。</p>
 </blockquote>
 <p>先修改调度代码，省的后面忘了:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e0s3kvlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-e0s3kvlmngiym5"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l4xxewlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-l4xxewlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">// save the context pointer</span>
   current-&gt;cp = prev;
@@ -734,7 +734,7 @@ Volitation</strong>
   <span class="hljs-keyword">return</span> current-&gt;cp;
 }</code></pre></div></div>
 <p><code>_Context *do_syscall(_Context *c)</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o79cwmlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-o79cwmlmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_exit:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h4v45glmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-h4v45glmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> SYS_exit:
   _halt(a[<span class="hljs-number">1</span>]);</code></pre></div></div>
 <p>需要按讲义中所讲取消原来进入开机菜单的选项，直接运行dummy。现在还没实现分页，可以看到也是能正常运行的。因为它只是调用了一下系统调用。</p>
 <figure>
@@ -750,7 +750,7 @@ Volitation</strong>
 就可以实现地址空间的创建。</p>
 </blockquote>
 <p>目前这个地址空间除了内核映射之外就没有其它内容了。看代码确实如此。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cxq5a4lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-cxq5a4lmngiym5"><pre><code class="hljs C++"><span class="hljs-type">int</span> _protect(_AddressSpace *as) {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-70m20wlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-70m20wlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-type">int</span> _protect(_AddressSpace *as) {
   PDE *updir = (PDE*)(<span class="hljs-built_in">pgalloc_usr</span>(<span class="hljs-number">1</span>));
   as-&gt;ptr = updir;
   <span class="hljs-comment">// map kernel space</span>
@@ -770,7 +770,7 @@ Volitation</strong>
 </ul>
 </blockquote>
 <p>这一部分实现需要谨慎一些，注意细节,写起来也让人挺抓狂的。不过还好没在这里卡住，反而下面犯了一个很蠢的错误。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9m3q8zlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-9m3q8zlmngiym5"><pre><code class="hljs C++">Elf_Ehdr elf_header;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-he6cjflmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-he6cjflmrc2t9n"><pre><code class="hljs C++">Elf_Ehdr elf_header;
 <span class="hljs-type">int</span> fd = <span class="hljs-built_in">fs_open</span>(filename, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
 <span class="hljs-built_in">Log</span>(<span class="hljs-string">"filename: %s, fd: %d"</span>, filename, fd);
 <span class="hljs-type">size_t</span> read_len = <span class="hljs-built_in">fs_read</span>(fd, &amp;elf_header, <span class="hljs-built_in">sizeof</span>(Elf_Ehdr));
@@ -859,7 +859,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6ics2019_PA4/20230828205717905352_201_20230601235531573391_617_image-20230530193239098.png" srcset="/img/loading.gif" lazyload alt="image-20230530193239098">
 <figcaption aria-hidden="true">image-20230530193239098</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lq6og3lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-lq6og3lmngiym5"><pre><code class="hljs C++"><span class="hljs-type">int</span> _map(_AddressSpace *as, <span class="hljs-type">void</span> *va, <span class="hljs-type">void</span> *pa, <span class="hljs-type">int</span> prot)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fwhsh6lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-fwhsh6lmrc2t9n"><pre><code class="hljs C++"><span class="hljs-type">int</span> _map(_AddressSpace *as, <span class="hljs-type">void</span> *va, <span class="hljs-type">void</span> *pa, <span class="hljs-type">int</span> prot)
 {
   <span class="hljs-comment">// 来自讲义:将地址空间as中虚拟地址va所在的虚拟页, 以prot的权限映射到pa所在的物理页. 当prot中的present位为0时, 表示让va的映射无效</span>
   PDE *pdir = (PDE *)as-&gt;ptr;
@@ -889,7 +889,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 框架代码已经实现了这一功能(见<code>nexus-am/am/include/arch/$ISA-nemu.h</code>),</p>
 </blockquote>
 <p>确实。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-49yneglmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-49yneglmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">_Context</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z9ec3plmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-z9ec3plmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">_Context</span> {
   <span class="hljs-keyword">struct</span> <span class="hljs-title class_">_AddressSpace</span> *as;
   <span class="hljs-type">uintptr_t</span> edi,esi, ebp, esp, ebx,edx,ecx,eax;
   <span class="hljs-type">int</span> irq;
@@ -908,7 +908,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 </blockquote>
 <p>第一步，前面已经加过了。剩下的两步，照着做就好。</p>
 <p>问题驱动。现在把<code>isa_vaddr_read()</code>和<code>isa_vaddr_write()</code>按照分页地址转换进行修改。写完<code>loader</code>和<code>_map</code>后已经算是对分页机制有较清晰的理解了，即便没有任何提示也基本完成的比较顺畅。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1x7294lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-1x7294lmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">page_translate</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> addr)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t2ixsglmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-t2ixsglmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">page_translate</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> addr)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">// printf("addr:%x\n",addr);</span>
   <span class="hljs-type">uint32_t</span> pdir = <span class="hljs-built_in">PDX</span>(addr);
@@ -995,7 +995,7 @@ read_len = <span class="hljs-built_in">fs_read</span>(fd, elf_program_header, <s
 break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 </blockquote>
 <p>据此实现:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ilj871lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ilj871lmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">mm_brk</span><span class="hljs-params">(<span class="hljs-type">uintptr_t</span> brk, <span class="hljs-type">intptr_t</span> increment)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w81kmrlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-w81kmrlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">mm_brk</span><span class="hljs-params">(<span class="hljs-type">uintptr_t</span> brk, <span class="hljs-type">intptr_t</span> increment)</span> </span>{
 	<span class="hljs-keyword">if</span> (brk+increment&gt;current-&gt;max_brk)
 	{
 		<span class="hljs-type">int</span> new_pgnum=((brk+increment-current-&gt;max_brk)+<span class="hljs-number">0xfff</span>)/PGSIZE;
@@ -1011,11 +1011,11 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 <p><code>new_pgnum</code>计算了需要分配的页面个数。看上去很简单粗暴。为什么不用考虑页面对齐问题？因为我实现的<code>loader</code>加载的时候分配的<code>max_brk</code>值是页面对齐的，这里更新的时候<code>current-&gt;max_brk+=PGSIZE;</code>也是页面对齐的，因此就不需要考虑<code>brk+increment</code>
 与 <code>max_brk</code>在同一页面上的问题。</p>
 <p>我们这是在<code>mm</code>中，要想访问当前进程的<code>max_brk</code>需要从进程控制块中获取。因此需要</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zinhxnlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-zinhxnlmngiym5"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"proc.h"</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7w75mxlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-7w75mxlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"proc.h"</span></span>
 <span class="hljs-keyword">extern</span> PCB *current;</code></pre></div></div>
 <p>别忘了在系统调用里注册新实现的<code>max_brk</code>，一开始实现完了忘了注册，缺一堆页，排查了一个多小时发现是忘了在系统调用更新。</p>
 <p><code>_Context *do_syscall(_Context *c)</code>:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-f0ivbalmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-f0ivbalmngiym5"><pre><code class="hljs C++"> <span class="hljs-keyword">case</span> SYS_brk:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4o08krlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-4o08krlmrc2t9n"><pre><code class="hljs C++"> <span class="hljs-keyword">case</span> SYS_brk:
 {
 	<span class="hljs-built_in">Log</span>(<span class="hljs-string">"brk syscall"</span>);
 	<span class="hljs-comment">//_end=*((char*)c-&gt;GPR2);</span>
@@ -1034,7 +1034,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 <code>vaddr_write</code> 中将需要写入
 的字节进行拆分并分别写入两个页面即可。</p>
 <p><code>read</code>的处理如下:write是完全类似的。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o7ucnelmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-o7ucnelmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">else</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a7wd8dlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-a7wd8dlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">else</span>
 {
   <span class="hljs-comment">// printf("the data is in two pages\n");</span>
   <span class="hljs-comment">// assert(0);</span>
@@ -1047,7 +1047,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
   <span class="hljs-type">uint32_t</span> second_page_data = <span class="hljs-built_in">paddr_read</span>(paddr, len - first_page_len);
   <span class="hljs-keyword">return</span> (second_page_data &lt;&lt; (first_page_len * <span class="hljs-number">8</span>)) + first_page_data;
 }</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ueb1e7lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ueb1e7lmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">else</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ejez3qlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-ejez3qlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">else</span>
 {
   <span class="hljs-comment">// printf("the data is in two pages\n");</span>
   <span class="hljs-comment">// assert(0);</span>
@@ -1087,7 +1087,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 </ul>
 </blockquote>
 <p>注意Interrupt Enable Flag ，等于1接收中断响应。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tmx0h1lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-tmx0h1lmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isa_query_intr</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-etl2m1lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-etl2m1lmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isa_query_intr</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> </span>{
 	<span class="hljs-keyword">if</span> (cpu.INTR==<span class="hljs-literal">true</span>&amp;&amp;cpu.eflags.IF==<span class="hljs-number">1</span>)
 	{
 		cpu.INTR=<span class="hljs-literal">false</span>;
@@ -1101,7 +1101,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 <li>修改<code>raise_intr()</code>中的代码, 让处理器进入关中断状态:</li>
 </ul>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ky4f1olmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ky4f1olmngiym5"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7ana5zlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-7ana5zlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">raise_intr</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> NO, <span class="hljs-type">vaddr_t</span> ret_addr)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">/* <span class="hljs-doctag">TODO:</span> Trigger an interrupt/exception with ``NO''.</span>
 <span class="hljs-comment">   * That is, use ``NO'' to index the IDT.</span>
@@ -1149,7 +1149,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 </blockquote>
 <p>这三条也是照着做即可。</p>
 <p>最后讲义中没提到的，是在<code>__am_irq_handle</code>中注册<code>_EVENT_IRQ_TIMER</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-znfysjlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-znfysjlmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> <span class="hljs-number">32</span>:
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9fjz5nlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-9fjz5nlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">case</span> <span class="hljs-number">32</span>:
   ev.event = _EVENT_IRQ_TIMER;
   <span class="hljs-keyword">break</span>;</code></pre></div></div>
 <p>可以看到每隔一段时间都触发一次时钟中断事件。</p>
@@ -1165,7 +1165,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 就变成slider和hello程序分时运行. 如果你没有实现Navy-apps之上的AM,
 可以加载3份仙剑奇侠传, 让它们分别读取不同的存档进行游戏.</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m6m8r4lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-m6m8r4lmngiym5"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (key &amp; <span class="hljs-number">0x8000</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5dsx5llmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-5dsx5llmrc2t9n"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (key &amp; <span class="hljs-number">0x8000</span>)
 {
   <span class="hljs-comment">//0x8002 to 0x8004 are F1 to F3</span>
   <span class="hljs-keyword">if</span> (key&gt;=<span class="hljs-number">0x8002</span>&amp;&amp;key&lt;=<span class="hljs-number">0x8004</span>) <span class="hljs-built_in">change_gcb</span>(key<span class="hljs-number">-0x8001</span>);
@@ -1177,10 +1177,10 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 <figcaption aria-hidden="true">image-20230531192942805</figcaption>
 </figure>
 <p><code>change_gcb</code>需要添加外部引用。在<code>proc.c</code>定义:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0vxxrrlmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-0vxxrrlmngiym5"><pre><code class="hljs C++"><span class="hljs-type">uint32_t</span> fg_pcb;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-09nq74lmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-09nq74lmrc2t9n"><pre><code class="hljs C++"><span class="hljs-type">uint32_t</span> fg_pcb;
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">change_gcb</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> id)</span> </span>{ fg_pcb = id; }</code></pre></div></div>
 <p>修改<code>schedule</code>:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c03jz0lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-c03jz0lmngiym5"><pre><code class="hljs C++"><span class="hljs-type">uint32_t</span> now_id = <span class="hljs-number">0</span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9v3nqklmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-9v3nqklmrc2t9n"><pre><code class="hljs C++"><span class="hljs-type">uint32_t</span> now_id = <span class="hljs-number">0</span>;
 <span class="hljs-function">_Context *<span class="hljs-title">schedule</span><span class="hljs-params">(_Context *prev)</span></span>
 <span class="hljs-function"></span>{
   <span class="hljs-comment">// save the context pointer</span>
@@ -1226,7 +1226,7 @@ break超过<code>max_brk</code>部分的虚拟地址空间分配物理页.</p>
 <p>观察<code>nexus-am/am/src/x86/nemu/boot/loader.ld</code>这个链接脚本可以发现，其中定义了一个符号<code>_stack_pointer</code></p>
 <p>而根据AM启动客户程序的流程可知，在<code>nexus-am/am/src/x86/nemu/boot/start.S</code>中的<code>_start:</code>中将会执行<code>mov $_stack_pointer, %esp</code>，以此初始化栈指针。又注意到<code>_stack_top</code>符号的地址与之相差<code>0x8000</code>，因此可以回答AM中程序的栈空间大小为<code>0x8000</code>字节。</p>
 <p>当然在在本次实验中也可以查看PCB的结构:</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ccdv69lmngiym5"></i><span>C++</span><div class="collapse show" id="collapse-ccdv69lmngiym5"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> STACK_SIZE (8 * PGSIZE)</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-57t9lwlmrc2t9n"></i><span>C++</span><div class="collapse show" id="collapse-57t9lwlmrc2t9n"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> STACK_SIZE (8 * PGSIZE)</span>
 
 <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">union</span> {
   <span class="hljs-type">uint8_t</span> stack[STACK_SIZE] PG_ALIGN;

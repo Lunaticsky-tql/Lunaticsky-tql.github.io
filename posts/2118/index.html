@@ -340,14 +340,14 @@ Go 代码提供了一些技巧。它是对 <a target="_blank" rel="noopener" hre
 程序（也可用 <code>go fmt</code>，它以包为处理对象而非源文件）将 Go
 程序按照标准风格缩进、 对齐，保留注释并在需要时重新格式化。</p>
 <h3 id="注释">注释</h3>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g471hylmngiym3"></i><span>go</span><div class="collapse show" id="collapse-g471hylmngiym3"><pre><code class="hljs go">Good code has lots of comments, bad code requires lots of comments
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kxhdzhlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-kxhdzhlmrc2t9l"><pre><code class="hljs go">Good code has lots of comments, bad code requires lots of comments
 好的代码有很多注释，坏代码需要很多注释 
          ---Dave Thomas and Andrew Hunt</code></pre></div></div>
 <ul>
 <li><p>注释需要解释代码实现的原因。</p>
 <p>适合解释代码的外部因素</p>
 <p>提供额外上下文</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2b3kfilmngiym3"></i><span>go</span><div class="collapse show" id="collapse-2b3kfilmngiym3"><pre><code class="hljs go"><span class="hljs-keyword">switch</span> resp.StatusCode {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tzgi0glmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-tzgi0glmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">switch</span> resp.StatusCode {
 <span class="hljs-comment">// ...</span>
 <span class="hljs-keyword">case</span> <span class="hljs-number">307</span>, <span class="hljs-number">308</span>:
 redirectMethod = reqMethod
@@ -366,14 +366,14 @@ redirectMethod = reqMethod
 <li><p>公共符号始终要注释。对于公共符号都需要有注释说明</p></li>
 <li><p>注释最好是<strong>完整的句子</strong>，这样它才能适应各种自动化的展示。</p>
 <p>第一句应当以<strong>被声明的东西开头</strong>，并且是<strong>单句的摘要</strong>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u3pd0tlmngiym3"></i><span>go</span><div class="collapse show" id="collapse-u3pd0tlmngiym3"><pre><code class="hljs go"><span class="hljs-comment">// Compile parses a regular expression and returns, if successful,</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3qdeoqlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-3qdeoqlmrc2t9l"><pre><code class="hljs go"><span class="hljs-comment">// Compile parses a regular expression and returns, if successful,</span>
 <span class="hljs-comment">// a Regexp that can be used to match against text.</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Compile</span><span class="hljs-params">(str <span class="hljs-type">string</span>)</span></span> (*Regexp, <span class="hljs-type">error</span>) {</code></pre></div></div>
 <p>若注释总是以名称开头，<code>go doc</code> 命令的输出就能通过
 <strong>grep</strong> 变得更加有用。假如你记不住 Compile
 这个名称，而又在找正则表达式的解析函数（”解析”意味着关键词为
 parse），那就可以运行</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z2ysk9lmngiym3"></i><span>shell</span><div class="collapse show" id="collapse-z2ysk9lmngiym3"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">go doc -all regexp | grep -i parse</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mb9xfmlmrc2t9l"></i><span>shell</span><div class="collapse show" id="collapse-mb9xfmlmrc2t9l"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">go doc -all regexp | grep -i parse</span></code></pre></div></div>
 <p>快速查找。</p></li>
 </ul>
 <h3 id="命名">命名</h3>
@@ -442,7 +442,7 @@ Go 中的构造函数）一般会称之为 <code>NewRing</code>，但由于 Ring
 <p>简单错误指仅出现一次的错误，且在其他地方不需要捕获该错误</p>
 <p>优先使用 errors.New 创建匿名变量来直接表示简单错误</p>
 <p>如果有格式化的需求，使用<code>fmt.Error</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t60i0dlmngiym3"></i><span>go</span><div class="collapse show" id="collapse-t60i0dlmngiym3"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultCheckRedirect</span><span class="hljs-params">(req *Request, via []*Request)</span></span> <span class="hljs-type">error</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9ea88glmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-9ea88glmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultCheckRedirect</span><span class="hljs-params">(req *Request, via []*Request)</span></span> <span class="hljs-type">error</span> {
 	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(via) &gt;= <span class="hljs-number">10</span> {
 		<span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">"stopped after 10 redirects"</span>)
 	}
@@ -452,7 +452,7 @@ Go 中的构造函数）一般会称之为 <code>NewRing</code>，但由于 Ring
 <p>将一个 error 嵌套进另一个 error 中，从而生成一个 error 的跟踪链</p>
 <p>从 Go1.13 后，可以在 <code>fmt.Errorf</code> 中使用 <code>%w</code>
 关键字来将一个错误 wrap 至其错误链中</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ajbokelmngiym3"></i><span>go</span><div class="collapse show" id="collapse-ajbokelmngiym3"><pre><code class="hljs go">list, _, err := c.GetBytes(cache.Subkey(a.actionID, <span class="hljs-string">"srcfiles"</span>))
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pvaddhlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-pvaddhlmrc2t9l"><pre><code class="hljs go">list, _, err := c.GetBytes(cache.Subkey(a.actionID, <span class="hljs-string">"srcfiles"</span>))
 <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 	<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">"reading srcfiles list: %w"</span>, err)
 }</code></pre></div></div>
@@ -461,7 +461,7 @@ Go 中的构造函数）一般会称之为 <code>NewRing</code>，但由于 Ring
 <li>使用 <code>errors.Is</code>
 可以判定错误链上的所有错误是否含有特定的错误</li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lb37hnlmngiym3"></i><span>go</span><div class="collapse show" id="collapse-lb37hnlmngiym3"><pre><code class="hljs go">data, err = lockedfile.Read(targ)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4o8y3klmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-4o8y3klmrc2t9l"><pre><code class="hljs go">data, err = lockedfile.Read(targ)
 <span class="hljs-keyword">if</span> errors.Is(err, fs.ErrNotExist) {
 <span class="hljs-comment">// Treat non-existent as empty, to bootstrap the "latest" file</span>
 <span class="hljs-comment">// the first time we connect to a given database.</span>
@@ -470,7 +470,7 @@ Go 中的构造函数）一般会称之为 <code>NewRing</code>，但由于 Ring
 <ul>
 <li>在错误链上获取特定种类的错误，使用 <code>errors.As</code></li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zxdpzylmngiym3"></i><span>go</span><div class="collapse show" id="collapse-zxdpzylmngiym3"><pre><code class="hljs go"><span class="hljs-keyword">if</span> _, err := os.Open(<span class="hljs-string">"non-existing"</span>); err != <span class="hljs-literal">nil</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sfpj99lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-sfpj99lmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">if</span> _, err := os.Open(<span class="hljs-string">"non-existing"</span>); err != <span class="hljs-literal">nil</span> {
 		<span class="hljs-keyword">var</span> pathError *fs.PathError
 		<span class="hljs-keyword">if</span> errors.As(err, &amp;pathError) {
 			fmt.Println(<span class="hljs-string">"Failed at path:"</span>, pathError.Path)
