@@ -269,16 +269,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/设计模式之美-面向对象/设计模式之美-面向对象.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -381,7 +371,7 @@ RedisConstants、FileUtils，而不是定义一个大而全的 Constants 类、U
 </blockquote>
 <p>同时，纯虚函数是可以提供具体实现的，并且用于替代简朴的非纯虚函数，提供更平常更安全的缺省实现。</p>
 <p>用非纯虚函数提供缺省的默认实现：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ctwmjllmrc2t9o"></i><span>cpp</span><div class="collapse show" id="collapse-ctwmjllmrc2t9o"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xyxl91lmrh9u6a"></i><span>cpp</span><div class="collapse show" id="collapse-xyxl91lmrh9u6a"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Fly</span><span class="hljs-params">()</span> </span>{
         <span class="hljs-comment">// 缺省实现</span>
@@ -391,7 +381,7 @@ RedisConstants、FileUtils，而不是定义一个大而全的 Constants 类、U
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Model</span> : <span class="hljs-keyword">public</span> Airplane { ... };</code></pre></div></div>
 <p>这是最简朴的做法，但是这样做会带来的问题是，由于不强制对虚函数的覆写，在定义新的派生类时可能会忘记进行覆写，导致错误地使用了缺省实现。</p>
 <p>使用纯虚函数并提供默认实现：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hq680klmrc2t9o"></i><span>C++</span><div class="collapse show" id="collapse-hq680klmrc2t9o"><pre><code class="hljs C++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ziqhktlmrh9u6a"></i><span>C++</span><div class="collapse show" id="collapse-ziqhktlmrh9u6a"><pre><code class="hljs C++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Fly</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
 };
@@ -434,7 +424,7 @@ RedisConstants、FileUtils，而不是定义一个大而全的 Constants 类、U
 </summary>
 <p>假设我们的系统中有很多涉及图片处理和存储的业务逻辑。图片经过处理之后被上传到阿里云上。为了代码复用，我们封装了图片存储相关的代码逻辑，提供了一个统一的
 AliyunImageStore 类，供整个系统来使用。具体的代码实现如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8rxr1almrc2t9o"></i><span>java</span><div class="collapse show" id="collapse-8rxr1almrc2t9o"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AliyunImageStore</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lygvkblmrh9u6a"></i><span>java</span><div class="collapse show" id="collapse-lygvkblmrh9u6a"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AliyunImageStore</span> {
   <span class="hljs-comment">//...省略属性、构造函数等...</span>
   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createBucketIfNotExisting</span><span class="hljs-params">(String bucketName)</span> {
     <span class="hljs-comment">// ...创建bucket代码逻辑...</span>
@@ -472,7 +462,7 @@ access token，而私有云不需要 access
 token。代码中用到了generateAccessToken()
 方法，如果要改为私有云的上传下载流程，这些代码都需要做调整。</p>
 <p>我们可以这样重构：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v3ks1glmrc2t9o"></i><span>java</span><div class="collapse show" id="collapse-v3ks1glmrc2t9o"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImageStore</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7wn551lmrh9u6a"></i><span>java</span><div class="collapse show" id="collapse-7wn551lmrh9u6a"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImageStore</span> {
   String <span class="hljs-title function_">upload</span><span class="hljs-params">(Image image, String bucketName)</span>;
   Image <span class="hljs-title function_">download</span><span class="hljs-params">(String url)</span>;
 }
@@ -556,7 +546,7 @@ AbstractFlyableBird 和不会飞的鸟类 AbstractUnFlyableBird？</p>
 <p>针对“会飞”这样一个行为特性，我们可以定义一个 Flyable
 接口，只让会飞的鸟去实现这个接口。对于会叫、会下蛋这些行为特性，我们可以类似地定义
 Tweetable 接口、EggLayable 接口。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j8d9c6lmrc2t9o"></i><span>java</span><div class="collapse show" id="collapse-j8d9c6lmrc2t9o"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-szjq9llmrh9u6a"></i><span>java</span><div class="collapse show" id="collapse-szjq9llmrh9u6a"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
   <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>;
 }
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Tweetable</span> {
@@ -588,7 +578,7 @@ layEgg()
 FlyAbility 类、实现了 tweet() 方法的 TweetAbility 类、实现了 layEgg()
 方法的 EggLayAbility
 类。然后，通过组合和委托技术来消除代码重复。具体的代码实现如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yvpe8ilmrc2t9o"></i><span>java</span><div class="collapse show" id="collapse-yvpe8ilmrc2t9o"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yjzad3lmrh9u6a"></i><span>java</span><div class="collapse show" id="collapse-yjzad3lmrh9u6a"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Flyable</span> {
   <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>；
 }
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FlyAbility</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Flyable</span> {

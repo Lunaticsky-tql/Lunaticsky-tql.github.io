@@ -28,7 +28,7 @@
 <meta property="article:published_time" content="2023-09-18T14:22:08.000Z">
 <meta property="article:modified_time" content="2023-09-18T14:22:08.000Z">
 <meta property="article:author" content="Lunatic sky">
-<meta property="article:tag" content="C++">
+<meta property="article:tag" content="EffectiveC++">
 <meta name="twitter:card" content="summary_large_image">
     
     
@@ -266,16 +266,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Effective C++ - Item1-4 - 让自己习惯C++/Effective C++ - Item1-4 - 让自己习惯C++.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -333,25 +323,25 @@ C：区块，语句，预处理器，内置数据类型，数组，指针。</li
 const, enum, inline 替换 #define</h3>
 <p>在原书写成时 C++11
 中的<code>constexpr</code>还未诞生，现在一般认为应当用<code>constexpr</code>定义编译期常量来替代大部分的<code>#define</code>宏常量定义：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9tzki8lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-9tzki8lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> ASPECT_RATIO 1.653</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l70v3xlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-l70v3xlmso36dk"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> ASPECT_RATIO 1.653</span></code></pre></div></div>
 <p>替代为：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yqtfkrlmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-yqtfkrlmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> aspect_ratio = <span class="hljs-number">1.653</span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-84f9wblmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-84f9wblmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> aspect_ratio = <span class="hljs-number">1.653</span>;</code></pre></div></div>
 <p>我们也可以将编译期常量定义为类的静态成员：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-enthp6lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-enthp6lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GamePlayer</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ky0ieslmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-ky0ieslmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GamePlayer</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-type">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> numTurns = <span class="hljs-number">5</span>;
 };</code></pre></div></div>
 <p><code>enum</code>可以用于替代整型的常量，并且在模板元编程中应用广泛（见条款
 48）：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-63ue3clmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-63ue3clmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GamePlayer</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o1tfsmlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-o1tfsmlmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GamePlayer</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-keyword">enum</span> { numTurns = <span class="hljs-number">5</span> };
 };</code></pre></div></div>
 <p>大部分<code>#define</code>宏常量应当用内联模板函数替代：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j20k4elmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-j20k4elmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> CALL_WITH_MAX(a, b) f((a) &gt; (b) ? (a) : (b))</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q989rulmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-q989rulmso36dk"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> CALL_WITH_MAX(a, b) f((a) &gt; (b) ? (a) : (b))</span></code></pre></div></div>
 <blockquote>
 <p>或许你认为加了括号就能避免误用。并不是。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-240j8olmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-240j8olmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-type">int</span> a =<span class="hljs-number">5</span>,b <span class="hljs-number">0</span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1rp6xnlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-1rp6xnlmso36dk"><pre><code class="hljs cpp"><span class="hljs-type">int</span> a =<span class="hljs-number">5</span>,b <span class="hljs-number">0</span>;
 
 <span class="hljs-function">CALL WITH <span class="hljs-title">MAX</span> <span class="hljs-params">(++a,b)</span></span>;   <span class="hljs-comment">//a被累加二次 </span>
 
@@ -359,14 +349,14 @@ const, enum, inline 替换 #define</h3>
 </code></pre></div></div>
 </blockquote>
 <p>上面的宏可以用内联模版替代为：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fz1rk5lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-fz1rk5lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zz5xfqlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-zz5xfqlmso36dk"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span>
 <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">CallWithMax</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; a, <span class="hljs-type">const</span> T&amp; b)</span> </span>{
     <span class="hljs-built_in">f</span>(a &gt; b ? a : b);
 }</code></pre></div></div>
 <p>需要注意的是，宏和函数的行为本身并不完全一致，<strong>宏只是简单的替换</strong>，并不涉及传参和复制。</p>
 <h3 id="条款-3尽可能使用-const">条款 3：尽可能使用 const</h3>
 <p>若你想让一个常量只读，那你应该明确说出它是const常量，对于指针来说，更是如此：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wqjzuflmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-wqjzuflmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-type">char</span> greeting[] = <span class="hljs-string">"Hello"</span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8zqudzlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-8zqudzlmso36dk"><pre><code class="hljs cpp"><span class="hljs-type">char</span> greeting[] = <span class="hljs-string">"Hello"</span>;
 <span class="hljs-type">char</span>* p = greeting;                <span class="hljs-comment">// 指针可修改，数据可修改</span>
 <span class="hljs-type">const</span> <span class="hljs-type">char</span>* p = greeting;          <span class="hljs-comment">// 指针可修改，数据不可修改</span>
 <span class="hljs-type">char</span> <span class="hljs-type">const</span>* p = greeting;          <span class="hljs-comment">// 指针可修改，数据不可修改</span>
@@ -377,16 +367,16 @@ const, enum, inline 替换 #define</h3>
 </blockquote>
 <p>对于 STL
 迭代器，分清使用<code>const</code>还是<code>const_iterator</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eio5lnlmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-eio5lnlmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-type">const</span> std::vector&lt;<span class="hljs-type">int</span>&gt;::iterator iter = vec.<span class="hljs-built_in">begin</span>();    <span class="hljs-comment">// 迭代器不可修改，数据可修改</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qaov3mlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-qaov3mlmso36dk"><pre><code class="hljs cpp"><span class="hljs-type">const</span> std::vector&lt;<span class="hljs-type">int</span>&gt;::iterator iter = vec.<span class="hljs-built_in">begin</span>();    <span class="hljs-comment">// 迭代器不可修改，数据可修改</span>
 std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator iter = vec.<span class="hljs-built_in">begin</span>();    <span class="hljs-comment">// 迭代器可修改，数据不可修改</span></code></pre></div></div>
 <p>面对函数声明时，如果你不想让一个函数的结果被无意义地当作左值，请使用const返回值：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bomft5lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-bomft5lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-type">const</span> Rational <span class="hljs-keyword">operator</span>*(<span class="hljs-type">const</span> Rational&amp; lhs, <span class="hljs-type">const</span> Rational&amp; rhs);</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-854y8glmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-854y8glmso36dk"><pre><code class="hljs cpp"><span class="hljs-type">const</span> Rational <span class="hljs-keyword">operator</span>*(<span class="hljs-type">const</span> Rational&amp; lhs, <span class="hljs-type">const</span> Rational&amp; rhs);</code></pre></div></div>
 <blockquote>
 <p><code>if (a*b=c)... //喔欧,其实是想做一个比较(comparison)动作!</code></p>
 </blockquote>
 <p><strong>const成员函数：</strong></p>
 <p>const成员函数允许我们操控const对象，这在传递常引用时显得尤为重要：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-omqavplmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-omqavplmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextBlock</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jp4fk1lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-jp4fk1lmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextBlock</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-type">const</span> <span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](std::<span class="hljs-type">size_t</span> position) <span class="hljs-type">const</span> {    <span class="hljs-comment">// const对象使用的重载</span>
         <span class="hljs-keyword">return</span> text[position];
@@ -400,7 +390,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator iter = vec
     std::string text;
 };</code></pre></div></div>
 <p>这样，const和non-const对象都有其各自的重载版本：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ja05c4lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-ja05c4lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Print</span><span class="hljs-params">(<span class="hljs-type">const</span> Textblock&amp; ctb)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3ir97wlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-3ir97wlmso36dk"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Print</span><span class="hljs-params">(<span class="hljs-type">const</span> Textblock&amp; ctb)</span> </span>{
     std::cout &lt;&lt; ctb[<span class="hljs-number">0</span>];            <span class="hljs-comment">// 调用 const     TextBlock::operator[]</span>
 }</code></pre></div></div>
 <p>编译器对待<code>const</code>对象的态度通常是
@@ -410,7 +400,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator iter = vec
 <p><code>bitwise constness</code>是指，成员函数不改变任何成员变量，这也是C++编译器对常量性的定义。</p>
 <p><code>logical constness</code>是指从对象功能上看，<code>const</code>成员函数可以修改它所处对象的一些bits，但对象本身它对外不应该表现出可变性。</p>
 <p>两者不等同。如下例：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ohjvw9lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-ohjvw9lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CTextBlock</span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zj39kdlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-zj39kdlmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CTextBlock</span>{
 <span class="hljs-keyword">public</span>:
     ...
     <span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](std::size t position) <span class="hljs-type">const</span>{
@@ -422,7 +412,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator iter = vec
 <p>显然<code>operator[]</code>实现代码并不更改<code>pText</code>，但在外部可以经由<code>pText</code>改变对象内数组的内容。这是<code>bitwise constness</code>的但不是<code>logical constness</code>。</p>
 </blockquote>
 <p>这就意味着，在确保客户端不会察觉的情况下，我们认为<code>const</code>对象中的某些成员变量应当是允许被改变的，使用关键字<code>mutable</code>来标记这些成员变量：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qxp1julmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-qxp1julmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CTextBlock</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-waknd7lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-waknd7lmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CTextBlock</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function">std::<span class="hljs-type">size_t</span> <span class="hljs-title">Length</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
 
@@ -440,7 +430,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator iter = vec
     <span class="hljs-keyword">return</span> textLength;
 }</code></pre></div></div>
 <p>在重载<code>const</code>和<code>non-const</code>成员函数时，需要尽可能避免书写重复的内容，这促使我们去进行常量性转除。在大部分情况下，我们应当避免转型的出现，但在此处为了减少重复代码，转型是适当的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xg9gpalmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-xg9gpalmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextBlock</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2s5o7mlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-2s5o7mlmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextBlock</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-type">const</span> <span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](std::<span class="hljs-type">size_t</span> position) <span class="hljs-type">const</span> {
 
@@ -463,27 +453,27 @@ std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator iter = vec
 4：确定对象在使用前已被初始化</h3>
 <p>无初值对象在 C/C++
 中广泛存在，因此这一条款就尤为重要。在定义完一个对象后需要尽快为它赋初值：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tzn61ulmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-tzn61ulmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4rhb0ylmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-4rhb0ylmso36dk"><pre><code class="hljs cpp"><span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;
 <span class="hljs-type">const</span> <span class="hljs-type">char</span>* text = <span class="hljs-string">"A C-style string"</span>;
 
 <span class="hljs-type">double</span> d;
 std::cin &gt;&gt; d;</code></pre></div></div>
 <p>对于类中的成员变量而言，我们有两种建议的方法完成初始化工作，一种是直接在定义处赋初值（since
 C++11）：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4z4ogllmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-4z4ogllmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CTextBlock</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-in7yvwlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-in7yvwlmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CTextBlock</span> {
 <span class="hljs-keyword">private</span>:
     std::<span class="hljs-type">size_t</span> textLength{ <span class="hljs-number">0</span> };
     <span class="hljs-type">bool</span> lengthIsValid{ <span class="hljs-literal">false</span> };
 };</code></pre></div></div>
 <p>另一种是使用构造函数成员初始化列表：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9bwwk0lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-9bwwk0lmrc2t9l"><pre><code class="hljs cpp">ABEntry::<span class="hljs-built_in">ABEntry</span>(<span class="hljs-type">const</span> std::string&amp; name, <span class="hljs-type">const</span> std::string&amp; address,
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r9fp9slmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-r9fp9slmso36dk"><pre><code class="hljs cpp">ABEntry::<span class="hljs-built_in">ABEntry</span>(<span class="hljs-type">const</span> std::string&amp; name, <span class="hljs-type">const</span> std::string&amp; address,
                  <span class="hljs-type">const</span> std::list&lt;PhoneNumber&gt;&amp; phones)
     : <span class="hljs-built_in">theName</span>(name),
       <span class="hljs-built_in">theAddress</span>(address),
       <span class="hljs-built_in">thePhones</span>(phones),
       <span class="hljs-built_in">numTimesConsulted</span>(<span class="hljs-number">0</span>) {}</code></pre></div></div>
 <p>成员初始化列表也可以留空用来执行默认构造函数：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g9pwkslmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-g9pwkslmrc2t9l"><pre><code class="hljs cpp">ABEntry::<span class="hljs-built_in">ABEntry</span>()
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vzne4nlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-vzne4nlmso36dk"><pre><code class="hljs cpp">ABEntry::<span class="hljs-built_in">ABEntry</span>()
     : <span class="hljs-built_in">theName</span>(),
       <span class="hljs-built_in">theAddress</span>(),
       <span class="hljs-built_in">thePhones</span>(),
@@ -495,7 +485,7 @@ C++11）：</p>
 <p><strong>静态对象的初始化：</strong></p>
 <p>C++
 对于定义于不同编译单元内的全局静态对象的初始化相对次序并无明确定义，因此，以下代码可能会出现使用未初始化静态对象的情况：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t9cv3klmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-t9cv3klmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-comment">// File 1 ：你作为作者，写了一个FileSystem工具库供其他人使用</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p0nmfhlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-p0nmfhlmso36dk"><pre><code class="hljs cpp"><span class="hljs-comment">// File 1 ：你作为作者，写了一个FileSystem工具库供其他人使用</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileSystem</span>{
 <span class="hljs-keyword">public</span>:
 		std:<span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">numDisks</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
@@ -519,7 +509,7 @@ singleton</strong>，将全局静态对象转化为局部静态对象：</p>
 <blockquote>
 <p>Meyers就是这本书的作者。这是它首创的(笑</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5kw25flmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-5kw25flmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-comment">// File 1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4zlnm8lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-4zlnm8lmso36dk"><pre><code class="hljs cpp"><span class="hljs-comment">// File 1</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileSystem</span>{ ... }   <span class="hljs-comment">//和前面一样</span>
 
 <span class="hljs-function">FileSystem&amp; <span class="hljs-title">tfs</span><span class="hljs-params">()</span> </span>{
@@ -543,7 +533,7 @@ singleton</strong>，将全局静态对象转化为局部静态对象：</p>
 保证，函数内的局部静态对象会在<strong>该函数被调用期间</strong>，<strong>首次遇上该对象之定义式</strong>时被初始化，也就是说顺便还实现了懒加载。也即不用这个函数，它之中的局部静态对象便不会被初始化。</p>
 <blockquote>
 <p>根据<a target="_blank" rel="noopener" href="https://laristra.github.io/flecsi/src/developer-guide/patterns/meyers_singleton.html">这篇文章</a>，我们还可以对这种单例进行一下封装。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k9resklmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-k9resklmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hxkku2lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-hxkku2lmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> Singleton&amp; <span class="hljs-title">getInstance</span><span class="hljs-params">()</span> </span>{
         <span class="hljs-type">static</span> Singleton instance; <span class="hljs-comment">// 静态局部变量，在首次访问时初始化</span>
@@ -571,7 +561,7 @@ singleton方法创建线程安全的静态单例。</p>
 <li><p>如果初始化过程中发生了对初始化的递归调用，则视为未定义行为。</p></li>
 </ol>
 <p>关于第四点，怎么会有人写这样的代码。。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-53rebolmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-53rebolmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bar</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nm7t6klmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-nm7t6klmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bar</span>
 {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> Bar *<span class="hljs-title">getInstance</span><span class="hljs-params">()</span></span>
@@ -619,7 +609,7 @@ singleton方法创建线程安全的静态单例。</p>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/C/">#C++</a>
+        <a href="/tags/EffectiveC/">#EffectiveC++</a>
       
     </div>
   

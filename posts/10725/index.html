@@ -304,16 +304,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/深入浅出Docker应用-Docker容器镜像/深入浅出Docker应用-Docker容器镜像.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -357,7 +347,7 @@
 <li>实验资源准备</li>
 </ol>
 <p>通过<code>docker pull</code>可以实现镜像的下载，通过<code>docker images</code>可以显示。此处我们下载一个新的镜像<code>debian</code>来进行测试相关的操作。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hmhyunlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-hmhyunlmrc2t9n"><pre><code class="hljs shell">docker pull debian
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8m8zq6lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-8m8zq6lmrh9u69"><pre><code class="hljs shell">docker pull debian
 docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115336118310_589_image-20230905111740289.png" srcset="/img/loading.gif" lazyload alt="image-20230905111740289">
@@ -368,7 +358,7 @@ docker images</code></pre></div></div>
 </ol>
 <p>对于已经保存在本地的镜像，我们可以使用<code>docker inspect</code>命令来查看镜像的详细信息，其用法为<code>docker inspect</code>
 镜像名，接下来我们来查看<code>debian</code>镜像的属性。会发现<code>docker inspect</code>命令会输出大量JSON格式的镜像详细信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8vu7h7lmrc2t9n"></i><span>ebnf</span><div class="collapse show" id="collapse-8vu7h7lmrc2t9n"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker inspect debian</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l0azgglmrh9u69"></i><span>ebnf</span><div class="collapse show" id="collapse-l0azgglmrh9u69"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker inspect debian</span></code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115340457256_880_image-20230905111840241.png" srcset="/img/loading.gif" lazyload alt="image-20230905111840241">
 <figcaption aria-hidden="true">image-20230905111840241</figcaption>
@@ -377,7 +367,7 @@ docker images</code></pre></div></div>
 <li>镜像的删除</li>
 </ol>
 <p>当镜像下载之后，我们可以通过<code>docker rmi</code>命令进行删除。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g6e6c8lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-g6e6c8lmrc2t9n"><pre><code class="hljs shell">docker run -itd --name debian-3 debian
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2hccc8lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-2hccc8lmrh9u69"><pre><code class="hljs shell">docker run -itd --name debian-3 debian
 docker rm -f debian-3
 docker images</code></pre></div></div>
 <figure>
@@ -385,7 +375,7 @@ docker images</code></pre></div></div>
 <figcaption aria-hidden="true">image-20230905112209925</figcaption>
 </figure>
 <p>要注意的是<code>docker rmi</code>无法删除已经创建了容器的镜像，如果需要删除需要先停止相关的容器，并添加<code>--force</code>参数。接下来我们再来测试通过镜像创建容器，然后在删除容器之后删除<code>debian</code>镜像。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p0ou5ulmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-p0ou5ulmrc2t9n"><pre><code class="hljs shell">docker rmi --force debian
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-alqryulmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-alqryulmrh9u69"><pre><code class="hljs shell">docker rmi --force debian
 docker images`</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115349316003_313_image-20230905112249614.png" srcset="/img/loading.gif" lazyload alt="image-20230905112249614">
@@ -398,7 +388,7 @@ docker images`</code></pre></div></div>
 </ol>
 <p>首先我们可以通过<code>docker save</code>命令可以将docker内部的一个或多个镜像导出成文件。下面的命令中我们先下载nginx，hello-world两个镜像，然后再将镜像导出到<code>images.tar</code>文件中。docker
 save的格式为：<code>docker save -o [导出文件名] [需要导出的镜像列表]...</code></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ay8860lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-ay8860lmrc2t9n"><pre><code class="hljs shell">docker pull hello-world
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3s9x8xlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-3s9x8xlmrh9u69"><pre><code class="hljs shell">docker pull hello-world
 docker pull nginx
 docker save -o images.tar nginx hello-world 
 ll images.tar</code></pre></div></div>
@@ -410,7 +400,7 @@ ll images.tar</code></pre></div></div>
 <li>删除已有镜像</li>
 </ol>
 <p>上一步已经将nginx，hello-world两个镜像保存到文件images.tar。接下面我们将现有的两个镜像从docker内部删除。为后面的镜像读取做准备。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6mb3wnlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-6mb3wnlmrc2t9n"><pre><code class="hljs shell">docker rmi hello-world
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zremdilmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-zremdilmrh9u69"><pre><code class="hljs shell">docker rmi hello-world
 docker rmi nginx
 docker images</code></pre></div></div>
 <ol start="3" type="1">
@@ -418,7 +408,7 @@ docker images</code></pre></div></div>
 </ol>
 <p>接下来我们通过<code>docker load</code>命令将<code>images.tar</code>中的两个镜像导入回docker内部。即可实现在没有网络访问的情况更新镜像。<code>docker load</code>的格式为：<code>docker load -i [导入文件名]</code>。要注意的是：如果docker内部已经存在了相关的镜像，文件中的镜像会被忽略。</p>
 <p>在镜像导入完毕之后，我们可以通过<code>docker image</code>进行验证。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dgtqj5lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-dgtqj5lmrc2t9n"><pre><code class="hljs shell">docker load -i images.tar
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aq7uh7lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-aq7uh7lmrh9u69"><pre><code class="hljs shell">docker load -i images.tar
 docker images</code></pre></div></div>
 <h3 id="容器快照的导出和导入">容器快照的导出和导入</h3>
 <p>上一个小节我们学习了通过<code>docker save</code>和<code>docker load</code>的方法实现docker内部的镜像保存和加载。在docker中我们除了可以对镜像进行保存和加载，还可以对已经已经创建的容器进行保存和加载。接下来我们就来带领大家学习相关的命令。</p>
@@ -428,7 +418,7 @@ docker images</code></pre></div></div>
 <p>首先我们创建一个容器<code>python-1</code>，然后在<code>python-1</code>创建一个文本文件。此处我们可以使用<code>docker exec bash -c</code>
 "命令行"
 方式直接在宿主机执行命令。我们通过<code>echo</code>命令在容器中创建名为<code>snapshot.txt</code>的文件。在创建之后再使用<code>cat</code>命令验证容器中的文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wa3yltlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-wa3yltlmrc2t9n"><pre><code class="hljs shell">docker run -itd --name python-1 python
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dm8l5rlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-dm8l5rlmrh9u69"><pre><code class="hljs shell">docker run -itd --name python-1 python
 docker exec python-1 bash -c "echo snapshot &gt; snapshot.txt"
 docker exec python-1 bash -c "cat snapshot.txt"`</code></pre></div></div>
 <figure>
@@ -439,7 +429,7 @@ docker exec python-1 bash -c "cat snapshot.txt"`</code></pre></div></div>
 <li>容器快照的导出</li>
 </ol>
 <p>当容器文件修改之后，我们可以通过<code>docker export</code>命令将容器以快照的形式导出到文件。其命令的格式为<code>docker export 容器名 &gt; 快照文件名</code>。和镜像导出不同，快照的导出，会将容器的镜像，和容器在镜像之上的修改部分同时导出。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v0czhvlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-v0czhvlmrc2t9n"><pre><code class="hljs shell">docker export python-1 &gt; python-snapshot.tar
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9ran6jlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-9ran6jlmrh9u69"><pre><code class="hljs shell">docker export python-1 &gt; python-snapshot.tar
 ll python-snapshot.tar</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115614943354_328_image-20230905114017315.png" srcset="/img/loading.gif" lazyload alt="image-20230905114017315">
@@ -450,9 +440,9 @@ ll python-snapshot.tar</code></pre></div></div>
 </ol>
 <p>对于通过<code>docker export</code>导出的容器快照文件。我们可以通过<code>docker import</code>命令将其导入到docker中，在这里需要特别注意的是：<code>docker import</code>是以镜像而不是容器的形式导入快照。也就是说导入的快照并不能直接运行，而是需要根据此快照镜像再次创建容器才可以使用。docker
 import命令的格式为docker import 快照文件 导入镜像名称:版本号</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ax22mulmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-ax22mulmrc2t9n"><pre><code class="hljs shell">docker import python-snapshot.tar python-snapshot:latest</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tqpphhlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-tqpphhlmrh9u69"><pre><code class="hljs shell">docker import python-snapshot.tar python-snapshot:latest</code></pre></div></div>
 <p>快照导入后，我们可以利用导入的快照镜像创造一个新的容器。并验证通过快照创建的容器中包含着之前容器中创建的文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-px12v7lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-px12v7lmrc2t9n"><pre><code class="hljs shell">docker run -itd --name snapshot python-snapshot /bin/bash
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bdhsq3lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-bdhsq3lmrh9u69"><pre><code class="hljs shell">docker run -itd --name snapshot python-snapshot /bin/bash
 docker exec snapshot cat snapshot.txt</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115620362425_973_image-20230905114307524.png" srcset="/img/loading.gif" lazyload alt="image-20230905114307524">
@@ -467,7 +457,7 @@ docker exec snapshot cat snapshot.txt</code></pre></div></div>
 <p>在使用<code>-f</code>参数时其语法为<code>docker inspect -f "模板字符串" 镜像名</code>，其中模板字符串为go语言的模板语法，在后面的实验中我们会详细讲解。在本次实验中我们要求docker
 inspect输出JSON格式的结果，为了便于显示，我们在参数后面再加入<code>| jq</code>，将docker
 inspect的输出结果交给<code>jq</code>命令进行格式化和美化。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xb3j7nlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-xb3j7nlmrc2t9n"><pre><code class="hljs shell">docker inspect -f "{\"Id\":{{json .Id}},\"RepoTags\":{{json .RepoTags}}}" python | jq</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-obiy7vlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-obiy7vlmrh9u69"><pre><code class="hljs shell">docker inspect -f "{\"Id\":{{json .Id}},\"RepoTags\":{{json .RepoTags}}}" python | jq</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115623529198_693_image-20230905114742181.png" srcset="/img/loading.gif" lazyload alt="image-20230905114742181">
 <figcaption aria-hidden="true">image-20230905114742181</figcaption>
@@ -481,7 +471,7 @@ inspect的输出结果交给<code>jq</code>命令进行格式化和美化。</p>
 <figcaption aria-hidden="true">image-20230905114904603</figcaption>
 </figure>
 <p>通过<code>docker inspect</code>命令我们同样可以查看镜像的层次信息。通过在镜像信息的<code>.RootFS.Layers</code>位置，保存的就是镜像的层次信息。通过下面的命令，我们发现，<code>python</code>镜像中包含了8层。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nqmqfplmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-nqmqfplmrc2t9n"><pre><code class="hljs shell">docker inspect -f "{{json .RootFS.Layers}}" python | jq</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mgpozxlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-mgpozxlmrh9u69"><pre><code class="hljs shell">docker inspect -f "{{json .RootFS.Layers}}" python | jq</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115633796078_312_image-20230905115015870.png" srcset="/img/loading.gif" lazyload alt="image-20230905115015870">
 <figcaption aria-hidden="true">image-20230905115015870</figcaption>
@@ -517,7 +507,7 @@ inspect的输出结果交给<code>jq</code>命令进行格式化和美化。</p>
 <li>查看容器修改内容</li>
 </ol>
 <p>接下来我们对容器的内容进行修改，我们在容器中执行<code>apt-get update</code>命令修改容器中的文件。在文件修改之后，我们可以通过<code>docker diff</code>命令查看文件的修改详情，该命令格式为d<code>ocker diff 容器名</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oas22klmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-oas22klmrc2t9n"><pre><code class="hljs shell">docker exec ubuntu-commit apt-get update
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-momztglmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-momztglmrh9u69"><pre><code class="hljs shell">docker exec ubuntu-commit apt-get update
 docker diff ubuntu-commit</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115653000478_838_image-20230905121240110.png" srcset="/img/loading.gif" lazyload alt="image-20230905121240110">
@@ -529,7 +519,7 @@ docker diff ubuntu-commit</code></pre></div></div>
 <p>在前面的实验中，我们讲到，容器镜像的是以只读分层的方式进行存储的。当我们通过镜像创建容器之后，每一个容器都会生成一个可以编写的存储层，所有用户对容器的文件修改，都会记录在容器存储层中。当我们把容器镜像的只读层和容器存储层叠加起来之后，就得到了容器的完整存储内容。而<code>docker diff</code>命令查看的，正是容器存储层所保存的内容。</p>
 <p>在了解容器存储层的相关知识之后，我们就可以执行<code>docker commit</code>命令生成新的镜像，其命令的格式为<code>docker commit 容器名 新镜像名</code>。镜像生成之后我们使用docker
 images进行验证</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1f2cnklmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-1f2cnklmrc2t9n"><pre><code class="hljs shell">docker commit ubuntu-commit ub/commit
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rlalx8lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-rlalx8lmrh9u69"><pre><code class="hljs shell">docker commit ubuntu-commit ub/commit
 docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115657893023_850_image-20230905121504361.png" srcset="/img/loading.gif" lazyload alt="image-20230905121504361">
@@ -539,7 +529,7 @@ docker images</code></pre></div></div>
 <li>查看新镜像的层</li>
 </ol>
 <p>接下来我们使用<code>dcoker inspect</code>来查看新镜像的层信息。会发现<code>ub/commit</code>在ubuntu的层之上构建了一个新的层。事实上这一层的内容就是将之前的<code>ubuntu-commit</code>容器存储层转化成镜像只读层。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-simmjblmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-simmjblmrc2t9n"><pre><code class="hljs shell">docker inspect -f "{{json .RootFS.Layers}}"  ub/commit | jq</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fboa07lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-fboa07lmrh9u69"><pre><code class="hljs shell">docker inspect -f "{{json .RootFS.Layers}}"  ub/commit | jq</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115703246580_756_image-20230905121727324.png" srcset="/img/loading.gif" lazyload alt="image-20230905121727324">
 <figcaption aria-hidden="true">image-20230905121727324</figcaption>
@@ -552,13 +542,13 @@ docker images</code></pre></div></div>
 </ol>
 <p>首先我们来学习如何启动docker私人镜像仓库。docker的默认私人镜像仓库<code>registry</code>应用也提供了镜像的部署方式。也就是说我们可以像启动其他容器一样的方式，本机用docker来启动默认的私有镜像仓库。当默认的私有镜像仓库启动之后，会使用http接口方式对外提供服务。</p>
 <p>此处我们使用<code>--network=host</code>参数，指定容器在启动时使用Host网络模型。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i8nfp2lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-i8nfp2lmrc2t9n"><pre><code class="hljs shell">docker run -d  --network=host --name registry-1 registry</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t05nydlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-t05nydlmrh9u69"><pre><code class="hljs shell">docker run -d  --network=host --name registry-1 registry</code></pre></div></div>
 <ol start="2" type="1">
 <li>验证网络服务</li>
 </ol>
 <p>当使用Host网络模型创建容器后，容器会和宿主机共享网络设置，这也就意味着，容器中启动网络服务，同样可以在宿主机中使用<code>127.0.0.1</code>的网络地址访问。关于Host网络模型的详细用法，在后面的实验中还会有讲解。</p>
 <p>当仓库容器启动后，会在5000端口启动服务。我们可以在宿主机中使用netstat命令验证。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b9gcvvlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-b9gcvvlmrc2t9n"><pre><code class="hljs shell">netstat -tunple | grep 5000</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bszj05lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-bszj05lmrh9u69"><pre><code class="hljs shell">netstat -tunple | grep 5000</code></pre></div></div>
 <blockquote>
 <ul>
 <li><code>-t</code>: 显示 TCP 协议相关的信息。</li>
@@ -578,7 +568,7 @@ docker images</code></pre></div></div>
 <li>测试服务</li>
 </ol>
 <p>接下来我们验证私人仓库的http服务接口是否可用，我们可以通过curl命令验证仓库的运行，常用的验证地址为<code>[私人仓库IP]:5000/v2/_catalog</code>。通过验证我们发现私人镜像仓库服务已经启动</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i0wakplmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-i0wakplmrc2t9n"><pre><code class="hljs shell">curl 127.0.0.1:5000/v2/_catalog</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qft33zlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-qft33zlmrh9u69"><pre><code class="hljs shell">curl 127.0.0.1:5000/v2/_catalog</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115712465251_580_image-20230905123129251.png" srcset="/img/loading.gif" lazyload alt="image-20230905123129251">
 <figcaption aria-hidden="true">image-20230905123129251</figcaption>
@@ -590,7 +580,7 @@ docker images</code></pre></div></div>
 </ol>
 <p>默认的<code>docker push</code>命令会将容器推送到docker公共仓库，为了能将镜像推送到私人仓库，我们要使用docker
 tag命令为镜像设置需要推送的仓库信息。其命令的参数<code>为docker tag [本地镜像名] [私有仓库的URL][私有仓库的镜像名称]</code>。标记镜像之后，我们使用<code>docker images</code>命令查看会发现，为本地镜像设置tag之后，会在本地镜像列表中生成一个新的镜像。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-us1wvqlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-us1wvqlmrc2t9n"><pre><code class="hljs shell">docker tag ub/commit 127.0.0.1:5000/ub/commit
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-31vu0llmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-31vu0llmrh9u69"><pre><code class="hljs shell">docker tag ub/commit 127.0.0.1:5000/ub/commit
 docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115718659476_124_image-20230905123255932.png" srcset="/img/loading.gif" lazyload alt="image-20230905123255932">
@@ -601,7 +591,7 @@ docker images</code></pre></div></div>
 </ol>
 <p>通过docker
 tag命令生成新的镜像之后，我们就可以使用<code>docker push</code>将已经标记过的镜像，直接推送到私人仓库中。命令的参数为<code>docker push tag后的镜像名:镜像版本</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ghjr8slmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-ghjr8slmrc2t9n"><pre><code class="hljs shell">docker push 127.0.0.1:5000/ub/commit:latest</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vokxvllmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-vokxvllmrh9u69"><pre><code class="hljs shell">docker push 127.0.0.1:5000/ub/commit:latest</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115722159957_760_image-20230905123356587.png" srcset="/img/loading.gif" lazyload alt="image-20230905123356587">
 <figcaption aria-hidden="true">image-20230905123356587</figcaption>
@@ -610,7 +600,7 @@ tag命令生成新的镜像之后，我们就可以使用<code>docker push</code
 <li>通过私有仓库API验证推送</li>
 </ol>
 <p>当镜像上传到私人仓库之后。我们可以通过访问<code>curl [私人仓库IP]:5000/v2/_catalog</code>列出仓库中的镜像信息。同时还可以通过<code>curl [私人仓库IP]:5000/v2/[镜像名称]/list</code>来查看镜像的版本信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9mm2frlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-9mm2frlmrc2t9n"><pre><code class="hljs shell">curl 127.0.0.1:5000/v2/_catalog
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c7raqflmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-c7raqflmrh9u69"><pre><code class="hljs shell">curl 127.0.0.1:5000/v2/_catalog
 curl 127.0.0.1:5000/v2/ub/commit/tags/list</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115726481615_338_image-20230905123429963.png" srcset="/img/loading.gif" lazyload alt="image-20230905123429963">
@@ -622,7 +612,7 @@ curl 127.0.0.1:5000/v2/ub/commit/tags/list</code></pre></div></div>
 </ol>
 <p>为了验证从私有仓库下载镜像，我们先通过docker
 rmi命令删除本地的容器镜像。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-74e7s6lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-74e7s6lmrc2t9n"><pre><code class="hljs shell">docker rmi ub/commit 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3rfjhzlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-3rfjhzlmrh9u69"><pre><code class="hljs shell">docker rmi ub/commit 
 docker rmi 127.0.0.1:5000/ub/commit</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115731763472_727_image-20230905123531029.png" srcset="/img/loading.gif" lazyload alt="image-20230905123531029">
@@ -633,7 +623,7 @@ docker rmi 127.0.0.1:5000/ub/commit</code></pre></div></div>
 </ol>
 <p>当通过docker push将镜像推送到私人仓库之后。其他人就可以通过docker
 pull命令将其拉取到本地。拉取私有仓库镜像的命令格式为<code>docker pull [私有仓库的URL][私有仓库的镜像名称]</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-igr3a2lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-igr3a2lmrc2t9n"><pre><code class="hljs shell">docker pull 127.0.0.1:5000/ub/commit
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zntfqblmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-zntfqblmrh9u69"><pre><code class="hljs shell">docker pull 127.0.0.1:5000/ub/commit
 docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115735113092_916_image-20230905145350810.png" srcset="/img/loading.gif" lazyload alt="image-20230905145350810">
@@ -643,7 +633,7 @@ docker images</code></pre></div></div>
 <li>查看本地镜像信息</li>
 </ol>
 <p>对于已经拉取到本地的容器镜像，我们可以通过<code>docker inspcet</code>来查看镜像的仓库信息和<code>repo tag</code>信息。在使用<code>docker inspcet</code>命令时，我们可以使用<code>-f</code>参数进行信息过滤，具体的过滤语法我们会在后面的实验中详细讲解。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0swv04lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-0swv04lmrc2t9n"><pre><code class="hljs shell">docker inspect -f \
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y0lynxlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-y0lynxlmrh9u69"><pre><code class="hljs shell">docker inspect -f \
 "{\"RepoTags\":{{json .RepoTags}}, \"RepoDigests\":{{json .RepoDigests}}}" \
 127.0.0.1:5000/ub/commit | jq</code></pre></div></div>
 <figure>
@@ -663,16 +653,16 @@ build的方式制作容器，我们需要先制作<code>Dockerfile</code>文件�
 <li>编辑完成之后按esc退出编辑模式。</li>
 <li>然后按大写的ZZ保存并退出vim。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rim39flmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-rim39flmrc2t9n"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q99vktlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-q99vktlmrh9u69"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
 <p>然后将下面的内容复制到Dockerfile中：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v8a8f0lmrc2t9n"></i><span>dockerfile</span><div class="collapse show" id="collapse-v8a8f0lmrc2t9n"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> ubuntu:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m20qxdlmrh9u69"></i><span>dockerfile</span><div class="collapse show" id="collapse-m20qxdlmrh9u69"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> ubuntu:latest
 
 <span class="hljs-keyword">RUN</span><span class="language-bash"> apt-get update</span></code></pre></div></div>
 <ol start="2" type="1">
 <li>制作容器镜像</li>
 </ol>
 <p><code>Dockerfile</code>文件编写完毕后，我们就就可以根据该文件，使用<code>docker build</code>命令来制作容器镜像，该命令的格式为<code>docker build -t 容器镜像名 Dockerfile所在路径</code>。命令的第三个参数用于指定Dockerfile文件的位置，如果Dockerfile文件就在控制台的当前目录下，一般使用.来设置。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vsilrtlmrc2t9n"></i><span>n1ql</span><div class="collapse show" id="collapse-vsilrtlmrc2t9n"><pre><code class="hljs n1ql">docker <span class="hljs-keyword">build</span> -t ub/<span class="hljs-keyword">build</span> .
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2atzx7lmrh9u69"></i><span>n1ql</span><div class="collapse show" id="collapse-2atzx7lmrh9u69"><pre><code class="hljs n1ql">docker <span class="hljs-keyword">build</span> -t ub/<span class="hljs-keyword">build</span> .
 docker images</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115742023909_762_image-20230905150014762.png" srcset="/img/loading.gif" lazyload alt="image-20230905150014762">
@@ -767,7 +757,7 @@ run的启动命令覆盖。</td>
 <p>Docker中<code>ADD</code>命令除了可以从宿主机中复制文件，还可以从网络上下载文件到本地。使用该命令远程下载除了支持<code>HTTP/S</code>协议外，也支持<code>GIT</code>等协议。</p>
 <p>ADD命令的另一个非常使用的功能是，当复制源文件的扩展名是<code>.tar.gz</code>格式时，该命令会将压缩包解压缩并复制到容器当中。</p>
 <p>接下来我们先来进行本小节的实验环境准备。我们创建目录并保存需要上传到镜像中的文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-385zmxlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-385zmxlmrc2t9n"><pre><code class="hljs shell">mkdir dir6-1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kffjfalmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-kffjfalmrh9u69"><pre><code class="hljs shell">mkdir dir6-1
 cd dir6-1
 echo 本地文件 &gt; info.txt
 echo 压缩文件 &gt; tar.txt
@@ -776,8 +766,8 @@ tar zcvf info.tar.gz tar.txt</code></pre></div></div>
 <li>构建容器镜像</li>
 </ol>
 <p>接下来我们使用vi命令在dir6-1目录下创建Dockerfile文件，并编辑为如下内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9wkf56lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-9wkf56lmrc2t9n"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-88ebc3lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-88ebc3lmrc2t9n"><pre><code class="hljs shell">FROM ubuntu:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c5ha8ulmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-c5ha8ulmrh9u69"><pre><code class="hljs shell">vi Dockerfile</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tc9x7flmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-tc9x7flmrh9u69"><pre><code class="hljs shell">FROM ubuntu:latest
 
 WORKDIR data
 RUN echo 容器中生成的文件 &gt; img.txt
@@ -787,7 +777,7 @@ ADD info.tar.gz .
 WORKDIR dir-robots
 ADD https://www.aliyun.com/robots.txt robots.txt</code></pre></div></div>
 <p>然后使用<code>docker build</code>编译容器镜像</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j82w82lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-j82w82lmrc2t9n"><pre><code class="hljs shell">docker build -t img6-1 .</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cxqecjlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-cxqecjlmrh9u69"><pre><code class="hljs shell">docker build -t img6-1 .</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115755964064_755_image-20230905150654738.png" srcset="/img/loading.gif" lazyload alt="image-20230905150654738">
 <figcaption aria-hidden="true">image-20230905150654738</figcaption>
@@ -797,7 +787,7 @@ ADD https://www.aliyun.com/robots.txt robots.txt</code></pre></div></div>
 </ol>
 <p>接下来我们来验证编译好的容器镜像，我们通过<code>docker run</code>启动镜像，然后验证容器中的内容。我们发现容器在运行之后，默认的目录为<code>/data/dir-robots</code>这说明<code>WORKDIR</code>命令不但会改变镜像生成时的操作目录，也会影像到容器运行时的默认目录。</p>
 <p>接下来我们看到了从<code>www.aliyun.com/robots.txt</code>地址下载的同名文件。验证了ADD命令的网络下载功能。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vp0lirlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-vp0lirlmrc2t9n"><pre><code class="hljs shell">docker run -itd --name container6-1 img6-1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-km2g4elmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-km2g4elmrh9u69"><pre><code class="hljs shell">docker run -itd --name container6-1 img6-1
 docker exec container6-1 pwd
 docker exec container6-1 cat robots.txt</code></pre></div></div>
 <figure>
@@ -805,7 +795,7 @@ docker exec container6-1 cat robots.txt</code></pre></div></div>
 <figcaption aria-hidden="true">image-20230905150901490</figcaption>
 </figure>
 <p>我们继续验证其他目录的文件。这里我们使用了<code>docker exec container6-1 ls</code>和<code>docker exec container6-1 cat</code>命令。来查看文件列表和文件内容。会发现目录中的3个文件和内容符合期望</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cqf7q9lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-cqf7q9lmrc2t9n"><pre><code class="hljs shell">docker exec container6-1 ls ..
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t1jdarlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-t1jdarlmrh9u69"><pre><code class="hljs shell">docker exec container6-1 ls ..
 docker exec container6-1 cat ../img.txt
 docker exec container6-1 cat ../info.txt
 docker exec container6-1 cat ../tar.txt</code></pre></div></div>
@@ -827,10 +817,10 @@ docker exec container6-1 cat ../tar.txt</code></pre></div></div>
 代替容器镜像中原有的<code>CMD</code>命令。</p></li>
 </ol>
 <p>我们创建子目录，并使用<code>vi</code>修改<code>Dockerfile</code>为如下内容。并编辑为如下内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5uatbelmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-5uatbelmrc2t9n"><pre><code class="hljs shell">cd /
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mxcr1jlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-mxcr1jlmrh9u69"><pre><code class="hljs shell">cd /
 mkdir dir6-2
 vi dir6-2/Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o44dxelmrc2t9n"></i><span>dockerfile</span><div class="collapse show" id="collapse-o44dxelmrc2t9n"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> ubuntu:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i08vy2lmrh9u69"></i><span>dockerfile</span><div class="collapse show" id="collapse-i08vy2lmrh9u69"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> ubuntu:latest
 
 <span class="hljs-keyword">ENV</span> IMG_STRING img6-<span class="hljs-number">2</span>的环境变量
 <span class="hljs-comment"># CMD ["echo", "$IMG_STRING"]</span>
@@ -848,7 +838,7 @@ vi dir6-2/Dockerfile</code></pre></div></div>
 进行解析处理。</p>
 </blockquote>
 <p><code>Dockerfile</code>编写完毕后，使用<code>docker build</code>进行编译。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jic7u3lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-jic7u3lmrc2t9n"><pre><code class="hljs shell">docker build -t img6-2 dir6-2</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5bf7talmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-5bf7talmrh9u69"><pre><code class="hljs shell">docker build -t img6-2 dir6-2</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115810025076_444_image-20230905151434617.png" srcset="/img/loading.gif" lazyload alt="image-20230905151434617">
 <figcaption aria-hidden="true">image-20230905151434617</figcaption>
@@ -859,15 +849,15 @@ vi dir6-2/Dockerfile</code></pre></div></div>
 <p>除了<code>CMD</code>命令之外我们还可以使用<code>ENTRYPOINT</code>命令来实现类似的功能。该命令和<code>CMD</code>命令的格式和功能基本一致，其区别在于<code>docker run</code>命令只能使用<code>--entrypoint</code>参数替换镜像中的<code>ENTRYPOINT</code>设置。</p>
 <p>在编写<code>Dockerfile</code>时，如果<code>ENTRYPOINT</code>和<code>CMD</code>命令同时出现的时候，容器启动时会将两个指令的参数串联起来，以<code>ENTRYPOINT参数1, ENTRYPOINT参数2..., CMD参数1, CMD参数2...</code>的形式执行启动命令。因此在具体使用时，我们一般在<code>ENTRYPOINT</code>中设置初始化命令，在<code>CMD</code>中设置初始化命令的参数。需要注意的是，<code>ENTRYPOINT</code>和<code>CMD</code>命令联合使用的时候，只能使用<code>[”参数1“, ”参数2“...]</code>格式的参数。</p>
 <p>我们创建子目录，并使用<code>vi</code>修改<code>Dockerfile</code>为如下内容。并编辑为如下内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tnrqs3lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-tnrqs3lmrc2t9n"><pre><code class="hljs shell">cd /
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vc3pvklmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-vc3pvklmrh9u69"><pre><code class="hljs shell">cd /
 mkdir dir6-3
 vi dir6-3/Dockerfile</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w2tgkslmrc2t9n"></i><span>dockerfile</span><div class="collapse show" id="collapse-w2tgkslmrc2t9n"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> ubuntu:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bp3ro7lmrh9u69"></i><span>dockerfile</span><div class="collapse show" id="collapse-bp3ro7lmrh9u69"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> ubuntu:latest
 
 <span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">"-c"</span>, <span class="hljs-string">"echo CMD作为ENTRYPOINT的参数"</span>]</span>
 <span class="hljs-keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="hljs-string">"bash"</span>]</span></code></pre></div></div>
 <p>Dockerfile编写完毕后，然后使用docker build编译容器镜像</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-llp8iwlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-llp8iwlmrc2t9n"><pre><code class="hljs shell">docker build -t img6-3 dir6-3</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8n7h1elmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-8n7h1elmrh9u69"><pre><code class="hljs shell">docker build -t img6-3 dir6-3</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115815811340_658_image-20230905152110713.png" srcset="/img/loading.gif" lazyload alt="image-20230905152110713">
 <figcaption aria-hidden="true">image-20230905152110713</figcaption>
@@ -876,14 +866,14 @@ vi dir6-3/Dockerfile</code></pre></div></div>
 <li>验证容器镜像</li>
 </ol>
 <p>我们来验证编译好的<code>img6-2</code>容器镜像，我们通过<code>docker run</code>启动镜像，然后验证容器中的内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ecr7z8lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-ecr7z8lmrc2t9n"><pre><code class="hljs shell">docker run img6-2
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mhaykllmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-mhaykllmrh9u69"><pre><code class="hljs shell">docker run img6-2
 docker run img6-2 ls -ll</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/20230906115820729711_808_image-20230905153928461.png" srcset="/img/loading.gif" lazyload alt="image-20230905153928461">
 <figcaption aria-hidden="true">image-20230905153928461</figcaption>
 </figure>
 <p>接下来我们来验证编译好的img6-3容器镜像，我们通过<code>docker run</code>启动镜像，然后验证容器中的内容。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6494illmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-6494illmrc2t9n"><pre><code class="hljs shell">docker run img6-3
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xi2s0mlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-xi2s0mlmrh9u69"><pre><code class="hljs shell">docker run img6-3
 docker run --entrypoint echo img6-3 "手动设置ENTRYPOINT和CMD"
 docker run img6-3 -c "echo 手动设置CMD参数"</code></pre></div></div>
 <figure>
@@ -913,7 +903,7 @@ docker run img6-3 -c "echo 手动设置CMD参数"</code></pre></div></div>
 </ol>
 <p>当我们执行上两个步骤的时候，细心的同学可能会发现，<code>docker history</code>中的每一个步骤都会生成一个中间状态的镜像，但是镜像的层数和镜像的步骤并不是严格的一一对应关系。这是因为docker会自动压缩一些没有实际产生数据修改的镜像，将多个临时镜像压缩成一层。比如<code>WORKDIR</code>命令所生成的中间状态。</p>
 <p>同样我们可以比较<code>img6-2</code>和<code>img6-3</code>镜像。我们会发现虽然这两个镜像包含了很多的步骤，但是由于没有实际向镜像中写入文件，因此这两个镜像的存储层实际上和基础镜像ubuntu的存储层保持一致，这就意味着这两个镜像并没有在本地镜像仓库中额外消耗存储控件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lzkn11lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-lzkn11lmrc2t9n"><pre><code class="hljs shell">docker history img6-2
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ze3swklmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-ze3swklmrh9u69"><pre><code class="hljs shell">docker history img6-2
 docker inspect -f "{{json .RootFS.Layers}}" img6-2 | jq
 docker history img6-3
 docker inspect -f "{{json .RootFS.Layers}}" img6-3 | jq

@@ -300,16 +300,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/深入浅出Docker应用-Docker存储模型/深入浅出Docker应用-Docker存储模型.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -355,8 +345,8 @@
 <p>在容器的配置中，最简单的方式是配置容器的环境变量。当我们使用docker
 run运行容器是，可以添加<code>-e</code>参数为容器设置环境变量。在配置环境变量时，也可以和<code>-p</code>参数一样同时设置多个<code>-e</code>参数。</p>
 <p>参数配置完成后，进入容器使用<code>echo</code>命令输出设置的环境变量。验证<code>-e</code>参数的使用。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ckw8zrlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-ckw8zrlmrc2t9n"><pre><code class="hljs shell">docker run -it --name env1 -e ECHO=环境变量 -e NUM=123456 busybox</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fkv6bhlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-fkv6bhlmrc2t9n"><pre><code class="hljs shell">echo $ECHO $NUM
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3v1lvclmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-3v1lvclmrh9u69"><pre><code class="hljs shell">docker run -it --name env1 -e ECHO=环境变量 -e NUM=123456 busybox</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7fmbjnlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-7fmbjnlmrh9u69"><pre><code class="hljs shell">echo $ECHO $NUM
 exit</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122021966682_985_image-20230905205658055.png" srcset="/img/loading.gif" lazyload alt="image-20230905205658055">
@@ -367,7 +357,7 @@ exit</code></pre></div></div>
 </ol>
 <p>容器中的另一个存储方式是使用<code>docker cp</code>命令，在宿主机和容器之间进行文件的复制。在文件复制时容器中文件的描述方式为，<code>容器名:容器文件路径</code>。</p>
 <p>我们在宿主机中通过<code>echo</code>命令创建文件<code>local.txt</code>。然后创建容器<code>file1</code>，接下来通过<code>docker cp</code>复制到容器中。最后在容器中通过<code>cat</code>命令显示文件命令。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vohk1ulmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-vohk1ulmrc2t9n"><pre><code class="hljs shell">echo 本机生成的文件 &gt; local.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-78ljjolmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-78ljjolmrh9u69"><pre><code class="hljs shell">echo 本机生成的文件 &gt; local.txt
 docker run -itd --name file1 busybox
 docker cp local.txt file1:/local.txt
 docker exec file1 cat local.txt</code></pre></div></div>
@@ -379,7 +369,7 @@ docker exec file1 cat local.txt</code></pre></div></div>
 <li>文件的挂载</li>
 </ol>
 <p>除了使用<code>docker cp</code>文件复制的办法之外，我们还可以在创建容器的时候使用<code>-v</code>参数将宿主机中的文件直接挂载到容器中。该参数的用法为<code>-v 宿主机文件的绝对路径:容器文件的绝对路径</code>。这种方式在后面会进行详细讲解。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x77qr9lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-x77qr9lmrc2t9n"><pre><code class="hljs shell">docker run -itd --name file2 -v $(pwd)/local.txt:/mount.txt busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m7s7dxlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-m7s7dxlmrh9u69"><pre><code class="hljs shell">docker run -itd --name file2 -v $(pwd)/local.txt:/mount.txt busybox
 docker exec file2 cat mount.txt</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122028923771_476_image-20230905210015001.png" srcset="/img/loading.gif" lazyload alt="image-20230905210015001">
@@ -396,10 +386,10 @@ docker exec file2 cat mount.txt</code></pre></div></div>
 <p>在这里我们使用默认的Bridge网络模型，同时使用<code>-p</code>参数设置端口映射，将MySQL得服务暴露到宿主机的网卡上。</p>
 <p>除此之外在启动MySQL容器得时候，我们还可以通过设置<code>MYSQL_ROOT_PASSWORD</code>环境变量的方式，设置MySQL中<code>root</code>用户的初始化密码。这里我们使用<code>-e</code>参数来设置。</p>
 <p>在配置好启动命令之后，我们启动容器，并且使用<code>bash</code>登录到容器中，验证环境变量的配置成功。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wn2mm7lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-wn2mm7lmrc2t9n"><pre><code class="hljs shell">docker pull mysql:8.0
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-p960dllmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-p960dllmrh9u69"><pre><code class="hljs shell">docker pull mysql:8.0
 docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql:8.0
 docker exec -it mysql bin/bash</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hl7i2nlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-hl7i2nlmrc2t9n"><pre><code class="hljs shell">echo $MYSQL_ROOT_PASSWORD
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lylxzulmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-lylxzulmrh9u69"><pre><code class="hljs shell">echo $MYSQL_ROOT_PASSWORD
 exit</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122032462368_350_image-20230905210810439.png" srcset="/img/loading.gif" lazyload alt="image-20230905210810439">
@@ -409,7 +399,7 @@ exit</code></pre></div></div>
 <li>进入MySQL服务的控制台</li>
 </ol>
 <p>MySQL服务启动后，我们可以使用mysql命令登录服务得控制台，该命令的用法为<code>mysql -u用户名 -p</code>，其中<code>-p</code>表示登录账户需要密码。命令执行后输入在上一个步骤中设置的密码即可进入控制台。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iro6ntlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-iro6ntlmrc2t9n"><pre><code class="hljs shell">docker exec -it mysql mysql -uroot -p
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g90yf6lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-g90yf6lmrh9u69"><pre><code class="hljs shell">docker exec -it mysql mysql -uroot -p
 [输入MYSQL密码]</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122037142229_199_image-20230905210931741.png" srcset="/img/loading.gif" lazyload alt="image-20230905210931741">
@@ -419,7 +409,7 @@ exit</code></pre></div></div>
 <li>MySQL控制台验证命令</li>
 </ol>
 <p>在MySQL控制台中，我们可以使用<code>status</code>命令查看服务的运行状态，使用<code>show Database;</code>查看服务中的数据库，也可以使用<code>help</code>命令查看其他命令的用法。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3objldlmrc2t9n"></i><span>mysql</span><div class="collapse show" id="collapse-3objldlmrc2t9n"><pre><code class="hljs mysql">status
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2nh8k8lmrh9u69"></i><span>mysql</span><div class="collapse show" id="collapse-2nh8k8lmrh9u69"><pre><code class="hljs mysql">status
 show Databases;
 help
 exit</code></pre></div></div>
@@ -438,7 +428,7 @@ exit</code></pre></div></div>
 <li>复制修改配置文件</li>
 </ol>
 <p>如果单纯的为了修改配置，我们可以直接在容器中修改配置文件。但是为了防止容器被删除或者被破坏时，修改好的配置文件丢失，我们先使用<code>docker cp</code>将配置文件复制到宿主机中的<code>/root/mysql/config/</code>目录中作为副本。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-83uxy6lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-83uxy6lmrc2t9n"><pre><code class="hljs shell">mkdir -p /root/mysql/config/
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1yztv2lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-1yztv2lmrh9u69"><pre><code class="hljs shell">mkdir -p /root/mysql/config/
 docker cp mysql:/etc/my.cnf /root/mysql/config/my.cnf
 cat /root/mysql/config/my.cnf</code></pre></div></div>
 <figure>
@@ -452,8 +442,8 @@ cat /root/mysql/config/my.cnf</code></pre></div></div>
 <li>输入<code>/secure-file-priv</code>按回车可快速定位，修改<code>secure-file-priv</code>的值为<code>NULL</code>。</li>
 <li>添加<code>general_log = 1</code></li>
 </ul>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ofl9fmlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-ofl9fmlmrc2t9n"><pre><code class="hljs shell">vi /root/mysql/config/my.cnf</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2c10bvlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-2c10bvlmrc2t9n"><pre><code class="hljs shell">general_log = 1</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r4hzcklmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-r4hzcklmrh9u69"><pre><code class="hljs shell">vi /root/mysql/config/my.cnf</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rt7ybklmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-rt7ybklmrh9u69"><pre><code class="hljs shell">general_log = 1</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122048592517_741_image-20230905212718393.png" srcset="/img/loading.gif" lazyload alt="image-20230905212718393">
 <figcaption aria-hidden="true">image-20230905212718393</figcaption>
@@ -465,7 +455,7 @@ cat /root/mysql/config/my.cnf</code></pre></div></div>
 </ol>
 <p>我们将配置文件复制回容器中，为了让配置文件生效，我们需要使用docker
 restart命令重新启动容器。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tfk3vdlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-tfk3vdlmrc2t9n"><pre><code class="hljs shell">docker cp /root/mysql/config/my.cnf mysql:/etc/my.cnf
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5oae1slmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-5oae1slmrh9u69"><pre><code class="hljs shell">docker cp /root/mysql/config/my.cnf mysql:/etc/my.cnf
 docker restart mysql</code></pre></div></div>
 <figure>
 <img src="https://ucc.alicdn.com/pic/developer-ecology/zfjcruuaylg7m_e5d7202a965b493a9ed0349b2f8df7fe.png" srcset="/img/loading.gif" lazyload alt="img">
@@ -475,7 +465,7 @@ docker restart mysql</code></pre></div></div>
 <li>查看配置结果</li>
 </ol>
 <p>容器重启之后，我们再次进入控制台查看属性值，会发现新的属性值已经生效。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-54kkrtlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-54kkrtlmrc2t9n"><pre><code class="hljs shell">docker exec -it mysql mysql -uroot -p[MYSQL密码]
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2ey5hqlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-2ey5hqlmrh9u69"><pre><code class="hljs shell">docker exec -it mysql mysql -uroot -p[MYSQL密码]
 show variables like 'general_log';
 exit</code></pre></div></div>
 <figure>
@@ -492,7 +482,7 @@ exit</code></pre></div></div>
 <p>当我们使用<code>docker cp</code>向容器中复制文件时，会以宿主机中的文件为样本向容器中复制一个文件的副本。在复制完成之后宿主机和容器中的文件是没有关联的。</p>
 <p>但是当我们使用文件挂载的时候，宿主机和容器中的文件的关系更像是linux中的硬链接。也就是虽然看起来是两个文件，但是双方实际上在<strong>共享同一个物理文件</strong>。本小节中我们将学习并验证容器的共享挂载能力。</p>
 <p>首先我们先来做实验准备，首先我们先创建一个本地文件<code>share.txt</code>，然后让容器挂载这个文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mea993lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-mea993lmrc2t9n"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sl0zqxlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-sl0zqxlmrh9u69"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
 docker run -itd --name share1 -v $(pwd)/share.txt:/share.txt busybox
 docker exec share1 cat /share.txt</code></pre></div></div>
 <figure>
@@ -503,7 +493,7 @@ docker exec share1 cat /share.txt</code></pre></div></div>
 <li>本地修改文件</li>
 </ol>
 <p>当宿主机和容器双方共享同一个物理文件，这就意味着双方都可以修改文件的内容，且在另一方生效。下面我们在宿主机方修改<code>share.txt</code>文件，并在容器端验证文件修改是否生效。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2gsjivlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-2gsjivlmrc2t9n"><pre><code class="hljs shell">echo '从宿主机中修改文件' &gt;&gt; share.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mrntmalmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-mrntmalmrh9u69"><pre><code class="hljs shell">echo '从宿主机中修改文件' &gt;&gt; share.txt
 docker exec share1 cat /share.txt</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122056313837_145_image-20230905214532760.png" srcset="/img/loading.gif" lazyload alt="image-20230905214532760">
@@ -513,7 +503,7 @@ docker exec share1 cat /share.txt</code></pre></div></div>
 <li>容器中修改文件</li>
 </ol>
 <p>同样我们也可以在在容器端修改share.txt文件，并在宿主机方验证文件修改。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w1fd2ylmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-w1fd2ylmrc2t9n"><pre><code class="hljs shell">docker exec share1 sh -c "echo '从容器中修改文件' &gt;&gt; /share.txt"
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6bg2iplmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-6bg2iplmrh9u69"><pre><code class="hljs shell">docker exec share1 sh -c "echo '从容器中修改文件' &gt;&gt; /share.txt"
 cat share.txt</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122100915140_351_image-20230905214555887.png" srcset="/img/loading.gif" lazyload alt="image-20230905214555887">
@@ -525,8 +515,8 @@ cat share.txt</code></pre></div></div>
 </ol>
 <p>如果用户希望控制文件在容器中是否可以被修改，那么可以用<code>rw</code>或者<code>readwrite</code>参数将挂载文件设置为读写权限，或者使用<code>ro</code>或者<code>readonly</code>参数设置为只读权限。如果文件被设置为的文件，那么只有在宿主机侧才可以进行修改。</p>
 <p>先重置实验环境：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i2n7cslmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-i2n7cslmrc2t9n"><pre><code class="hljs shell">docker rm -f $(docker ps -aq)</code></pre></div></div>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zmb43zlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-zmb43zlmrc2t9n"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yubidclmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-yubidclmrh9u69"><pre><code class="hljs shell">docker rm -f $(docker ps -aq)</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9rtklalmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-9rtklalmrh9u69"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
 docker run -itd --name share-readonly -v $(pwd)/share.txt:/share.txt:ro busybox
 docker exec share-readonly cat /share.txt</code></pre></div></div>
 <blockquote>
@@ -540,7 +530,7 @@ docker exec share-readonly cat /share.txt</code></pre></div></div>
 <li>验证只读权限</li>
 </ol>
 <p>接下来我们来验证只读挂载属性，我们分别在宿主机和容器中尝试修改文件，会发现在share-readonly容器中，我们无法修改文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6cqaeklmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-6cqaeklmrc2t9n"><pre><code class="hljs shell">echo '从宿主机中修改文件' &gt;&gt; share.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u0lv19lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-u0lv19lmrh9u69"><pre><code class="hljs shell">echo '从宿主机中修改文件' &gt;&gt; share.txt
 docker exec share-readonly cat /share.txt
 docker exec share-readonly sh -c "echo '从只读容器中修改文件' &gt;&gt; /share.txt"
 cat share.txt</code></pre></div></div>
@@ -553,7 +543,7 @@ cat share.txt</code></pre></div></div>
 </ol>
 <p>宿主机中一个文件，可以挂载到多个不同的容器，每个容器在挂载时可以设定不同的挂载权限，我们再来创建一个容器，并使用读写权限挂载share.txt文件。</p>
 <p>挂载成功后我们尝试分别在读写权限容器和只读权限容器中修改文件。不同的容器可以使用不同的权限挂载同一个文件。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kbzgtblmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-kbzgtblmrc2t9n"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wyy3oulmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-wyy3oulmrh9u69"><pre><code class="hljs shell">echo '宿主机初始化文件' &gt; share.txt
 docker run -itd --name share-readwrite -v $(pwd)/share.txt:/share.txt:rw busybox
 
 docker exec share-readonly sh -c "echo '从只读容器中修改文件' &gt;&gt; /share.txt"
@@ -571,18 +561,18 @@ docker exec share-readonly cat /share.txt</code></pre></div></div>
 <li>实验准备</li>
 </ol>
 <p>为了演示挂载文件夹，我们先创建本地文件夹<code>mount</code>，并在文件夹中添加一个文件<code>mount\text</code>。然后再制作一个新的容器镜像，在容器中创建一个文件<code>/mount</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u8osg7lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-u8osg7lmrc2t9n"><pre><code class="hljs shell">mkdir mount
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-iuwm4clmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-iuwm4clmrh9u69"><pre><code class="hljs shell">mkdir mount
 echo '宿主机中的文件' &gt; mount/host
 vi Dockerfile</code></pre></div></div>
 <p>我们使用vi 编辑Dockerfile文件：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-niu9mklmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-niu9mklmrc2t9n"><pre><code class="hljs shell">FROM busybox:latest
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r2n676lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-r2n676lmrh9u69"><pre><code class="hljs shell">FROM busybox:latest
 RUN mkdir mount
 RUN echo '容器中的文件' &gt; /mount/image</code></pre></div></div>
 <ol start="2" type="1">
 <li>挂载文件夹</li>
 </ol>
 <p>接下来我们构建容器镜像，并使用该镜像创建容器。在创建容器时，我们将mount挂载到容器中。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lcoarwlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-lcoarwlmrc2t9n"><pre><code class="hljs shell">docker build -t folder .
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jaq8gtlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-jaq8gtlmrh9u69"><pre><code class="hljs shell">docker build -t folder .
 docker run -itd --name folder1 -v $(pwd)/mount:/mount folder</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122116918938_377_image-20230905221232424.png" srcset="/img/loading.gif" lazyload alt="image-20230905221232424">
@@ -591,7 +581,7 @@ docker run -itd --name folder1 -v $(pwd)/mount:/mount folder</code></pre></div><
 <ol start="3" type="1">
 <li>验证文件夹挂载</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9noe3mlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-9noe3mlmrc2t9n"><pre><code class="hljs shell">docker exec folder1 ls /mount
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mrbxtllmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-mrbxtllmrh9u69"><pre><code class="hljs shell">docker exec folder1 ls /mount
 docker exec folder1 cat /mount/host</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122119641893_184_image-20230905221441505.png" srcset="/img/loading.gif" lazyload alt="image-20230905221441505">
@@ -603,14 +593,14 @@ docker exec folder1 cat /mount/host</code></pre></div></div>
 <li>实验准备</li>
 </ol>
 <p>首先我们在宿主机中创建一个文件夹<code>webfile</code>，然后通过<code>echo &gt;</code>命令在文件夹中生成一个简单的纯文本网页<code>index.html</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xbemgelmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-xbemgelmrc2t9n"><pre><code class="hljs shell">mkdir webfile
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-i0siaflmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-i0siaflmrh9u69"><pre><code class="hljs shell">mkdir webfile
 echo '默认网页' &gt; ./webfile/index.html</code></pre></div></div>
 <ol start="2" type="1">
 <li>挂载网页文件夹</li>
 </ol>
 <p>然后我们在启动服务时，通过<code>-v</code>参数将宿主机中的文件夹，覆盖挂载到Apache容器的<code>/usr/local/apache2/htdocs</code>目录上；并且通过端口映射将容器中的服务发布到宿主机的<code>8000</code>端口上。</p>
 <p>容器启动成功之后，我们通过<code>curl</code>命令访问<code>127.0.0.1:8000</code>验证容器服务。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-hjkmcqlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-hjkmcqlmrc2t9n"><pre><code class="hljs shell">docker run -itd --name file_server1 -p 8000:80 \
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8dshyhlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-8dshyhlmrh9u69"><pre><code class="hljs shell">docker run -itd --name file_server1 -p 8000:80 \
  -v /root/webfile:/usr/local/apache2/htdocs httpd
 
 curl 127.0.0.1:8000</code></pre></div></div>
@@ -622,7 +612,7 @@ curl 127.0.0.1:8000</code></pre></div></div>
 <li>动态修改网页</li>
 </ol>
 <p>当容器启动后，我们在宿主机中修改<code>/webfile/index.html</code>文件，同时创建一个新文件<code>/webfile/host.html</code>，然后通过<code>curl</code>命令验证，发现宿主机中的修改，对容器中的Apache服务已经生效。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wrmzltlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-wrmzltlmrc2t9n"><pre><code class="hljs shell">echo '修改默认网页' &gt;&gt; ./webfile/index.html
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-siqahmlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-siqahmlmrh9u69"><pre><code class="hljs shell">echo '修改默认网页' &gt;&gt; ./webfile/index.html
 echo '添加Host页面' &gt; ./webfile/host.html
 
 curl 127.0.0.1:8000
@@ -644,14 +634,14 @@ mount方式那样依赖于宿主机的绝对目录，主要用于将容器中的
 </ol>
 <p>在使用volume之间，通常需要先通过<code>docker volume create</code>命令创建volume。该命令的格式为<code>docker volume create [volume名]</code>，和bind
 mount方式不同的是，volume创建之后默认并没有内容。这里我们创建名为<code>file-vol</code>的volume。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tceo8glmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-tceo8glmrc2t9n"><pre><code class="hljs shell">docker volume create file-vol</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w60niwlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-w60niwlmrh9u69"><pre><code class="hljs shell">docker volume create file-vol</code></pre></div></div>
 <ol start="2" type="1">
 <li>挂载volume</li>
 </ol>
 <p>在volume创建好之后，我们就可以通过docker run
 的-v参数进行挂载。在使用-v参数挂载volume时，用volume名称代替宿主机路径即可。这里我们创建并启动一个busybox容器，并将<code>file-vol</code>挂载到<code>/file</code>目录。</p>
 <p>在容器创建之后，我们向volume挂载的文件夹中写入一个文件<code>/file/text</code>。验证挂载成功。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0gc4ixlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-0gc4ixlmrc2t9n"><pre><code class="hljs shell">docker run -itd --name vol1 -v file-vol:/file busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0a5xhqlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-0a5xhqlmrh9u69"><pre><code class="hljs shell">docker run -itd --name vol1 -v file-vol:/file busybox
 docker exec vol1 sh -c "echo '向volume中写入文件' &gt; /file/text"
 
 docker exec vol1 ls /file
@@ -664,7 +654,7 @@ docker exec vol1 cat /file/text</code></pre></div></div>
 <li>查看volume信息</li>
 </ol>
 <p>当我们在容器的挂载点中保存数据之后，数据文件会被写入到volume中，这时我们可以通过<code>docker volume inspect</code>或者<code>docker inspect</code>来查看volume的信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-umhijklmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-umhijklmrc2t9n"><pre><code class="hljs shell">docker volume inspect file-vol</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-381sf5lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-381sf5lmrh9u69"><pre><code class="hljs shell">docker volume inspect file-vol</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122131531627_519_image-20230905222835618.png" srcset="/img/loading.gif" lazyload alt="image-20230905222835618">
 <figcaption aria-hidden="true">image-20230905222835618</figcaption>
@@ -676,7 +666,7 @@ docker exec vol1 cat /file/text</code></pre></div></div>
 <li>删除容器</li>
 </ol>
 <p>接下来我们来验证volume的持久化能力。我们停止并删除刚才创建的容器<code>vol1</code>。在删除之后我们查看名为file-vol的volume。我们会发现容器的删除并不会影响volume的存在。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gp2cbtlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-gp2cbtlmrc2t9n"><pre><code class="hljs shell">docker stop vol1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7wo7jrlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-7wo7jrlmrh9u69"><pre><code class="hljs shell">docker stop vol1
 docker rm -f vol1
 docker volume inspect file-vol</code></pre></div></div>
 <figure>
@@ -687,7 +677,7 @@ docker volume inspect file-vol</code></pre></div></div>
 <li>重用volume</li>
 </ol>
 <p>然后我们再创建一个新的容器vol2，并将<code>file-vol</code>挂载到另一个目录<code>/file-other</code>上。由于之前的容器把数据存储在了volume中，因此新容器中的<code>/file-other</code>目录中保存vol1容器中的数据。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4fqi11lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-4fqi11lmrc2t9n"><pre><code class="hljs shell">docker run -itd --name vol2 -v file-vol:/file-other busybox
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ukb5y4lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-ukb5y4lmrh9u69"><pre><code class="hljs shell">docker run -itd --name vol2 -v file-vol:/file-other busybox
 
 docker exec vol2 ls /file-other
 docker exec vol2 cat /file-other/text</code></pre></div></div>
@@ -699,7 +689,7 @@ docker exec vol2 cat /file-other/text</code></pre></div></div>
 <li>volume的多重绑定</li>
 </ol>
 <p>如同容器可以使用多个端口绑定，容器在启动时也可以使用多个-v参数绑定多个volume，同时一个volume也可以同时绑定到多个容器中。在容器绑定volume之后，我们还可以通过<code>docker inspec</code>t命令通过容器筛选Mounts字段查看volume的信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6wd5iflmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-6wd5iflmrc2t9n"><pre><code class="hljs shell">docker volume create ext-vol
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zm8yirlmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-zm8yirlmrh9u69"><pre><code class="hljs shell">docker volume create ext-vol
 docker run -itd --name vol3 -v ext-vol:/ext -v file-vol:/file busybox 
 docker inspect -f "{{json .Mounts}}" vol3 | jq</code></pre></div></div>
 <figure>
@@ -713,7 +703,7 @@ docker inspect -f "{{json .Mounts}}" vol3 | jq</code></pre></div></div>
 </ol>
 <p>在docker中，占用磁盘的对象包括容器镜像，容器，volume等，我们还可以通过<code>docker system df -v</code>命令可以查看所有对象的的磁盘占用。</p>
 <p>如果docker的镜像，容器，或者volume对象较多，则可以使用-f参数添加过滤器来筛选具体某一个volume的信息。下面的命令可以筛选出名为<code>file-vol</code>的volume的过滤器的信息。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6tbceplmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-6tbceplmrc2t9n"><pre><code class="hljs shell">docker system df -v
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wjny0blmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-wjny0blmrh9u69"><pre><code class="hljs shell">docker system df -v
 docker system df -v --format=\
 '{{range .Volumes}}{{if eq .Name "file-vol"}}\
 {{.Name}} - {{.Size}}\n{{end}}{{end}}'</code></pre></div></div>
@@ -725,7 +715,7 @@ docker system df -v --format=\
 <li>自动创建volume</li>
 </ol>
 <p>当我们使用<code>docker run</code>创建容器并使用<code>-v</code>挂载volume的时候，如果需要加载的volume还没有被创建，则<code>docker run</code>会自动创建volume。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y3yuy2lmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-y3yuy2lmrc2t9n"><pre><code class="hljs shell">docker run -itd --name vol4 -v auto-vol:/auto busybox 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tio9welmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-tio9welmrh9u69"><pre><code class="hljs shell">docker run -itd --name vol4 -v auto-vol:/auto busybox 
 docker inspect auto-vol</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122153361471_217_image-20230905224103151.png" srcset="/img/loading.gif" lazyload alt="image-20230905224103151">
@@ -735,7 +725,7 @@ docker inspect auto-vol</code></pre></div></div>
 <li>volume的自动删除</li>
 </ol>
 <p>docker也提供了删除所有当前没有被挂载的volume的指令<code>docker volume prune</code>，需要注意的是使用此指令时需要小心，防止数据被误删除！下面的代码可以删除全部的容器，并清空所有的volume。下面的例子我们演示了删除所有的容器，并且删除所有的volume：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7adhwqlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-7adhwqlmrc2t9n"><pre><code class="hljs shell">docker rm -f $(docker ps -aq) 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c158m9lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-c158m9lmrh9u69"><pre><code class="hljs shell">docker rm -f $(docker ps -aq) 
 docker volume prune -a
 docker volume ls</code></pre></div></div>
 <figure>
@@ -754,7 +744,7 @@ docker volume ls</code></pre></div></div>
 <p>事实上当我们在使用<code>docker run -v</code>
 创建数据挂载时，如果没有预先创建volume，docker会自动创建对应的volume，如果用户连volume名称都没有指定，docker会自动为volume分配名称。</p>
 <p>接下来我们直接创建名为mysql1的mysql容器，在容器创建成功后接入mysql控制台。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u1fxlalmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-u1fxlalmrc2t9n"><pre><code class="hljs shell">docker run -itd --name mysql1 -v db-vol:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qixrpclmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-qixrpclmrh9u69"><pre><code class="hljs shell">docker run -itd --name mysql1 -v db-vol:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql
 docker exec -it mysql1 mysql -uroot -p[MYSQL密码]</code></pre></div></div>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122201439818_823_image-20230905225110593.png" srcset="/img/loading.gif" lazyload alt="image-20230905225110593">
@@ -765,7 +755,7 @@ docker exec -it mysql1 mysql -uroot -p[MYSQL密码]</code></pre></div></div>
 </ol>
 <p>在一个MySQL服务中，可以包含多个数据库，每一个数据库中又可以包含多个数据表。每一个数据表中又可以包含多个数据行。</p>
 <p>接下来我们再控制台中通过<code>CREATE DATABASE</code>创建一个新数据库<code>ali_db</code>，创建数据库之后需要通过<code>USE</code>命令选中要操作的数据库，然后通过<code>CREATE TABLE</code>命令在<code>ali_db</code>中添加一个数据表<code>ali_tab</code>，接下来使用<code>INSERT INTO</code>在数据表中添加一条记录。最后使用<code>SELECT</code>命令查询数据表中的记录。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zlrotilmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-zlrotilmrc2t9n"><pre><code class="hljs shell">CREATE DATABASE ali_db;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-689rs0lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-689rs0lmrh9u69"><pre><code class="hljs shell">CREATE DATABASE ali_db;
 USE ali_db;
 CREATE TABLE ali_tab (`name` VARCHAR(100));
 INSERT INTO ali_tab VALUES('aliyun');
@@ -779,7 +769,7 @@ exit</code></pre></div></div>
 <li>重用MySQL数据库</li>
 </ol>
 <p>接下来我们删除mysql1容器，删除之后在创建另一个名为mysql2的mysql容器。mysql2容器创建成功后进入mysql控制台，在控制台中通过<code>USE</code>命令选择数据库，然后用<code>SELECT</code>命令查看数据记录。会发现数据库中记录仍存存在。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rtlg8vlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-rtlg8vlmrc2t9n"><pre><code class="hljs shell">docker rm -f mysql1
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7yh5a5lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-7yh5a5lmrh9u69"><pre><code class="hljs shell">docker rm -f mysql1
 docker run -itd --name mysql2 -v db-vol:/var/lib/mysql \
 -e MYSQL_ROOT_PASSWORD=[MYSQL密码] mysql
 docker exec -it mysql2 mysql -uroot -p[MYSQL密码]</code></pre></div></div>
@@ -787,7 +777,7 @@ docker exec -it mysql2 mysql -uroot -p[MYSQL密码]</code></pre></div></div>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BADocker%E5%BA%94%E7%94%A8-Docker%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B/20230906122208927409_686_image-20230905225310167.png" srcset="/img/loading.gif" lazyload alt="image-20230905225310167">
 <figcaption aria-hidden="true">image-20230905225310167</figcaption>
 </figure>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y1v3mzlmrc2t9n"></i><span>shell</span><div class="collapse show" id="collapse-y1v3mzlmrc2t9n"><pre><code class="hljs shell">USE ali_db;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-tandd4lmrh9u69"></i><span>shell</span><div class="collapse show" id="collapse-tandd4lmrh9u69"><pre><code class="hljs shell">USE ali_db;
 SELECT * FROM ali_tab;
 exit</code></pre></div></div>
 <figure>

@@ -28,7 +28,7 @@
 <meta property="article:published_time" content="2023-09-19T02:46:30.000Z">
 <meta property="article:modified_time" content="2023-09-19T02:46:30.000Z">
 <meta property="article:author" content="Lunatic sky">
-<meta property="article:tag" content="C++">
+<meta property="article:tag" content="EffectiveC++">
 <meta name="twitter:card" content="summary_large_image">
     
     
@@ -266,16 +266,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Effective C++ - Item13-17 - 资源管理/Effective C++ - Item13-17 - 资源管理.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -332,7 +322,7 @@ Initialization，资源取得时机便是初始化时机），让<strong>析构�
 <blockquote>
 <p>引用计数型能指针 (reference--counting smart pointer RCSP)</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8c058ilmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-8c058ilmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-comment">// Investment* CreateInvestment();</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ug2p1tlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-ug2p1tlmso36dk"><pre><code class="hljs cpp"><span class="hljs-comment">// Investment* CreateInvestment();</span>
 
 <span class="hljs-function">std::unique_ptr&lt;Investment&gt; <span class="hljs-title">pUniqueInv1</span><span class="hljs-params">(CreateInvestment())</span></span>;
 <span class="hljs-function">std::unique_ptr&lt;Investment&gt; <span class="hljs-title">pUniqueInv2</span><span class="hljs-params">(std::move(pUniqueInv1))</span></span>;    <span class="hljs-comment">// 转移资源所有权</span>
@@ -340,7 +330,7 @@ Initialization，资源取得时机便是初始化时机），让<strong>析构�
 <span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv1</span><span class="hljs-params">(CreateInvestment())</span></span>;
 <span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv2</span><span class="hljs-params">(pSharedInv1)</span></span>;               <span class="hljs-comment">// 引用计数+1</span></code></pre></div></div>
 <p>智能指针默认会自动delete所持有的对象，我们也可以为智能指针指定所管理对象的释放方式（删除器deleter）：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-45im5llmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-45im5llmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetRidOfInvestment</span><span class="hljs-params">(Investment*)</span> </span>{ std::cout&lt;&lt;<span class="hljs-string">"Clean up"</span>;}
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-43edq6lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-43edq6lmso36dk"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetRidOfInvestment</span><span class="hljs-params">(Investment*)</span> </span>{ std::cout&lt;&lt;<span class="hljs-string">"Clean up"</span>;}
 
 <span class="hljs-function">std::unique_ptr&lt;Investment, <span class="hljs-title">decltype</span><span class="hljs-params">(GetRidOfInvestment)</span>*&gt; <span class="hljs-title">pUniqueInv</span><span class="hljs-params">(CreateInvestment(), GetRidOfInvestment)</span></span>;
 <span class="hljs-function">std::shared_ptr&lt;Investment&gt; <span class="hljs-title">pSharedInv</span><span class="hljs-params">(CreateInvestment(), GetRidOfInvestment)</span></span>;</code></pre></div></div>
@@ -367,7 +357,7 @@ copying）</strong>，例如在一个对象中有一个指针，那么在复制�
 15：在资源管理类中提供对原始资源的访问</h3>
 <p>和所有的智能指针一样，STL
 中的智能指针也提供了对原始资源的隐式访问和显式访问：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rwupzxlmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-rwupzxlmrc2t9l"><pre><code class="hljs cpp">Investment* pRaw = pSharedInv.<span class="hljs-built_in">get</span>();    <span class="hljs-comment">// 显式访问原始资源</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fwtouslmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-fwtouslmso36dk"><pre><code class="hljs cpp">Investment* pRaw = pSharedInv.<span class="hljs-built_in">get</span>();    <span class="hljs-comment">// 显式访问原始资源</span>
 Investment raw = *pSharedInv;           <span class="hljs-comment">// 隐式访问原始资源</span></code></pre></div></div>
 <blockquote>
 <p>智能指针针重载了指针取值操作符(operator-&gt;和operator*)，它们允许使用指针的方式操作资源，也可以隐式转换至底部原始指针。</p>
@@ -377,7 +367,7 @@ Investment raw = *pSharedInv;           <span class="hljs-comment">// 隐式访�
 <p>下面的例子是将字体包装成RAII对象，同时考虑C
 API的兼容性，考虑转换为原始资源<code>FontHandle</code>的需求。</p>
 </blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0yxx8ylmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-0yxx8ylmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Font</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-15g9o3lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-15g9o3lmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Font</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function">FontHandle <span class="hljs-title">Get</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>{ <span class="hljs-keyword">return</span> handle; }       <span class="hljs-comment">// 显式转换函数</span>
     <span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">FontHandle</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>{ <span class="hljs-keyword">return</span> handle; }  <span class="hljs-comment">// 隐式转换函数</span>
@@ -395,13 +385,13 @@ API的兼容性，考虑转换为原始资源<code>FontHandle</code>的需求。
 <h3 id="条款-16成对使用-new-和-delete-时要采用相同形式">条款
 16：成对使用 new 和 delete 时要采用相同形式</h3>
 <p>使用<code>new</code>来分配单一对象，使用<code>new[]</code>来分配对象数组，必须明确它们的行为并不一致，分配对象数组时会额外在内存中记录“数组大小”，而使用<code>delete[]</code>会根据记录的数组大小多次调用析构函数，使用<code>delete</code>则仅仅只会调用一次析构函数。对于单一对象使用<code>delete[]</code>其结果也是未定义的，程序可能会读取若干内存并将其错误地解释为数组大小。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e3oam0lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-e3oam0lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-type">int</span>* array = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>];
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-o5pc8hlmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-o5pc8hlmso36dk"><pre><code class="hljs cpp"><span class="hljs-type">int</span>* array = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>];
 <span class="hljs-type">int</span>* object = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>;
 
 <span class="hljs-keyword">delete</span>[] array;
 <span class="hljs-keyword">delete</span> object;</code></pre></div></div>
 <p>需要注意的是，使用<code>typedef</code>定义数组类型会带来额外的风险：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pauuzmlmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-pauuzmlmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::string AddressLines[<span class="hljs-number">4</span>];
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ylw30slmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-ylw30slmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::string AddressLines[<span class="hljs-number">4</span>];
 
 std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span class="hljs-comment">// pal 是一个对象数组，而非单一对象</span>
 <span class="hljs-comment">//用户后续可能忘记它是个数组</span>
@@ -410,15 +400,15 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
 <h3 id="条款-17以独立语句将-newed-对象置入智能指针">条款
 17：以独立语句将 newed 对象置入智能指针</h3>
 <p>现在更好的做法是使用<code>std::make_unique</code>和<code>std::make_shared</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-er4ox1lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-er4ox1lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> pUniqueInv = std::<span class="hljs-built_in">make_unique</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++14</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-843s98lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-843s98lmso36dk"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> pUniqueInv = std::<span class="hljs-built_in">make_unique</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++14</span>
 <span class="hljs-keyword">auto</span> pSharedInv = std::<span class="hljs-built_in">make_shared</span>&lt;Investment&gt;();    <span class="hljs-comment">// since C++11</span></code></pre></div></div>
 <blockquote>
 <p>原文中举了这样的例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-poqbe3lmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-poqbe3lmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-built_in">processwidget</span>(std::<span class="hljs-built_in">shared_ptr</span>&lt;Widget&gt;(<span class="hljs-keyword">new</span> Widget),<span class="hljs-built_in">priority</span>());</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-we4fzllmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-we4fzllmso36dk"><pre><code class="hljs cpp"><span class="hljs-built_in">processwidget</span>(std::<span class="hljs-built_in">shared_ptr</span>&lt;Widget&gt;(<span class="hljs-keyword">new</span> Widget),<span class="hljs-built_in">priority</span>());</code></pre></div></div>
 <p>认为<code>priority()</code>的执行异常可能导致<code>Widget</code>未被置于智能指针中，从而引发资源泄漏。</p>
 <p>函数入参的表达式计算顺序本身就是未定义的，不同编译器的执行结果可能是不同的：</p>
 <p>如：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-25vyewlmrc2t9l"></i><span>cpp</span><div class="collapse show" id="collapse-25vyewlmrc2t9l"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-aclcy4lmso36dk"></i><span>cpp</span><div class="collapse show" id="collapse-aclcy4lmso36dk"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dis</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b,<span class="hljs-type">int</span> c)</span></span>
 <span class="hljs-function"></span>{
@@ -429,7 +419,7 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
  <span class="hljs-built_in">dis</span>(x++, x++,x);
  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre></div></div>
-<p>clang-tidy会报： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1c0vjblmrc2t9l"></i><span>llvm</span><div class="collapse show" id="collapse-1c0vjblmrc2t9l"><pre><code class="hljs llvm">Multiple unsequenced modifications <span class="hljs-keyword">to</span> ’<span class="hljs-keyword">x</span>'</code></pre></div></div><p></p>
+<p>clang-tidy会报： </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nr1u9almso36dk"></i><span>llvm</span><div class="collapse show" id="collapse-nr1u9almso36dk"><pre><code class="hljs llvm">Multiple unsequenced modifications <span class="hljs-keyword">to</span> ’<span class="hljs-keyword">x</span>'</code></pre></div></div><p></p>
 <p><strong>因此，不要这么写。</strong></p>
 </blockquote>
 
@@ -465,7 +455,7 @@ std::string* pal = <span class="hljs-keyword">new</span> AddressLines;    <span 
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/C/">#C++</a>
+        <a href="/tags/EffectiveC/">#EffectiveC++</a>
       
     </div>
   

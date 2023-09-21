@@ -270,16 +270,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/数据库系统期末工程作业设计/数据库系统期末工程作业设计.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -347,7 +337,7 @@ buy_costs)</p>
 <p>shelf(<u>shelf_id</u>, goods_num_on_shelf)</p>
 <p>sell (<u><em>emp_no</em></u>, <em><u>goods_id</u></em>)</p>
 <h4 id="sql创建关系模式">2.3 SQL创建关系模式</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-94dw1elmrc2t9n"></i><span>sql</span><div class="collapse show" id="collapse-94dw1elmrc2t9n"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> goods 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-befkmalmrh9u69"></i><span>sql</span><div class="collapse show" id="collapse-befkmalmrh9u69"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> goods 
 (
    goods_id             <span class="hljs-type">integer</span>                        <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span>,
    shelf_id             <span class="hljs-type">integer</span>                        <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span>,
@@ -442,21 +432,21 @@ buy_costs)</p>
 <h4 id="查询语句样例">2.4 查询语句样例</h4>
 <p>1.单表查询</p>
 <p>查询单价为10元的商品名称</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ogzxqmlmrc2t9n"></i><span>sql</span><div class="collapse show" id="collapse-ogzxqmlmrc2t9n"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lfvotslmrh9u69"></i><span>sql</span><div class="collapse show" id="collapse-lfvotslmrh9u69"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name 
 <span class="hljs-keyword">from</span> goods
 <span class="hljs-keyword">where</span> price<span class="hljs-operator">=</span><span class="hljs-number">10</span></code></pre></div></div>
 <p>2.多表连接查询</p>
 <p>查询每个厂商生产商品的平均价格</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-rokac6lmrc2t9n"></i><span>SQL</span><div class="collapse show" id="collapse-rokac6lmrc2t9n"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sp_id,<span class="hljs-built_in">avg</span>(price)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8v90g6lmrh9u69"></i><span>SQL</span><div class="collapse show" id="collapse-8v90g6lmrh9u69"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sp_id,<span class="hljs-built_in">avg</span>(price)
 <span class="hljs-keyword">from</span> supply <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> goods
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> sp_id</code></pre></div></div>
 <p>3.4多表嵌套查询和exist查询</p>
 <p>查询只有一种商品的货架，返回这种商品的名称和货架id</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5mh1f5lmrc2t9n"></i><span>sql</span><div class="collapse show" id="collapse-5mh1f5lmrc2t9n"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name,shelf_id
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v81yk2lmrh9u69"></i><span>sql</span><div class="collapse show" id="collapse-v81yk2lmrh9u69"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name,shelf_id
 <span class="hljs-keyword">from</span> goods,shelf
 <span class="hljs-keyword">where</span> goods.shelf_id<span class="hljs-operator">=</span>shelf.shelf_id <span class="hljs-keyword">and</span> goods.goods_num<span class="hljs-operator">=</span>shelf.goods_num_on_shelf</code></pre></div></div>
 <p>也可以只在goods表中查</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-z7e403lmrc2t9n"></i><span>sql</span><div class="collapse show" id="collapse-z7e403lmrc2t9n"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-s6f61glmrh9u69"></i><span>sql</span><div class="collapse show" id="collapse-s6f61glmrh9u69"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> goods_name
 <span class="hljs-keyword">from</span> goods g1
 <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span>
 <span class="hljs-operator">*</span>
@@ -465,7 +455,7 @@ buy_costs)</p>
 goods_name<span class="hljs-operator">&lt;&gt;</span>e1.goods_name);</code></pre></div></div>
 <p>5.聚合查询</p>
 <p>有10种以上商品的货架，以及拥有的商品种类数</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bcj42klmrc2t9n"></i><span>sql</span><div class="collapse show" id="collapse-bcj42klmrc2t9n"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> shelf_id,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-kl0s9xlmrh9u69"></i><span>sql</span><div class="collapse show" id="collapse-kl0s9xlmrh9u69"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> shelf_id,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
 <span class="hljs-keyword">from</span> goods
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> shef_id
 <span class="hljs-keyword">having</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">10</span>;</code></pre></div></div>
@@ -480,7 +470,7 @@ goods_name<span class="hljs-operator">&lt;&gt;</span>e1.goods_name);</code></pre
 <figcaption aria-hidden="true">image-20220415222820109</figcaption>
 </figure>
 <h4 id="生成sql语句">3.3 生成SQL语句</h4>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-coa3s3lmrc2t9n"></i><span>sql</span><div class="collapse show" id="collapse-coa3s3lmrc2t9n"><pre><code class="hljs sql"><span class="hljs-comment">/*==============================================================*/</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cjh0xllmrh9u69"></i><span>sql</span><div class="collapse show" id="collapse-cjh0xllmrh9u69"><pre><code class="hljs sql"><span class="hljs-comment">/*==============================================================*/</span>
 <span class="hljs-comment">/* DBMS name:      Sybase SQL Anywhere 12                       */</span>
 <span class="hljs-comment">/* Created on:     2022/4/15 22:28:49                           */</span>
 <span class="hljs-comment">/*==============================================================*/</span>

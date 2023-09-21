@@ -268,16 +268,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Go 语言入门指南：slice使用解析/Go 语言入门指南：slice使用解析.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -319,7 +309,7 @@
 理解slice的底层存储对得心应手的使用slice来说是必须的。切片的数据结构是一个结构体,
 结构体内有三个参数, pointer指向底层数组中的某个元素, length表示长度,
 cap表示最大容量。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1x99n7lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-1x99n7lmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">type</span> slice <span class="hljs-keyword">struct</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2juceklmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-2juceklmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">type</span> slice <span class="hljs-keyword">struct</span> {
     array unsafe.Pointer  <span class="hljs-comment">//底层数组</span>
     <span class="hljs-built_in">len</span>   <span class="hljs-type">int</span>   <span class="hljs-comment">//长度</span>
     <span class="hljs-built_in">cap</span>   <span class="hljs-type">int</span>   <span class="hljs-comment">//容量</span>
@@ -329,7 +319,7 @@ cap表示最大容量。</p>
 <p>在开发中我们会经常遇到这种情况, 我们想返回长度为零的切片时,
 有时返回的是nil, 有时返回的是空切片, 这两者有什么区别呢,
 我们到底应该使用哪一种呢。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-t97cv5lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-t97cv5lmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qzd7wulmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-qzd7wulmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
     <span class="hljs-comment">// 定义nil切片</span>
     <span class="hljs-keyword">var</span> s1 []<span class="hljs-type">string</span>
     <span class="hljs-comment">//定义空切片</span>
@@ -340,7 +330,7 @@ cap表示最大容量。</p>
     fmt.Printf(<span class="hljs-string">"%#v,Len:%d,cap:%d,ptr:%p,nil=%t\n"</span>, s3, <span class="hljs-built_in">len</span>(s3), <span class="hljs-built_in">cap</span>(s3), s3, <span class="hljs-literal">nil</span> == s3)
 }</code></pre></div></div>
 <p>打印结果：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j25cu0lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-j25cu0lmrc2t9l"><pre><code class="hljs go">[]<span class="hljs-type">string</span>(<span class="hljs-literal">nil</span>),Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x0</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">true</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-u62v1slmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-u62v1slmrh9u64"><pre><code class="hljs go">[]<span class="hljs-type">string</span>(<span class="hljs-literal">nil</span>),Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x0</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">true</span>
 []<span class="hljs-type">string</span>{},Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x10438c108</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">false</span>
 []<span class="hljs-type">string</span>{},Len:<span class="hljs-number">0</span>,<span class="hljs-built_in">cap</span>:<span class="hljs-number">0</span>,ptr:<span class="hljs-number">0x10438c108</span>,<span class="hljs-literal">nil</span>=<span class="hljs-literal">false</span></code></pre></div></div>
 <p>现在分别打印这三个切片, 可以发现长度容量相同且都为零,
@@ -359,7 +349,7 @@ cap表示最大容量。</p>
 。如果不传入第三个参数，则 <code>cap=len</code>。</p>
 <h3 id="slice传递">slice传递</h3>
 <p>下面看一段代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ln0xhhlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-ln0xhhlmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-879a92lmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-879a92lmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
 	<span class="hljs-keyword">var</span> s []<span class="hljs-type">int</span>
 	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ {
 		s = <span class="hljs-built_in">append</span>(s, i)
@@ -372,7 +362,7 @@ cap表示最大容量。</p>
 是按值传递的，这里传递的是s底层的数组的指针。</p>
 <p>但是仅仅是共享了slice底层的数组，slice底层的<code>len</code>和<code>cap</code>都是被复制了一份，所以在<code>modifySlice</code>里面的<code>len+1</code>在外层是看不到的。外层的<code>len</code>还是3。</p>
 <p>更进一步，如果我们再append一条数据会怎么样呢？</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5zn593lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-5zn593lmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">modifySlice</span><span class="hljs-params">(s []<span class="hljs-type">int</span>)</span></span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-020t53lmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-020t53lmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">modifySlice</span><span class="hljs-params">(s []<span class="hljs-type">int</span>)</span></span> {
 	s = <span class="hljs-built_in">append</span>(s, <span class="hljs-number">2048</span>)
 	s = <span class="hljs-built_in">append</span>(s, <span class="hljs-number">4096</span>)
 	s[<span class="hljs-number">0</span>] = <span class="hljs-number">1024</span>
@@ -384,7 +374,7 @@ cap表示最大容量。</p>
 <p>如果没有发生扩容，修改在原来的底层数组内存中</p>
 <p>如果发生了扩容，修改会在新的内存中</p>
 <p>显然，这会发生我们意料之外的行为。因此我们应当使用指针传递作为函数的参数，这与C语言类似。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nyxv05lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-nyxv05lmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">modifySlice2</span><span class="hljs-params">(s *[]<span class="hljs-type">int</span>)</span></span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ablh9hlmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-ablh9hlmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">modifySlice2</span><span class="hljs-params">(s *[]<span class="hljs-type">int</span>)</span></span> {
 	*s = <span class="hljs-built_in">append</span>(*s, <span class="hljs-number">2048</span>)
 	(*s)[<span class="hljs-number">0</span>] = <span class="hljs-number">1024</span>
 }</code></pre></div></div>
@@ -394,7 +384,7 @@ cap表示最大容量。</p>
 <p>1.当cap &lt; 256 的时候 slice 每次扩容 * 2。</p>
 <p>2.当cap &gt;= 256 的时候， slice每次扩容 * 1.25。</p>
 <p>我们可以查看<a target="_blank" rel="noopener" href="https://go.dev/src/runtime/slice.go">源码</a>中<code>growslice</code>的实现具体分析，这里摘录其核心部分：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vr0y9qlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-vr0y9qlmrc2t9l"><pre><code class="hljs go"><span class="hljs-comment">//num = number of elements being added</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d8altxlmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-d8altxlmrh9u64"><pre><code class="hljs go"><span class="hljs-comment">//num = number of elements being added</span>
 <span class="hljs-comment">//newLen = current length (= oldLen + num)</span>
 oldLen := newLen - num	
 newcap := oldCap
@@ -426,7 +416,7 @@ doublecap := newcap + newcap
 <h4 id="原理">原理</h4>
 <p>切片操作并不复制切片指向的元素，创建一个新的切片会复用原来切片的底层数组，因此切片操作是非常高效的。</p>
 <p>看下面的例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eefsnhlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-eefsnhlmrc2t9l"><pre><code class="hljs go">nums := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h1ymj4lmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-h1ymj4lmrh9u64"><pre><code class="hljs go">nums := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>)
 nums = <span class="hljs-built_in">append</span>(nums, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)
 nums2 := nums[<span class="hljs-number">2</span>:<span class="hljs-number">4</span>]
 printLenCap(nums)  <span class="hljs-comment">// len: 5, cap: 8 [1 2 3 4 5]</span>
@@ -452,7 +442,7 @@ printLenCap(nums2) <span class="hljs-comment">// len: 4, cap: 6 [3 4 50 60]</spa
 O(N)，因此切片不合适大量随机删除的场景，这种场景下适合使用链表。</p>
 <p>另外在<code>slice传递</code>一节中提到，在已有切片的基础上进行切片，不会创建新的底层数组。因为原来的底层数组没有发生变化，内存会一直占用，直到没有变量引用该数组。因此很可能出现这么一种情况，原切片由大量的元素构成，但是我们在原切片的基础上切片，虽然只使用了很小一段，但底层数组在内存中仍然占据了大量空间，得不到释放。比较推荐的做法是使用
 <code>copy</code> 替代 <code>re-slice</code>。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5m8mqtlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-5m8mqtlmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">lastNumsBySlice</span><span class="hljs-params">(origin []<span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-16bvielmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-16bvielmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">lastNumsBySlice</span><span class="hljs-params">(origin []<span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
 	<span class="hljs-keyword">return</span> origin[<span class="hljs-built_in">len</span>(origin)<span class="hljs-number">-2</span>:]
 }
 

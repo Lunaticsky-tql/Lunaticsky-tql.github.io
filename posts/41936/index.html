@@ -266,16 +266,6 @@
                   
                     
                           
-                            <!-- add a sorce code icon -->
-                            <span class="post-meta mr-2">
-                              <i class="iconfont icon-code"></i>
-                              <!-- a link with white font color -->
-                              <!-- <a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/4aa8abbe/" style="color: #fff">Source Code</a> -->
-                              <!-- https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/page.title.md -->
-                              <!-- construct the souce code url-->
-                              
-                                <a target="_blank" rel="noopener" href="https://github.com/Lunaticsky-tql/blog_article_resources/blob/main/Go 刷题快速入门/Go 刷题快速入门.md" style="color: #EA7A99">Article Resource Link</a>
-                            </span>
   </div>
   
         
@@ -330,7 +320,7 @@
 从标准输入扫描文本，读取由空白符分隔的值保存到传递给本函数的参数中，换行符视为空白符。本函数返回成功扫描的数据个数和遇到的任何错误。如果读取的数据个数比提供的参数少，会返回一个错误报告原因。</p>
 <p>而Scanln遇到换行才停止扫描。最后一个数据后面必须有换行或者到达结束位置。返回值和Scan含义一样。</p>
 <p>下面给出示例代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jln5hhlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-jln5hhlmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ffu3ailmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-ffu3ailmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
 <span class="hljs-keyword">import</span> (
     <span class="hljs-string">"fmt"</span>
@@ -358,7 +348,7 @@
 <p>输出例子1: 10 15</p>
 </blockquote>
 <p>同样的道理，不赘述。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3dtjvclmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-3dtjvclmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j6hnr2lmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-j6hnr2lmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
 <span class="hljs-keyword">import</span>(
     <span class="hljs-string">"fmt"</span>
@@ -383,7 +373,7 @@
 }</code></pre></div></div>
 <h4 id="每行数字不固定也不知道数量">每行数字不固定，也不知道数量</h4>
 <p>这个时候我们需要一整行一整行地读，这时需要用到bufio包，还是需要格外记忆一下。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2a4r5nlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-2a4r5nlmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-96w9lxlmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-96w9lxlmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
 <span class="hljs-keyword">import</span> (
     <span class="hljs-string">"bufio"</span>
@@ -408,7 +398,7 @@
 <p>补充一个C++的实现，用到了<code>stringstream</code>。</p>
 <p>另外需要提醒的是，<code>stringstream</code>构造函数会特别消耗内存，似乎不打算主动释放内存(或许是为了提高效率)，但如果你要在程序中用同一个流，反复读写大量的数据，将会造成大量的内存消耗，因些这时候，需要适时地清除一下缓冲
 (用 stream.str("") ，需要注意clear()仅仅清空标志位，并没有释放内存)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h0y2g6lmrc2t9l"></i><span>C++</span><div class="collapse show" id="collapse-h0y2g6lmrc2t9l"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mddjwqlmrh9u64"></i><span>C++</span><div class="collapse show" id="collapse-mddjwqlmrh9u64"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sstream&gt;</span></span>
 
@@ -442,7 +432,7 @@
 sort.Interface
 来指定通用的排序算法和可能被排序到的序列类型之间的约定。这个接口的实现由序列的具体表示和它希望排序的元素决定，序列的表示经常是一个切片。</p>
 <p>根据直觉，排序算法需要知道三个东西：序列的长度，表示两个元素比较的结果，一种交换两个元素的方式。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5m7k1clmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-5m7k1clmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">package</span> sort
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0f37tulmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-0f37tulmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">package</span> sort
 <span class="hljs-keyword">type</span> Interface <span class="hljs-keyword">interface</span> {
     Len() <span class="hljs-type">int</span>            <span class="hljs-comment">// 获取元素数量</span>
     Less(i, j <span class="hljs-type">int</span>) <span class="hljs-type">bool</span> <span class="hljs-comment">// i，j是序列元素的指数。</span>
@@ -451,9 +441,9 @@ sort.Interface
 <p>为了对序列进行排序，我们需要定义一个实现了这三个方法的类型，然后对这个类型的一个实例应用
 sort.Sort 函数。</p>
 <p>我们可以像任何其他语言一样灵活的自定义排序规则。但大部分情况中，只需要对字符串、整型等进行快速排序。根据优化热点行为的原则，Golang对Go语言中提供了一些固定模式的封装以方便开发者迅速对内容进行排序。因此在这个题目中我们可以简单的调用<code>sort.Strings</code>按字典序进行排序。同时，像C++一样，我们可以自定义排序函数，使其倒序排列：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-g7q12wlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-g7q12wlmrc2t9l"><pre><code class="hljs go">sort.Slice(a,<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i,j <span class="hljs-type">int</span>)</span></span><span class="hljs-type">bool</span>{<span class="hljs-keyword">return</span> a[i]&gt;a[j] })</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qmurt6lmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-qmurt6lmrh9u64"><pre><code class="hljs go">sort.Slice(a,<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i,j <span class="hljs-type">int</span>)</span></span><span class="hljs-type">bool</span>{<span class="hljs-keyword">return</span> a[i]&gt;a[j] })</code></pre></div></div>
 <p><code>strings.Join</code>将切片连接成字符串。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-okqq1rlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-okqq1rlmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jylzgblmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-jylzgblmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
 <span class="hljs-keyword">import</span> (
     <span class="hljs-string">"fmt"</span>
@@ -474,7 +464,7 @@ sort.Sort 函数。</p>
 <h2 id="数据结构">数据结构</h2>
 <h3 id="线性容器">线性容器</h3>
 <p>Golang内置的切片以及其方便的操作，可以满足我们使用向量，栈和队列等需求。比如以经典的考察栈的运用的<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-parentheses/">有效的括号</a>为例：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-y88z90lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-y88z90lmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isValid</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">bool</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c5egfxlmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-c5egfxlmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isValid</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">bool</span> {
     n := <span class="hljs-built_in">len</span>(s)
     <span class="hljs-keyword">if</span> n % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> {
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
@@ -505,7 +495,7 @@ sort.Sort 函数。</p>
 set，在检查是否存在某个元素时可直接使用
 <code>_, ok := m[key]</code>的语法，效率高。</p>
 <p>先来看一个简单的实现，如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jp3xhllmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-jp3xhllmrc2t9l"><pre><code class="hljs go">set := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">bool</span>) <span class="hljs-comment">// New empty set</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fcubnblmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-fcubnblmrh9u64"><pre><code class="hljs go">set := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">bool</span>) <span class="hljs-comment">// New empty set</span>
 set[<span class="hljs-string">"Foo"</span>] = <span class="hljs-literal">true</span>            <span class="hljs-comment">// Add</span>
 <span class="hljs-keyword">for</span> k := <span class="hljs-keyword">range</span> set {         <span class="hljs-comment">// Loop</span>
     fmt.Println(k)
@@ -519,9 +509,9 @@ exists := set[<span class="hljs-string">"Foo"</span>]  <span class="hljs-comment
 是布尔类型，这会导致 set 多占一定内存空间，而 <code>set</code>
 不该有这个问题。如果我们对占用空间有要求，可以考虑利用空结构体。</p>
 <p>在 Go 中，空结构体不占任何内存。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-83bdvplmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-83bdvplmrc2t9l"><pre><code class="hljs go">unsafe.Sizeof(<span class="hljs-keyword">struct</span>{}{}) <span class="hljs-comment">// 结果为 0</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2s8qrclmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-2s8qrclmrh9u64"><pre><code class="hljs go">unsafe.Sizeof(<span class="hljs-keyword">struct</span>{}{}) <span class="hljs-comment">// 结果为 0</span></code></pre></div></div>
 <p>因此可以实现如下例所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-r5yztjlmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-r5yztjlmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ubzxjblmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-ubzxjblmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
 	set := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-keyword">struct</span>{}{
 		<span class="hljs-string">"pm"</span>: {},
 		<span class="hljs-string">"fe"</span>: {},
@@ -537,7 +527,7 @@ exists := set[<span class="hljs-string">"Foo"</span>]  <span class="hljs-comment
 <h3 id="堆">堆</h3>
 <p>Go的标准包<code>Container</code>中包含了常用的容器类型,包括<code>conatiner/List</code>,<code>container/heap</code>,<code>container/ring</code>。关于双向链表和环形链表，虽然在实际工作中也会经常用到，但在力扣中通常会给出链表的结构体，其他链表的操作和功能需要我们自己去实现；而ACM题目为了方便程序调试常常使用向量模拟链表，鉴于篇幅有限不在此详细讲解，也可以参阅<a target="_blank" rel="noopener" href="https://juejin.cn/post/7042729165400834056">这篇文章</a>进行更深入的了解。在此主要总结一下堆的实现和使用。</p>
 <p>首先若是ACM模式，需要导包：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-32rpi0lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-32rpi0lmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-dkhn61lmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-dkhn61lmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
 <span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"container/heap"</span>
@@ -552,7 +542,7 @@ exists := set[<span class="hljs-string">"Foo"</span>]  <span class="hljs-comment
 <li>Pop() interface{}</li>
 </ul>
 <p>实现了这五个方法的数据类型才能使用go标准库给我们提供的heap，下面简单示例为定义一个IntHeap类型，并实现上面五个方法。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6zbzrclmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-6zbzrclmrc2t9l"><pre><code class="hljs go"><span class="hljs-keyword">type</span> IntHeap []<span class="hljs-type">int</span>  <span class="hljs-comment">// 定义一个类型</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k92qxxlmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-k92qxxlmrh9u64"><pre><code class="hljs go"><span class="hljs-keyword">type</span> IntHeap []<span class="hljs-type">int</span>  <span class="hljs-comment">// 定义一个类型</span>
 
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IntHeap)</span></span> Len() <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(h) }  <span class="hljs-comment">// 绑定len方法,返回长度</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(h IntHeap)</span></span> Less(i, j <span class="hljs-type">int</span>) <span class="hljs-type">bool</span> {  <span class="hljs-comment">// 绑定less方法</span>
@@ -574,7 +564,7 @@ exists := set[<span class="hljs-string">"Foo"</span>]  <span class="hljs-comment
 	*h = <span class="hljs-built_in">append</span>(*h, x.(<span class="hljs-type">int</span>))
 }</code></pre></div></div>
 <p>我们可以借此通过<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-elements/description">前k个高频元素</a>进行练习。当然这道题目更好的方法是采用快速划分的思想。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e284f4lmrc2t9l"></i><span>go</span><div class="collapse show" id="collapse-e284f4lmrc2t9l"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">topKFrequent</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, k <span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-udwltolmrh9u64"></i><span>go</span><div class="collapse show" id="collapse-udwltolmrh9u64"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">topKFrequent</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>, k <span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> {
     occ:=<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">int</span>{}
     <span class="hljs-keyword">for</span> _,num:=<span class="hljs-keyword">range</span> nums{
         occ[num]++
