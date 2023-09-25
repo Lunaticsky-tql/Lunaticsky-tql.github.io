@@ -313,7 +313,7 @@ C++：条款 &amp; 实践</a>进行总结。虽然<a target="_blank" rel="noopen
 的行为</h3>
 <p>当<code>operator new</code>无法满足某一内存分配需求时，会不断调用一个客户指定的错误处理函数，即所谓的
 <strong>new-handler</strong>，直到找到足够内存为止，调用声明于<code>&lt;new&gt;</code>中的<code>set_new_handler</code>可以指定这个函数。<code>new_handler</code>和<code>set_new_handler</code>的定义如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-06o6xmlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-06o6xmlmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> std {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a0jmo4lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-a0jmo4lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> std {
     <span class="hljs-keyword">using</span> new_handler = <span class="hljs-built_in">void</span>(*)();
     <span class="hljs-function">new_handler <span class="hljs-title">set_new_handler</span><span class="hljs-params">(new_handler)</span> <span class="hljs-title">throw</span> <span class="hljs-params">()</span></span>;    <span class="hljs-comment">// 返回值为原来持有的 new-handler</span>
 }</code></pre></div></div>
@@ -337,7 +337,7 @@ C++：条款 &amp; 实践</a>进行总结。虽然<a target="_blank" rel="noopen
 <p><strong>不返回：</strong>
 通常调用<code>std::abort</code>或<code>std::exit</code>。</p>
 <p>有的时候我们或许会希望在<strong>为不同的类分配对象时，使用不同的方式处理内存分配失败情况</strong>。这时候使用静态成员是不错的选择：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l9hrm0lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-l9hrm0lmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-erzvhzlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-erzvhzlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span>{
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> std::new_handler <span class="hljs-title">set_new_handler</span><span class="hljs-params">(std::new_handler p)</span> <span class="hljs-keyword">noexcept</span></span>;
     <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span></span>;
@@ -364,7 +364,7 @@ std::new_handler Widget::currentHandler = <span class="hljs-literal">nullptr</sp
 <p>看上去写的有点复杂，再理一下我们要干什么：我们要为<code>Widget</code>写一个其专属的<code>handler</code>，其行为和标准的<code>handler</code>一致，但只对<code>Widget</code>生效，而且只对下一次new生效。</p>
 </blockquote>
 <p><code>Widget</code>的客户应该类似这样使用其 new-handling：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-97m9wllmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-97m9wllmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutOfMem</span><span class="hljs-params">()</span></span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mpymcllmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-mpymcllmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutOfMem</span><span class="hljs-params">()</span></span>{
   std::cout&lt;&lt;<span class="hljs-string">"Custom handler when running out of memory!"</span>
 }
 
@@ -374,7 +374,7 @@ Widget* pw1 = <span class="hljs-keyword">new</span> Widget;              <span c
 Widget::<span class="hljs-built_in">set_new_handler</span>(<span class="hljs-literal">nullptr</span>);
 Widget* pw2 = <span class="hljs-keyword">new</span> Widget;              <span class="hljs-comment">// 若分配失败，则抛出异常</span></code></pre></div></div>
 <p>实现这一方案的代码并不因类的不同而不同，因此对这些代码加以复用是合理的构想。一个简单的做法是建立起一个“mixin”风格的基类，让其派生类继承它们所需的<code>set_new_handler</code>和<code>operator new</code>，并且使用模板确保每一个派生类获得一个实体互异的<code>currentHandler</code>成员变量：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-b4adtzlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-b4adtzlmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ny776glmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-ny776glmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">NewHandlerSupport</span> {       <span class="hljs-comment">// “mixin”风格的基类</span>
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> std::new_handler <span class="hljs-title">set_new_handler</span><span class="hljs-params">(std::new_handler p)</span> <span class="hljs-keyword">noexcept</span></span>;
@@ -414,7 +414,7 @@ pattern，奇异递归模板模式）</strong> 。</p>
 <p>C++的模版每具现化一次，都会生成其对应的具现化代码。通过上面的技巧写出的自定义handler代码，在<code>Widget</code>（或其他不同于<code>Widget</code>任何对象）的客户调用时，依旧可以直接使用<code>Widget::set_new_handler(OutOfMem);</code>。</p>
 </blockquote>
 <p>除了在上述设计模式中用到之外，它也被用于实现<strong>静态多态</strong>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-nedl24lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-nedl24lmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span>&gt; 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0naj24lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-0naj24lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span>&gt; 
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Base</span> {
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Interface</span><span class="hljs-params">()</span> </span>{
         <span class="hljs-built_in">static_cast</span>&lt;Derived*&gt;(<span class="hljs-keyword">this</span>)-&gt;<span class="hljs-built_in">Implementation</span>();      <span class="hljs-comment">// 在基类中暴露接口</span>
@@ -427,7 +427,7 @@ pattern，奇异递归模板模式）</strong> 。</p>
 <p>除了会调用 new-handler 的<code>operator new</code>以外，C++
 还保留了传统的“分配失败便返回空指针”的<code>operator new</code>，称为
 <code>nothrow new</code>，通过<code>std::nothrow</code>对象来使用它：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d6qg2olmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-d6qg2olmso88gj"><pre><code class="hljs cpp">Widget* pw1 = <span class="hljs-keyword">new</span> Widget;                   <span class="hljs-comment">// 如果分配失败，抛出 bad_alloc</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h2dq0ylmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-h2dq0ylmyiaxgh"><pre><code class="hljs cpp">Widget* pw1 = <span class="hljs-keyword">new</span> Widget;                   <span class="hljs-comment">// 如果分配失败，抛出 bad_alloc</span>
 <span class="hljs-keyword">if</span> (pw1 == <span class="hljs-literal">nullptr</span>) ...                     <span class="hljs-comment">// 这个测试一定失败</span>
 
 Widget* pw2 = <span class="hljs-built_in">new</span> (std::nothrow) Widget;    <span class="hljs-comment">// 如果分配失败，返回空指针</span>
@@ -446,7 +446,7 @@ delete 的合理替换时机</h3>
 <strong>“underruns”（写入点在分配区块起点之前）</strong>，以额外空间放置特定的
 byte pattern
 签名，检查签名是否原封不动就可以检测此类错误，下面给出了一个这样的范例：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3xsemylmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-3xsemylmso88gj"><pre><code class="hljs cpp"><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> signature = <span class="hljs-number">0xDEADBEEF</span>;              <span class="hljs-comment">// 调试“魔数”</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gpr0ejlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-gpr0ejlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> signature = <span class="hljs-number">0xDEADBEEF</span>;              <span class="hljs-comment">// 调试“魔数”</span>
 <span class="hljs-keyword">using</span> Byte = <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>;
 
 <span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span> </span>{
@@ -481,7 +481,7 @@ Boost 的 Pool 程序库）本质上消除了这样的额外开销。</p>
 <p><strong>为了弥补缺省分配器中的非最佳内存对齐（suboptimal
 alignment）：</strong>上文例子已经讲过。<code>std::max_align_t</code>用来返回当前平台的最大默认内存对齐类型，对于<code>malloc</code>分配的内存，其对齐和<code>max_align_t</code>类型的对齐大小应当是一致的，但若对<code>malloc</code>返回的指针进行偏移，就没有办法保证内存对齐。
 &gt; 下面对现代C++中内存对齐的内容进行较深入讨论： &gt; &gt; 在 C++11
-中，提供了以下内存对齐相关方法： &gt; &gt; </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gbmtsxlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-gbmtsxlmso88gj"><pre><code class="hljs cpp"><span class="hljs-comment">// alignas 用于指定栈上数据的内存对齐要求</span>
+中，提供了以下内存对齐相关方法： &gt; &gt; </p><div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-eicpmblmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-eicpmblmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-comment">// alignas 用于指定栈上数据的内存对齐要求</span>
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">alignas</span>(<span class="hljs-number">8</span>) testStruct { <span class="hljs-type">double</span> data; };
 <span class="hljs-comment">//ps：指定的必须是2的次幂，如果指定的次数大，超过下面提到的max_align_t，不一定能得到保证。这被叫做over-aligned。C++17对其进行了修复。</span>
 
@@ -511,7 +511,7 @@ std::cout &lt;&lt; std::alignment_of&lt;std::<span class="hljs-type">max_align_t
 Allocator实现</a>，实际上现在C++17已经提供了<code>std::aligned_alloc</code>实现。
 &gt; &gt; 在 C++17
 后，可以使用<code>std::align_val_t</code>来重载需求额外内存对齐的<code>operator new</code>：
-&gt; &gt; <div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ffs7lxlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-ffs7lxlmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> count, std::<span class="hljs-type">align_val_t</span> al)</span></span>;</code></pre></div></div> &gt;
+&gt; &gt; <div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v0t414lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-v0t414lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> count, std::<span class="hljs-type">align_val_t</span> al)</span></span>;</code></pre></div></div> &gt;
 &gt;但是，这样必须同时重载与之配套的operator
 delete。具体的，需要手动进行对象析构并且选择合适的带有对齐参数的delete。可以参见<a target="_blank" rel="noopener" href="https://github.com/MeouSker77/Cpp17/blob/master/markdown/src/ch30.md">这里</a><p></p>
 <p><strong>为了将相关对象成簇集中：</strong>
@@ -532,7 +532,7 @@ delete 时需固守常规</h3>
 new-handler，如果无法供应客户申请的内存，就抛出<code>std::bad_alloc</code>异常。C++
 还有一个奇怪的规定，即使客户需求为0字节，<code>operator new</code>也得返回一个合法的指针，这种看似诡异的行为其实是为了简化语言其他部分。</p>
 <p>根据这些规约，我们可以写出非成员函数版本的<code>operator new</code>伪代码：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ayl31jlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-ayl31jlmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1omlyjlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-1omlyjlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span> </span>{
     <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 
     <span class="hljs-keyword">if</span> (size == <span class="hljs-number">0</span>)      <span class="hljs-comment">// 处理0字节申请</span>
@@ -551,7 +551,7 @@ new-handler，如果无法供应客户申请的内存，就抛出<code>std::bad_
 }</code></pre></div></div>
 <blockquote>
 <p>在C++11之前，我们没有任何办法可以直接取得new-handling函数指针。只能这样：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ttziv8lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-ttziv8lmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">new</span> handler globalHandler <span class="hljs-built_in">set_new_handler</span>(<span class="hljs-number">0</span>);
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8xvzw9lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-8xvzw9lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">new</span> handler globalHandler <span class="hljs-built_in">set_new_handler</span>(<span class="hljs-number">0</span>);
 <span class="hljs-built_in">set_new_handler</span>(globalHandler);</code></pre></div></div>
 <p>这在多线程情况下可能出问题，必须加锁保证事务语义。</p>
 </blockquote>
@@ -559,7 +559,7 @@ new-handler，如果无法供应客户申请的内存，就抛出<code>std::bad_
 <p><code>operator new</code>的成员函数版本一般只会分配大小刚好为类的大小的内存空间，但是情况并不总是如此，比如假设我们没有为派生类声明其自己的<code>operator new</code>，那么派生类会从基类继承<code>operator new</code>，这就导致派生类使用的是基类的
 new 分配方式，但派生类和基类的大小很多时候是不同的。</p>
 <blockquote>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3yldqklmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-3yldqklmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4d87gilmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-4d87gilmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>{
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std:size t size)</span><span class="hljs-title">throw</span><span class="hljs-params">(std::bad alloc)</span></span>;
 ...
@@ -569,7 +569,7 @@ new 分配方式，但派生类和基类的大小很多时候是不同的。</p>
 Derived* p <span class="hljs-keyword">new</span> Derived; <span class="hljs-comment">//这里调用的是Base::operator new</span></code></pre></div></div>
 </blockquote>
 <p>处理此情况的最佳做法是将“内存申请量错误”的调用行为改为采用标准的<code>operator new</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vi80r9lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-vi80r9lmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* Base::<span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span> <span class="hljs-title">throw</span><span class="hljs-params">(std::bad_alloc)</span></span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9nljkmlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-9nljkmlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* Base::<span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span> <span class="hljs-title">throw</span><span class="hljs-params">(std::bad_alloc)</span></span>{
     <span class="hljs-keyword">if</span> (size != <span class="hljs-built_in">sizeof</span>(Base))
         <span class="hljs-keyword">return</span> ::<span class="hljs-keyword">operator</span> <span class="hljs-built_in">new</span>(size);    <span class="hljs-comment">// 转交给标准的 operator new 进行处理</span>
     ...
@@ -587,14 +587,14 @@ array 将含有多少元素对象，在多态的情境下更是如此。</p>
 </blockquote>
 <p><code>operator delete</code>的规约更加简单，你需要记住的唯一一件事情就是
 C++ 保证 <strong>“删除空指针永远安全”</strong>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gf6pv0lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-gf6pv0lmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-type">void</span>* rawMemory)</span> <span class="hljs-keyword">noexcept</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q1roc9lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-q1roc9lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-type">void</span>* rawMemory)</span> <span class="hljs-keyword">noexcept</span> </span>{
   	<span class="hljs-comment">//如果被删除的是null指针，什么也不用做</span>
     <span class="hljs-keyword">if</span> (rawMemory == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
 
     <span class="hljs-comment">// 归还 rawMemory 所指的内存</span>
 }</code></pre></div></div>
 <p><code>operator delete</code>的成员函数版本要多做的唯一一件事就是将大小有误的删除行为转交给标准的<code>operator delete</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6m7iqrlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-6m7iqrlmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> Base::<span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-type">void</span>* rawMemory, std::<span class="hljs-type">size_t</span> size)</span> <span class="hljs-keyword">noexcept</span> </span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0sbb6jlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-0sbb6jlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> Base::<span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-type">void</span>* rawMemory, std::<span class="hljs-type">size_t</span> size)</span> <span class="hljs-keyword">noexcept</span> </span>{
     <span class="hljs-keyword">if</span> (rawMemory == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
     <span class="hljs-keyword">if</span> (size != <span class="hljs-built_in">sizeof</span>(Base)) {
         ::<span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(rawMemory)</span></span>;    <span class="hljs-comment">// 转交给标准的 operator delete 进行处理</span>
@@ -615,11 +615,11 @@ placement new 也要写 placement delete</h3>
 <p>placement new
 最初的含义指的是“<strong>接受一个指针指向对象该被构造之处</strong>”的<code>operator new</code>版本，它在标准库中的用途广泛，其中之一是负责在
 vector 的未使用空间上创建对象，它的声明如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0z26islmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-0z26islmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>, <span class="hljs-type">void</span>* pMemory)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fofdeklmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-fofdeklmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>, <span class="hljs-type">void</span>* pMemory)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre></div></div>
 <p>我们此处要讨论的是广义上的 placement
 new，即<strong>带有附加参数的<code>operator new</code></strong>，都叫placement
 new。例如下面这种：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lggc98lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-lggc98lmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>, std::ostream&amp; logStream)</span></span>;
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1sror5lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-1sror5lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>, std::ostream&amp; logStream)</span></span>;
 
 <span class="hljs-keyword">auto</span> pw = <span class="hljs-built_in">new</span> (std::cerr) Widget;</code></pre></div></div>
 <p>当我们在使用 new
@@ -634,9 +634,9 @@ new，一个是Widget的 default构造函数。</p>
 <p>如果我们使用的是自定义的 placement new，而没有为其准备对应的
 placement delete 的话，就无法避免发生内存泄漏。</p>
 <p>在下面的情景下我们希望在动态创建一个Widget时将相关的分配信息志记(Iogs)于cerr：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xwatu2lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-xwatu2lmso88gj"><pre><code class="hljs cpp">Widget *pw=<span class="hljs-built_in">new</span> (std:cerr) Widget;</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lp070glmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-lp070glmyiaxgh"><pre><code class="hljs cpp">Widget *pw=<span class="hljs-built_in">new</span> (std:cerr) Widget;</code></pre></div></div>
 <p>因此，合格的代码应该是这样的：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-qlv8iblmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-qlv8iblmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xx3v0almyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-xx3v0almyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size, std::ostream&amp; logStream)</span></span>;   <span class="hljs-comment">// placement new</span>
 
@@ -646,7 +646,7 @@ placement delete 的话，就无法避免发生内存泄漏。</p>
 <p>另一个要注意的问题是，由于成员函数的名称会掩盖其外部作用域中的相同名称（见条款
 33），所以单纯提供 placement new
 会导致无法使用正常版本的<code>operator new</code>：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mmdxzxlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-mmdxzxlmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-loo446lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-loo446lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size, std::ostream&amp; logStream)</span></span>;
     ...
@@ -655,7 +655,7 @@ placement delete 的话，就无法避免发生内存泄漏。</p>
 <span class="hljs-keyword">auto</span> pb = <span class="hljs-keyword">new</span> Base;             <span class="hljs-comment">// 无法通过编译！因为正常形式的operator new被掩盖。</span>
 <span class="hljs-keyword">auto</span> pb = <span class="hljs-built_in">new</span> (std::cerr) Base; <span class="hljs-comment">// 正确</span></code></pre></div></div>
 <p>同样道理，派生类中的<code>operator new</code>会掩盖全局版本和继承而得的<code>operator new</code>版本：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-c4gog7lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-c4gog7lmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yxvi6qlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-yxvi6qlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span></span>; <span class="hljs-comment">//重新声明正常形式的new</span>
     ...
@@ -664,7 +664,7 @@ placement delete 的话，就无法避免发生内存泄漏。</p>
 <span class="hljs-keyword">auto</span> pd = <span class="hljs-built_in">new</span> (std::clog) Derived;  <span class="hljs-comment">// 无法通过编译！因为Base的 placement new被掩盖了.</span>
 <span class="hljs-keyword">auto</span> pd = <span class="hljs-keyword">new</span> Derived;              <span class="hljs-comment">// 正确</span></code></pre></div></div>
 <p>为了避免名称遮掩问题，需要确保以下形式的<code>operator new</code>对于定制类型仍然可用（这些是C++标准程序库默认提供的），除非你的意图就是阻止客户使用它们：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xirm6nlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-xirm6nlmso88gj"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">operator</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>)</span> <span class="hljs-title">throw</span><span class="hljs-params">(std::bad_alloc)</span></span>;           <span class="hljs-comment">// normal new</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ryea09lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-ryea09lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">operator</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>)</span> <span class="hljs-title">throw</span><span class="hljs-params">(std::bad_alloc)</span></span>;           <span class="hljs-comment">// normal new</span>
 <span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">operator</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>, <span class="hljs-type">void</span>*)</span> <span class="hljs-keyword">noexcept</span></span>;                 <span class="hljs-comment">// placement new</span>
 <span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">operator</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span>, <span class="hljs-type">const</span> std::<span class="hljs-type">nothrow_t</span>&amp;)</span> <span class="hljs-keyword">noexcept</span></span>; <span class="hljs-comment">// nothrow new</span></code></pre></div></div>
 <blockquote>
@@ -672,7 +672,7 @@ placement delete 的话，就无法避免发生内存泄漏。</p>
 </blockquote>
 <p>一个最简单的实现方式是，准备一个基类，内含所有正常形式的 new 和
 delete：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-87fqr1lmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-87fqr1lmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StadardNewDeleteForms</span>{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1dafw3lmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-1dafw3lmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StadardNewDeleteForms</span>{
 <span class="hljs-keyword">public</span>:
     <span class="hljs-comment">// normal new/delete</span>
     <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> size)</span></span>{
@@ -700,7 +700,7 @@ delete：</p>
 };</code></pre></div></div>
 <p>凡是想以自定义形式扩充标准形式的客户，可以利用继承和<code>using</code>声明式（见条款
 33）取得标准形式：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ydtdkqlmso88gj"></i><span>cpp</span><div class="collapse show" id="collapse-ydtdkqlmso88gj"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span>: <span class="hljs-keyword">public</span> StandardNewDeleteForms{
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9fbo3xlmyiaxgh"></i><span>cpp</span><div class="collapse show" id="collapse-9fbo3xlmyiaxgh"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span>: <span class="hljs-keyword">public</span> StandardNewDeleteForms{
 <span class="hljs-keyword">public</span>:
     <span class="hljs-keyword">using</span> StandardNewDeleteForms::<span class="hljs-keyword">operator</span> <span class="hljs-keyword">new</span>;
     <span class="hljs-keyword">using</span> StandardNewDeleteForms::<span class="hljs-keyword">operator</span> <span class="hljs-keyword">delete</span>;
@@ -798,6 +798,12 @@ delete：</p>
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/posts/27022/" title="Effective Modern C++ - Item1-6 - 类型推导">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Effective Modern C++ - Item1-6 - 类型推导</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
