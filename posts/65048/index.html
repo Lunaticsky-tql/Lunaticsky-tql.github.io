@@ -1,0 +1,1064 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="一组数据表练习Mysql查询 数据表格式   image-20231014154116950  数据库模式如下（分别为Department,Employee,Category,Project,Workson): 部门（部门号，部门名称，位置） 员工（员工号，姓名，年龄，性别，所在部门号） 项目种类（项目种类号，项目种类名） 项目（项目号，项目名称，预算，项目种类号） 员工工作情况（员工号，项目号，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一组数据表练习Mysql查询">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/65048/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="一组数据表练习Mysql查询 数据表格式   image-20231014154116950  数据库模式如下（分别为Department,Employee,Category,Project,Workson): 部门（部门号，部门名称，位置） 员工（员工号，姓名，年龄，性别，所在部门号） 项目种类（项目种类号，项目种类名） 项目（项目号，项目名称，预算，项目种类号） 员工工作情况（员工号，项目号，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155457883160_747_image-20231014154116950.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155503258329_826_image-20220424163426426.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155506469724_414_image-20220424163244361.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155511552514_152_image-20220424163912198.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155516353726_684_image-20220424164944185.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155520977072_206_image-20220424165835471.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155524185316_831_image-20220424172015697.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155528947182_726_image-20220424212513530.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155533441829_214_image-20220424214552653.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155538165850_847_image-20220424221636001.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155542227505_244_image-20220424223306078.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155547176726_653_image-20231012203847118.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155550880799_733_image-20231012205231700.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155555162156_749_image-20231012212055411.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155559791125_456_image-20231012212759491.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155604301445_444_image-20231012212955932.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155607606479_529_image-20231014141406527.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155610257288_208_image-20231014142403857.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155615661381_775_image-20231014150850190.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155619109089_940_image-20231014152206322.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155623802818_678_image-20231014153658251.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155627876393_620_image-20231014155355539.png">
+<meta property="article:published_time" content="2023-10-14T07:56:32.000Z">
+<meta property="article:modified_time" content="2023-10-14T07:56:32.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155457883160_747_image-20231014154116950.png">
+    
+    
+    
+    <title>一组数据表练习Mysql查询 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="一组数据表练习Mysql查询"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-10-14 15:56" pubdate>
+              2023年10月14日 下午
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              5.9k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">一组数据表练习Mysql查询</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一组数据表练习mysql查询">一组数据表练习Mysql查询</h1>
+<h2 id="数据表格式">数据表格式</h2>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155457883160_747_image-20231014154116950.png" srcset="/img/loading.gif" lazyload alt="image-20231014154116950">
+<figcaption aria-hidden="true">image-20231014154116950</figcaption>
+</figure>
+<p>数据库模式如下（分别为Department,Employee,Category,Project,Workson):</p>
+<p>部门（部门号，部门名称，位置）</p>
+<p>员工（员工号，姓名，年龄，性别，所在部门号）</p>
+<p>项目种类（项目种类号，项目种类名）</p>
+<p>项目（项目号，项目名称，预算，项目种类号）</p>
+<p>员工工作情况（员工号，项目号，职责，开始日期）</p>
+<p>下载地址：</p>
+<p>https://github.com/Lunaticsky-tql/SQLQueryPractice</p>
+<h2 id="某年期末考试题">某年期末考试题</h2>
+<p><strong>一共10道，难度递增。</strong></p>
+<p>1.给出职工中所有男性的所有信息（empid,empname,age,sex,edpid）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5vo0aplnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-5vo0aplnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> employee 
+<span class="hljs-keyword">WHERE</span> sex<span class="hljs-operator">=</span><span class="hljs-string">'男'</span></code></pre></div></div>
+<p>2.统计来自天津的“李”姓职工信息，按年龄降序排序（empid,empname,age,location）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ixwc0clnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ixwc0clnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empid,empname,age,location
+<span class="hljs-keyword">FROM</span> employee,department
+<span class="hljs-keyword">WHERE</span> employee.empname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">'李%'</span> <span class="hljs-keyword">AND</span> employee.depid <span class="hljs-operator">=</span>department.depid 
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> age <span class="hljs-keyword">DESC</span></code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155503258329_826_image-20220424163426426.png" srcset="/img/loading.gif" lazyload alt="image-20220424163426426">
+<figcaption aria-hidden="true">image-20220424163426426</figcaption>
+</figure>
+<p>3.给出每位职员参与项目的最高预算和最低预算（empname，highestbudget，lowestbudget）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fi2ri9lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-fi2ri9lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empname,<span class="hljs-built_in">MAX</span> (budget) <span class="hljs-keyword">AS</span> higestbudget, <span class="hljs-built_in">MIN</span> (budget) <span class="hljs-keyword">AS</span> lowestbudget
+<span class="hljs-keyword">FROM</span> employee ,workson ,project 
+<span class="hljs-keyword">WHERE</span> project.proid <span class="hljs-operator">=</span>workson.proid <span class="hljs-keyword">AND</span> employee.empid<span class="hljs-operator">=</span>workson.empid
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> empname</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155506469724_414_image-20220424163244361.png" srcset="/img/loading.gif" lazyload alt="image-20220424163244361">
+<figcaption aria-hidden="true">image-20220424163244361</figcaption>
+</figure>
+<p>4.给出所有项目超过一个的员工的id和参加的项目个数（empid, num）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-72z72ulnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-72z72ulnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,<span class="hljs-built_in">count</span>(proid) <span class="hljs-keyword">as</span> num
+<span class="hljs-keyword">from</span> workson
+<span class="hljs-keyword">having</span> <span class="hljs-built_in">count</span>(proid)<span class="hljs-operator">&gt;</span><span class="hljs-number">1</span>
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empid</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155511552514_152_image-20220424163912198.png" srcset="/img/loading.gif" lazyload alt="image-20220424163912198">
+<figcaption aria-hidden="true">image-20220424163912198</figcaption>
+</figure>
+<p>5.给出项目种类号为“c2”且预算最多的项目。（proid，projectname，budget）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j1mk65lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-j1mk65lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> proid,projectname,budget
+<span class="hljs-keyword">from</span> project
+<span class="hljs-keyword">where</span> budget<span class="hljs-operator">&gt;=</span><span class="hljs-keyword">all</span>(<span class="hljs-keyword">select</span> budget <span class="hljs-keyword">from</span> project <span class="hljs-keyword">where</span> catid <span class="hljs-operator">=</span><span class="hljs-string">'c2'</span>) <span class="hljs-keyword">and</span> catid<span class="hljs-operator">=</span><span class="hljs-string">'c2'</span></code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155516353726_684_image-20220424164944185.png" srcset="/img/loading.gif" lazyload alt="image-20220424164944185">
+<figcaption aria-hidden="true">image-20220424164944185</figcaption>
+</figure>
+<p>6.给出参加“产品推广”项目，但不担任职位的员工的员工信息，（empid,empname，age,sex.depid）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1pakqmlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-1pakqmlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,empname,age,sex,depid
+<span class="hljs-keyword">from</span> employee
+<span class="hljs-keyword">where</span> empid <span class="hljs-keyword">in</span>(<span class="hljs-keyword">select</span> empid <span class="hljs-keyword">from</span> workson <span class="hljs-keyword">where</span> proid<span class="hljs-operator">=</span>(<span class="hljs-keyword">select</span> proid <span class="hljs-keyword">from</span> project <span class="hljs-keyword">where</span> projectname<span class="hljs-operator">=</span><span class="hljs-string">'产品推广'</span>) <span class="hljs-keyword">and</span> job <span class="hljs-keyword">is</span> <span class="hljs-keyword">null</span>)</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155520977072_206_image-20220424165835471.png" srcset="/img/loading.gif" lazyload alt="image-20220424165835471">
+<figcaption aria-hidden="true">image-20220424165835471</figcaption>
+</figure>
+<p>7.给出工号为“10102”的员工每类项目的参加总数，若没有参加过某类项目，则参加项目总数显示为0（catid，proNum）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-abl0pflnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-abl0pflnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catid,<span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">as</span> proNum
+<span class="hljs-keyword">from</span> project,workson
+<span class="hljs-keyword">where</span> empid<span class="hljs-operator">=</span><span class="hljs-number">10102</span> <span class="hljs-keyword">and</span> project.proid<span class="hljs-operator">=</span>workson.proid
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> catid
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> catid</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155524185316_831_image-20220424172015697.png" srcset="/img/loading.gif" lazyload alt="image-20220424172015697">
+<figcaption aria-hidden="true">image-20220424172015697</figcaption>
+</figure>
+<p>但是随后发现这种方式并不能满足”若没有参加过某类项目，则参加项目总数显示为0“的要求。</p>
+<p>修改如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ut7ypclnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ut7ypclnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> category.catid ,isnull(subtable.subNum) <span class="hljs-keyword">as</span> proNum
+<span class="hljs-keyword">from</span> category <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> (<span class="hljs-keyword">select</span> catid,<span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">as</span> subNum
+<span class="hljs-keyword">from</span> project,workson
+<span class="hljs-keyword">where</span> empid<span class="hljs-operator">=</span><span class="hljs-number">10211</span> <span class="hljs-keyword">and</span> project.proid<span class="hljs-operator">=</span>workson.proid
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> catid) <span class="hljs-keyword">as</span> subtable
+<span class="hljs-keyword">on</span> category.catid<span class="hljs-operator">=</span>subtable.catid</code></pre></div></div>
+<p>以10211为例进行了测试：成功。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155528947182_726_image-20220424212513530.png" srcset="/img/loading.gif" lazyload alt="image-20220424212513530">
+<figcaption aria-hidden="true">image-20220424212513530</figcaption>
+</figure>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/evasunny2008/article/details/52525196?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&amp;utm_relevant_index=1">参考链接</a></p>
+<blockquote>
+<p>distinct操作往往比较耗费性能。</p>
+</blockquote>
+<p>8.给出没有参与“软件类”项目女性职工的信息（empid,empname,
+age,sex,depid)</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cvthc2lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-cvthc2lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+<span class="hljs-keyword">FROM</span> employee
+<span class="hljs-keyword">WHERE</span> sex <span class="hljs-operator">=</span> <span class="hljs-string">'女'</span>
+	<span class="hljs-keyword">AND</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> (
+		<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+		<span class="hljs-keyword">FROM</span> workson
+		<span class="hljs-keyword">WHERE</span> empid <span class="hljs-operator">=</span> employee.empid
+			<span class="hljs-keyword">AND</span> proid <span class="hljs-keyword">IN</span> (
+				<span class="hljs-keyword">SELECT</span> proid
+				<span class="hljs-keyword">FROM</span> project
+				<span class="hljs-keyword">WHERE</span> catid <span class="hljs-operator">=</span> (
+					<span class="hljs-keyword">SELECT</span> catid
+					<span class="hljs-keyword">FROM</span> category
+					<span class="hljs-keyword">WHERE</span> catname <span class="hljs-operator">=</span> <span class="hljs-string">'软件类'</span>
+				)
+			)
+	)</code></pre></div></div>
+<p>刚刚发现了格式化的功能。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155533441829_214_image-20220424214552653.png" srcset="/img/loading.gif" lazyload alt="image-20220424214552653">
+<figcaption aria-hidden="true">image-20220424214552653</figcaption>
+</figure>
+<p>9.给出有30岁以上男性员工的省份名称和该省男员工最大年龄，结果按最大年龄升序排序</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pibxzrlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-pibxzrlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> location, <span class="hljs-built_in">MAX</span>(age)
+<span class="hljs-keyword">FROM</span> department, employee
+<span class="hljs-keyword">WHERE</span> department.depid <span class="hljs-operator">=</span> employee.depid
+	<span class="hljs-keyword">AND</span> sex <span class="hljs-operator">=</span> <span class="hljs-string">'男'</span>
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> location
+<span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">MAX</span>(age) <span class="hljs-operator">&gt;</span> <span class="hljs-number">30</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">MAX</span>(age)</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155538165850_847_image-20220424221636001.png" srcset="/img/loading.gif" lazyload alt="image-20220424221636001">
+<figcaption aria-hidden="true">image-20220424221636001</figcaption>
+</figure>
+<p>10.给出在广州工作的、参加“'产品推广'”项目的职员id、姓名及他们参加的项目个数（empid,
+empname, procnt）</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1u3wt7lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-1u3wt7lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> employee.empid, empname, <span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">AS</span> procnt
+<span class="hljs-keyword">FROM</span> project, employee, workson, department
+<span class="hljs-keyword">WHERE</span> location <span class="hljs-operator">=</span> <span class="hljs-string">'广州'</span>
+	<span class="hljs-keyword">AND</span> projectname <span class="hljs-operator">=</span> <span class="hljs-string">'产品推广'</span>
+	<span class="hljs-keyword">AND</span> department.depid <span class="hljs-operator">=</span> employee.depid
+	<span class="hljs-keyword">AND</span> workson.proid <span class="hljs-operator">=</span> project.proid
+	<span class="hljs-keyword">AND</span> employee.empid <span class="hljs-operator">=</span> workson.empid
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> employee.empid</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155542227505_244_image-20220424223306078.png" srcset="/img/loading.gif" lazyload alt="image-20220424223306078">
+<figcaption aria-hidden="true">image-20220424223306078</figcaption>
+</figure>
+<hr>
+<h2 id="补充题目">补充题目</h2>
+<p><strong>根据数据库课程讲述内容和网上资料进行整理，往往是比较容易遗忘或犯错的地方，难度不一。标*的题目有超出课程范围内容。</strong></p>
+<p>1.隶属同一部门的员工对。(name1,name2)</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-freqjzlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-freqjzlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e1.empname <span class="hljs-keyword">as</span> name1,e2.empname <span class="hljs-keyword">as</span> name2
+<span class="hljs-keyword">from</span> employee e1,employee e2 <span class="hljs-keyword">where</span> e1.depid<span class="hljs-operator">=</span>e2.depid <span class="hljs-keyword">and</span> e1.empname<span class="hljs-operator">&lt;</span>e2.empname</code></pre></div></div>
+<blockquote>
+<p>利用小于关系去重</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155547176726_653_image-20231012203847118.png" srcset="/img/loading.gif" lazyload alt="image-20231012203847118">
+<figcaption aria-hidden="true">image-20231012203847118</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>查找部门中只有一名员工的员工姓名(empname)</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bdl7qslnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-bdl7qslnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname
+<span class="hljs-keyword">from</span> employee e1
+<span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> employee
+<span class="hljs-keyword">where</span> depid<span class="hljs-operator">=</span>e1.depid <span class="hljs-keyword">and</span> empname<span class="hljs-operator">&lt;&gt;</span>e1.empname)</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155550880799_733_image-20231012205231700.png" srcset="/img/loading.gif" lazyload alt="image-20231012205231700">
+<figcaption aria-hidden="true">image-20231012205231700</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>2020年12月21日之后入职的员工所参与项目的平均预算（empid，avgngbudget）</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ox9nh5lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ox9nh5lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,<span class="hljs-built_in">avg</span>(budget) <span class="hljs-keyword">as</span> avgbudget
+<span class="hljs-keyword">from</span> workson,project
+<span class="hljs-keyword">where</span> workson.proid<span class="hljs-operator">=</span>project.proid 
+<span class="hljs-keyword">and</span> enterdate <span class="hljs-operator">&gt;</span><span class="hljs-string">'2020-12-21 00:00'</span>
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empid</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155555162156_749_image-20231012212055411.png" srcset="/img/loading.gif" lazyload alt="image-20231012212055411">
+<figcaption aria-hidden="true">image-20231012212055411</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>如果担任过职员的员工所参与的所有项目的平均预算大于110000则返回结果为职员的名字(empname)，与对应的平均项目预算值avg(budget)</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k65obxlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-k65obxlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname,<span class="hljs-built_in">avg</span>(budget)
+<span class="hljs-keyword">from</span> employee <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> workson <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> project 
+<span class="hljs-keyword">where</span> empid <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> empid <span class="hljs-keyword">from</span> workson <span class="hljs-keyword">where</span> job<span class="hljs-operator">=</span><span class="hljs-string">'职员'</span>) 
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empname
+<span class="hljs-keyword">having</span> <span class="hljs-built_in">avg</span>(budget)<span class="hljs-operator">&gt;</span><span class="hljs-number">110000</span>;</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155559791125_456_image-20231012212759491.png" srcset="/img/loading.gif" lazyload alt="image-20231012212759491">
+<figcaption aria-hidden="true">image-20231012212759491</figcaption>
+</figure>
+<blockquote>
+<p>典型错误：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l72b4hlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-l72b4hlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname,<span class="hljs-built_in">avg</span>(budget)
+<span class="hljs-keyword">from</span> employee <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> workson <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> project 
+<span class="hljs-keyword">where</span> job<span class="hljs-operator">=</span><span class="hljs-string">'职员'</span>
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empname
+<span class="hljs-keyword">having</span> <span class="hljs-built_in">avg</span>(budget)<span class="hljs-operator">&gt;</span><span class="hljs-number">110000</span>;</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155604301445_444_image-20231012212955932.png" srcset="/img/loading.gif" lazyload alt="image-20231012212955932">
+<figcaption aria-hidden="true">image-20231012212955932</figcaption>
+</figure>
+<p>错误原因：这时候avg只计算了参与角色为职员的项目。</p>
+</blockquote>
+<ol start="5" type="1">
+<li>*找出每个部门预算前两名的项目，前两名指<strong>不同</strong> 预算中
+<strong>排名前两名</strong>，若部门少于两个项目，返回部门内所有项目。（catname,projectname,budget）。</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ifti8tlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ifti8tlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget <span class="hljs-keyword">from</span> project p1 <span class="hljs-keyword">join</span> category c <span class="hljs-keyword">on</span> p1.catid<span class="hljs-operator">=</span>c.catid
+<span class="hljs-keyword">where</span> 
+<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>(<span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> p2.budget)
+	<span class="hljs-keyword">from</span> project p2 
+	<span class="hljs-keyword">where</span> p1.budget<span class="hljs-operator">&lt;</span>p2.budget <span class="hljs-keyword">and</span> p1.catid<span class="hljs-operator">=</span>p2.catid)</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155607606479_529_image-20231014141406527.png" srcset="/img/loading.gif" lazyload alt="image-20231014141406527">
+<figcaption aria-hidden="true">image-20231014141406527</figcaption>
+</figure>
+<blockquote>
+<p>注：这是经典的分组TopK问题。</p>
+<p>分解子任务为在project表中找每个catid中排名前三的project。</p>
+<p>对于这个子问题，用到了相关子查询的技巧。</p>
+<p>将project表克隆一份，在原表上遍历，判断是否有大于两个部门的预算大于它。最后与category
+连接即可。</p>
+<p>MySQL8之后可以使用窗口函数完成类似的功能，可以参见<a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/92654574?source_id=1003">这篇文章</a>学习。</p>
+</blockquote>
+<p>窗口函数的做法：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0h8et4lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-0h8et4lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget,
+<span class="hljs-built_in">dense_rank</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> c.catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget <span class="hljs-keyword">desc</span>)
+<span class="hljs-keyword">from</span> category c <span class="hljs-keyword">join</span> project p <span class="hljs-keyword">on</span> c.catid<span class="hljs-operator">=</span>p.catid</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155610257288_208_image-20231014142403857.png" srcset="/img/loading.gif" lazyload alt="image-20231014142403857">
+<figcaption aria-hidden="true">image-20231014142403857</figcaption>
+</figure>
+<p>最终得到可行SQL语句：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e1b8lulnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-e1b8lulnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> t.catname,t.projectname,t.budget <span class="hljs-keyword">from</span>
+(<span class="hljs-keyword">select</span> catname,projectname,budget,
+<span class="hljs-built_in">dense_rank</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> c.catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget <span class="hljs-keyword">desc</span>) <span class="hljs-keyword">as</span> rk
+<span class="hljs-keyword">from</span> category c <span class="hljs-keyword">join</span> project p <span class="hljs-keyword">on</span> c.catid<span class="hljs-operator">=</span>p.catid) t
+<span class="hljs-keyword">where</span> t.rk<span class="hljs-operator">&lt;=</span><span class="hljs-number">2</span></code></pre></div></div>
+<ol start="6" type="1">
+<li>*找出每个部门项目预算的中位数，若有两个中间数，返回两者而非取平均值。（catname,projectname,budget）。</li>
+</ol>
+<p>本题目较容易理解的方法需要掌握上一个题目中提到的窗口函数。当然也有其他解法，但较繁琐或使用较多其他的内置函数。下面对使用窗口函数的方法进行讲解。</p>
+<p>总的思路是利用中位数在排序中的位次关系求解。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m6by54lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-m6by54lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> 
+catname,projectname,budget,
+<span class="hljs-built_in">row_number</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget) <span class="hljs-keyword">as</span> rk,
+<span class="hljs-built_in">count</span>(proid) <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> catid) <span class="hljs-keyword">as</span> n
+<span class="hljs-keyword">from</span> category c <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> project p</code></pre></div></div>
+<p>使用<code>partion_by</code>分组统计每一部门的排名，并使用<code>count</code>得出该部门的部门数，方便后续筛选。</p>
+<p>得到下面的中间结果。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155615661381_775_image-20231014150850190.png" srcset="/img/loading.gif" lazyload alt="image-20231014150850190">
+<figcaption aria-hidden="true">image-20231014150850190</figcaption>
+</figure>
+<p>作为中位数，其rank应位于<code>[n/2,n/2+1]</code>之间。</p>
+<p>比较违反编程直觉的是，MySQL中除法是浮点数除法，例如有三个元素，区间为<code>[1.5,2.5]</code>,有四个元素，区间为<code>[2,3]</code>。可以看到奇数时包含一个元素，偶数时包含两个元素，符合题目要求。</p>
+<p>最终得到可行SQL如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3txbzmlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-3txbzmlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget
+<span class="hljs-keyword">from</span>
+(<span class="hljs-keyword">select</span> 
+catname,projectname,budget,
+<span class="hljs-built_in">row_number</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget) <span class="hljs-keyword">as</span> rk,
+<span class="hljs-built_in">count</span>(proid) <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> catid) <span class="hljs-keyword">as</span> n
+<span class="hljs-keyword">from</span> category c <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> project p
+)t
+<span class="hljs-keyword">where</span> rk<span class="hljs-operator">&gt;=</span>n<span class="hljs-operator">/</span><span class="hljs-number">2</span> <span class="hljs-keyword">and</span> rk<span class="hljs-operator">&lt;=</span>n<span class="hljs-operator">/</span><span class="hljs-number">2</span><span class="hljs-operator">+</span><span class="hljs-number">1</span></code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155619109089_940_image-20231014152206322.png" srcset="/img/loading.gif" lazyload alt="image-20231014152206322">
+<figcaption aria-hidden="true">image-20231014152206322</figcaption>
+</figure>
+<ol start="7" type="1">
+<li>查找每个项目类别超过其内项目平均预算的项目？（catname，projectname)</li>
+</ol>
+<p>有了TopK问题解法一的基础，就很容易想到用相关子查询来做了。</p>
+<p>对于这个题来说，相当于先在x表内找到对应的项目类别，再在子查询中返回该类别中的项目平均预算，最后回到父查询得到该类别中大于平均预算的项目。类似于二重循环。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ncumbjlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ncumbjlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname
+<span class="hljs-keyword">from</span> project x <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> category c
+<span class="hljs-keyword">where</span> budget <span class="hljs-operator">&gt;=</span>(<span class="hljs-keyword">select</span> <span class="hljs-built_in">avg</span>(budget)
+                <span class="hljs-keyword">from</span> project y
+                <span class="hljs-keyword">where</span> y.catid <span class="hljs-operator">=</span>x.catid 
+               <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> y.catid )</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155623802818_678_image-20231014153658251.png" srcset="/img/loading.gif" lazyload alt="image-20231014153658251">
+<figcaption aria-hidden="true">image-20231014153658251</figcaption>
+</figure>
+<ol start="8" type="1">
+<li>参与过所有项目的员工的姓名（empname）。</li>
+</ol>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5lo0pclnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-5lo0pclnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname <span class="hljs-keyword">from</span> employee
+<span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span>(<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> project 
+                 <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> workson
+                                   <span class="hljs-keyword">where</span> empid<span class="hljs-operator">=</span>employee.empid <span class="hljs-keyword">and</span> proid<span class="hljs-operator">=</span>project.proid))</code></pre></div></div>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155627876393_620_image-20231014155355539.png" srcset="/img/loading.gif" lazyload alt="image-20231014155355539">
+<figcaption aria-hidden="true">image-20231014155355539</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>一组数据表练习Mysql查询</div>
+      <div>http://lunaticsky-tql.github.io/posts/65048/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/4008/" title="如何编写 Hammerspoon Spoon 插件">
+                        <span class="hidden-mobile">如何编写 Hammerspoon Spoon 插件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
