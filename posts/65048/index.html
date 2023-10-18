@@ -18,12 +18,12 @@
     <meta name="author" content="Lunatic sky">
     <meta name="keywords" content="">
     
-        <meta name="description" content="一组数据表练习Mysql查询 数据表格式   image-20231014154116950  数据库模式如下（分别为Department,Employee,Category,Project,Workson): 部门（部门号，部门名称，位置） 员工（员工号，姓名，年龄，性别，所在部门号） 项目种类（项目种类号，项目种类名） 项目（项目号，项目名称，预算，项目种类号） 员工工作情况（员工号，项目号，">
+        <meta name="description" content="一组数据表练习Mysql查询 最近银行和金融相关企业也陆续开始笔面试流程了。相比互联网企业，它们的开发岗位对数据分析也有一定的要求。因此在这里对SQL查询相关技巧进行由浅入深的练习回顾。 数据表格式   image-20231014154116950  数据库模式如下（分别为Department,Employee,Category,Project,Workson): 部门（部门号，部门名称，位置）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一组数据表练习Mysql查询">
 <meta property="og:url" content="http://lunaticsky-tql.github.io/posts/65048/index.html">
 <meta property="og:site_name" content="Lunaticsky&#39;s Blog">
-<meta property="og:description" content="一组数据表练习Mysql查询 数据表格式   image-20231014154116950  数据库模式如下（分别为Department,Employee,Category,Project,Workson): 部门（部门号，部门名称，位置） 员工（员工号，姓名，年龄，性别，所在部门号） 项目种类（项目种类号，项目种类名） 项目（项目号，项目名称，预算，项目种类号） 员工工作情况（员工号，项目号，">
+<meta property="og:description" content="一组数据表练习Mysql查询 最近银行和金融相关企业也陆续开始笔面试流程了。相比互联网企业，它们的开发岗位对数据分析也有一定的要求。因此在这里对SQL查询相关技巧进行由浅入深的练习回顾。 数据表格式   image-20231014154116950  数据库模式如下（分别为Department,Employee,Category,Project,Workson): 部门（部门号，部门名称，位置）">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155457883160_747_image-20231014154116950.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155503258329_826_image-20220424163426426.png">
@@ -271,7 +271,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-              5.9k 字
+              6.1k 字
                 
       </span>
       
@@ -325,6 +325,7 @@
               <div class="markdown-body">
                 
                 <h1 id="一组数据表练习mysql查询">一组数据表练习Mysql查询</h1>
+<p>最近银行和金融相关企业也陆续开始笔面试流程了。相比互联网企业，它们的开发岗位对数据分析也有一定的要求。因此在这里对SQL查询相关技巧进行由浅入深的练习回顾。</p>
 <h2 id="数据表格式">数据表格式</h2>
 <figure>
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155457883160_747_image-20231014154116950.png" srcset="/img/loading.gif" lazyload alt="image-20231014154116950">
@@ -341,10 +342,10 @@
 <h2 id="某年期末考试题">某年期末考试题</h2>
 <p><strong>一共10道，难度递增。</strong></p>
 <p>1.给出职工中所有男性的所有信息（empid,empname,age,sex,edpid）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5vo0aplnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-5vo0aplnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> employee 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-w9n076lnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-w9n076lnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> employee 
 <span class="hljs-keyword">WHERE</span> sex<span class="hljs-operator">=</span><span class="hljs-string">'男'</span></code></pre></div></div>
 <p>2.统计来自天津的“李”姓职工信息，按年龄降序排序（empid,empname,age,location）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ixwc0clnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ixwc0clnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empid,empname,age,location
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-d4wji3lnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-d4wji3lnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empid,empname,age,location
 <span class="hljs-keyword">FROM</span> employee,department
 <span class="hljs-keyword">WHERE</span> employee.empname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">'李%'</span> <span class="hljs-keyword">AND</span> employee.depid <span class="hljs-operator">=</span>department.depid 
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> age <span class="hljs-keyword">DESC</span></code></pre></div></div>
@@ -353,7 +354,7 @@
 <figcaption aria-hidden="true">image-20220424163426426</figcaption>
 </figure>
 <p>3.给出每位职员参与项目的最高预算和最低预算（empname，highestbudget，lowestbudget）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fi2ri9lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-fi2ri9lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empname,<span class="hljs-built_in">MAX</span> (budget) <span class="hljs-keyword">AS</span> higestbudget, <span class="hljs-built_in">MIN</span> (budget) <span class="hljs-keyword">AS</span> lowestbudget
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zvxjiblnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-zvxjiblnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empname,<span class="hljs-built_in">MAX</span> (budget) <span class="hljs-keyword">AS</span> higestbudget, <span class="hljs-built_in">MIN</span> (budget) <span class="hljs-keyword">AS</span> lowestbudget
 <span class="hljs-keyword">FROM</span> employee ,workson ,project 
 <span class="hljs-keyword">WHERE</span> project.proid <span class="hljs-operator">=</span>workson.proid <span class="hljs-keyword">AND</span> employee.empid<span class="hljs-operator">=</span>workson.empid
 <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> empname</code></pre></div></div>
@@ -362,7 +363,7 @@
 <figcaption aria-hidden="true">image-20220424163244361</figcaption>
 </figure>
 <p>4.给出所有项目超过一个的员工的id和参加的项目个数（empid, num）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-72z72ulnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-72z72ulnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,<span class="hljs-built_in">count</span>(proid) <span class="hljs-keyword">as</span> num
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3x33rwlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-3x33rwlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,<span class="hljs-built_in">count</span>(proid) <span class="hljs-keyword">as</span> num
 <span class="hljs-keyword">from</span> workson
 <span class="hljs-keyword">having</span> <span class="hljs-built_in">count</span>(proid)<span class="hljs-operator">&gt;</span><span class="hljs-number">1</span>
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empid</code></pre></div></div>
@@ -371,7 +372,7 @@
 <figcaption aria-hidden="true">image-20220424163912198</figcaption>
 </figure>
 <p>5.给出项目种类号为“c2”且预算最多的项目。（proid，projectname，budget）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-j1mk65lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-j1mk65lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> proid,projectname,budget
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n8rcytlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-n8rcytlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> proid,projectname,budget
 <span class="hljs-keyword">from</span> project
 <span class="hljs-keyword">where</span> budget<span class="hljs-operator">&gt;=</span><span class="hljs-keyword">all</span>(<span class="hljs-keyword">select</span> budget <span class="hljs-keyword">from</span> project <span class="hljs-keyword">where</span> catid <span class="hljs-operator">=</span><span class="hljs-string">'c2'</span>) <span class="hljs-keyword">and</span> catid<span class="hljs-operator">=</span><span class="hljs-string">'c2'</span></code></pre></div></div>
 <figure>
@@ -379,7 +380,7 @@
 <figcaption aria-hidden="true">image-20220424164944185</figcaption>
 </figure>
 <p>6.给出参加“产品推广”项目，但不担任职位的员工的员工信息，（empid,empname，age,sex.depid）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1pakqmlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-1pakqmlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,empname,age,sex,depid
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a2ycj9lnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-a2ycj9lnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,empname,age,sex,depid
 <span class="hljs-keyword">from</span> employee
 <span class="hljs-keyword">where</span> empid <span class="hljs-keyword">in</span>(<span class="hljs-keyword">select</span> empid <span class="hljs-keyword">from</span> workson <span class="hljs-keyword">where</span> proid<span class="hljs-operator">=</span>(<span class="hljs-keyword">select</span> proid <span class="hljs-keyword">from</span> project <span class="hljs-keyword">where</span> projectname<span class="hljs-operator">=</span><span class="hljs-string">'产品推广'</span>) <span class="hljs-keyword">and</span> job <span class="hljs-keyword">is</span> <span class="hljs-keyword">null</span>)</code></pre></div></div>
 <figure>
@@ -387,7 +388,7 @@
 <figcaption aria-hidden="true">image-20220424165835471</figcaption>
 </figure>
 <p>7.给出工号为“10102”的员工每类项目的参加总数，若没有参加过某类项目，则参加项目总数显示为0（catid，proNum）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-abl0pflnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-abl0pflnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catid,<span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">as</span> proNum
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-fvfvt0lnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-fvfvt0lnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catid,<span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">as</span> proNum
 <span class="hljs-keyword">from</span> project,workson
 <span class="hljs-keyword">where</span> empid<span class="hljs-operator">=</span><span class="hljs-number">10102</span> <span class="hljs-keyword">and</span> project.proid<span class="hljs-operator">=</span>workson.proid
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> catid
@@ -398,7 +399,7 @@
 </figure>
 <p>但是随后发现这种方式并不能满足”若没有参加过某类项目，则参加项目总数显示为0“的要求。</p>
 <p>修改如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ut7ypclnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ut7ypclnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> category.catid ,isnull(subtable.subNum) <span class="hljs-keyword">as</span> proNum
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n82hmclnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-n82hmclnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> category.catid ,isnull(subtable.subNum) <span class="hljs-keyword">as</span> proNum
 <span class="hljs-keyword">from</span> category <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> (<span class="hljs-keyword">select</span> catid,<span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">as</span> subNum
 <span class="hljs-keyword">from</span> project,workson
 <span class="hljs-keyword">where</span> empid<span class="hljs-operator">=</span><span class="hljs-number">10211</span> <span class="hljs-keyword">and</span> project.proid<span class="hljs-operator">=</span>workson.proid
@@ -415,7 +416,7 @@
 </blockquote>
 <p>8.给出没有参与“软件类”项目女性职工的信息（empid,empname,
 age,sex,depid)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cvthc2lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-cvthc2lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e5et5qlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-e5et5qlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
 <span class="hljs-keyword">FROM</span> employee
 <span class="hljs-keyword">WHERE</span> sex <span class="hljs-operator">=</span> <span class="hljs-string">'女'</span>
 	<span class="hljs-keyword">AND</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> (
@@ -438,7 +439,7 @@ age,sex,depid)</p>
 <figcaption aria-hidden="true">image-20220424214552653</figcaption>
 </figure>
 <p>9.给出有30岁以上男性员工的省份名称和该省男员工最大年龄，结果按最大年龄升序排序</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pibxzrlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-pibxzrlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> location, <span class="hljs-built_in">MAX</span>(age)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-timlhhlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-timlhhlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> location, <span class="hljs-built_in">MAX</span>(age)
 <span class="hljs-keyword">FROM</span> department, employee
 <span class="hljs-keyword">WHERE</span> department.depid <span class="hljs-operator">=</span> employee.depid
 	<span class="hljs-keyword">AND</span> sex <span class="hljs-operator">=</span> <span class="hljs-string">'男'</span>
@@ -451,7 +452,7 @@ age,sex,depid)</p>
 </figure>
 <p>10.给出在广州工作的、参加“'产品推广'”项目的职员id、姓名及他们参加的项目个数（empid,
 empname, procnt）</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1u3wt7lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-1u3wt7lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> employee.empid, empname, <span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">AS</span> procnt
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6an7evlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-6an7evlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> employee.empid, empname, <span class="hljs-built_in">count</span>(workson.proid) <span class="hljs-keyword">AS</span> procnt
 <span class="hljs-keyword">FROM</span> project, employee, workson, department
 <span class="hljs-keyword">WHERE</span> location <span class="hljs-operator">=</span> <span class="hljs-string">'广州'</span>
 	<span class="hljs-keyword">AND</span> projectname <span class="hljs-operator">=</span> <span class="hljs-string">'产品推广'</span>
@@ -467,7 +468,7 @@ empname, procnt）</p>
 <h2 id="补充题目">补充题目</h2>
 <p><strong>根据数据库课程讲述内容和网上资料进行整理，往往是比较容易遗忘或犯错的地方，难度不一。标*的题目有超出课程范围内容。</strong></p>
 <p>1.隶属同一部门的员工对。(name1,name2)</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-freqjzlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-freqjzlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e1.empname <span class="hljs-keyword">as</span> name1,e2.empname <span class="hljs-keyword">as</span> name2
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8hv38nlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-8hv38nlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e1.empname <span class="hljs-keyword">as</span> name1,e2.empname <span class="hljs-keyword">as</span> name2
 <span class="hljs-keyword">from</span> employee e1,employee e2 <span class="hljs-keyword">where</span> e1.depid<span class="hljs-operator">=</span>e2.depid <span class="hljs-keyword">and</span> e1.empname<span class="hljs-operator">&lt;</span>e2.empname</code></pre></div></div>
 <blockquote>
 <p>利用小于关系去重</p>
@@ -479,7 +480,7 @@ empname, procnt）</p>
 <ol start="2" type="1">
 <li>查找部门中只有一名员工的员工姓名(empname)</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bdl7qslnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-bdl7qslnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-88i0fplnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-88i0fplnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname
 <span class="hljs-keyword">from</span> employee e1
 <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> employee
 <span class="hljs-keyword">where</span> depid<span class="hljs-operator">=</span>e1.depid <span class="hljs-keyword">and</span> empname<span class="hljs-operator">&lt;&gt;</span>e1.empname)</code></pre></div></div>
@@ -490,7 +491,7 @@ empname, procnt）</p>
 <ol start="3" type="1">
 <li>2020年12月21日之后入职的员工所参与项目的平均预算（empid，avgngbudget）</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ox9nh5lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ox9nh5lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,<span class="hljs-built_in">avg</span>(budget) <span class="hljs-keyword">as</span> avgbudget
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-utl6aflnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-utl6aflnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empid,<span class="hljs-built_in">avg</span>(budget) <span class="hljs-keyword">as</span> avgbudget
 <span class="hljs-keyword">from</span> workson,project
 <span class="hljs-keyword">where</span> workson.proid<span class="hljs-operator">=</span>project.proid 
 <span class="hljs-keyword">and</span> enterdate <span class="hljs-operator">&gt;</span><span class="hljs-string">'2020-12-21 00:00'</span>
@@ -502,7 +503,7 @@ empname, procnt）</p>
 <ol start="4" type="1">
 <li>如果担任过职员的员工所参与的所有项目的平均预算大于110000则返回结果为职员的名字(empname)，与对应的平均项目预算值avg(budget)</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-k65obxlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-k65obxlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname,<span class="hljs-built_in">avg</span>(budget)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vv98kvlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-vv98kvlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname,<span class="hljs-built_in">avg</span>(budget)
 <span class="hljs-keyword">from</span> employee <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> workson <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> project 
 <span class="hljs-keyword">where</span> empid <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> empid <span class="hljs-keyword">from</span> workson <span class="hljs-keyword">where</span> job<span class="hljs-operator">=</span><span class="hljs-string">'职员'</span>) 
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empname
@@ -513,7 +514,7 @@ empname, procnt）</p>
 </figure>
 <blockquote>
 <p>典型错误：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-l72b4hlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-l72b4hlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname,<span class="hljs-built_in">avg</span>(budget)
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-svz3jvlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-svz3jvlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname,<span class="hljs-built_in">avg</span>(budget)
 <span class="hljs-keyword">from</span> employee <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> workson <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> project 
 <span class="hljs-keyword">where</span> job<span class="hljs-operator">=</span><span class="hljs-string">'职员'</span>
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> empname
@@ -528,7 +529,7 @@ empname, procnt）</p>
 <li>*找出每个部门预算前两名的项目，前两名指<strong>不同</strong> 预算中
 <strong>排名前两名</strong>，若部门少于两个项目，返回部门内所有项目。（catname,projectname,budget）。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ifti8tlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ifti8tlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget <span class="hljs-keyword">from</span> project p1 <span class="hljs-keyword">join</span> category c <span class="hljs-keyword">on</span> p1.catid<span class="hljs-operator">=</span>c.catid
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-v0zobslnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-v0zobslnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget <span class="hljs-keyword">from</span> project p1 <span class="hljs-keyword">join</span> category c <span class="hljs-keyword">on</span> p1.catid<span class="hljs-operator">=</span>c.catid
 <span class="hljs-keyword">where</span> 
 <span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>(<span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> p2.budget)
 	<span class="hljs-keyword">from</span> project p2 
@@ -546,7 +547,7 @@ empname, procnt）</p>
 <p>MySQL8之后可以使用窗口函数完成类似的功能，可以参见<a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/92654574?source_id=1003">这篇文章</a>学习。</p>
 </blockquote>
 <p>窗口函数的做法：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0h8et4lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-0h8et4lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget,
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3898jhlnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-3898jhlnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget,
 <span class="hljs-built_in">dense_rank</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> c.catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget <span class="hljs-keyword">desc</span>)
 <span class="hljs-keyword">from</span> category c <span class="hljs-keyword">join</span> project p <span class="hljs-keyword">on</span> c.catid<span class="hljs-operator">=</span>p.catid</code></pre></div></div>
 <figure>
@@ -554,7 +555,7 @@ empname, procnt）</p>
 <figcaption aria-hidden="true">image-20231014142403857</figcaption>
 </figure>
 <p>最终得到可行SQL语句：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-e1b8lulnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-e1b8lulnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> t.catname,t.projectname,t.budget <span class="hljs-keyword">from</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gwuwbolnvsha1y"></i><span>sql</span><div class="collapse show" id="collapse-gwuwbolnvsha1y"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> t.catname,t.projectname,t.budget <span class="hljs-keyword">from</span>
 (<span class="hljs-keyword">select</span> catname,projectname,budget,
 <span class="hljs-built_in">dense_rank</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> c.catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget <span class="hljs-keyword">desc</span>) <span class="hljs-keyword">as</span> rk
 <span class="hljs-keyword">from</span> category c <span class="hljs-keyword">join</span> project p <span class="hljs-keyword">on</span> c.catid<span class="hljs-operator">=</span>p.catid) t
@@ -564,7 +565,7 @@ empname, procnt）</p>
 </ol>
 <p>本题目较容易理解的方法需要掌握上一个题目中提到的窗口函数。当然也有其他解法，但较繁琐或使用较多其他的内置函数。下面对使用窗口函数的方法进行讲解。</p>
 <p>总的思路是利用中位数在排序中的位次关系求解。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-m6by54lnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-m6by54lnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-luk84qlnvsha1z"></i><span>sql</span><div class="collapse show" id="collapse-luk84qlnvsha1z"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> 
 catname,projectname,budget,
 <span class="hljs-built_in">row_number</span>() <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> catid <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> budget) <span class="hljs-keyword">as</span> rk,
 <span class="hljs-built_in">count</span>(proid) <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> catid) <span class="hljs-keyword">as</span> n
@@ -578,7 +579,7 @@ catname,projectname,budget,
 <p>作为中位数，其rank应位于<code>[n/2,n/2+1]</code>之间。</p>
 <p>比较违反编程直觉的是，MySQL中除法是浮点数除法，例如有三个元素，区间为<code>[1.5,2.5]</code>,有四个元素，区间为<code>[2,3]</code>。可以看到奇数时包含一个元素，偶数时包含两个元素，符合题目要求。</p>
 <p>最终得到可行SQL如下：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3txbzmlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-3txbzmlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q19caelnvsha1z"></i><span>sql</span><div class="collapse show" id="collapse-q19caelnvsha1z"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname,budget
 <span class="hljs-keyword">from</span>
 (<span class="hljs-keyword">select</span> 
 catname,projectname,budget,
@@ -596,7 +597,7 @@ catname,projectname,budget,
 </ol>
 <p>有了TopK问题解法一的基础，就很容易想到用相关子查询来做了。</p>
 <p>对于这个题来说，相当于先在x表内找到对应的项目类别，再在子查询中返回该类别中的项目平均预算，最后回到父查询得到该类别中大于平均预算的项目。类似于二重循环。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ncumbjlnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-ncumbjlnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5ie9t0lnvsha1z"></i><span>sql</span><div class="collapse show" id="collapse-5ie9t0lnvsha1z"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> catname,projectname
 <span class="hljs-keyword">from</span> project x <span class="hljs-keyword">natural</span> <span class="hljs-keyword">join</span> category c
 <span class="hljs-keyword">where</span> budget <span class="hljs-operator">&gt;=</span>(<span class="hljs-keyword">select</span> <span class="hljs-built_in">avg</span>(budget)
                 <span class="hljs-keyword">from</span> project y
@@ -609,7 +610,7 @@ catname,projectname,budget,
 <ol start="8" type="1">
 <li>参与过所有项目的员工的姓名（empname）。</li>
 </ol>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-5lo0pclnpqvi9l"></i><span>sql</span><div class="collapse show" id="collapse-5lo0pclnpqvi9l"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname <span class="hljs-keyword">from</span> employee
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-meisbelnvsha1z"></i><span>sql</span><div class="collapse show" id="collapse-meisbelnvsha1z"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> empname <span class="hljs-keyword">from</span> employee
 <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span>(<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> project 
                  <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> workson
                                    <span class="hljs-keyword">where</span> empid<span class="hljs-operator">=</span>employee.empid <span class="hljs-keyword">and</span> proid<span class="hljs-operator">=</span>project.proid))</code></pre></div></div>
@@ -617,6 +618,7 @@ catname,projectname,budget,
 <img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%BB%83%E4%B9%A0Mysql%E6%9F%A5%E8%AF%A2/20231014155627876393_620_image-20231014155355539.png" srcset="/img/loading.gif" lazyload alt="image-20231014155355539">
 <figcaption aria-hidden="true">image-20231014155355539</figcaption>
 </figure>
+<p>思路依旧是循环。最内重子查询去遍历workson表中每个employee参与的每个项目，第二层子查询得到的是该员工没参与过的项目。总的语句含义是一个双重否定，即：不存在这个职员没参加过的项目。</p>
 
                 
               </div>
@@ -706,6 +708,12 @@ catname,projectname,budget,
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/posts/46990/" title="STL容器的条件删除">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">STL容器的条件删除</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

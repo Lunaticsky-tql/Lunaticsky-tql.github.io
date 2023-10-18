@@ -1,0 +1,1020 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="STL容器的条件删除 条件删除非常常见的业务需求，比如删除一些无效或者过期的的数据。但在C++中写出正确且高效的条件删除方法，是需要对STL容器有比较清晰的了解的，也是一个C++程序员基本的素质。 vetor 从最常用的顺序容器开始。最朴素的想法是从头遍历一次，找到符合条件的，调用erase删除。这种方法的复杂度是\(O(n^2)\)的，因为每删除一次元素，后面的元素都要全部向前移动一位。 C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL容器的条件删除">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/46990/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="STL容器的条件删除 条件删除非常常见的业务需求，比如删除一些无效或者过期的的数据。但在C++中写出正确且高效的条件删除方法，是需要对STL容器有比较清晰的了解的，也是一个C++程序员基本的素质。 vetor 从最常用的顺序容器开始。最朴素的想法是从头遍历一次，找到符合条件的，调用erase删除。这种方法的复杂度是\(O(n^2)\)的，因为每删除一次元素，后面的元素都要全部向前移动一位。 C++">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212813265384_121_image-20231015214803735.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212816114720_673_image-20231015214838011.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212819320796_369_image-20231015215706746.png">
+<meta property="article:published_time" content="2023-10-18T13:28:22.000Z">
+<meta property="article:modified_time" content="2023-10-18T13:28:22.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212813265384_121_image-20231015214803735.png">
+    
+    
+    
+    <title>STL容器的条件删除 - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="STL容器的条件删除"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2023-10-18 21:28" pubdate>
+              2023年10月18日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              7.2k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">STL容器的条件删除</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="stl容器的条件删除">STL容器的条件删除</h1>
+<p>条件删除非常常见的业务需求，比如删除一些无效或者过期的的数据。但在C++中写出正确且高效的条件删除方法，是需要对STL容器有比较清晰的了解的，也是一个C++程序员基本的素质。</p>
+<h2 id="vetor">vetor</h2>
+<p>从最常用的顺序容器开始。最朴素的想法是从头遍历一次，找到符合条件的，调用<code>erase</code>删除。这种方法的复杂度是<span class="math inline">\(O(n^2)\)</span>的，因为每删除一次元素，后面的元素都要全部向前移动一位。</p>
+<p>C++98代码如下所示：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bh1xcrlnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-bh1xcrlnvsha1z"><pre><code class="hljs c++"><span class="hljs-comment">// 使用迭代器遍历vector，并删除满足条件的元素</span>
+    std::vector&lt;<span class="hljs-type">int</span>&gt;::iterator it = v.<span class="hljs-built_in">begin</span>();
+    <span class="hljs-keyword">while</span> (it != v.<span class="hljs-built_in">end</span>()) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*it) {
+            it = v.<span class="hljs-built_in">erase</span>(it); <span class="hljs-comment">// 删除元素并返回下一个元素的迭代器</span>
+        } <span class="hljs-keyword">else</span> {
+            ++it; <span class="hljs-comment">// 移动到下一个元素</span>
+        }
+    }</code></pre></div></div>
+<p><code>pred()</code>代表我们的判断条件，返回值为真则删除。</p>
+<p>你或许知道STL中有<code>remove()</code>这个函数，不过注意，<code>remove()</code>并不真的删除元素，而是把不需要删除的元素放到前面，返回保留元素末尾的迭代器。复杂度是<span class="math inline">\(O(n)\)</span>，一趟就可以完成这样的工作。</p>
+<blockquote>
+<p>如果不太明白的话可以看下面来自Effective
+STL的例子（虽然我觉得直接看源码更直观，这么解释反而绕了）：</p>
+<p>我们想要删除容器内值为99的元素。</p>
+<p>调用remove之前v的布局如下：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212813265384_121_image-20231015214803735.png" srcset="/img/loading.gif" lazyload alt="image-20231015214803735">
+<figcaption aria-hidden="true">image-20231015214803735</figcaption>
+</figure>
+<p>如果我们将remove的返回值保存在一个新的迭代器对象newEnd中，</p>
+<p><code>vector&lt;int&gt;:iterator newEnd (remove (v.begin ()v.end,99));</code></p>
+<p>调用了<code>remove</code>之后,<code>v</code>的布局应该如下：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212816114720_673_image-20231015214838011.png" srcset="/img/loading.gif" lazyload alt="image-20231015214838011">
+<figcaption aria-hidden="true">image-20231015214838011</figcaption>
+</figure>
+<p>remove的行为看起来有点恶意，但它只是算法操作的附带结果。在内部，remove遍历整个区间，用需要保留的元素的值覆盖掉那些要被删除的元素的值。这种覆盖是通过对那些需要被覆盖的元素的赋值来完成的。</p>
+<p>可以把remove想象成一个压缩过程，需要被删除的元素就好像是压缩过程中需要被填充的洞。对于我们的<code>vector</code>，其操作过程如下：</p>
+<p>1。<code>remove</code>检查<code>v[0]</code>，看它的值是否需要被删除，接着看<code>v[1]</code>，然后是<code>v[2]</code>。
+2。检查<code>v[3]</code>，发现它应该被删除，于是它记住了<code>v[3]</code>的值可能要被覆盖。然后移动到<code>v[4]</code>上。这就好比注明了<code>v[3]</code>是一个需要被填充的“洞”。
+3。进一步检查<code>v[4]</code>，发现它的值需要保留，所以它把<code>v[4]</code>赋给<code>v[3]</code>，并记住<code>v[4]</code>可能需要被覆盖。然后移动到<code>v[5]</code>。将<code>remove</code>与压缩过程做对比的话，它用<code>v[4]</code>填充<code>v[3]</code>，
+并注明<code>v[4]</code>现在是一个洞。
+4。它发现<code>v[5]</code>应该被删除，所以它跳过<code>v[5]</code>，移动到<code>v[6]</code>。它仍然记住<code>v[4]</code>是一个正在等待被填充的洞。</p>
+<p>5。它检查出<code>v[6]</code>是一个需要被保留的值，所以它把<code>v[6]</code>的值赋给<code>v[4]</code>，并记住现在<code>v[5]</code>是下一个需要被填充的洞，然后移动到<code>v[7]</code>。</p>
+<p>6。它用类似的方式检查<code>v[7]</code>、<code>v[8]</code>和<code>v[9]</code>。它把<code>v[7]</code>的值赋给<code>v[5]</code>，<code>v[8]</code>的值赋给<code>v[6]</code>，
+忽略<code>v[9]</code>，因为<code>v[9]</code>的值要被删除。</p>
+<p>7。它返回一个迭代器，指向下一个要被覆盖的元素。对于本例来说，该元素为<code>v[7]</code>。</p>
+<p>你可以想象这些值在ⅴ中的移动如下图所示：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/Lunaticsky-tql/blog_articles/main/STL%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4/20231018212819320796_369_image-20231015215706746.png" srcset="/img/loading.gif" lazyload alt="image-20231015215706746">
+<figcaption aria-hidden="true">image-20231015215706746</figcaption>
+</figure>
+<p>如果remove所覆盖掉的这些值是指针的话，那么这可能会存在严重的问题（不仅这一点，所有涉及拷贝的算法都是如此。本来用容器存放裸指针就是很坏的决定）。</p>
+</blockquote>
+<p>STL库伪代码如下所示：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-jw61hulnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-jw61hulnvsha1z"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">ForwardIterator</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-built_in">remove_if</span>(ForwardIterator first, ForwardIterator last, Predicate pred)
+{
+  	<span class="hljs-comment">//先从第一个需要删除的元素开始查看</span>
+    first = std::<span class="hljs-built_in">find_if</span>&lt;ForwardIterator, Predicate&amp;&gt;(first, last, pred);
+    <span class="hljs-keyword">if</span> (first != last)
+    {
+        ForwardIterator i = first;
+        <span class="hljs-keyword">while</span> (++i != last)
+        {
+            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">pred</span>(*i))
+            {
+                <span class="hljs-comment">//把first指针往后看做新的向量，收集不需要删除的元素</span>
+                *first = std::<span class="hljs-built_in">move</span>(*i);
+                ++first;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> first;
+}</code></pre></div></div>
+<p>上面的代码删除了STL中为隐藏实现细节所做的工作，以便阅读。</p>
+<p>然后，我们需要做的就是把后面的元素真正的删除。<code>erase</code>可以做到这一点。</p>
+<p>因此针对<code>vector</code>的最佳实践是：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zweekdlnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-zweekdlnvsha1z"><pre><code class="hljs c++">v.<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">remove_if</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), pred), v.<span class="hljs-built_in">end</span>());</code></pre></div></div>
+<p>注意到这里用的<code>remove_if</code>。它的原理和<code>remove</code>相同，<code>remove</code>第三个参数是具体值，<code>remove_if</code>第三个参数是仿函数（函数对象，lambda等）。</p>
+<p>比如删除偶数：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-a3lkiwlnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-a3lkiwlnvsha1z"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> isEven = [](<span class="hljs-type">int</span> x) {
+        <span class="hljs-keyword">return</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;
+    };
+v.<span class="hljs-built_in">erase</span>(std::<span class="hljs-built_in">remove_if</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), isEven), v.<span class="hljs-built_in">end</span>());</code></pre></div></div>
+<p>其他顺序容器如<code>string</code>，<code>deque</code>均可以使用这种方式。</p>
+<h2 id="list">list</h2>
+<p>对于list，稍显的有些不同。<code>list</code>作为链表，可以高效的进行元素插入删除。我们当然可以用一个循环朴素的删除元素并更新迭代器。</p>
+<p>我们知道，如果有STL的成员函数和STL算法，应当优先选择成员函数形式，因为其可以针对特定容器做优化。（Effective
+STL Item43）</p>
+<p>最佳实践是直接调用<code>list</code>的成员函数<code>remove</code>或<code>remove_if</code>：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-thzsfglnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-thzsfglnvsha1z"><pre><code class="hljs c++">l.<span class="hljs-built_in">remove_if</span>(pred);</code></pre></div></div>
+<p><code>pred</code>是仿函数（函数对象，lambda等）</p>
+<p>我们来看一下它的实现原理：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-4mtvlplnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-4mtvlplnvsha1z"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Tp</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alloc</span>&gt;
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Pred</span>&gt;
+<span class="hljs-keyword">typename</span> list&lt;Tp, Alloc&gt;::remove_return_type
+list&lt;Tp, Alloc&gt;::<span class="hljs-built_in">remove_if</span>(Pred _pred)
+{
+    <span class="hljs-function">list&lt;Tp, Alloc&gt; <span class="hljs-title">deleted_nodes</span><span class="hljs-params">(get_allocator())</span></span>; <span class="hljs-comment">// collect the nodes we're removing</span>
+    <span class="hljs-keyword">for</span> (iterator i = <span class="hljs-built_in">begin</span>(), e = <span class="hljs-built_in">end</span>(); i != e;)
+    {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+        {
+            iterator j = std::<span class="hljs-built_in">next</span>(i);
+            <span class="hljs-keyword">for</span> (; j != e &amp;&amp; <span class="hljs-built_in">pred</span>(*j); ++j);
+            deleted_nodes.<span class="hljs-built_in">splice</span>(deleted_nodes.<span class="hljs-built_in">end</span>(), *<span class="hljs-keyword">this</span>, i, j);
+            i = j;
+          	<span class="hljs-comment">//此时指向的元素若不是end，一定满足！pred(*i)，直接跳过。</span>
+            <span class="hljs-keyword">if</span> (i != e)
+                ++i;
+        }
+        <span class="hljs-keyword">else</span>
+            ++i;
+    }
+
+    <span class="hljs-keyword">return</span> (remove_return_type) deleted_nodes.<span class="hljs-built_in">size</span>();
+}</code></pre></div></div>
+<p>同样隐藏了实现细节。可以看到标准库实现对连续存在的待删除元素进行了优化，同时将待删除节点放到临时容器<code>deleted_nodes</code>中，返回删除元素数量，并在退出函数作用域后进行析构，释放删除节点的内存。这和智能指针的原理是一样的。</p>
+<h2 id="关联容器">关联容器</h2>
+<p>对于关联容器如<code>map</code>，<code>set</code>，或者哈希表<code>unordered_map</code>等，你可能想，像<code>vector</code>一样<code>remove</code>然后再<code>erase</code>。然后写出了自认为很酷的代码：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bz5vkllnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-bz5vkllnvsha1z"><pre><code class="hljs c++">m.<span class="hljs-built_in">erase</span>(std::<span class="hljs-built_in">remove_if</span>(m.<span class="hljs-built_in">begin</span>(), m.<span class="hljs-built_in">end</span>(), [](<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; pair) {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">pred</span>(pair.second);
+    }), m.<span class="hljs-built_in">end</span>());</code></pre></div></div>
+<p>你会发现编译器报了一长串错误：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xp9ednlnvsha1z"></i><span>delphi</span><div class="collapse show" id="collapse-xp9ednlnvsha1z"><pre><code class="hljs delphi">error occurred here <span class="hljs-keyword">in</span> instantiation <span class="hljs-keyword">of</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">template</span> <span class="hljs-title">specialization</span> '<span class="hljs-title">std</span>:</span>:remove_if&lt;std::__map_iterator&lt;std::__tree_iterator&lt;std::__value_type&lt;int, std::<span class="hljs-keyword">string</span>&gt;, std::__tree_node&lt;std::__value_type&lt;int, std::<span class="hljs-keyword">string</span>&gt;, void *&gt; *, long&gt;&gt;, (lambda at /User... copy assignment <span class="hljs-keyword">operator</span> <span class="hljs-keyword">is</span> implicitly deleted because <span class="hljs-string">'pair&lt;const int, std::string&gt;'</span> has a user-declared move <span class="hljs-function"><span class="hljs-keyword">constructor</span></span></code></pre></div></div>
+<p>从报错原因和<code>remove_if</code>STL实现不难看出原因。</p>
+<p>我们查看<code>pair</code>的源码：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8pvpb8lnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-8pvpb8lnvsha1z"><pre><code class="hljs c++"><span class="hljs-built_in">pair</span>(pair&amp;&amp;) = <span class="hljs-keyword">default</span>;</code></pre></div></div>
+<p>由于使用了移动构造函数（编译器默认生成），拷贝构造函数不会被生成。<code>remove_if</code>虽然支持移动语义，但是<code>map</code>里面存的是<code>pair&lt;const int, std::string&gt;</code>。作为<code>const</code>的元素，不能移动无可厚非。拷贝构造函数也没有，那就只好报错了。</p>
+<p>所以对于<code>map</code>以及其他关联容器的删除，最佳实践只能是遍历然后删除。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-1zp9zelnvsha1z"></i><span>c++</span><div class="collapse show" id="collapse-1zp9zelnvsha1z"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> it = m.<span class="hljs-built_in">begin</span>(); it != m.<span class="hljs-built_in">end</span>(); ) {
+    <span class="hljs-keyword">if</span> (it-&gt;second.<span class="hljs-built_in">length</span>() == <span class="hljs-number">13</span>) {
+        it = m.<span class="hljs-built_in">erase</span>(it);
+    } <span class="hljs-keyword">else</span> {
+        ++it;
+    }
+}</code></pre></div></div>
+<p>其他等价的写法也是可以的。</p>
+<h3 id="统一写法">统一写法</h3>
+<p>看到这里，或许会想，真的没有一种统一的方法可以删除容器吗？不同的容器接口还不一样，这心智负担太重了。确实是这样。好的设计应当让接口容易被正确使用，不容易被误用。使用者也不应该依赖其实现。STL虽然很强大，但这一方面STL从一开始并没有做的很好。</p>
+<p>不过条件删除这个需求实在是太常见了，因此C++20起，有了新关键字<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/container/vector/erase2"><code>erase_if</code></a>，为条件删除提供了统一的接口。</p>
+<p>其接受两个参数，第一个参数是容器本身，第二个参数是删除的条件。以<code>set</code>为例：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-umpjg0lnvsha1z"></i><span>cpp</span><div class="collapse show" id="collapse-umpjg0lnvsha1z"><pre><code class="hljs cpp">std::set data{<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>};
+<span class="hljs-keyword">auto</span> divisible_by_3 = [](<span class="hljs-keyword">auto</span> <span class="hljs-type">const</span>&amp; x) { <span class="hljs-built_in">return</span> (x % <span class="hljs-number">3</span>) == <span class="hljs-number">0</span>; };
+<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> count = std::<span class="hljs-built_in">erase_if</span>(data, divisible_by_3);</code></pre></div></div>
+<p>其等价于：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-zgggv9lnvsha1z"></i><span>cpp</span><div class="collapse show" id="collapse-zgggv9lnvsha1z"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> old_size = c.<span class="hljs-built_in">size</span>();
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> first = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); first != last;)
+{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*first))
+        first = c.<span class="hljs-built_in">erase</span>(first);
+    <span class="hljs-keyword">else</span>
+        ++first;
+}
+<span class="hljs-keyword">return</span> old_size - c.<span class="hljs-built_in">size</span>();</code></pre></div></div>
+<p>对于其他容器用法类似。</p>
+<p>C++20或许对于实际工程还是有点太新了。我们也可以使用Boost库或者直接在std命名空间添加下面的<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3424962/where-is-erase-if">代码</a>（虽然通常不建议修改std命名空间里的东西）：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-xqivnulnvsha1z"></i><span>cpp</span><div class="collapse show" id="collapse-xqivnulnvsha1z"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> std {
+
+<span class="hljs-comment">// for std::string</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">charT</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">traits</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(basic_string&lt;charT, traits, A&gt;&amp; c, Predicate pred)</span> </span>{
+    c.<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">remove_if</span>(c.<span class="hljs-built_in">begin</span>(), c.<span class="hljs-built_in">end</span>(), pred), c.<span class="hljs-built_in">end</span>());
+}
+
+<span class="hljs-comment">// for std::deque</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(deque&lt;T, A&gt;&amp; c, Predicate pred)</span> </span>{
+    c.<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">remove_if</span>(c.<span class="hljs-built_in">begin</span>(), c.<span class="hljs-built_in">end</span>(), pred), c.<span class="hljs-built_in">end</span>());
+}
+
+<span class="hljs-comment">// for std::vector</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(vector&lt;T, A&gt;&amp; c, Predicate pred)</span> </span>{
+    c.<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">remove_if</span>(c.<span class="hljs-built_in">begin</span>(), c.<span class="hljs-built_in">end</span>(), pred), c.<span class="hljs-built_in">end</span>());
+}
+
+<span class="hljs-comment">// for std::list</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(list&lt;T, A&gt;&amp; c, Predicate pred)</span> </span>{
+    c.<span class="hljs-built_in">remove_if</span>(pred);
+}
+
+<span class="hljs-comment">// for std::forward_list</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(forward_list&lt;T, A&gt;&amp; c, Predicate pred)</span> </span>{
+    c.<span class="hljs-built_in">remove_if</span>(pred);
+}
+
+<span class="hljs-comment">// for std::map</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(map&lt;K, T, C, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::multimap</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(multimap&lt;K, T, C, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::set</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(set&lt;K, C, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::multiset</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(multiset&lt;K, C, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::unordered_map</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">H</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">P</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(unordered_map&lt;K, T, H, P, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::unordered_multimap</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">H</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">P</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(unordered_multimap&lt;K, T, H, P, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::unordered_set</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">H</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">P</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(unordered_set&lt;K, H, P, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+<span class="hljs-comment">// for std::unordered_multiset</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">K</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">H</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">P</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Predicate</span>&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">erase_if</span><span class="hljs-params">(unordered_multiset&lt;K, H, P, A&gt;&amp; c, Predicate pred)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = c.<span class="hljs-built_in">begin</span>(), last = c.<span class="hljs-built_in">end</span>(); i != last; )
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pred</span>(*i))
+            i = c.<span class="hljs-built_in">erase</span>(i);
+        <span class="hljs-keyword">else</span>
+            ++i;
+}
+
+} <span class="hljs-comment">// namespace std</span></code></pre></div></div>
+<p>可以看到，上面这份代码恰恰是对容器条件删除方式的总结。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>STL容器的条件删除</div>
+      <div>http://lunaticsky-tql.github.io/posts/46990/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/65048/" title="一组数据表练习Mysql查询">
+                        <span class="hidden-mobile">一组数据表练习Mysql查询</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>
