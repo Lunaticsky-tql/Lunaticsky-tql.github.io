@@ -330,8 +330,9 @@
 <p>不同的应用场景、不同阶段的需求背景、不同的业务层面，对同一个类的职责是否单一，可能会有不同的判定结果。实际上，一些侧面的判断指标更具有指导意义和可执行性，比如，出现下面这些情况就有可能说明这类的设计不满足单一职责原则：</p>
 <ul>
 <li>类中的代码行数、函数或者属性过多；</li>
-<li>类依赖的其他类过多，或者依赖类的其他类过多；</li>
-<li>私有方法过多；比较难给类起一个合适的名字；</li>
+<li>类依赖的其他类过多，或者依赖这个类的其他类过多；</li>
+<li>私有方法过多；</li>
+<li>比较难给类起一个合适的名字；</li>
 <li>类中大量的方法都是集中操作类中的某几个属性。</li>
 </ul>
 <h5 id="类的职责是否设计得越单一越好">类的职责是否设计得越单一越好？</h5>
@@ -349,7 +350,7 @@
 <p>我们不应该将业务逻辑耦合到<code>check()</code>中，其入参也不应该与具体check的内容耦合，否则我们添加或改变预警的指标或逻辑时，便不可避免的修改接口。</p>
 <p>比较好的思路是传入<code>ApiStatInfo</code>，向<code>check()</code>函数对应的接口对象注册检查方法。</p>
 <p>更具体一些：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cvq1b8lmrh9u6a"></i><span>java</span><div class="collapse show" id="collapse-cvq1b8lmrh9u6a"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alert</span> {
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-x01qmslo9n9jct"></i><span>java</span><div class="collapse show" id="collapse-x01qmslo9n9jct"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alert</span> {
 
     <span class="hljs-keyword">private</span> List&lt;AlertHandler&gt; alertHandlers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
