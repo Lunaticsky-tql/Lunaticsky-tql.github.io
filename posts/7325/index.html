@@ -1,0 +1,1153 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    <meta name="theme-color" content="#2f4154">
+    <meta name="author" content="Lunatic sky">
+    <meta name="keywords" content="">
+    
+        <meta name="description" content="自己动手写docker docker run 子进程 &#x2F;proc&#x2F;self&#x2F;exe，这个表示调用当前文件，目的是再起一个 docker init 进程，这个init 进程是真正&quot;干活的&quot;进程，一开始和CLI进程一模一样，后面马上将通过 execve 变成要跑命令的进程了。CLI进程 通过 Wait() 等待其退出。 int execve(const char *filename, char *co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自己动手写docker">
+<meta property="og:url" content="http://lunaticsky-tql.github.io/posts/7325/index.html">
+<meta property="og:site_name" content="Lunaticsky&#39;s Blog">
+<meta property="og:description" content="自己动手写docker docker run 子进程 &#x2F;proc&#x2F;self&#x2F;exe，这个表示调用当前文件，目的是再起一个 docker init 进程，这个init 进程是真正&quot;干活的&quot;进程，一开始和CLI进程一模一样，后面马上将通过 execve 变成要跑命令的进程了。CLI进程 通过 Wait() 等待其退出。 int execve(const char *filename, char *co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://lunaticsky-tql.github.io/posts/7325/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%86%99docker.assets/image-20240406202234088.png">
+<meta property="article:published_time" content="2024-07-02T15:28:21.000Z">
+<meta property="article:modified_time" content="2024-07-02T15:28:21.000Z">
+<meta property="article:author" content="Lunatic sky">
+<meta property="article:tag" content="云原生">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://lunaticsky-tql.github.io/posts/7325/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%86%99docker.assets/image-20240406202234088.png">
+    
+    
+    
+    <title>自己动手写docker - Lunaticsky&#39;s Blog</title>
+
+    
+  
+    <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+      
+    <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+      
+        
+
+          <!-- 主题依赖的图标库，不要自行修改 -->
+          <!-- Do not modify the link that theme dependent icons -->
+          
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+            
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+              <link  rel="stylesheet" href="/css/main.css" />
+
+                
+                  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+                    
+                      <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+                        
+                          
+
+                            
+                              
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/remove-shadow.css">
+<link rel="stylesheet" href="/css/zan.css">
+<link rel="stylesheet" href="/css/code_fold.css">
+<link rel="stylesheet" href="/css/link.css">
+
+                                
+    <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lunaticsky-tql.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9zw4pzKGNFredmMKJc9n2JSH-gzGzoHsz","app_key":"rS2LQjQjNgLRcqtYrEVLwcSb","server_url":"https://9zw4pzkg.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+    <script  src="/js/utils.js" ></script>
+    <script  src="/js/color-schema.js" ></script>
+    
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+    <link  rel="stylesheet" href="/lib/font-awesome/css/all.min.css" />
+    <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+    <link  rel="stylesheet" href="/css/main.css" />
+
+    
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+
+
+<header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lunatic sky‘s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/fan1.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="自己动手写docker"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+        
+          <span class="post-meta">
+            <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+            <time datetime="2024-07-02 23:28" pubdate>
+              2024年7月2日 晚上
+            </time>
+          </span>
+          
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+              12k 字
+                
+      </span>
+      
+
+        
+
+            
+              
+                
+                  <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="leancloud-page-views"></span>
+                       次
+                  </span>
+                  
+                    
+                          
+  </div>
+  
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+    
+        
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">自己动手写docker</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="自己动手写docker">自己动手写docker</h1>
+<h2 id="docker-run">docker run</h2>
+<h3 id="子进程">子进程</h3>
+<p><code>/proc/self/exe</code>，这个表示调用当前文件，目的是再起一个
+<code>docker init</code> 进程，这个<code>init</code>
+进程是真正"干活的"进程，一开始和CLI进程一模一样，后面马上将通过
+<code>execve</code> 变成要跑命令的进程了。CLI进程 通过
+<code>Wait()</code> 等待其退出。</p>
+<p><code>int execve(const char *filename, char *const argv[], char *const envp[]);</code></p>
+<p>这个系统函数，它的作用是执行当前 filename
+对应的程序,它会覆盖当前进程的镜像、数据和堆栈等信息，包括
+PID，这些都会被将要运行的进程覆盖掉。</p>
+<p>也就是说，调用这个方法，将用户指定的进程运行起来，把最初的 init
+进程给替换掉，这样当进入到容器内部的时候，就会发现容器内的第一个程序就是我们指定的进程了。</p>
+<p>这其实也是目前 Docker 使用的容器引擎runC的实现方式之一。</p>
+<h3 id="namespace">Namespace</h3>
+<p>Docker 使用 namespace 进行隔离。</p>
+<p>Namespace 的本质：Linux Namespace 是 Linux
+提供的一种内核级别环境隔离的方法，本质就是对全局系统资源的一种封装隔离。</p>
+<p>Namespace 的使用：Namespace API 一共 4个，最常用的就是 clone，而 Go
+已经把 clone 调用给封装好了，使用时只需要传入不同参数即可控制创建不同
+Namespace。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-lsfo77ly4ke5q8"></i><span>gradle</span><div class="collapse show" id="collapse-lsfo77ly4ke5q8"><pre><code class="hljs gradle">ERRO[<span class="hljs-number">0000</span>] fork<span class="hljs-regexp">/exec /</span>proc<span class="hljs-regexp">/self/</span>exe: no such <span class="hljs-keyword">file</span> or directory</code></pre></div></div>
+<p>在引入了<code>systemd</code>之后的 linux 中，mount namespace 是
+shared by default，也就是说宿主机上的<code>/proc</code>
+目录也被影响了。</p>
+<p>mount 官方文档的完整解释：</p>
+<p>https://man7.org/linux/man-pages/man7/mount_namespaces.7.html#NOTES</p>
+<p>The propagation type assigned to a new mount depends on the
+propagation type of the parent mount. If the mount has a parent (i.e.,
+it is a non-root mount point) and the propagation type of the parent is
+MS_SHARED, then the propagation type of the new mount is also MS_SHARED.
+Otherwise, the propagation type of the new mount is MS_PRIVATE.</p>
+<p>Notwithstanding the fact that the default propagation type for new
+mount is in many cases MS_PRIVATE, MS_SHARED is typically more useful.
+For this reason, systemd(1) automatically remounts all mounts as
+MS_SHARED on system startup. Thus, on most modern systems, the default
+propagation type is in practice MS_SHARED.</p>
+<p>Since, when one uses unshare(1) to create a mount namespace, the goal
+is commonly to provide full isolation of the mounts in the new
+namespace, unshare(1) (since util-linux version 2.27) in turn reverses
+the step performed by systemd(1), by making all mounts private in the
+new namespace. That is, unshare(1) performs the equivalent of the
+following in the new mount namespace: mount --make-rprivate /</p>
+<p>To prevent this, one can use the --propagation unchanged option to
+unshare(1).</p>
+<p>An application that creates a new mount namespace directly using
+clone(2) or unshare(2) may desire to prevent propagation of mount events
+to other mount namespaces (as is done by unshare(1)). This can be done
+by changing the propagation type of mounts in the new namespace to
+either MS_SLAVE or MS_PRIVATE, using a call such as the following:</p>
+<p>mount(NULL, "/", MS_SLAVE | MS_REC, NULL);</p>
+<p>按照手册所述一共有四种共享方式:</p>
+<p>A call to mount() performs one of a number of general types of
+operation, depending on the bits specified in mountflags. The choice of
+which operation to perform is determined by testing the bits set in
+mountflags, with the tests being conducted in the order listed here:</p>
+<p>Change the propagation type of an existing mount: mountflags includes
+one of MS_SHARED, MS_PRIVATE, MS_SLAVE, or MS_UNBINDABLE.</p>
+<blockquote>
+<p>Linux手册页的一般章节划分：</p>
+<p>1：用户命令和可执行文件</p>
+<p>2：系统调用</p>
+<p>3：库函数、标准C库函数</p>
+<p>4：特殊文件（通常是<code>/dev</code>目录下的设备文件）</p>
+<p>5：文件格式和约定、配置文件</p>
+<p>6：游戏和屏幕保护程序</p>
+<p>7：杂项（例如：协议、文件格式、程序、宏等）</p>
+<p>8：系统管理命令和守护进程</p>
+</blockquote>
+<p>https://blog.frognew.com/2021/05/relearning-container-07.html</p>
+<p>要查看一个进程所属的namespace信息，可以到<code>/proc/&lt;pid&gt;/ns</code>目录下查看</p>
+<h3 id="管道">管道</h3>
+<p>在使用命名管道前，先需要通过 mkfifo
+命令来创建，并且指定管道名字：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bkkn79ly4ke5q8"></i><span>bash</span><div class="collapse show" id="collapse-bkkn79ly4ke5q8"><pre><code class="hljs bash"><span class="hljs-built_in">mkfifo</span> myPipe</code></pre></div></div>
+<p>myPipe 就是这个管道的名称，基于 Linux
+一切皆文件的理念，所以管道也是以文件的方式存在，我们可以用 ls
+看一下，这个文件的类型是 p，也就是 pipe（管道） 的意思。</p>
+<p>匿名管道传参</p>
+<p>管道有一个固定大小的缓冲区，一般是4KB。
+这种通道是单向的，即数据只能在一个方向上流动。
+当管道被写满时，写进程就会被阻塞，直到有读进程把管道的内容读出来。
+同样地，当读进程从管道内拿数据的时候，如果这时管道的内容是空的，那么读进程同样会被阻塞，一直等到有写进程向管道内写数据。</p>
+<p>和golang的channel性质很像</p>
+<p>怎么使用</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-il0pduly4ke5q8"></i><span>autohotkey</span><div class="collapse show" id="collapse-il0pduly4ke5q8"><pre><code class="hljs autohotkey"><span class="hljs-built_in">readPipe,</span> writePipe, err := os.Pipe()</code></pre></div></div>
+<p>主要是这句：</p>
+<p><code>cmd.ExtraFiles = []*os.File{readPipe}</code> 将
+<code>readPipe</code> 作为 <code>ExtraFiles</code>，这样 cmd
+执行时就会外带着这个文件句柄去创建子进程。</p>
+<p>一些细节：</p>
+<p>如果未启动子进程就往管道中写，写完了再启动子进程，大部分情况下也可以，但是如果
+cmd 大于 4k 就会导致永久阻塞。
+因为子进程未启动，管道中的数据永远不会被读取，因此会一直阻塞。</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-6tnw2nly4ke5q8"></i><span>golang</span><div class="collapse show" id="collapse-6tnw2nly4ke5q8"><pre><code class="hljs golang"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">readUserCommand</span><span class="hljs-params">()</span></span> []<span class="hljs-type">string</span> { 
+  <span class="hljs-comment">// uintptr(3 ）就是指 index 为3的文件描述符，也就是传递进来的管道的另一端，至于为什么是 3，具体解释如下： /* 因为每个进程默认都会有3个文件描述符，分别是标准输入、标准输出、标准错误。这3个是子进程 一创建的时候就会默认带着的， 前面通过ExtraFiles方式带过来的 readPipe 理所当然地就成为了第4个。 在进程中可以通过index方式读取对应的文件，比如 index0：标准输入 index1：标准输出 index2：标准错误 index3：带过来的第一个FD，也就是readPipe </span>
+  <span class="hljs-comment">//由于可以带多个FD过来，所以这里的3就不是固定的了。 比如像这样：cmd.ExtraFiles = []*os.File{a,b,c,readPipe} 这里带了4个文件过来， 分别的index就是3,4,5,6 那么我们的 readPipe 就是 index6,读取时就要像这样：pipe := os.NewFile(uintptr(6), "pipe") */ </span>
+  pipe := os.NewFile(<span class="hljs-type">uintptr</span>(fdIndex), <span class="hljs-string">"pipe"</span>)
+  msg, err := io.ReadAll(pipe) 
+  <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> { 
+    log.Errorf(<span class="hljs-string">"init read pipe error %v"</span>, err) <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span> 
+  } 
+  msgStr := <span class="hljs-type">string</span>(msg) 
+  <span class="hljs-keyword">return</span> strings.Split(msgStr, <span class="hljs-string">" "</span>)
+}</code></pre></div></div>
+<p>runC也是这么做的
+https://github.com/opencontainers/runc/blob/main/libcontainer/sync.go</p>
+<p>传参过程：</p>
+<p>父进程创建匿名管道，得到 readPiep FD 和 writePipe FD；</p>
+<p>父进程中构造 cmd 对象时通过 ExtraFiles 将 readPiep FD
+传递给子进程</p>
+<p>父进程启动子进程后将命令通过 writePipe FD 写入子进程</p>
+<p>子进程中根据 index 拿到对应的 readPipe FD 子进程中 readPipe FD
+中读取命令并执行</p>
+<h2 id="cgroup重点">cgroup(重点)</h2>
+<h3 id="cgroup-v1">cgroup v1</h3>
+<p>https://tech.meituan.com/2015/03/31/cgroups.html</p>
+<p>典型的子系统介绍如下(v1)：</p>
+<ol type="1">
+<li><p>cpu 子系统，主要限制进程的 cpu 使用率。</p></li>
+<li><p>cpuacct 子系统，可以统计 cgroups 中的进程的 cpu
+使用报告。</p></li>
+<li><p>cpuset 子系统，可以为 cgroups 中的进程分配单独的 cpu
+节点或者内存节点。</p></li>
+<li><p>memory 子系统，可以限制进程的 memory 使用量。</p></li>
+<li><p>blkio 子系统，可以限制进程的块设备 io。</p></li>
+<li><p>devices 子系统，可以控制进程能够访问某些设备。</p></li>
+<li><p>net_cls 子系统，可以标记 cgroups 中进程的网络数据包，然后可以使用
+tc 模块（traffic control）对数据包进行控制。</p></li>
+<li><p>freezer 子系统，可以挂起或者恢复 cgroups 中的进程。</p></li>
+<li><p>ns 子系统，可以使不同 cgroups 下面的进程使用不同的
+namespace</p></li>
+</ol>
+<p>对 cpu 资源的限制是通过进程调度模块根据 cpu
+子系统的配置来完成的；对内存资源的限制则是内存模块根据 memory
+子系统的配置来完成的，而对网络数据包的控制则需要 Traffic Control
+子系统来配合完成。 而对于 Docker 等 Linux
+容器项目来说，它们只需要在每个子系统下面，为每个容器创建一个控制组
+（即创建一个新目录），然后在启动容器进程之后，把这个进程的 PID
+填写到对应控制组的 tasks 文件中就可以了。</p>
+<p>下面的内容是理解Cgroup v1 如何工作的重要部分。</p>
+<p>上面这个图从整体结构上描述了进程与 cgroups 之间的关系。最下面的 P
+代表一个进程。每一个进程的 描述符中有一个指针指向了一个辅助数据结构
+css_set （cgroups subsystem set）。 指向某一个</p>
+<p>css_set 的进程会被加入到当前 css_set
+的进程链表中。一个进程只能隶属于一个 css_set ，一个 css_set
+可以包含多个进程，隶属于同一 css_set 的进程受到同一个 css_set
+所关联的资源限制。</p>
+<p>上图中的”M×N Linkage”说明的是 css_set 通过辅助数据结构可以与 cgroups
+节点进行多对多的关联。 但是 cgroups 的实现不允许 css_set
+同时关联同一个cgroups层级结构下多个节点。 这是因为 cgroups
+对同一种资源不允许有多个限制配置。</p>
+<p>一个 css_set 关联多个 cgroups 层级结构的节点时，表明需要对当前
+css_set 下的进程进行多种资源的控制。而一个 cgroups 节点关联多个 css_set
+时，表明多个 css_set 下的进程列表受到同一份资源的相同限制。</p>
+<p>同样是cgroup v1的一个简要介绍：</p>
+<p>https://blog.frognew.com/2021/05/relearning-container-06.html</p>
+<p>对于bulkio使用的一个介绍</p>
+<p>https://www.cnblogs.com/jimbo17/p/8145582.html</p>
+<h3 id="cgroup-v2">cgroup v2</h3>
+<p>Am I using cgroup v2?</p>
+<p>Yes if<code>/sys/fs/cgroup/cgroup.controllers</code></p>
+<p>is present.</p>
+<ol type="1">
+<li>In inroups v2, you can only create subgroups in a single
+hierarchy.</li>
+<li>In cgroups v2 you can attach processes only to leaves of the
+hierarchy. You cannot attach a process to an internal subgroup if it has
+any controller enabled. The reason behind this rule is that processes in
+a given subgroup competing for resources with threads attached to its
+parent group create significant implementation difficulties.</li>
+<li>In cgroups v1, a process can belong to many subgroups, if those
+subgroups are in different hierarchies with different controllers
+attached. But, because belonging to more than one subgroup made it
+difficult to disambiguate subgroup membership, in cgroups v2, a process
+can belong only to a single subgroup.</li>
+</ol>
+<p>cgroup v1 缺点</p>
+<p>https://zhuanlan.zhihu.com/p/410053058</p>
+<p>cgroup v1
+通常是每个层级对应一个子系统，子系统需要挂载使用，而每个子系统之间都是独立的，很难协同工作，比如
+memory cgroup 和 blkio cgroup 能分别控制某个进程的资源使用量，但是blkio
+cgroup 对进程资源限制的时候无法感知 memory cgroup
+中进程资源的使用量，导致对 Buffered I/O 的限制一直没有实现。</p>
+<p>目前看到的关于cgroup v2讲的最清晰的资料：</p>
+<p>http://arthurchiao.art/blog/cgroupv2-zh/</p>
+<p>所有 cgroup 组成一个<strong>树形结构</strong>（tree structure），</p>
+<ul>
+<li>系统中的<strong>每个进程都属于且只属于</strong>某一个 cgroup；</li>
+<li>一个<strong>进程的所有线程</strong>属于同一个 cgroup；</li>
+<li>创建子进程时，继承其父进程的 cgroup；</li>
+<li>一个进程可以被<strong>迁移</strong>到其他 cgroup；</li>
+<li>迁移一个进程时，<strong>子进程（后代进程）不会自动</strong>跟着一起迁移；</li>
+</ul>
+<h3 id="systemd">systemd</h3>
+<h3 id="cgroup使用">cgroup使用</h3>
+<p>限制容器进程最大数量</p>
+<p>https://blog.frognew.com/2021/07/relearning-container-30.html</p>
+<p>限制CPU使用状况</p>
+<p>https://blog.frognew.com/2021/07/relearning-container-29.html</p>
+<p><code>cpu.cfs_quota_us/cpu.cfs_period_us</code>决定cpu控制组中所有进程所能使用CPU资源的最大值，而<code>cpu.shares</code>决定了cpu控制组间可用CPU的相对比例，这个比例只有当主机上的CPU完全被打满时才会起作用。</p>
+<h2 id="fs">fs</h2>
+<h4 id="pivot_root-和-chroot-有什么区别">pivot_root 和 chroot
+有什么区别？</h4>
+<p>pivot_root 是把整个系统切换到一个新的 root 目录，会移除对之前 root
+文件系统的依赖，这样你就能够 umount 原先的 root 文件系统。 而 chroot
+是针对某个进程，系统的其他部分依旧运行于老的 root 目录中。</p>
+<p>遇到的问题：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-n2b0htly4ke5q8"></i><span>awk</span><div class="collapse show" id="collapse-n2b0htly4ke5q8"><pre><code class="hljs awk"><span class="hljs-regexp">/bin/</span>sh: ls: not found</code></pre></div></div>
+<p>环境变量这时候和宿主机还是不隔离的，宿主机的/bin不在当前shell的$PATH里就会出现这种情况。</p>
+<p>That's the "echo" command followed by a dollar sign ($) and a zero.
+$0 represents the zeroth segment of a command (in the command echo $0,
+the word "echo" therefore maps to $1), or in other words, the thing
+running your command. Usually this is the Bash shell, although there are
+others, including Dash, Zsh, Tcsh, Ksh, and Fish. volume</p>
+<blockquote>
+<p>1、$# 表示参数个数。</p>
+<p>2、$0 是脚本本身的名字。</p>
+<p>3、$1 是传递给该shell脚本的第一个参数。</p>
+<p>4、$2 是传递给该shell脚本的第二个参数。</p>
+<p>5、$@ 表示所有参数，并且所有参数都是独立的。</p>
+<p>6、$$ 是脚本运行的当前进程ID号。</p>
+<p>7、$? 是显示最后命令的退出状态，0表示没有错误，其他表示有错误。</p>
+</blockquote>
+<p>首先要理解 linux 中的 bind mount 功能。</p>
+<p>是一种将一个目录或者文件系统挂载到另一个目录的技术。它允许你在文件系统层级中的
+不同位置共享相同的内容，而无需复制文件。</p>
+<p>本质：绑定挂载实际上是一个 inode 替换的过程。在 Linux
+操作系统中，inode 可以理解为存放文件内容的“对象”，而
+dentry，也叫目录项，就是访问这个 inode 所使用的“指针”。</p>
+<figure>
+<img src="自己动手写docker.assets/image-20240406202234088.png" srcset="/img/loading.gif" lazyload alt="image-20240406202234088">
+<figcaption aria-hidden="true">image-20240406202234088</figcaption>
+</figure>
+<p>其次，则是要理解宿主机目录和容器目录之间的关联关系。</p>
+<p>以<code>-v /root/volume:/tmp</code></p>
+<p>参数为例：</p>
+<p>1）按照语法<code>-v /root/volume:/tmp</code>就是将宿主机<code>/root/volume</code>挂载到容器中的</p>
+<p><code>/tmp</code>目录。</p>
+<p>2）由于前面使用了 pivotRoot 将/root/merged目录作为容器的
+rootfs，因此，容器中的根目录实际上就是宿主机上的<code>/root/merged</code>目录</p>
+<p>3）那么容器中的 /tmp 目录就是宿主机上的 /root/merged/tmp 目录。</p>
+<p>4）因此，我们只需要将宿主机
+/root/volume目录挂载到宿主机的/root/merged/tmp</p>
+<p>目录即可实现 volume 挂载。</p>
+<p>进程眼中的文件接口：</p>
+<p>file&amp;dir接口层定义了进程在内核中直接访问的文件相关信息，这定义在file数据结构中，具体描述如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-8cc8jwly4ke5q8"></i><span>awk</span><div class="collapse show" id="collapse-8cc8jwly4ke5q8"><pre><code class="hljs awk">struct file {
+   enum { 
+      FD_NONE, FD_INIT, FD_OPENED, FD_CLOSED, 
+   } status; <span class="hljs-regexp">//</span>访问文件的执行状态 
+   bool readable; <span class="hljs-regexp">//</span>文件是否可读 
+   bool writable; <span class="hljs-regexp">//</span>文件是否可写 
+   int fd; <span class="hljs-regexp">//</span>文件在filemap中的索引值 
+   off_t pos; <span class="hljs-regexp">//</span>访问文件的当前位置 
+   struct inode *node; <span class="hljs-regexp">//</span>该文件对应的内存inode指针 int open_count; <span class="hljs-regexp">//</span>打开此文件的次数
+
+};</code></pre></div></div>
+<p>而在<code>kern/process/proc.h</code>中的proc_struct结构中描述了进程访问文件的数据接口files_struct，其数据结构定义如下：</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-wpxg3tly4ke5q8"></i><span>gauss</span><div class="collapse show" id="collapse-wpxg3tly4ke5q8"><pre><code class="hljs gauss"><span class="hljs-keyword">struct</span> <span class="hljs-type">files_struct</span> { 
+   <span class="hljs-keyword">struct</span> <span class="hljs-type">inode</span> *pwd; <span class="hljs-comment">//进程当前执行目录的内存inode指针</span>
+   <span class="hljs-keyword">struct</span> <span class="hljs-type">file</span> *fd_array;  <span class="hljs-comment">//进程打开文件的数组</span>
+   atomic_t files_count;  <span class="hljs-comment">//访问此文件的线程个数</span>
+   semaphore_t files_sem;  <span class="hljs-comment">//确保对进程控制块中fs_struct的互斥访问</span>
+};</code></pre></div></div>
+<p>当创建一个进程后，该进程的files_struct将会被初始化或复制父进程的files_struct。当用户进程打开一个文件时，将从fd_array数组中取得一个空闲file项，然后会把此file的成员变量node指针指向一个代表此文件的inode的起始地址。</p>
+<p>volume 功能大致实现步骤如下：</p>
+<ul>
+<li>1）run 命令增加 -v 参数,格式和 docker 一致
+<ul>
+<li>例如 -v /etc/conf:/etc/conf 这样</li>
+</ul></li>
+<li>2）容器启动前，挂载 volume
+<ul>
+<li>先准备目录，其次 mount overlayfs，最后 bind mount volume</li>
+</ul></li>
+<li>3）容器停止后，卸载 volume
+<ul>
+<li>先 umount volume，其次 umount overlayfs，最后删除目录</li>
+</ul></li>
+</ul>
+<p>注意：第三步需要先 umount volume ，然后再删除目录，否则由于 bind
+mount 存在，删除临时目录会导致 volume 目录中的数据丢失。</p>
+<h2 id="后台运行-d">后台运行(-d)</h2>
+<p>https://www.lixueduan.com/posts/docker/mydocker/08-mydocker-run-d/</p>
+<h3 id="pslog">ps&amp;log</h3>
+<p>https://www.lixueduan.com/posts/docker/mydocker/10-mydocker-logs/</p>
+<p>主要是需要实现可持久化。和docker类似，将相关信息存到</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-cc1eyuly4ke5q8"></i><span>awk</span><div class="collapse show" id="collapse-cc1eyuly4ke5q8"><pre><code class="hljs awk">var<span class="hljs-regexp">/lib/</span>docker<span class="hljs-regexp">/containers/</span>{containerId}</code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-yclt8oly4ke5q8"></i><span>go</span><div class="collapse show" id="collapse-yclt8oly4ke5q8"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewParentProcess</span><span class="hljs-params">(tty <span class="hljs-type">bool</span>, volume, containerId <span class="hljs-type">string</span>)</span></span> (*exec.Cmd, *os.File) {
+<span class="hljs-comment">// 省略其他内存</span>
+	<span class="hljs-keyword">if</span> tty {
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-comment">// 对于后台运行容器，将 stdout、stderr 重定向到日志文件中，便于后续查看</span>
+		dirPath := fmt.Sprintf(InfoLocFormat, containerId)
+		<span class="hljs-keyword">if</span> err := os.MkdirAll(dirURL, constant.Perm0622); err != <span class="hljs-literal">nil</span> {
+			log.Errorf(<span class="hljs-string">"NewParentProcess mkdir %s error %v"</span>, dirURL, err)
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>
+		}
+		stdLogFilePath := dirPath + LogFile
+		stdLogFile, err := os.Create(stdLogFilePath)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			log.Errorf(<span class="hljs-string">"NewParentProcess create file %s error %v"</span>, stdLogFilePath, err)
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>
+		}
+		cmd.Stdout = stdLogFile
+		cmd.Stderr = stdLogFile
+	}
+<span class="hljs-comment">// ...</span>
+}
+</code></pre></div></div>
+<h2 id="exec">exec</h2>
+<p>https://www.lixueduan.com/posts/docker/mydocker/11-mydocker-exec/</p>
+<p><strong><code>docker exec</code> 实则是将当前进程添加到指定容器对应的
+namespace 中</strong>，从而可以看到容器中的进程信息、网络信息等。</p>
+<p>因此我们的 <code>mydocker exec</code> 具体实现包括两部分：</p>
+<ul>
+<li>根据容器 ID 找到对应 PID，然后找到 Namespace</li>
+<li>将当前进程切换到对应 Namespace</li>
+</ul>
+<p>比较关键的一点在于，Go Runtime 是多线程的，和 setns
+冲突，因此需要使用 Cgo 以<code>constructor</code> 方式在 Go Runtime
+启动之前执行 setns 调用。</p>
+<p>最后就是根据是否存在指定环境变量来防止重复执行。</p>
+<h2 id="stoprm">stop&amp;rm</h2>
+<p>https://www.lixueduan.com/posts/docker/mydocker/12-mydocker-stop/</p>
+<p>容器的本质是进程，那么停止容器就可以看做是结束进程。因此 mydocker
+stop 的实现思路就是先根据 containerId 查找到它的主进程 PID,然后 Kill
+发送 SIGTERM 信号，等待进程结束就好。</p>
+<p>https://www.lixueduan.com/posts/docker/mydocker/13-mydocker-rm/</p>
+<p><code>mydocker rm</code>
+实现起来很简单，主要是文件操作，因为容器对应的进程已经被停止，所以只需要将对应记录文件信息的目录删除即可。</p>
+<p>docker 可以通过 <code>-f</code> 强制删除运行中的容器，具体见 <a target="_blank" rel="noopener" href="https://github.com/moby/moby/blob/master/daemon/delete.go#L92">moby/delete.go#L92</a>，这里也加一下，指定
+force 时先 stop 再删除即可。</p>
+<h2 id="环境变量">环境变量</h2>
+<p>由于原来的 command
+实际就是容器启动的进程，所以只需要在原来的基础上，增加一下环境变量的配置即可。</p>
+<p><strong>默认情况下，新启动进程的环境变量都是继承于原来父进程的环境变量，但是如果手动指定了环境变量，那么这里就会覆盖掉原来继承自父进程的变量</strong>。</p>
+<p>由于在容器的进程中，有时候还需要使用原来父进程的环境变量，比如 PATH
+等，因此这里会使用 os.Environ()
+来获取宿主机的环境变量，然后把自定义的变量加进去。</p>
+<p>这里看不到环境变量的原因是：exec 命令其实是 mydocker 创建
+的另外一个进程，这个进程的父进程其实是宿主机的的进程，并不是容器进程的。</p>
+<blockquote>
+<p>因为在 Cgo 里面使用了 setns
+系统调用，才使得这个进程进入到了容器内的命名空间</p>
+</blockquote>
+<p>由于环境变量是继承自父进程的，因此<strong>这个 exec
+进程的环境变量其实是继承自宿主机的，所以在 exec
+进程内看到的环境变量其实是宿主机的环境变量</strong>。</p>
+<p>因此需要修改一下 exec 命令实现，使其能够看到容器中的环境变量。</p>
+<p>由于进程存放环境变量的位置是<code>/proc/&lt;PID&gt;/environ</code>，因此根据给定的
+PID 去读取这个文件，便可以获取环境变量。</p>
+<p>在文件的内容中，每个环境变量之间是通过<code>\u0000</code>分割的，因此以此为标记来获取环境变量数组。</p>
+<p>然后再启动 exec 进程时把容器中的环境变量也一并带上：</p>
+<h2 id="容器网络">容器网络</h2>
+<p>关于iptables</p>
+<p>https://www.liuvv.com/p/a8480986.html</p>
+<p>简单的例子：禁止ssh</p>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0mmttdly4ke5q8"></i><span>sh</span><div class="collapse show" id="collapse-0mmttdly4ke5q8"><pre><code class="hljs sh">iptables -t filter -A INPUT -p tcp --dport  22 -j DROP</code></pre></div></div>
+<p>利用虚拟网络模拟容器的bridge网络，并通过NAT和DNAT实现与外网互通</p>
+<p>https://www.lixueduan.com/posts/docker/10-bridge-network/</p>
+<h2 id="容器生态">容器生态</h2>
+<h3 id="什么是容器">什么是容器？</h3>
+<p>https://blog.frognew.com/2021/06/relearning-container-10.html</p>
+<ul>
+<li>容器实际上是一种特殊的进程。它使用namespace进行隔离，使用cgroup进行资源限制，并且它还以联合文件系统的形式挂载了单独的rootfs。</li>
+<li>为了更方便的准备运行容器所需的资源和管理容器的生命周期，还需要容器引擎如containerd。</li>
+<li>容器镜像实际上就是一种特殊的文件系统，它包含容器运行所需的程序、库、资源配置等所有内容，构建后内容保持不变。在启动容器时镜像会挂载为容器的rootfs。</li>
+</ul>
+<h4 id="怎么看容器中进程对应到宿主机的哪个进程">怎么看容器中进程对应到宿主机的哪个进程？</h4>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-sap9wrly4ke5q8"></i><span>gradle</span><div class="collapse show" id="collapse-sap9wrly4ke5q8"><pre><code class="hljs gradle">docker <span class="hljs-keyword">inspect</span> <span class="hljs-number">751</span>eb37752e3| <span class="hljs-keyword">grep</span> Pid</code></pre></div></div>
+<p>容器作为一种特殊的操作系统进程，可以在系统的<code>/proc/&lt;process-id&gt;</code>中感受它的存在。</p>
+<h3 id="cmd和entrypoint区别">CMD和ENTRYPOINT区别</h3>
+<p>https://yeasy.gitbook.io/docker_practice/image/dockerfile/entrypoint</p>
+<h3 id="oci">OCI</h3>
+<p>OCI
+开放容器倡议，是一个由科技公司组成的团体，其目的是围绕容器镜像和运行时创建开放的行业标准。他们维护容器镜像格式的规范，以及容器应该如何运行。</p>
+<p>OCI
+背后的想法是，你可以选择符合规范的不同运行时，这些运行时都有不同的底层实现。</p>
+<p>Docker 镜像</p>
+<p>许多人所说的 Docker 镜像，实际上是以 Open Container
+Initiative（OCI）格式打包的镜像。</p>
+<p>因此，如果你从 Docker Hub 或其他注册中心拉出一个镜像，你应该能够用
+docker 命令使用它，或在 Kubernetes 集群上使用，或用 podman
+工具以及任何其他支持 OCI 镜像格式规范的工具。</p>
+<p>runc 的几个替代品：</p>
+<div class="code-wrapper"><pre><code class="hljs">crun [5]一个用 C 语言编写的容器运行时（相比之下，runc 是用Go编写的。）
+来自 Katacontainers 项目的 kata-runtime [6] 它将 OCI 规范实现为单独的轻量级虚拟机（硬件虚拟化）。
+Google 的 gVisor [7]，它创建了拥有自己内核的容器。它在其运行时中实现了 OCI，称为 runsc。</code></pre></div>
+<h3 id="nerdctl">nerdctl</h3>
+<p>The goal of <code>nerdctl</code> is to facilitate experimenting the
+cutting-edge features of containerd that are not present in Docker (see
+below).</p>
+<p>Note that competing with Docker is <em>not</em> the goal of
+<code>nerdctl</code>. Those cutting-edge features are expected to be
+eventually available in Docker as well.</p>
+<p>Also, <code>nerdctl</code> might be potentially useful for debugging
+Kubernetes clusters, but it is not the primary goal.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">#云原生</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>自己动手写docker</div>
+      <div>http://lunaticsky-tql.github.io/posts/7325/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lunatic sky</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/46631/" title="深入剖析k8s笔记">
+                        <span class="hidden-mobile">深入剖析k8s笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+              
+              
+
+
+
+
+              
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+        <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+            <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+        </a>
+    
+
+    
+        <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+</main>
+
+<footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+</footer>
+
+<!-- Scripts -->
+
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="https://unpkg.com/leancloud-storage@4.12.2/dist/av-live-query-min.js" ></script>
+
+  <script defer src="/js/zan.js" ></script>
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+
+
+<noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+</noscript>
+<!-- hexo injector body_end start -->
+  <script src="/js/out_of_date.js"></script>
+<!-- hexo injector body_end end --></body>
+</html>

@@ -343,7 +343,7 @@ Pod 的 Status 中。源码 syncPod</p>
 <p>https://www.cnblogs.com/ryanyangcs/p/11167380.html</p>
 <h3 id="volume">Volume</h3>
 <p>bind mount和data volume对比</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-gnv7ffly4js5q9"></i><span>yaml</span><div class="collapse show" id="collapse-gnv7ffly4js5q9"><pre><code class="hljs">A、bind mount方式， docker容器直接访问host的目录或文件，性能是最好的。
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-bf2oqcly4ke5q8"></i><span>yaml</span><div class="collapse show" id="collapse-bf2oqcly4ke5q8"><pre><code class="hljs">A、bind mount方式， docker容器直接访问host的目录或文件，性能是最好的。
 B、bind mount方式， docker容器直接访问host的目录或文件，对于该host绝对目录可能会引入权限问题。 如果容器仅需要只读访问权限，最好是显式设定只读方式。
 C、对于 volume方式， 如果host中落地目录为空， docker先将容器中的对应目录复制到host下， 然后再进行挂载操作；对于bind mount方式，挂载之前没有复制操作。容器要依赖host主机的一个绝对路径, 使得容器的移植性变差, docker 官方并不推荐bind mount， 而是推荐使用volume。</code></pre></div>
 <p>虽然不使用 Docker，但 Google 内部确实在使用一个包管理工具，名叫 Midas
@@ -464,7 +464,7 @@ API 进行 GET 操作，而 Service Account B，则可以有 Kubernetes API
 ServiceAccountToken 的挂载目录里访问到授权信息和文件。这个容器内的路径在
 Kubernetes 里是固定的，即：/var/run/secrets/kubernetes.io/serviceaccount
 ，而这个 Secret 类型的 Volume 里面的内容如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-erpz0nly4js5q9"></i><span>stata</span><div class="collapse show" id="collapse-erpz0nly4js5q9"><pre><code class="hljs stata"><span class="hljs-keyword">ls</span> /<span class="hljs-keyword">var</span>/<span class="hljs-keyword">run</span>/secrets/kubernetes.io/serviceaccount 
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0pu3bbly4ke5q8"></i><span>stata</span><div class="collapse show" id="collapse-0pu3bbly4ke5q8"><pre><code class="hljs stata"><span class="hljs-keyword">ls</span> /<span class="hljs-keyword">var</span>/<span class="hljs-keyword">run</span>/secrets/kubernetes.io/serviceaccount 
 <span class="hljs-keyword">ca</span>.crt namespace <span class="hljs-keyword">token</span></code></pre></div></div>
 <p>这种把 Kubernetes 客户端以容器的方式运行在集群里，然后使用 default
 Service Account
@@ -507,7 +507,7 @@ hostname、名字等都是不同的、携带了编号的。而 StatefulSet
 StatefulSet 操心。</p>
 <blockquote>
 <p>具体的，怎么定义headless service？</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-3l4axyly4js5q9"></i><span>yaml</span><div class="collapse show" id="collapse-3l4axyly4js5q9"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-7yqsmkly4ke5q8"></i><span>yaml</span><div class="collapse show" id="collapse-7yqsmkly4ke5q8"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
 <span class="hljs-attr">metadata:</span>
  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
@@ -550,7 +550,7 @@ WAR 包的目录呢？这样来看，你只能独立维护一套分布式存储�
 <p>实际上，有了 Pod 之后，这样的问题就很容易解决了。我们可以把 WAR 包和
 Tomcat 分别做成镜像，然后把它们作为一个 Pod
 里的两个容器“组合”在一起。这个 Pod 的配置文件如下所示：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-0m6kpsly4js5q9"></i><span>yaml</span><div class="collapse show" id="collapse-0m6kpsly4js5q9"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-9ydsyely4ke5q8"></i><span>yaml</span><div class="collapse show" id="collapse-9ydsyely4ke5q8"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
  <span class="hljs-attr">name:</span> <span class="hljs-string">javaweb-2</span>
@@ -645,18 +645,18 @@ RoleBinding 对象，将被作用者（subject）和权限列表进行绑定。<
 来说，“用户组”的概念也同样适用。</p>
 <p>实际上，一个 ServiceAccount，在 Kubernetes
 里对应的“用户”的名字是：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-h1dmo6ly4js5q9"></i><span>yaml</span><div class="collapse show" id="collapse-h1dmo6ly4js5q9"><pre><code class="hljs yaml"><span class="hljs-string">system:serviceaccount:&lt;Namespace名字&gt;:&lt;ServiceAccount名字&gt;</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-oq9hably4ke5q8"></i><span>yaml</span><div class="collapse show" id="collapse-oq9hably4ke5q8"><pre><code class="hljs yaml"><span class="hljs-string">system:serviceaccount:&lt;Namespace名字&gt;:&lt;ServiceAccount名字&gt;</span></code></pre></div></div>
 <p>而它对应的内置“用户组”的名字，就是：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vn70wzly4js5q9"></i><span>yml</span><div class="collapse show" id="collapse-vn70wzly4js5q9"><pre><code class="hljs yml"><span class="hljs-string">system:serviceaccounts:&lt;Namespace名字&gt;</span></code></pre></div></div>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pl35uply4ke5q8"></i><span>yml</span><div class="collapse show" id="collapse-pl35uply4ke5q8"><pre><code class="hljs yml"><span class="hljs-string">system:serviceaccounts:&lt;Namespace名字&gt;</span></code></pre></div></div>
 <p>比如，现在我们可以在 RoleBinding 里定义如下的 subjects：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-ae6wj3ly4js5q9"></i><span>yml</span><div class="collapse show" id="collapse-ae6wj3ly4js5q9"><pre><code class="hljs yml"><span class="hljs-attr">subjects:</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-2tq4pfly4ke5q8"></i><span>yml</span><div class="collapse show" id="collapse-2tq4pfly4ke5q8"><pre><code class="hljs yml"><span class="hljs-attr">subjects:</span>
 <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">system:serviceaccounts:mynamespace</span>
   <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span></code></pre></div></div>
 <p>这就意味着这个 Role 的权限规则，作用于 mynamespace 里的所有
 ServiceAccount。这就用到了“用户组”的概念。</p>
 <p>而下面这个例子：</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mjwedtly4js5q9"></i><span>yml</span><div class="collapse show" id="collapse-mjwedtly4js5q9"><pre><code class="hljs yml"><span class="hljs-attr">subjects:</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-pgknljly4ke5q8"></i><span>yml</span><div class="collapse show" id="collapse-pgknljly4ke5q8"><pre><code class="hljs yml"><span class="hljs-attr">subjects:</span>
 <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">system:serviceaccounts</span>
   <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span></code></pre></div></div>
@@ -666,7 +666,7 @@ ServiceAccount。</p>
 ClusterRole，它们的名字都以 system: 开头</p>
 <p><strong>典型应用场景：所有Namespace 下的默认
 ServiceAccount，绑定一个只读权限的 Role。</strong></p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-q07jy4ly4js5q9"></i><span>yml</span><div class="collapse show" id="collapse-q07jy4ly4js5q9"><pre><code class="hljs yml"><span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRoleBinding</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-vppqizly4ke5q8"></i><span>yml</span><div class="collapse show" id="collapse-vppqizly4ke5q8"><pre><code class="hljs yml"><span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRoleBinding</span>
 <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">readonly-all-default</span>
@@ -862,7 +862,7 @@ Traefik 这样支持“热加载”的 Ingress Controller 实现。</p>
 Kubernetes 里的 Ingress 服务。</p>
 <p>所以，Ingress 的功能其实很容易理解：所谓 Ingress，就是 Service
 的“Service”。</p>
-<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-14vvkrly4js5qa"></i><span>yaml</span><div class="collapse show" id="collapse-14vvkrly4js5qa"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span>
+<div class="code-wrapper"><i class="fa fa-chevron-down" type="button" data-toggle="collapse" data-target="#collapse-mzks34ly4ke5q8"></i><span>yaml</span><div class="collapse show" id="collapse-mzks34ly4ke5q8"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Ingress</span>
 <span class="hljs-attr">metadata:</span>
  <span class="hljs-attr">name:</span> <span class="hljs-string">cafe-ingress</span>
@@ -1120,6 +1120,12 @@ kernel所以没问题。</p>
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/posts/7325/" title="自己动手写docker">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">自己动手写docker</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
